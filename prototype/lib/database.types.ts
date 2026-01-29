@@ -68,19 +68,19 @@ export type Database = {
       users: {
         Row: {
           created_at: string | null
-          instillation_id: number | null
+          installation_id: number | null
           login: string
           user_id: number
         }
         Insert: {
           created_at?: string | null
-          instillation_id?: number | null
+          installation_id?: number | null
           login: string
           user_id: number
         }
         Update: {
           created_at?: string | null
-          instillation_id?: number | null
+          installation_id?: number | null
           login?: string
           user_id?: number
         }

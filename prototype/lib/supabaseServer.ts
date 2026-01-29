@@ -7,29 +7,63 @@ const supabaseInstance = createClient<Database>(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-interface UserData{
+export interface UserData{
   user_id: number;
   login: string;
-  instillation_id: number;
+  installation_id: number;
 }
 
-interface RepoData{
+export interface RepoData{
     repo_id: number;
     name: string;
     full_name: string;
     last_synced_at?: string;
 }
 
+export const registerData = async (userData: UserData, repoData: RepoData[]) => {
+  await Promise.all([
+    registerUser(userData),
+    registerRepos(repoData)
+  ]);
+  linkContributorToRepos(userData.user_id, repoData.map(repo => repo.repo_id))
+}
+
+export const unregisterUser = async (userId: number) => {
+  const { data, error } = await supabaseInstance.rpc('handle_user_uninstall', { 
+    target_user_id: Number(userId) 
+    });
+
+  if (error) {
+    console.error("handle_user_uninstall RPC failed:", error.message);
+  } else {
+    console.log("handle_user_uninstall RPC Responsless, probably means success?");
+  }
+}
+
+export const unregisterRepos = async (userId: Number, reposToDelete: RepoData[]) => {
+  const repoIdList: Number[] = reposToDelete.map(repo => repo.repo_id)
+  const { data, error } = await supabaseInstance.rpc('remove_user_repos', { 
+    target_user_id: Number(userId),
+    repo_ids_to_remove: (repoIdList) 
+    });
+  
+    if (error){
+      console.error("remove_user_repos RPC failed:", error.message);
+    } else {
+      console.log("remove_user_repos success: ", data)
+    }
+}
+
 /**
  * Registers a new user or updates their installation ID if they already exist.
  */
-export const registerUser = async (userData: UserData) => {
+const registerUser = async (userData: UserData) => {
   const { data, error } = await supabaseInstance
     .from('users')
     .upsert({
       user_id: userData.user_id,
       login: userData.login,
-      instillation_id: userData.instillation_id,
+      installation_id: userData.installation_id,
     }, {
       onConflict: 'user_id'
     })
@@ -47,7 +81,7 @@ export const registerUser = async (userData: UserData) => {
 /**
  * Bulk upserts a list of repositories from a GitHub App installation.
  */
-export const registerRepos = async (
+const registerRepos = async (
   repos: RepoData[]
 ) => {
   // Map GitHub payload to your Supabase schema
@@ -74,7 +108,7 @@ export const registerRepos = async (
 /**
  * Links a user to a list of repositories in the junction table.
  */
-export const linkContributorToRepos = async (
+const linkContributorToRepos = async (
   userId: number, 
   repoIds: number[]
 ) => {
