@@ -1,10 +1,12 @@
 'use client';
 
+import { usePollRepositories } from "@/hooks/usePoll";
 import { useState } from "react";
-
+import { type repo } from "@/lib/github.types"
 
 export default function DashboardPage() {
-  const [data, setData] = useState('');
+  const [data, setData] = useState<repo[]>([]);
+  const { data: pollData, error: pollError, loading: pollLoading } = usePollRepositories(() => {});
   
   const fetchData = async () => {
     try {
@@ -14,7 +16,8 @@ export default function DashboardPage() {
         throw new Error('Network response was not ok');
       }
       const apiData = await response.json();
-      setData(JSON.stringify(apiData, null, 2));
+      setData(apiData);
+      // setData(JSON.stringify(apiData, null, 2));
     } catch (err) {
       // setError(err.message);
     } finally {
@@ -26,10 +29,12 @@ export default function DashboardPage() {
   return (
     <div>
       <div>Protected authenticated page (not actually yet lol)</div>
-      <button onClick={fetchData}>
+      <button onClick={ fetchData }>
         CLICK ME
       </button>
-      <pre>{data}</pre>
+      <pre>{ pollData.map((repo) => 
+        <div key={repo.name}>{repo.name}</div>
+      )}</pre>
     </div>
   );
 }
