@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { type repo } from "@/lib/github.types";
 
 const fetchRepositories = async (ignoreCache: boolean) => {
+  // Ignore the cache (sessionStorage) if the user manually refreshes
   const lastAccessTime = sessionStorage.getItem("api/v1/repos");
   const headers: Record<string, string> = {};
 
-  console.log(ignoreCache, lastAccessTime)
-  if (!ignoreCache && lastAccessTime) {
+  if (!ignoreCache && lastAccessTime) { 
+    // https://github.com/orgs/supabase/discussions/2839 –> ISO timestamp
     headers["If-Modified-Since"] = new Date(lastAccessTime).toISOString();
   }
 
@@ -29,7 +30,7 @@ export function usePollRepositories(callback: () => void) {
 
   useEffect(() => {
     setLoading(true);
-    const runFetch = async (ignoreCache: boolean) => {
+    const runFetch = (ignoreCache: boolean) => {
       try {
         fetchRepositories(ignoreCache)
           .then((fetched) => {
@@ -44,6 +45,7 @@ export function usePollRepositories(callback: () => void) {
       }
     };
 
+    // I set ignoreCache to true for the initial render so the user gets latest data on manual refresh
     runFetch(true);
     const interval = setInterval(() => {runFetch(false)}, 5000);
     return () => clearInterval(interval);
