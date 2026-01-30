@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import {UserData, RepoData, registerData, unregisterUser, unregisterRepos} from "../../../lib/supabaseServer"
+import {UserData, RepoData, registerData, unregisterUser, unregisterRepos, handleRepositoryRenamed} from "../../../lib/supabaseServer"
 
 type WebhookHandlers = {
   [K in string]: (payload: any) => Promise<void>;
@@ -24,6 +24,15 @@ const handlers: WebhookHandlers = {
   "installation.deleted": async (payload) => {
     const userId: number = payload.sender.id
     unregisterUser(userId)
+  },
+
+  "repository.renamed": async (payload) => {
+    handleRepositoryRenamed(
+      payload.repository.name,
+      payload.repository.full_name,
+      Number(payload.repository.id),
+      (new Date()).toISOString() // time webhook was received
+    )
   }
 };
 

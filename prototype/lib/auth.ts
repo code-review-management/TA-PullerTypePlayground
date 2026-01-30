@@ -10,7 +10,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, account, profile }) {
       if (account && profile) {
         token.accessToken = account.access_token;
-        token.login = profile.login
+        token.login = profile.login;
+        token.githubId = Number(profile.id); // Numeric GitHub ID unique per user
       }
       return token;
     },
