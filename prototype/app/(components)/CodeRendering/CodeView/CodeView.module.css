@@ -1,25 +1,28 @@
 .codeView {
-    /* border: 1px solid red; */
     height: 100%;
     padding: 8px;
     flex: 1;
     background-color: #0a0a0a;
     color: #ededed;
+    display: flex;
 }
 
-.codeViewLine {
+.codeBlock {
+    flex: 1;
+}
+
+.line {
     padding: 4px;
+    height: 21px;
     line-height: 1;
-    /* overflow-wrap: break-word; */
     white-space: pre-wrap;
     font-family: monospace;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
 }
 
-.codeViewLine:hover {
+.line:hover {
     background-color: #1b1b1b;
 }
 
@@ -27,9 +30,14 @@
     flex: 1;
 }
 
+.commentColumn {
+    display: flex;
+    flex-direction: column;
+}
+
 .commentButtonWrapper {
-    height: 20px;
-    width: 20px;
+    height: 21px;
+    width: 21px;
 }
 
 .commentButton {

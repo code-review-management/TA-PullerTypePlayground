@@ -1,12 +1,12 @@
-import LineSeparatedCodeView from "../LineSeparatedCodeView/LineSeparatedCodeView";
+import CodeView from "../CodeView/CodeView";
 import styles from "./DiffView.module.css"
 import { diffLines } from 'diff';
 
-type codeLine = {
-    value: string,
-    isRemoved: boolean,
-    isAdded: boolean,
-}
+export type CodeLine = {
+    value: string;
+    isRemoved: boolean;
+    isAdded: boolean;
+};
 
 export default function DiffView({ message1, message2 } : {
     message1: string,
@@ -14,8 +14,8 @@ export default function DiffView({ message1, message2 } : {
 }) {
     const diff = diffLines(message1, message2);
 
-    const leftLines: codeLine[] = [];
-    const rightLines: codeLine[] = [];
+    const leftLines: CodeLine[] = [];
+    const rightLines: CodeLine[] = [];
 
     console.log(diff);
 
@@ -108,8 +108,8 @@ export default function DiffView({ message1, message2 } : {
 
     return (
         <div className={styles.diffView}>
-            <LineSeparatedCodeView message={leftLines} commentable={false} />
-            <LineSeparatedCodeView message={rightLines} commentable={true} />
+            <CodeView lines={leftLines} commentable={false} />
+            <CodeView lines={rightLines} commentable={true} />
         </div>
     );
 }
