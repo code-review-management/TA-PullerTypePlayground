@@ -36,6 +36,14 @@ function RenderFile({
     enhancers: [markEdits(hunks, { type: "line" })],
   });
 
+  const handleCopy = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) return;
+
+    e.preventDefault();
+    e.clipboardData.setData("text/plain", selection.toString());
+  };
+
   return (
     <Box
       sx={{
@@ -45,14 +53,19 @@ function RenderFile({
         border: "0.5px solid rgb(209, 217, 224)",
         overflow: "hidden",
       }}
+      onCopy={handleCopy}
     >
       <FileHeader newPath={newPath} />
       <Diff
+        optimizeSelection
         key={oldRevision + "-" + newRevision}
         viewType="split"
         diffType={type}
         hunks={hunks}
         tokens={tokens}
+        // renderGutter={Gutter}
+        // gutterType="anchor"
+        // generateAnchorID={}
       >
         {(hunks) =>
           hunks.map((hunk) => {
