@@ -11,6 +11,8 @@ import {
   DiffType,
   HunkData,
   FileData,
+  markEdits,
+  tokenize,
 } from "react-diff-view";
 import { readFile } from "./utilities/read-file";
 import FileHeader from "./components/FileHeader";
@@ -30,6 +32,10 @@ function RenderFile({
   oldPath: string;
   newPath: string;
 }) {
+  const tokens = tokenize(hunks, {
+    enhancers: [markEdits(hunks, { type: "line" })],
+  });
+
   return (
     <Box
       sx={{
@@ -45,6 +51,7 @@ function RenderFile({
         viewType="split"
         diffType={type}
         hunks={hunks}
+        tokens={tokens}
       >
         {(hunks) =>
           hunks.map((hunk) => {
