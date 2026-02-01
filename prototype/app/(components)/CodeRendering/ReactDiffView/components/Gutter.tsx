@@ -2,7 +2,9 @@
 
 import { Box } from "@mui/material";
 import { ReactNode, useState } from "react";
+import { ChangeData } from "react-diff-view";
 import { BsChatFill } from "react-icons/bs";
+import { getLineKey } from "../utilities/get-line-key";
 
 /**
  * Documentation:
@@ -13,13 +15,21 @@ import { BsChatFill } from "react-icons/bs";
  */
 
 export default function Gutter({
+  change,
+  side,
   renderDefault,
   wrapInAnchor,
+  selectedLines,
 }: {
+  change: ChangeData;
+  side: "new" | "old";
   renderDefault: () => ReactNode;
   wrapInAnchor: (element: ReactNode) => ReactNode;
+  selectedLines: Set<string>;
 }) {
   const [isGutterHovered, setIsGutterHovered] = useState(false);
+  const lineKey = getLineKey(change, side);
+  const isSelected = selectedLines.has(lineKey);
 
   return (
     <Box
@@ -29,6 +39,7 @@ export default function Gutter({
         display: "flex",
         alignItems: "center",
       }}
+      className={isSelected ? "gutter-selected" : ""}
     >
       <BsChatFill
         size={10}

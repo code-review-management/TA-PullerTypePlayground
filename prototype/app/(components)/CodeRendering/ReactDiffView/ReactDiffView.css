@@ -24,7 +24,7 @@
     background-color: rgb(172, 238, 187);
 }
 
-/* Delete Styling */
+/* Delete styling */
 
 .diff-gutter-delete {
     background-color: rgb(255, 206, 203);
@@ -38,7 +38,7 @@
     background-color: rgb(255, 206, 203);
 }
 
-/* Omit Styling */
+/* Omit styling */
 
 .diff-gutter-omit {
     background-color: rgb(246, 248, 250);
@@ -46,4 +46,19 @@
 
 .diff-code:empty {
     background-color: rgb(246, 248, 250);
+}
+
+/* Highlight styling */
+
+.diff-gutter:has(.gutter-selected) {
+  background-color: #fff5b1;
+}
+
+td:has(.gutter-selected) + .diff-code {
+  background-color: #fffbdd;
+}
+
+td:has(.gutter-selected) + .diff-code-delete .diff-code-edit,
+td:has(.gutter-selected) + .diff-code-insert .diff-code-edit {
+  background-color: #ffeeb1;
 }

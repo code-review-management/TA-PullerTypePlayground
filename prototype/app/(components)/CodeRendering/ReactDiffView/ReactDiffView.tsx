@@ -3,7 +3,7 @@
 import "./ReactDiffView.css";
 
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import {
   parseDiff,
   Diff,
@@ -13,8 +13,12 @@ import {
   FileData,
   markEdits,
   tokenize,
+  ChangeData,
 } from "react-diff-view";
+
+import { getLineKey } from "./utilities/get-line-key";
 import { readFile } from "./utilities/read-file";
+
 import FileHeader from "./components/FileHeader";
 import Gutter from "./components/Gutter";
 
@@ -33,6 +37,8 @@ function RenderFile({
   oldPath: string;
   newPath: string;
 }) {
+  const [selectedLines, setSelectedLines] = useState<Set<string>>(new Set());
+
   const tokens = tokenize(hunks, {
     enhancers: [markEdits(hunks, { type: "line" })],
   });
@@ -43,6 +49,45 @@ function RenderFile({
 
     e.preventDefault();
     e.clipboardData.setData("text/plain", selection.toString());
+  };
+
+  const handleGutterClick = (change: ChangeData, side: "new" | "old") => {
+    const lineKey = getLineKey(change, side);
+    console.log("Selected: " + lineKey);
+
+    setSelectedLines((prev) => {
+      const newSelection = new Set(prev);
+
+      if (newSelection.has(lineKey)) {
+        newSelection.delete(lineKey);
+      } else {
+        newSelection.add(lineKey);
+      }
+
+      return newSelection;
+    });
+  };
+
+  const renderGutter = ({
+    change,
+    side,
+    renderDefault,
+    wrapInAnchor,
+  }: {
+    change: ChangeData;
+    side: "new" | "old";
+    renderDefault: () => ReactNode;
+    wrapInAnchor: (element: ReactNode) => ReactNode;
+  }) => {
+    return (
+      <Gutter
+        change={change}
+        side={side}
+        renderDefault={renderDefault}
+        wrapInAnchor={wrapInAnchor}
+        selectedLines={selectedLines}
+      />
+    );
   };
 
   return (
@@ -59,12 +104,16 @@ function RenderFile({
       <FileHeader newPath={newPath} />
       <Diff
         optimizeSelection
-        key={oldRevision + "-" + newRevision}
+        key={oldPath + "-" + newPath}
         viewType="split"
         diffType={type}
         hunks={hunks}
         tokens={tokens}
-        renderGutter={Gutter}
+        renderGutter={renderGutter}
+        gutterEvents={{
+          onClick: ({ change, side }) => handleGutterClick(change, side),
+        }}
+
         // gutterType="anchor"
         // generateAnchorID={}
       >
