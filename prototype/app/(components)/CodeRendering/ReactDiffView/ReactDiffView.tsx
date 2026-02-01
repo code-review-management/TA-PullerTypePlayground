@@ -16,6 +16,7 @@ import {
 } from "react-diff-view";
 import { readFile } from "./utilities/read-file";
 import FileHeader from "./components/FileHeader";
+import Gutter from "./components/Gutter";
 
 function RenderFile({
   oldRevision,
@@ -63,7 +64,7 @@ function RenderFile({
         diffType={type}
         hunks={hunks}
         tokens={tokens}
-        // renderGutter={Gutter}
+        renderGutter={Gutter}
         // gutterType="anchor"
         // generateAnchorID={}
       >
