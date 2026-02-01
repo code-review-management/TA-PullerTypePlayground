@@ -51,7 +51,12 @@ function RenderFile({
     e.clipboardData.setData("text/plain", selection.toString());
   };
 
-  const handleGutterClick = (change: ChangeData, side: "new" | "old") => {
+  const handleGutterClick = (
+    change: ChangeData | null,
+    side: "new" | "old" | undefined,
+  ) => {
+    if (!change || !side) return;
+
     const lineKey = getLineKey(change, side);
     console.log("Selected: " + lineKey);
 
