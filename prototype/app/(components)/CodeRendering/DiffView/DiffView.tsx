@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import CodeView from "../CodeView/CodeView";
 import styles from "./DiffView.module.css"
 import { diffLines } from 'diff';
@@ -8,10 +11,59 @@ export type CodeLine = {
     isAdded: boolean;
 };
 
+type Comment = {
+    value: string;
+    lineNum: number;
+    inProgress: boolean;
+}
+
+function LineComment({ comment, setComments, comments } : {
+    comment: Comment,
+    setComments: (comments: Comment[]) => void,
+    comments: Comment[],
+}) {
+    const [commentText, setCommentText] = useState("");
+
+    return(
+        <div className={styles.comment}>
+            { !comment.inProgress && <p>Line {comment.lineNum}</p> }
+            { comment.inProgress ? 
+                <textarea
+                    value={commentText}
+                    onChange={(e) => {
+                        setCommentText(e.target.value);
+                    }}
+                />
+                : 
+                <p>{comment.value}</p>
+            }
+            { comment.inProgress &&
+                <button 
+                    className={styles.commentButton}
+                    onClick={() => {
+                        const newComments = [...comments];
+                        newComments[newComments.length - 1].inProgress = false;
+                        newComments[newComments.length - 1].value = commentText;
+                        setComments(newComments);
+                    }}
+                >Finish</button>
+            }
+        </div>
+    );
+}
+
 export default function DiffView({ message1, message2 } : {
     message1: string,
     message2: string,
 }) {
+    const [comments, setComments] = useState<Comment[]>([]);
+
+    function makeNewComment(lineNum: number) {
+        const newComments: Comment[] = [...comments, {value: "", lineNum, inProgress: true}];
+        console.log(newComments);
+        setComments(newComments);
+    }
+
     const diff = diffLines(message1, message2);
 
     const leftLines: CodeLine[] = [];
@@ -107,9 +159,27 @@ export default function DiffView({ message1, message2 } : {
     }
 
     return (
-        <div className={styles.diffView}>
-            <CodeView lines={leftLines} commentable={false} />
-            <CodeView lines={rightLines} commentable={true} />
+        <div className={styles.wrapper}>
+            <div className={styles.diffView}>
+                <div className={styles.codeViewWrapper}>
+                    <CodeView lines={leftLines} />
+                </div>
+                <div className={styles.codeViewWrapper}>
+                    <CodeView lines={rightLines} commentCallback={makeNewComment} />
+                </div>
+            </div>
+            <div className={styles.commentColumn}>
+                <div className={styles.commentView}>
+                    { comments.map((comment: Comment, idx: number) => 
+                        <LineComment 
+                            comment={comment} 
+                            comments={comments}
+                            setComments={setComments}
+                            key={idx}
+                        />
+                    ) }
+                </div>
+            </div>
         </div>
     );
 }

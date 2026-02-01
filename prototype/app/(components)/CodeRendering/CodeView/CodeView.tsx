@@ -4,10 +4,10 @@ import { CodeLine } from "../DiffView/DiffView";
 
 export default function CodeView({
     lines,
-    commentable,
+    commentCallback,
 }: {
     lines: CodeLine[];
-    commentable: boolean;
+    commentCallback?: (lineNum: number) => void;
 }) {
     return (
         <div className={styles.codeView}>
@@ -29,7 +29,7 @@ export default function CodeView({
                 </code>
             </pre>
 
-            {commentable && (
+            {commentCallback && (
                 <div className={styles.commentColumn}>
                     {lines.map((_, idx) => (
                         <div
@@ -38,7 +38,7 @@ export default function CodeView({
                         >
                             <button
                                 className={styles.commentButton}
-                                onClick={() => console.log("clicked", idx + 1)}
+                                onClick={() => {commentCallback(idx + 1)}}
                             >
                                 <HiOutlinePlusSmall />
                             </button>
