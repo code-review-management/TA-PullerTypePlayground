@@ -1,0 +1,67 @@
+.codeView {
+    /* border: 1px solid red; */
+    height: 100%;
+    padding: 8px;
+    flex: 1;
+    background-color: #0a0a0a;
+    color: #ededed;
+}
+
+.codeViewLine {
+    padding: 4px;
+    line-height: 1;
+    /* overflow-wrap: break-word; */
+    white-space: pre-wrap;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.codeViewLine:hover {
+    background-color: #1b1b1b;
+}
+
+.lineText {
+    flex: 1;
+}
+
+.commentButtonWrapper {
+    height: 20px;
+    width: 20px;
+}
+
+.commentButton {
+    border: 1px solid #0e522c;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.commentButton:hover {
+    background-color: #0e522c;
+    border: 1px solid #0e9a4b;
+}
+
+.lineAdded {
+    background-color: #1e3026;
+}
+
+.lineAdded:hover {
+    background-color: #263d31;
+}
+
+.lineRemoved {
+    background-color: #301e1e;
+}
+
+.lineRemoved:hover {
+    background-color: #422727;
+}
