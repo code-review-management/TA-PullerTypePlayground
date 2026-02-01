@@ -1,0 +1,95 @@
+"use client";
+
+import "./ReactDiffView.css";
+
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import {
+  parseDiff,
+  Diff,
+  Hunk,
+  DiffType,
+  HunkData,
+  FileData,
+} from "react-diff-view";
+import { readFile } from "./utilities/read-file";
+import FileHeader from "./components/FileHeader";
+
+function RenderFile({
+  oldRevision,
+  newRevision,
+  type,
+  hunks,
+  oldPath,
+  newPath,
+}: {
+  oldRevision: string;
+  newRevision: string;
+  type: DiffType;
+  hunks: HunkData[];
+  oldPath: string;
+  newPath: string;
+}) {
+  return (
+    <Box
+      sx={{
+        borderRadius: 1,
+        marginBottom: "16px",
+        boxShadow: "0 0 4px #46464626",
+        borderColor: "grey.50",
+      }}
+    >
+      <FileHeader newPath={newPath} />
+      <Diff
+        key={oldRevision + "-" + newRevision}
+        viewType="split"
+        diffType={type}
+        hunks={hunks}
+      >
+        {(hunks) =>
+          hunks.map((hunk) => {
+            return (
+              // <>
+              // {/* <Decoration>{hunk.content}</Decoration> */}
+              <Hunk key={"hunk-" + hunk.content} hunk={hunk} />
+              // </>
+            );
+          })
+        }
+      </Diff>
+    </Box>
+  );
+}
+
+export default function ReactDiffView() {
+  const [files, setFiles] = useState<FileData[]>();
+
+  useEffect(() => {
+    const readDiff = async () => {
+      const data = await readFile();
+      setFiles(parseDiff(data));
+    };
+
+    readDiff();
+  }, []);
+
+  return (
+    <div>
+      {files &&
+        files.map((file) => {
+          return (
+            <div key={`${file.oldPath}-${file.newPath}`}>
+              <RenderFile
+                oldRevision={file.oldRevision}
+                newRevision={file.newRevision}
+                type={file.type}
+                hunks={file.hunks}
+                oldPath={file.oldPath}
+                newPath={file.newPath}
+              />
+            </div>
+          );
+        })}
+    </div>
+  );
+}

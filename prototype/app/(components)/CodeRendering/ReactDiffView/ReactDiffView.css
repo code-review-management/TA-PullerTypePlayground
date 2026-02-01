@@ -1,0 +1,31 @@
+@import 'react-diff-view/style/index.css';
+
+.diff {
+    --diff-omit-gutter-line-color: none;
+    font-size: 12px;
+}
+
+.diff-gutter {
+    background-color: #f6f8fa;
+    color: #57606a;
+    border-right: 1px solid #d0d7de;
+}
+
+.diff-code:empty {
+    background-color: rgb(255, 255, 255);
+    /* modify to make clearer */
+}
+
+/* .diff-line:hover {
+    background-color: #eaeef2;
+} */
+
+.diff-gutter-insert {
+    background-color: #ccffd8;
+    border-right-color: #82e5a1;
+}
+
+.diff-gutter-delete {
+    background-color: #ffd7d5;
+    border-right-color: #ffb8b5;
+}
