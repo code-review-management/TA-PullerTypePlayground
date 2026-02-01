@@ -4,12 +4,12 @@ import { Box } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { ChangeData } from "react-diff-view";
 import { BsChatFill } from "react-icons/bs";
-import { getLineKey } from "../utilities/get-line-key";
+import { getLineKey } from "../../_utilities/get-line-key";
 
 /**
  * Documentation:
  * 1. https://github.com/otakustay/react-diff-view/blob/df623b0028afc460e45f5a9b7294ac1d9e20833c/src/context/index.ts#L8
- *    Referenced for `renderGutter` types.
+ * - Referenced for `renderGutter` types.
  *
  * 2. https://github.com/otakustay/react-diff-view/issues/59
  */
