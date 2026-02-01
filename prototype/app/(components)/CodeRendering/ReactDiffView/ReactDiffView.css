@@ -6,26 +6,44 @@
 }
 
 .diff-gutter {
-    background-color: #f6f8fa;
-    color: #57606a;
-    border-right: 1px solid #d0d7de;
+    color: rgb(31, 35, 40);
 }
 
-.diff-code:empty {
-    background-color: rgb(255, 255, 255);
-    /* modify to make clearer */
-}
-
-/* .diff-line:hover {
-    background-color: #eaeef2;
-} */
+/* Insert styling */
 
 .diff-gutter-insert {
-    background-color: #ccffd8;
+    background-color: rgb(172, 238, 187);
     border-right-color: #82e5a1;
 }
 
+.diff-code-insert {
+    background-color: rgb(218, 251, 225);
+}
+
+.diff-code-insert .diff-code-edit {
+    background-color: rgb(172, 238, 187);
+}
+
+/* Delete Styling */
+
 .diff-gutter-delete {
-    background-color: #ffd7d5;
-    border-right-color: #ffb8b5;
+    background-color: rgb(255, 206, 203);
+}
+
+.diff-code-delete {
+    background-color: rgb(255, 235, 233);
+}
+
+.diff-code-delete .diff-code-edit {
+    background-color: rgb(255, 206, 203);
+}
+
+/* Omit Styling */
+
+.diff-gutter-omit {
+    background-color: rgb(246, 248, 250);
+}
+
+.diff-code:empty {
+    background-color: rgb(246, 248, 250);
 }

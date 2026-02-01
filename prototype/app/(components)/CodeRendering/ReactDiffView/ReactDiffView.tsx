@@ -39,10 +39,11 @@ function RenderFile({
   return (
     <Box
       sx={{
-        borderRadius: 1,
         marginBottom: "16px",
         boxShadow: "0 0 4px #46464626",
-        borderColor: "grey.50",
+        borderRadius: 1,
+        border: "0.5px solid rgb(209, 217, 224)",
+        overflow: "hidden",
       }}
     >
       <FileHeader newPath={newPath} />
