@@ -7,17 +7,18 @@ import {
   Hunk,
   DiffType,
   HunkData,
-  markEdits,
-  tokenize,
   ChangeData,
   getChangeKey,
 } from "react-diff-view";
 
-import { getLineKey } from "../../_utilities/get-line-key";
+import { getLineKey, getTokens } from "../../_utilities/component-helpers";
+import { handleCopy, handleGutterClick } from "../../_utilities/event-handlers";
 
 import CommentWidget from "../CommentEditorWidget/CommentWidget";
 import FileHeader from "../FileHeader/FileHeader";
 import Gutter from "../Gutter/Gutter";
+
+import "prismjs/themes/prism.css";
 
 export default function FileDiff({
   type,
@@ -25,20 +26,20 @@ export default function FileDiff({
   oldPath,
   newPath,
 }: {
-  oldRevision: string;
-  newRevision: string;
   type: DiffType;
   hunks: HunkData[];
   oldPath: string;
   newPath: string;
 }) {
   const [selectedLines, setSelectedLines] = useState<Set<string>>(new Set());
-  const [activeCommentLine, setActiveCommentLine] = useState<string | null>();
+  const [activeCommentLine, setActiveCommentLine] = useState<string>("");
 
   const widgets = hunks.reduce((acc: Record<string, ReactNode>, hunk) => {
     hunk.changes.forEach((change) => {
-      // fix to account for normal lines
-      const lineKey = getLineKey(change, change.type === "delete" ? "old" : "new");
+      const lineKey = getLineKey(
+        change,
+        change.type === "delete" ? "old" : "new", // fix to account for normal lines
+      );
       const changeKey = getChangeKey(change);
 
       if (activeCommentLine === lineKey) {
@@ -47,41 +48,6 @@ export default function FileDiff({
     });
     return acc;
   }, {});
-
-  const tokens = tokenize(hunks, {
-    enhancers: [markEdits(hunks, { type: "line" })],
-  });
-
-  const handleCopy = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const selection = window.getSelection();
-    if (!selection || selection.isCollapsed) return;
-
-    e.preventDefault();
-    e.clipboardData.setData("text/plain", selection.toString());
-  };
-
-  const handleGutterClick = (
-    change: ChangeData | null,
-    side: "new" | "old" | undefined,
-  ) => {
-    if (!change || !side) return;
-
-    const lineKey = getLineKey(change, side);
-    console.log("Selected: " + lineKey);
-
-    // setSelectedLines((prev) => {
-    //   const newSelection = new Set(prev);
-
-    //   if (newSelection.has(lineKey)) {
-    //     newSelection.delete(lineKey);
-    //   } else {
-    //     newSelection.add(lineKey);
-    //   }
-
-    //   return newSelection;
-    // });
-    setActiveCommentLine(activeCommentLine === lineKey ? null : lineKey);
-  };
 
   const renderGutter = ({
     change,
@@ -113,26 +79,28 @@ export default function FileDiff({
         borderRadius: 1,
         border: "0.5px solid rgb(209, 217, 224)",
         overflow: "hidden",
-        // "& .diff-code": {
-        //   fontFamily: robotoMono.style.fontFamily,
-        // }
       }}
       onCopy={handleCopy}
     >
       <FileHeader newPath={newPath} />
       <Diff
-        optimizeSelection
-        key={oldPath + "-" + newPath}
-        viewType="split"
         diffType={type}
-        hunks={hunks}
-        tokens={tokens}
-        renderGutter={renderGutter}
         gutterEvents={{
-          onClick: ({ change, side }) => handleGutterClick(change, side),
+          onClick: ({ change, side }) =>
+            handleGutterClick(
+              change,
+              side,
+              activeCommentLine,
+              setActiveCommentLine,
+            ),
         }}
+        hunks={hunks}
+        key={oldPath + "-" + newPath}
+        optimizeSelection
+        renderGutter={renderGutter}
+        tokens={getTokens(hunks, newPath)}
+        viewType="split"
         widgets={widgets}
-
         // gutterType="anchor"
         // generateAnchorID={}
       >

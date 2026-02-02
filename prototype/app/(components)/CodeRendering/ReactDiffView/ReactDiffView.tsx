@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { parseDiff, FileData } from "react-diff-view";
-import { readFile } from "./_utilities/read-file";
+import { readFile } from "./_utilities/file-utilities";
 import FileDiff from "./_components/FileDiff/FileDiff";
 
 export default function ReactDiffView() {
@@ -23,8 +23,6 @@ export default function ReactDiffView() {
           return (
             <div key={`${file.oldPath}-${file.newPath}`}>
               <FileDiff
-                oldRevision={file.oldRevision}
-                newRevision={file.newRevision}
                 type={file.type}
                 hunks={file.hunks}
                 oldPath={file.oldPath}
