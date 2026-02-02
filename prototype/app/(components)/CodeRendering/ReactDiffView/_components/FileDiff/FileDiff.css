@@ -10,6 +10,14 @@
     color: rgb(31, 35, 40);
 }
 
+.diff-decoration {
+    background-color: rgb(222, 242, 253);
+}
+
+.diff-decoration-content {
+    padding-left: 16px;
+}
+
 /* Insert styling */
 
 .diff-gutter-insert {

@@ -1,7 +1,7 @@
 import "./FileDiff.css";
 
 import { Box } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import {
   Diff,
   Hunk,
@@ -9,6 +9,7 @@ import {
   HunkData,
   ChangeData,
   getChangeKey,
+  Decoration,
 } from "react-diff-view";
 
 import { getLineKey, getTokens } from "../../_utilities/component-helpers";
@@ -107,10 +108,10 @@ export default function FileDiff({
         {(hunks) =>
           hunks.map((hunk) => {
             return (
-              // <>
-              // {/* <Decoration>{hunk.content}</Decoration> */}
-              <Hunk key={"hunk-" + hunk.content} hunk={hunk} />
-              // </>
+              <Fragment key={"hunk-" + hunk.content}>
+                <Decoration>{hunk.content}</Decoration>
+                <Hunk hunk={hunk} />
+              </Fragment>
             );
           })
         }
