@@ -1,5 +1,3 @@
-import "./FileDiff.css";
-
 import { Box } from "@mui/material";
 import { Fragment, ReactNode, useState } from "react";
 import {
@@ -19,6 +17,7 @@ import CommentWidget from "../CommentEditorWidget/CommentWidget";
 import FileHeader from "../FileHeader/FileHeader";
 import Gutter from "../Gutter/Gutter";
 
+import "./FileDiff.css";
 import "prismjs/themes/prism.css";
 
 export default function FileDiff({

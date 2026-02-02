@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { parseDiff, FileData } from "react-diff-view";
 import { readFile } from "./_utilities/file-utilities";
 import FileDiff from "./_components/FileDiff/FileDiff";
+import { Box } from "@mui/material";
 
-export default function ReactDiffView() {
+export default function CustomReactDiffView() {
   const [files, setFiles] = useState<FileData[]>();
 
   useEffect(() => {
@@ -17,20 +18,20 @@ export default function ReactDiffView() {
   }, []);
 
   return (
-    <div>
+    <Box>
       {files &&
         files.map((file) => {
           return (
-            <div key={`${file.oldPath}-${file.newPath}`}>
+            <Box key={`${file.oldPath}-${file.newPath}`}>
               <FileDiff
                 type={file.type}
                 hunks={file.hunks}
                 oldPath={file.oldPath}
                 newPath={file.newPath}
               />
-            </div>
+            </Box>
           );
         })}
-    </div>
+    </Box>
   );
 }
