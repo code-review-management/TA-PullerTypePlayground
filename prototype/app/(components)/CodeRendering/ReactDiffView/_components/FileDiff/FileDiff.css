@@ -4,6 +4,7 @@
     --diff-omit-gutter-line-color: none;
     --diff-font-family: var(--font-roboto-mono);
     font-size: 12px;
+    overflow: hidden
 }
 
 .diff-gutter {
@@ -71,3 +72,13 @@ td:has(.gutter-selected)+.diff-code-delete .diff-code-edit,
 td:has(.gutter-selected)+.diff-code-insert .diff-code-edit {
     background-color: #ffeeb1;
 }
+
+/* Reference in the future for Safari: https://stackoverflow.com/questions/28173410/selecting-highlighting-a-column-only-from-a-table-like-github-does-it */
+/* .unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+} */
