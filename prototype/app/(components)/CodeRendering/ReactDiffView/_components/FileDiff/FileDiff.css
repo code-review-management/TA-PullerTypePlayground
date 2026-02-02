@@ -2,6 +2,7 @@
 
 .diff {
     --diff-omit-gutter-line-color: none;
+    --diff-font-family: var(--font-roboto-mono);
     font-size: 12px;
 }
 
@@ -51,14 +52,14 @@
 /* Highlight styling */
 
 .diff-gutter:has(.gutter-selected) {
-  background-color: #fff5b1;
+    background-color: #fff5b1;
 }
 
-td:has(.gutter-selected) + .diff-code {
-  background-color: #fffbdd;
+td:has(.gutter-selected)+.diff-code {
+    background-color: #fffbdd;
 }
 
-td:has(.gutter-selected) + .diff-code-delete .diff-code-edit,
-td:has(.gutter-selected) + .diff-code-insert .diff-code-edit {
-  background-color: #ffeeb1;
+td:has(.gutter-selected)+.diff-code-delete .diff-code-edit,
+td:has(.gutter-selected)+.diff-code-insert .diff-code-edit {
+    background-color: #ffeeb1;
 }

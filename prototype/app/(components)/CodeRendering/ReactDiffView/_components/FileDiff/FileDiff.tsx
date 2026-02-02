@@ -19,7 +19,7 @@ import CommentWidget from "../CommentEditorWidget/CommentWidget";
 import FileHeader from "../FileHeader/FileHeader";
 import Gutter from "../Gutter/Gutter";
 
-export default function DiffFile({
+export default function FileDiff({
   type,
   hunks,
   oldPath,
@@ -113,6 +113,9 @@ export default function DiffFile({
         borderRadius: 1,
         border: "0.5px solid rgb(209, 217, 224)",
         overflow: "hidden",
+        // "& .diff-code": {
+        //   fontFamily: robotoMono.style.fontFamily,
+        // }
       }}
       onCopy={handleCopy}
     >
