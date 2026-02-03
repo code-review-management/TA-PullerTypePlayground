@@ -31,22 +31,22 @@ export type Database = {
       }
       pull_requests: {
         Row: {
+          id: number
           last_synced_at: string
           number: number | null
-          owner_id: number | null
-          pr_id: number
+          owner: number | null
         }
         Insert: {
+          id?: number
           last_synced_at?: string
           number?: number | null
-          owner_id?: number | null
-          pr_id?: number
+          owner?: number | null
         }
         Update: {
+          id?: number
           last_synced_at?: string
           number?: number | null
-          owner_id?: number | null
-          pr_id?: number
+          owner?: number | null
         }
         Relationships: []
       }

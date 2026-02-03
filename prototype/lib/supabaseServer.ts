@@ -7,16 +7,23 @@ const supabaseInstance = createClient<Database>(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-export interface UserData{
+export interface UserData {
   user_id: number;
   login: string;
   installation_id: number;
 }
 
-export interface RepoData{
+export interface RepoData {
     repo_id: number;
     name: string;
     full_name: string;
+    last_synced_at?: string;
+}
+
+export interface PullRequestData {
+    pr_id: number;
+    number: number;
+    owner_id: number;
     last_synced_at?: string;
 }
 
@@ -41,7 +48,7 @@ export const unregisterUser = async (userId: number) => {
 }
 
 export const unregisterRepos = async (userId: Number, reposToDelete: RepoData[]) => {
-  const repoIdList: Number[] = reposToDelete.map(repo => repo.repo_id)
+  const repoIdList: number[] = reposToDelete.map(repo => repo.repo_id)
   const { data, error } = await supabaseInstance.rpc('remove_user_repos', { 
     target_user_id: Number(userId),
     repo_ids_to_remove: (repoIdList) 
@@ -172,3 +179,33 @@ export const getUserRepositoriesLastSyncTime = async (userId: number) => {
 
   return null;
 };
+
+export const setPullRequest = async (prData: PullRequestData) => {
+    const { data, error } = await supabaseInstance
+      .from('pull_requests')
+      .upsert(prData, { onConflict: 'pr_id' })
+      .select();
+
+    if (error) {
+      console.error("Repo Sync Error:", error.message);
+      throw error;
+    }
+
+    return data;
+}
+
+export const getPRLastSyncTime = async (pr_id: number) => {
+  const { data, error } = await supabaseInstance
+    .from("pull_requests")
+    .select("last_synced_at")
+    .eq("pr_id", pr_id)
+    .single();
+
+  if (error) {
+    console.error("Fetch PR Modify Time Error:", error.message);
+    throw error;
+  }
+
+  // Returns the timestamp string (or null if not set)
+  return data?.last_synced_at;
+}

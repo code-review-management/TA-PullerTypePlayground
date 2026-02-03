@@ -1,5 +1,6 @@
 import crypto from "crypto";
-import {UserData, RepoData, registerData, unregisterUser, unregisterRepos, handleRepositoryRenamed} from "../../../lib/supabaseServer"
+import {UserData, RepoData, registerData, unregisterUser, 
+  unregisterRepos, handleRepositoryRenamed, PullRequestData, setPullRequest} from "../../../lib/supabaseServer"
 
 type WebhookHandlers = {
   [K in string]: (payload: any) => Promise<void>;
@@ -33,7 +34,47 @@ const handlers: WebhookHandlers = {
       Number(payload.repository.id),
       (new Date()).toISOString() // time webhook was received
     )
-  }
+  },
+
+  "pull_request": async (payload) => {
+    setPullRequest({
+      pr_id: payload.pull_request.id,
+      number: payload.pull_request.number,
+      owner_id: payload.sender.id,
+      last_synced_at: (new Date()).toISOString()
+    }
+    )
+  },
+
+  "pull_request_review_comment": async (payload) => {
+    setPullRequest({
+      pr_id: payload.pull_request.id,
+      number: payload.pull_request.number,
+      owner_id: payload.sender.id,
+      last_synced_at: (new Date()).toISOString()
+    }
+    )
+  },
+
+  "pull_request_review": async (payload) => {
+    setPullRequest({
+      pr_id: payload.pull_request.id,
+      number: payload.pull_request.number,
+      owner_id: payload.sender.id,
+      last_synced_at: (new Date()).toISOString()
+    }
+    )
+  },
+
+  "pull_request_review_thread": async (payload) => {
+    setPullRequest({
+      pr_id: payload.pull_request.id,
+      number: payload.pull_request.number,
+      owner_id: payload.sender.id,
+      last_synced_at: (new Date()).toISOString()
+    }
+    )
+  },
 };
 
 export async function POST(req: Request) {
@@ -54,12 +95,16 @@ export async function POST(req: Request) {
 
   const payload = JSON.parse(body);
   console.log(req)
-  const action = payload.action ? `.${payload.action}` : "";
-  const eventKey = `${event}${action}`; // e.g., "installation.created"
+  const action: string = payload.action ? `.${payload.action}` : "";
+  const eventKey: string = `${event}${action}`; // e.g., "installation.created"
+  const genericEventKey: string = `${event}`
 
   if (handlers[eventKey]) {
     console.log("Invoking: " + eventKey)
     await handlers[eventKey](payload);
+  } else if (handlers[genericEventKey]) {
+    console.log("Invoking: " + genericEventKey)
+    await handlers[genericEventKey](payload);
   } else {
     console.log(`No handler registered for: ${eventKey}`);
   }
@@ -106,7 +151,6 @@ async function registerUserRepoChange(payload: any): Promise<void>{
     console.log("No repos to remove!")
   }
 }
-
 
 function convertToUserData(payload: any): UserData{
     return {
