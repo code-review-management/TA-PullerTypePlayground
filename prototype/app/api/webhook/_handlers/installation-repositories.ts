@@ -10,11 +10,11 @@ import { convertToRepoData, convertToUserData } from "../utilities";
  */
 
 octokitApp.webhooks.on("installation_repositories.added", async ({ payload }) => {
-    registerUserRepoChange(payload);
+  registerUserRepoChange(payload);
 });
 
 octokitApp.webhooks.on("installation_repositories.removed", async ({ payload }) => {
-    registerUserRepoChange(payload);
+  registerUserRepoChange(payload);
 });
 
 async function registerUserRepoChange(
