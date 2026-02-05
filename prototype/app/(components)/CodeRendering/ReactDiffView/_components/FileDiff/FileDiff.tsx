@@ -19,6 +19,7 @@ import Gutter from "../Gutter/Gutter";
 
 import "./FileDiff.css";
 import "prismjs/themes/prism.css";
+import 'react-diff-view/style/index.css';
 
 export default function FileDiff({
   type,
