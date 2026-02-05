@@ -1,4 +1,4 @@
-import { getUserRepositoriesLastSyncTime } from "@/lib/supabaseServer";
+import { getUserRepositoriesLastSyncTime } from "@/lib/database/queries/repository";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 

@@ -15,6 +15,7 @@
     "@monaco-editor/react": "^4.7.0",
     "@mui/material": "^7.3.7",
     "@mui/material-nextjs": "^7.3.7",
+    "@octokit/openapi-webhooks-types": "^12.1.0",
     "@octokit/webhooks": "^14.2.0",
     "@octokit/webhooks-types": "^7.6.1",
     "@supabase/supabase-js": "^2.93.2",

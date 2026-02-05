@@ -1,169 +1,23 @@
-import crypto from "crypto";
-import {UserData, RepoData, registerData, unregisterUser, 
-  unregisterRepos, handleRepositoryRenamed, PullRequestData, setPullRequest} from "../../../lib/supabaseServer"
+import "./_handlers/pull-request";
+import "./_handlers/installation";
+import "./_handlers/installation-repositories";
+import "./_handlers/repository";
 
-type WebhookHandlers = {
-  [K in string]: (payload: any) => Promise<void>;
-};
-
-const handlers: WebhookHandlers = {
-  // Handle new installations
-  "installation.created": async (payload) => {
-    registerPayload(payload)
-  },
-
-  // Handle adding/removing repos from an existing installation
-  "installation_repositories.added": async (payload) => {
-    registerUserRepoChange(payload)
-  },
-
-    "installation_repositories.removed": async (payload) => {
-    registerUserRepoChange(payload)
-  },
-
-  // Handle removing installations
-  "installation.deleted": async (payload) => {
-    const userId: number = payload.sender.id
-    unregisterUser(userId)
-  },
-
-  "repository.renamed": async (payload) => {
-    handleRepositoryRenamed(
-      payload.repository.name,
-      payload.repository.full_name,
-      Number(payload.repository.id),
-      (new Date()).toISOString() // time webhook was received
-    )
-  },
-
-  "pull_request": async (payload) => {
-    setPullRequest({
-      pr_id: payload.pull_request.id,
-      number: payload.pull_request.number,
-      owner_id: payload.sender.id,
-      last_synced_at: (new Date()).toISOString()
-    }
-    )
-  },
-
-  "pull_request_review_comment": async (payload) => {
-    setPullRequest({
-      pr_id: payload.pull_request.id,
-      number: payload.pull_request.number,
-      owner_id: payload.sender.id,
-      last_synced_at: (new Date()).toISOString()
-    }
-    )
-  },
-
-  "pull_request_review": async (payload) => {
-    setPullRequest({
-      pr_id: payload.pull_request.id,
-      number: payload.pull_request.number,
-      owner_id: payload.sender.id,
-      last_synced_at: (new Date()).toISOString()
-    }
-    )
-  },
-
-  "pull_request_review_thread": async (payload) => {
-    setPullRequest({
-      pr_id: payload.pull_request.id,
-      number: payload.pull_request.number,
-      owner_id: payload.sender.id,
-      last_synced_at: (new Date()).toISOString()
-    }
-    )
-  },
-};
+import { octokitApp } from "@/lib/github/octokit-app";
 
 export async function POST(req: Request) {
-  const body = await req.text();
+  const payload = await req.text();
 
-  const signature = req.headers.get("x-hub-signature-256");
-  const event = req.headers.get("x-github-event");
+  const id = req.headers.get("x-github-delivery") ?? "";
+  const name = req.headers.get("x-github-event") ?? "";
+  const signature = req.headers.get("x-hub-signature-256") ?? "";
 
-  let stringSig: string;
-  if (signature == null){
-    stringSig = "";
-  } else {
-    stringSig = signature
-  }
+  octokitApp.webhooks.verifyAndReceive({
+    id,
+    name,
+    payload,
+    signature,
+  });
 
-  console.log("Something came in!")
-  verifySignature(body, stringSig);
-
-  const payload = JSON.parse(body);
-  console.log(req)
-  const action: string = payload.action ? `.${payload.action}` : "";
-  const eventKey: string = `${event}${action}`; // e.g., "installation.created"
-  const genericEventKey: string = `${event}`
-
-  if (handlers[eventKey]) {
-    console.log("Invoking: " + eventKey)
-    await handlers[eventKey](payload);
-  } else if (handlers[genericEventKey]) {
-    console.log("Invoking: " + genericEventKey)
-    await handlers[genericEventKey](payload);
-  } else {
-    console.log(`No handler registered for: ${eventKey}`);
-  }
-
-  return new Response("ok");
-}
-
-function verifySignature(payload: string, signature: string) {
-  const secret = process.env.WEBHOOK_SECRET!;
-  const hmac = crypto.createHmac("sha256", secret);
-  const digest = `sha256=${hmac.update(payload).digest("hex")}`;
-
-  if (
-    !crypto.timingSafeEqual(
-      Buffer.from(digest),
-      Buffer.from(signature)
-    )
-  ) {
-    throw new Error("Invalid signature");
-  }
-}
-
-async function registerPayload(payload: any): Promise<void>{
-    const parsedUser: UserData = convertToUserData(payload);
-    const parsedRepos: RepoData[] = (payload.repositories ?? []).map(convertToRepoData);
-
-    registerData(parsedUser, parsedRepos)
-}
-
-async function registerUserRepoChange(payload: any): Promise<void>{
-  const parsedUser: UserData = convertToUserData(payload);
-  const parsedRepos: RepoData[] = (payload.repositories_added ?? []).map(convertToRepoData);
-
-  if (parsedRepos.length > 0){
-    console.log("Registering!");
-    await registerData(parsedUser, parsedRepos)
-  }
-
-  const parsedReposRemoved: RepoData[] = ((payload.repositories_removed ?? []).map(convertToRepoData));
-  if (parsedReposRemoved.length > 0){
-    console.log("unregistering!");
-    unregisterRepos(parsedUser.user_id, parsedReposRemoved)
-  } else {
-    console.log("No repos to remove!")
-  }
-}
-
-function convertToUserData(payload: any): UserData{
-    return {
-        user_id: payload.sender.id,
-        login: payload.sender.login,
-        installation_id: payload.installation.id
-    }
-}
-
-function convertToRepoData(repoPayload: any): RepoData {
-    return { 
-        repo_id: repoPayload.id,
-        name: repoPayload.name,
-        full_name: repoPayload.full_name,
-    }
+  return new Response("Ok");
 }
