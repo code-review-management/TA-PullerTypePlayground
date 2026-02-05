@@ -11,6 +11,21 @@ import { convertToRepoData, convertToUserData } from "../utilities";
 
 // TODO: same handler for installation_repositories.added and installation_repositories.removed
 octokitApp.webhooks.on("installation_repositories.added", async ({ payload }) => {
+    registerUserRepoChange(payload);
+  },
+);
+
+octokitApp.webhooks.on("installation_repositories.removed", async ({ payload }) => {
+    registerUserRepoChange(payload);
+  },
+);
+
+async function registerUserRepoChange(
+  // payload:
+  //   | EmitterWebhookEvent<"installation_repositories.added">["payload"]
+  //   | EmitterWebhookEvent<"installation_repositories.removed">["payload"],
+  payload, // fix type
+) {
   const parsedUser = convertToUserData(payload);
   const parsedRepos = convertToRepoData(payload.repositories_added);
 
@@ -18,16 +33,12 @@ octokitApp.webhooks.on("installation_repositories.added", async ({ payload }) =>
     console.log("Registering!");
     await registerData(parsedUser, parsedRepos);
   }
-});
 
-octokitApp.webhooks.on("installation_repositories.removed", async ({ payload }) => {
-  const parsedUser = convertToUserData(payload);
-  const parsedReposRemoved = convertToRepoData(payload.repositories_removed);
-
+  const parsedReposRemoved = convertToRepoData(payload.repositories_removed); // fix type
   if (parsedReposRemoved.length > 0) {
-    console.log("Unregistering!");
+    console.log("unregistering!");
     unregisterRepos(parsedUser.user_id, parsedReposRemoved);
   } else {
     console.log("No repos to remove!");
   }
-});
+}
