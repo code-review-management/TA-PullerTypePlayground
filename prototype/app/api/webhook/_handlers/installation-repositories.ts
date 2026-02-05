@@ -9,6 +9,7 @@ import { convertToRepoData, convertToUserData } from "../utilities";
  * Handle adding/removing repos from an existing installation.
  */
 
+// TODO: same handler for installation_repositories.added and installation_repositories.removed
 octokitApp.webhooks.on("installation_repositories.added", async ({ payload }) => {
   const parsedUser = convertToUserData(payload);
   const parsedRepos = convertToRepoData(payload.repositories_added);
