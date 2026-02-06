@@ -3,7 +3,7 @@ import { supabaseInstance } from "../client";
 export interface PullRequestData {
   pr_id: number;
   number: number;
-  owner_id: number;
+  owner_id: number | undefined;
   last_synced_at?: string;
 }
 

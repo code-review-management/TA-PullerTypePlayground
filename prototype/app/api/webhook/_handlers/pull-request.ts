@@ -6,7 +6,7 @@ octokitApp.webhooks.on("pull_request", async ({ payload }) => {
   setPullRequest({
     pr_id: payload.pull_request.id,
     number: payload.pull_request.number,
-    owner_id: payload.sender.id, // FIX
+    owner_id: payload.sender?.id, // FIX
     last_synced_at: createLastSyncedTime(),
   });
 });
@@ -33,7 +33,7 @@ octokitApp.webhooks.on("pull_request_review_thread", async ({ payload }) => {
   setPullRequest({
     pr_id: payload.pull_request.id,
     number: payload.pull_request.number,
-    owner_id: payload.sender.id, // FIX
+    owner_id: payload.sender?.id, // FIX
     last_synced_at: createLastSyncedTime(),
   });
 });

@@ -21,7 +21,7 @@ async function registerUserRepoChange(
   // payload:
   //   | EmitterWebhookEvent<"installation_repositories.added">["payload"]
   //   | EmitterWebhookEvent<"installation_repositories.removed">["payload"],
-  payload, // TODO: fix type
+  payload: any, // TODO: fix type
 ) {
   const parsedUser = convertToUserData(payload);
   const parsedRepos = convertToRepoData(payload.repositories_added);
