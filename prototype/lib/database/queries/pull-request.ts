@@ -30,7 +30,6 @@ export const getPRLastSyncTime = async (pr_id: number) => {
 
   if (error) {
     console.error("Fetch PR Modify Time Error:", error.message);
-    throw error;
   }
 
   // Returns the timestamp string (or null if not set)
