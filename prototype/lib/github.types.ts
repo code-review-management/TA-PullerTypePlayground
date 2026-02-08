@@ -1,26 +1,36 @@
+export type user = {
+    login: string
+    id: number
+}
+
 export type repo = {
-    id: Number
+    id: number
     name: string
     full_name: string
-    owner: {
-        login: string
-        id: Number
-    }
+    owner: user
     html_url: string
-    description: string
+    description: string | null
 }
 
 export type issue = {
     url: string
-    id: Number
-    number: Number
+    id: number
+    number: number
     state: string
     title: string
-    user: {
-        login: string
-        id: Number
-    }
+    user: user
     body: string
     created_at: string
     updated_at: string
+}
+
+export type pullRequest = {
+    url: string
+    id: number
+    diff_url: string
+    number: number
+    state: string
+    locked: boolean
+    title: string
+    user: user | null
 }

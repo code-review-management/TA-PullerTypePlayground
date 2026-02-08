@@ -1,4 +1,9 @@
+/*
+/api/v1/repos
+*/
+
 import { getUserRepositoriesLastSyncTime } from "@/lib/database/queries/repository";
+import { repo } from "@/lib/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 
@@ -7,35 +12,49 @@ const secret = process.env.AUTH_SECRET;
 export async function GET(req: Request) {
   const token = await getToken({ req, secret });
 
+  // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
-    console.log("Token is null");
+    console.log("Unauthorized request at ${new Date()}");
     // Return non-authenticated request
-    return;
+    return new Response(null, { status: 401 })
   }
 
-  const octokit = new Octokit({ auth: token.accessToken });
+  // Verify last access requirement
   const userLastAccessTime = req.headers.get("If-Modified-Since");
   const lastWebhookEventTime = await getUserRepositoriesLastSyncTime(
     token.githubId,
   );
 
+  // Return early if requested resource has no changes
   if (
-    userLastAccessTime == null ||
-    lastWebhookEventTime == null ||
-    new Date(userLastAccessTime) < new Date(lastWebhookEventTime)
+    userLastAccessTime != null &&
+    lastWebhookEventTime != null &&
+    new Date(userLastAccessTime) >= new Date(lastWebhookEventTime)
   ) {
-    const { data: contents } = await octokit.rest.repos.listForAuthenticatedUser();
-
-    return new Response(JSON.stringify(contents, null, 2), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...(lastWebhookEventTime && {
-          "Last-Modified": lastWebhookEventTime,
-        }),
-      },
-    });
+    return new Response(null, { status: 304 });
   }
 
-  return new Response(null, { status: 304 });
+  const octokit = new Octokit({ auth: token.accessToken });
+
+  const { data: contents } = await octokit.rest.repos.listForAuthenticatedUser();
+
+  // Filter response
+  const repos: repo[] = contents.map((repo) => ({
+    id: repo.id,
+    name: repo.name,
+    full_name: repo.full_name,
+    owner: { login: repo.owner.login, id: repo.owner.id },
+    html_url: repo.html_url,
+    description: repo.description
+  }));
+
+  return new Response(JSON.stringify(repos, null, 2), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      ...(lastWebhookEventTime && {
+        "Last-Modified": lastWebhookEventTime,
+      }),
+    },
+  });
 }
