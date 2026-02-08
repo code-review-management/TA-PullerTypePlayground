@@ -3,3 +3,8 @@ export type reqPullRequests = {
     repo: string
 }
 
+export type reqPullRequest = {
+    owner: string,
+    repo: string,
+    pull_number: number
+}
