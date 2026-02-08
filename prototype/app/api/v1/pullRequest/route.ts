@@ -2,6 +2,7 @@
 /api/v1/pullRequest
 */
 
+import { getPRLastSyncTime } from "@/lib/database/queries/pull-request";
 import { pullRequest } from "@/lib/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
@@ -29,16 +30,30 @@ export async function POST(req: Request) {
     );
   }
 
+  // Verify last access requirement
+  const userLastAccessTime = req.headers.get("If-Modified-Since");
+  const lastWebhookEventTime = await getPRLastSyncTime(
+    pull_number
+  );
+
+  // Return early if requested resource has no changes
+  if (
+    userLastAccessTime != null &&
+    lastWebhookEventTime != null &&
+    new Date(userLastAccessTime) >= new Date(lastWebhookEventTime)
+  ) {
+    return new Response(null, { status: 304 });
+  }
+
   const octokit = new Octokit({ auth: token.accessToken });
 
-  const contents = await octokit.rest.pulls.get({
+  const { data: pr } = await octokit.rest.pulls.get({
     owner: owner,
     repo: repo,
     pull_number: pull_number
   });
 
   // Filter response
-  const pr = contents.data
   const pullRequest: pullRequest = {
     url: pr.url,
     id: pr.id,
@@ -54,6 +69,9 @@ export async function POST(req: Request) {
     status: 200,
     headers: {
       "Content-Type": "application/json",
+      ...(lastWebhookEventTime && {
+      "Last-Modified": lastWebhookEventTime,
+      }),
     },
   });
 }
