@@ -34,3 +34,14 @@ export type pullRequest = {
     title: string
     user: user | null
 }
+
+export type fileDiff = {
+    sha: string | null
+    filename: string
+    status: string
+    additions: number
+    deletions: number
+    changes: number
+    contents_url: string
+    patch: string | undefined
+}
