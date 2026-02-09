@@ -1,37 +1,43 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { parseDiff, FileData } from "react-diff-view";
-import { readFile } from "./_utilities/file-utilities";
+import { FileData, parseDiff } from "react-diff-view";
+import { readSampleDiff } from "./_utilities/file-utilities";
 import FileDiff from "./_components/FileDiff/FileDiff";
-import { Box } from "@mui/material";
 
-export default function CustomReactDiffView() {
+/**
+ * Documentation:
+ * 1. https://www.npmjs.com/package/react-diff-view
+ * - Referenced section "Render diff hunks" to setup component.
+ */
+
+export default function ReactDiffView() {
   const [files, setFiles] = useState<FileData[]>();
 
   useEffect(() => {
-    const readDiff = async () => {
-      const data = await readFile();
-      setFiles(parseDiff(data));
+    const getParsedDiff = async () => {
+      const diffString = await readSampleDiff();
+      const parsedDiff = parseDiff(diffString);
+      setFiles(parsedDiff);
     };
-    readDiff();
+
+    getParsedDiff();
   }, []);
 
   return (
-    <Box>
+    <>
       {files &&
         files.map((file) => {
           return (
-            <Box key={`${file.oldPath}-${file.newPath}`}>
-              <FileDiff
-                type={file.type}
-                hunks={file.hunks}
-                oldPath={file.oldPath}
-                newPath={file.newPath}
-              />
-            </Box>
+            <FileDiff
+              key={`${file.oldRevision}-${file.newRevision}`}
+              type={file.type}
+              hunks={file.hunks}
+              oldPath={file.oldPath}
+              newPath={file.newPath}
+            />
           );
         })}
-    </Box>
+    </>
   );
 }
