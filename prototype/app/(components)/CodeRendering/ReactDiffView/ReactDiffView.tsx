@@ -10,6 +10,9 @@ import FileDiff from "./_components/FileDiff/FileDiff";
  * Documentation:
  * 1. https://www.npmjs.com/package/react-diff-view
  * - Referenced section "Render diff hunks" to setup component.
+ * 
+ * TODO: responsive switching between unified and split on smaller screens
+ * TODO: fetch API data for PR diff, PR files
  */
 
 export default function ReactDiffView() {
