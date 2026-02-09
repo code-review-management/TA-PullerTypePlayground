@@ -14,7 +14,7 @@ import {
 import { getLineKey, getTokens } from "../../_utilities/component-helpers";
 import { handleCopy, handleGutterClick } from "../../_utilities/event-handlers";
 
-import CommentWidget from "../CommentEditorWidget/CommentWidget";
+import RichTextEditor from "@/app/(components)/RichTextEditor/RichTextEditor";
 import FileHeader from "../FileHeader/FileHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -47,7 +47,7 @@ export default function FileDiff({
       const changeKey = getChangeKey(change);
 
       if (activeCommentLine === lineKey) {
-        acc[changeKey] = <CommentWidget />;
+        acc[changeKey] = <RichTextEditor />;
       }
     });
     return acc;
