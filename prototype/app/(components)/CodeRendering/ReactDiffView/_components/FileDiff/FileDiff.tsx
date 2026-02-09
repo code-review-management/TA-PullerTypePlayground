@@ -8,6 +8,7 @@ import {
   ChangeData,
   getChangeKey,
   Decoration,
+  ViewType,
 } from "react-diff-view";
 
 import { getLineKey, getTokens } from "../../_utilities/component-helpers";
@@ -19,18 +20,20 @@ import Gutter from "../Gutter/Gutter";
 
 import "./FileDiff.css";
 import "prismjs/themes/prism.css";
-import 'react-diff-view/style/index.css';
+import "react-diff-view/style/index.css";
 
 export default function FileDiff({
   type,
   hunks,
   oldPath,
   newPath,
+  viewType,
 }: {
   type: DiffType;
   hunks: HunkData[];
   oldPath: string;
   newPath: string;
+  viewType: ViewType;
 }) {
   const [selectedLines, setSelectedLines] = useState<Set<string>>(new Set());
   const [activeCommentLine, setActiveCommentLine] = useState<string>("");
@@ -100,7 +103,7 @@ export default function FileDiff({
         optimizeSelection
         renderGutter={renderGutter}
         tokens={getTokens(hunks, newPath)}
-        viewType="split"
+        viewType={viewType}
         widgets={widgets}
         // gutterType="anchor"
         // generateAnchorID={}

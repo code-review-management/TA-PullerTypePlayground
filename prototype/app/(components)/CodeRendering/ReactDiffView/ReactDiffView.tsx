@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileData, parseDiff } from "react-diff-view";
+import { FileData, parseDiff, ViewType } from "react-diff-view";
+import { Box, Button, Stack } from "@mui/material";
 import { readSampleDiff } from "./_utilities/file-utilities";
 import FileDiff from "./_components/FileDiff/FileDiff";
 
@@ -13,6 +14,7 @@ import FileDiff from "./_components/FileDiff/FileDiff";
 
 export default function ReactDiffView() {
   const [files, setFiles] = useState<FileData[]>();
+  const [viewType, setViewType] = useState<ViewType>("split");
 
   useEffect(() => {
     const getParsedDiff = async () => {
@@ -25,19 +27,37 @@ export default function ReactDiffView() {
   }, []);
 
   return (
-    <>
-      {files &&
-        files.map((file) => {
-          return (
-            <FileDiff
-              key={`${file.oldRevision}-${file.newRevision}`}
-              type={file.type}
-              hunks={file.hunks}
-              oldPath={file.oldPath}
-              newPath={file.newPath}
-            />
+    <Stack spacing={2}>
+      <Button
+        size="small"
+        variant="contained"
+        onClick={() => {
+          setViewType((prevViewType) =>
+            prevViewType === "split" ? "unified" : "split",
           );
-        })}
-    </>
+        }}
+        sx={{
+          alignSelf: "flex-end",
+        }}
+      >
+        Toggle View
+      </Button>
+      <Box>
+        {/* left side: insert file tree that stays as you scroll */}
+        {files &&
+          files.map((file) => {
+            return (
+              <FileDiff
+                key={`${file.oldRevision}-${file.newRevision}`}
+                type={file.type}
+                hunks={file.hunks}
+                oldPath={file.oldPath}
+                newPath={file.newPath}
+                viewType={viewType}
+              />
+            );
+          })}
+      </Box>
+    </Stack>
   );
 }
