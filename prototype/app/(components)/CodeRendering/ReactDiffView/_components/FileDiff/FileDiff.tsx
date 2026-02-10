@@ -14,9 +14,9 @@ import {
 import { getLineKey, getTokens } from "../../_utilities/component-helpers";
 import { handleCopy, handleGutterClick } from "../../_utilities/event-handlers";
 
-import RichTextEditor from "@/app/(components)/RichTextEditor/RichTextEditor";
 import FileHeader from "../FileHeader/FileHeader";
 import Gutter from "../Gutter/Gutter";
+import ParentCommentEditor from "../ParentCommentEditor/ParentCommentEditor";
 
 import "./FileDiff.css";
 import "prismjs/themes/prism.css";
@@ -47,7 +47,7 @@ export default function FileDiff({
       const changeKey = getChangeKey(change);
 
       if (activeCommentLine === lineKey) {
-        acc[changeKey] = <RichTextEditor />;
+        acc[changeKey] = <ParentCommentEditor />;
       }
     });
     return acc;
