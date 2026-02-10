@@ -20,6 +20,7 @@
     "@octokit/webhooks": "^14.2.0",
     "@octokit/webhooks-types": "^7.6.1",
     "@supabase/supabase-js": "^2.93.2",
+    "@tiptap/extensions": "^3.19.0",
     "@tiptap/pm": "^3.19.0",
     "@tiptap/react": "^3.19.0",
     "@tiptap/starter-kit": "^3.19.0",

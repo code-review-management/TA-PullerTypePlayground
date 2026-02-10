@@ -26,7 +26,7 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
       size="small"
       sx={{
         ".MuiToggleButton-root": {
-          height: "24px",
+          height: "20px",
         },
         ".MuiSvgIcon-root": {
           fontSize: "1rem",
