@@ -2,7 +2,7 @@
 import styles from "./ConflictResolution.module.css"
 import { Editor, Monaco } from "@monaco-editor/react";
 import type * as MonacoEditor from "monaco-editor";
-import { SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 const testValue = 
 `void pwm_timer_gpio() {
@@ -33,11 +33,11 @@ type ConflictBlock = {
   end: number;
 };
 
-function getConflictBlocks(value: string) {
+function getConflictBlocks(value: string): Map<number, ConflictBlock> {
     const startMarker = "<<<<<<<";
     const dividerMarker = "=======";
     const endMarker = ">>>>>>>";
-    const conflictBlocks: Map<number, ConflictBlock> = new Map<number, ConflictBlock>();
+    const conflictBlocks= new Map<number, ConflictBlock>();
 
     let currentStart = -1
     let currentDivider = -1
@@ -67,13 +67,13 @@ function insertConflictWidget(
 	conflictBlock: ConflictBlock, 
 	monaco: Monaco, 
 	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
-	acceptCurrentFunc, 
-	acceptIncomingFunc, 
-	acceptBothFunc
+	acceptCurrentFunc: (conflictBlock: ConflictBlock) => void, 
+	acceptIncomingFunc: (conflictBlock: ConflictBlock) => void, 
+	acceptBothFunc: (conflictBlock: ConflictBlock) => void,
 ): [MonacoEditor.editor.IContentWidget, string] {
     const widget: MonacoEditor.editor.IContentWidget = {
       getId() {
-        return "example.widget";
+        return "conflict.widget";
       },
 
       getDomNode() {
@@ -83,24 +83,21 @@ function insertConflictWidget(
 		const acceptCurrent = document.createElement("button");
 		acceptCurrent.innerText = "Accept current";
 		acceptCurrent.className = styles.conflictWidgetButton;
-		acceptCurrent.addEventListener("click", (e: PointerEvent) => {
-			console.log("accept current");
+		acceptCurrent.addEventListener("click", () => {
 			acceptCurrentFunc(conflictBlock);
 		});
 
 		const acceptIncoming = document.createElement("button");
 		acceptIncoming.innerText = "Accept incoming";
 		acceptIncoming.className = styles.conflictWidgetButton;
-		acceptIncoming.addEventListener("click", (e) => {
-			console.log("accept incoming");
+		acceptIncoming.addEventListener("click", () => {
 			acceptIncomingFunc(conflictBlock);
 		});
 
 		const acceptBoth = document.createElement("button");
 		acceptBoth.innerText = "Accept both";
 		acceptBoth.className = styles.conflictWidgetButton;
-		acceptBoth.addEventListener("click", (e) => {
-			console.log("accept both");
+		acceptBoth.addEventListener("click", () => {
 			acceptBothFunc(conflictBlock);
 		});
 
@@ -127,13 +124,13 @@ function insertConflictWidget(
 	let zoneId: string = "";
 
 	editor.changeViewZones((accessor) => {
-      const dom = document.createElement("div");
-      dom.style.padding = "8px";
+      const domNode = document.createElement("div");
+	  domNode.className = styles.viewZone;
 
       zoneId = accessor.addZone({
         afterLineNumber: conflictBlock.start - 1,
         heightInLines: 1,
-        domNode: dom,
+        domNode,
       });
     });
 
@@ -141,30 +138,28 @@ function insertConflictWidget(
 	return [widget, zoneId];
 }
 
-function configEditor(
+function configureEditor(
 	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
 	monaco: Monaco, initValue: string, 
 	conflictBlocks: Map<number, ConflictBlock>, 
-	setConflictBlocks, 
+	setConflictBlocks: Dispatch<SetStateAction<Map<number, ConflictBlock>>>, 
 	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
 	zoneIds: Map<number, string>,
-) {
+): void {
 	editor.setValue(initValue);
 	editor.updateOptions({
 		fontSize: 12,
-	})
+	});
 
     const decorationsList = [];
-	const model = editor.getModel();
+	const model= editor.getModel();
 
-	function processBlock(newLines: string[], blockStart: number) {
-		const newFileValue = newLines.join('\n');
-		model.setValue(newFileValue);
-		const newConflictBlocks = conflictBlocks;
+	function processBlock(newLines: string[], blockStart: number): void {
+		const newFileValue: string = newLines.join('\n');
+		model?.setValue(newFileValue);
+		const newConflictBlocks: Map<number, ConflictBlock> = conflictBlocks;
 		conflictBlocks.delete(blockStart);
 		setConflictBlocks(newConflictBlocks);
-		console.log("newFileValue", newFileValue);
-		console.log("newConflictBlocks", newConflictBlocks);
 		const widget = widgets.get(blockStart);
 		const zoneId = zoneIds.get(blockStart);
 		if (widget && zoneId) {
@@ -178,38 +173,48 @@ function configEditor(
 		widgets.delete(blockStart);
 	}
 
-	function acceptCurrentFunc(conflictBlock: ConflictBlock) {
+	function acceptCurrentFunc(conflictBlock: ConflictBlock): void {
 		const currentValue = model?.getValue();
-		const lines = currentValue.split('\n');
-		const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-			lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
-			lines.slice(conflictBlock.end, -1)
-		);
-		
-		processBlock(newLines, conflictBlock.start)
+		if (currentValue) {
+			const lines = currentValue.split('\n');
+			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
+				lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
+				lines.slice(conflictBlock.end, -1)
+			);
+			processBlock(newLines, conflictBlock.start);
+		} else {
+			console.error("Couldn't get current value.");
+		}
 	}
 
-	function acceptIncomingFunc(conflictBlock: ConflictBlock) {
+	function acceptIncomingFunc(conflictBlock: ConflictBlock): void {
 		const currentValue = model?.getValue();
-		const lines = currentValue.split('\n');
-		const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-			lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
-			lines.slice(conflictBlock.end, -1)
-		);
-		
-		processBlock(newLines, conflictBlock.start)
+		if (currentValue) {
+			const lines = currentValue.split('\n');
+			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
+				lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
+				lines.slice(conflictBlock.end, -1)
+			);
+			processBlock(newLines, conflictBlock.start);
+		} else {
+			console.error("Couldn't get current value.");
+		}
 	}
 
-	function acceptBothFunc(conflictBlock: ConflictBlock) {
+	function acceptBothFunc(conflictBlock: ConflictBlock): void {
 		const currentValue = model?.getValue();
-		const lines = currentValue.split('\n');
-		const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-			lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
-			lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
-			lines.slice(conflictBlock.end, -1)
-		);
-		
-		processBlock(newLines, conflictBlock.start)
+		if (currentValue) {
+			const lines = currentValue.split('\n');
+			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
+				lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
+				lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
+				lines.slice(conflictBlock.end, -1)
+			);
+			
+			processBlock(newLines, conflictBlock.start);
+		} else {
+			console.error("Couldn't get current value.");
+		}
 	}
 
     for (const [start, conflictBlock] of conflictBlocks.entries()) {
@@ -258,7 +263,7 @@ export default function ConflictResolution() {
     return (
         <div className={styles.conflictResolution}>
 			<Editor
-				onMount={(editor, monaco) => configEditor(editor, monaco, testValue, conflictBlocks, setConflictBlocks, widgets, zoneIds)}
+				onMount={(editor, monaco) => configureEditor(editor, monaco, testValue, conflictBlocks, setConflictBlocks, widgets, zoneIds)}
 				className={styles.container}
 			/>
         </div>

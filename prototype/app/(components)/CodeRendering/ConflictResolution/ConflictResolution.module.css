@@ -18,6 +18,10 @@
     background: #bdc4e8b2;
 }
 
+.viewZone {
+    padding: 8px;
+}
+
 .conflictWidget {
     display: flex !important;
     width: 400px;
