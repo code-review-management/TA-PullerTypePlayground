@@ -1,9 +1,5 @@
-.conflictResolution {
-    height: 400px;
-}
-
 .container {
-    height: 100%;
+    min-height: 600px;
 }
 
 .currentStrong {
