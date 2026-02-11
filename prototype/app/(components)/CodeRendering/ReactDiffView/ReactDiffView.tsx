@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { FileData, parseDiff, ViewType } from "react-diff-view";
 import { Box, Button, Stack } from "@mui/material";
-import { readSampleDiff } from "./_utilities/file-utilities";
-import FileDiff from "./_components/FileDiff/FileDiff";
+import { readSampleDiff } from "./FileDiff/utils/file-utilities";
+import FileDiff from "./FileDiff/components/FileDiff";
 
 /**
  * Documentation:

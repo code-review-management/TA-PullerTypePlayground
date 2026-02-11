@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { ChangeData } from "react-diff-view";
 import { BsChatFill } from "react-icons/bs";
-import { getLineKey } from "../../_utilities/component-helpers";
+import { getLineKey } from "../utils/component-helpers";
 
 /**
  * Documentation:

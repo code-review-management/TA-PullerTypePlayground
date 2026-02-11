@@ -10,7 +10,7 @@ import { promises as fs } from "fs";
 
 export async function readSampleDiff() {
   const path =
-    "/app/(components)/CodeRendering/ReactDiffView/_sample-data/sample-diff.txt";
+    "/app/(components)/CodeRendering/ReactDiffView/FileDiff/sample-data/sample-diff.txt";
   const contents = await fs.readFile(process.cwd() + path, "utf8");
   return contents;
 }

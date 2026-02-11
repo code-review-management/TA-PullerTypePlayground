@@ -11,12 +11,12 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { getLineKey, getTokens } from "../../_utilities/component-helpers";
-import { handleCopy, handleGutterClick } from "../../_utilities/event-handlers";
+import { getLineKey, getTokens } from "../utils/component-helpers";
+import { handleCopy, handleGutterClick } from "../utils/event-handlers";
 
-import FileHeader from "../FileHeader/FileHeader";
-import Gutter from "../Gutter/Gutter";
-import ParentCommentEditor from "../ParentCommentEditor/ParentCommentEditor";
+import FileHeader from "./FileHeader";
+import Gutter from "./Gutter";
+import ParentCommentEditor from "../../InlineComments/components/ParentCommentEditor";
 
 import "./FileDiff.css";
 import "prismjs/themes/prism.css";

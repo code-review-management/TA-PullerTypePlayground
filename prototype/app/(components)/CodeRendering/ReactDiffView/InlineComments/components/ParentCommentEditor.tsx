@@ -11,7 +11,7 @@ import {
   type Editor as EditorType,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import MenuBar from "./_components/MenuBar/MenuBar";
+import MenuBar from "./MenuBar";
 import "./TiptapEditor.css";
 
 /**
