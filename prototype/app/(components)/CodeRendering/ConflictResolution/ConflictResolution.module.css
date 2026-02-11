@@ -1,0 +1,23 @@
+.conflictResolution {
+    height: 400px;
+}
+
+.container {
+    height: 100%;
+}
+
+.currentStrong {
+    background: #84c899b2;
+}
+
+.current {
+    background: #84c89954;
+}
+
+.incoming {
+    background: #bdc4e854;
+}
+
+.incomingStrong {
+    background: #bdc4e8b2;
+}
