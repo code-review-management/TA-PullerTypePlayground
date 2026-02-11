@@ -1,9 +1,8 @@
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-
+import CodeIcon from "@mui/icons-material/Code";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
-
+import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { type Editor } from "@tiptap/react";
 
 /**
@@ -16,9 +15,15 @@ import { type Editor } from "@tiptap/react";
  *
  * 3. https://mui.com/material-ui/api/toggle-button/
  * - Referenced for overriding default styling.
+ * 
+ * TODO: remove hard-coded styling.
  */
 
-export default function MenuBar({ editor }: { editor: Editor | null }) {
+export default function FormattingToolbar({
+  editor,
+}: {
+  editor: Editor | null;
+}) {
   if (!editor) return null;
 
   return (
@@ -35,6 +40,12 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
       }}
     >
       <ToggleButton
+        value="code"
+        onClick={() => editor.chain().focus().toggleCode().run()}
+      >
+        <CodeIcon />
+      </ToggleButton>
+      <ToggleButton
         value="bold"
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
@@ -47,10 +58,10 @@ export default function MenuBar({ editor }: { editor: Editor | null }) {
         <FormatItalicIcon />
       </ToggleButton>
       <ToggleButton
-        value="strike"
-        onClick={() => editor.chain().focus().toggleStrike().run()}
+        value="link"
+        onClick={() => editor.chain().focus().toggleLink().run()}
       >
-        <StrikethroughSIcon />
+        <InsertLinkIcon />
       </ToggleButton>
     </ToggleButtonGroup>
   );

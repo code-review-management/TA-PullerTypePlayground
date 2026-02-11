@@ -13,10 +13,11 @@ import {
 
 import { getLineKey, getTokens } from "../utils/component-helpers";
 import { handleCopy, handleGutterClick } from "../utils/event-handlers";
+import { MockComments } from "../../InlineComments/sample-data/MockComments";
 
+import CommentThread from "../../InlineComments/components/CommentThread/CommentThread";
 import FileHeader from "./FileHeader";
 import Gutter from "./Gutter";
-import ParentCommentEditor from "../../InlineComments/components/ParentCommentEditor";
 
 import "./FileDiff.css";
 import "prismjs/themes/prism.css";
@@ -47,7 +48,7 @@ export default function FileDiff({
       const changeKey = getChangeKey(change);
 
       if (activeCommentLine === lineKey) {
-        acc[changeKey] = <ParentCommentEditor />;
+        acc[changeKey] = <CommentThread thread={MockComments} />;
       }
     });
     return acc;
