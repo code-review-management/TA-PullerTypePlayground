@@ -1,7 +1,7 @@
 "use client"
 import styles from "./ConflictResolution.module.css"
-import { Monaco, useMonaco } from "@monaco-editor/react";
-import { useEffect } from "react";
+import { Editor, Monaco } from "@monaco-editor/react";
+import type * as MonacoEditor from "monaco-editor";
 
 const testValue = 
 `/*
@@ -190,23 +190,57 @@ function getConflictBlocks(value: string) {
         }
     }
 
-    console.log(conflictBlocks);
     return conflictBlocks;
 }
 
-function createEditor(monaco: Monaco) {
-    console.log(testValue);
-    const editor = monaco?.editor.create(
-        document.getElementById("container") as HTMLElement,
-        {
-            value: testValue,
-            automaticLayout: true,
-            scrollBeyondLastLine: false,
-            language: "c",
-        }
-    );
+function insertConflictWidget(firstLine: number, monaco: Monaco, editor: MonacoEditor.editor.IStandaloneCodeEditor) {
+    const widget: MonacoEditor.editor.IContentWidget = {
+      getId() {
+        return "example.widget";
+      },
 
-    const conflictBlocks = getConflictBlocks(testValue);
+      getDomNode() {
+        const dom = document.createElement("div");
+        dom.innerText = "widget";
+		dom.style.border = "1 px solid black";
+		dom.style.fontSize = "12px";
+        return dom;
+      },
+
+      getPosition() {
+        return {
+          position: {
+            lineNumber: firstLine,
+            column: 1,
+          },
+          preference: [
+            monaco.editor.ContentWidgetPositionPreference.ABOVE,
+          ],
+        };
+      },
+    };
+
+	editor.changeViewZones((accessor) => {
+      const dom = document.createElement("div");
+      dom.style.padding = "8px";
+
+      accessor.addZone({
+        afterLineNumber: firstLine - 1,
+        heightInLines: 1,
+        domNode: dom,
+      });
+    });
+
+	editor.addContentWidget(widget);
+}
+
+function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco: Monaco) {
+	editor.setValue(testValue);
+	editor.updateOptions({
+		fontSize: 12,
+	})
+
+	const conflictBlocks = getConflictBlocks(testValue);
 
     const decorationsList = [];
 
@@ -239,25 +273,20 @@ function createEditor(monaco: Monaco) {
 			    className: styles.incomingStrong,
             }
         });
+
+		insertConflictWidget(conflictBlock.start, monaco, editor);
     }
 
     editor.createDecorationsCollection(decorationsList);
-
-    return editor;
 }
 
 export default function ConflictResolution() {
-    const monaco = useMonaco();
-
-    useEffect(() => {
-      if (monaco) {
-        createEditor(monaco);
-      }
-    }, [monaco]);
-
     return (
         <div className={styles.conflictResolution}>
-            <div className={styles.container} id="container"/>
+			<Editor
+				onMount={configEditor}
+				className={styles.container}
+			/>
         </div>
     );
 }
