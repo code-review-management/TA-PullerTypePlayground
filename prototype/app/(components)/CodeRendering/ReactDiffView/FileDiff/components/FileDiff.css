@@ -1,74 +1,71 @@
 .diff {
-    --diff-omit-gutter-line-color: none;
     --diff-font-family: var(--font-roboto-mono);
+    --diff-omit-gutter-line-color: none;
+    /* TODO: change to MUI variable */
     font-size: 12px;
-    overflow: hidden
 }
 
 .diff-gutter {
-    color: rgb(31, 35, 40);
+    color: var(--mui-palette-text-secondary);
 }
 
+/* DECORATION styling */
+
 .diff-decoration {
-    background-color: rgb(222, 242, 253);
+    background-color: var(--mui-diff-decorationBg);
 }
 
 .diff-decoration-content {
-    padding-left: 16px;
+    padding-left: calc(var(--mui-spacing) * 2);
 }
 
-/* Insert styling */
+/* INSERT styling (new lines on RHS) */
 
 .diff-gutter-insert {
-    background-color: rgb(172, 238, 187);
-    border-right-color: #82e5a1;
+    background-color: var(--mui-diff-gutter-insertBg);
 }
 
 .diff-code-insert {
-    background-color: rgb(218, 251, 225);
+    background-color: var(--mui-diff-code-insertBg);
 }
 
 .diff-code-insert .diff-code-edit {
-    background-color: rgb(172, 238, 187);
+    background-color: var(--mui-diff-code-insertEditBg);
 }
 
-/* Delete styling */
+/* DELETE styling (deleted lines on LHS) */
 
 .diff-gutter-delete {
-    background-color: rgb(255, 206, 203);
+    background-color: var(--mui-diff-gutter-deleteBg);
 }
 
 .diff-code-delete {
-    background-color: rgb(255, 235, 233);
+    background-color: var(--mui-diff-code-deleteBg);
 }
 
 .diff-code-delete .diff-code-edit {
-    background-color: rgb(255, 206, 203);
+    background-color: var(--mui-diff-code-deleteEditBg);
 }
 
-/* Omit styling */
+/* OMIT styling (empty lines on LHS or RHS) */
 
 .diff-gutter-omit {
-    background-color: rgb(246, 248, 250);
+    background-color: var(--mui-diff-gutter-omitBg);
 }
 
 .diff-code:empty {
-    background-color: rgb(246, 248, 250);
+    background-color: var(--mui-diff-code-emptyBg);
 }
 
-/* Highlight styling */
+/* HIGHLIGHT styling */
 
 .diff-gutter:has(.gutter-selected) {
-    background-color: #fff5b1;
+    background-color: var(--mui-diff-gutter-highlightBg);
 }
 
-td:has(.gutter-selected)+.diff-code {
-    background-color: #fffbdd;
-}
-
-td:has(.gutter-selected)+.diff-code-delete .diff-code-edit,
-td:has(.gutter-selected)+.diff-code-insert .diff-code-edit {
-    background-color: #ffeeb1;
+td:has(.gutter-selected)+.diff-code,
+td:has(.gutter-selected)+.diff-code .diff-code-edit {
+    background-color: var(--mui-diff-code-highlightBg);
 }
 
 /* Reference in the future for Safari: https://stackoverflow.com/questions/28173410/selecting-highlighting-a-column-only-from-a-table-like-github-does-it */
