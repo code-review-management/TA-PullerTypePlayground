@@ -17,3 +17,15 @@
 .incomingStrong {
     background: #bdc4e8b2;
 }
+
+.conflictWidget {
+    display: flex !important;
+    width: 400px;
+    font-size: 12px;
+    gap: 10px;
+}
+
+.conflictWidgetButton {
+    text-decoration: underline;
+    cursor: pointer;
+}
