@@ -63,7 +63,14 @@ function getConflictBlocks(value: string) {
     return conflictBlocks;
 }
 
-function insertConflictWidget(conflictBlock: ConflictBlock, monaco: Monaco, editor: MonacoEditor.editor.IStandaloneCodeEditor, acceptBothFunc) {
+function insertConflictWidget(
+	conflictBlock: ConflictBlock, 
+	monaco: Monaco, 
+	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
+	acceptCurrentFunc, 
+	acceptIncomingFunc, 
+	acceptBothFunc
+): [MonacoEditor.editor.IContentWidget, string] {
     const widget: MonacoEditor.editor.IContentWidget = {
       getId() {
         return "example.widget";
@@ -78,6 +85,7 @@ function insertConflictWidget(conflictBlock: ConflictBlock, monaco: Monaco, edit
 		acceptCurrent.className = styles.conflictWidgetButton;
 		acceptCurrent.addEventListener("click", (e: PointerEvent) => {
 			console.log("accept current");
+			acceptCurrentFunc(conflictBlock);
 		});
 
 		const acceptIncoming = document.createElement("button");
@@ -85,6 +93,7 @@ function insertConflictWidget(conflictBlock: ConflictBlock, monaco: Monaco, edit
 		acceptIncoming.className = styles.conflictWidgetButton;
 		acceptIncoming.addEventListener("click", (e) => {
 			console.log("accept incoming");
+			acceptIncomingFunc(conflictBlock);
 		});
 
 		const acceptBoth = document.createElement("button");
@@ -115,11 +124,13 @@ function insertConflictWidget(conflictBlock: ConflictBlock, monaco: Monaco, edit
       },
     };
 
+	let zoneId: string = "";
+
 	editor.changeViewZones((accessor) => {
       const dom = document.createElement("div");
       dom.style.padding = "8px";
 
-      accessor.addZone({
+      zoneId = accessor.addZone({
         afterLineNumber: conflictBlock.start - 1,
         heightInLines: 1,
         domNode: dom,
@@ -127,9 +138,17 @@ function insertConflictWidget(conflictBlock: ConflictBlock, monaco: Monaco, edit
     });
 
 	editor.addContentWidget(widget);
+	return [widget, zoneId];
 }
 
-function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco: Monaco, initValue: string, conflictBlocks: Map<number, ConflictBlock>, setConflictBlocks) {
+function configEditor(
+	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
+	monaco: Monaco, initValue: string, 
+	conflictBlocks: Map<number, ConflictBlock>, 
+	setConflictBlocks, 
+	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
+	zoneIds: Map<number, string>,
+) {
 	editor.setValue(initValue);
 	editor.updateOptions({
 		fontSize: 12,
@@ -137,6 +156,49 @@ function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco:
 
     const decorationsList = [];
 	const model = editor.getModel();
+
+	function processBlock(newLines: string[], blockStart: number) {
+		const newFileValue = newLines.join('\n');
+		model.setValue(newFileValue);
+		const newConflictBlocks = conflictBlocks;
+		conflictBlocks.delete(blockStart);
+		setConflictBlocks(newConflictBlocks);
+		console.log("newFileValue", newFileValue);
+		console.log("newConflictBlocks", newConflictBlocks);
+		const widget = widgets.get(blockStart);
+		const zoneId = zoneIds.get(blockStart);
+		if (widget && zoneId) {
+			editor.removeContentWidget(widget);
+			editor.changeViewZones(accessor => {
+				accessor.removeZone(zoneId);
+			});
+		} else {
+			console.error("Couldn't remove widget");
+		}
+		widgets.delete(blockStart);
+	}
+
+	function acceptCurrentFunc(conflictBlock: ConflictBlock) {
+		const currentValue = model?.getValue();
+		const lines = currentValue.split('\n');
+		const newLines = lines.slice(0, conflictBlock.start - 1).concat(
+			lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
+			lines.slice(conflictBlock.end, -1)
+		);
+		
+		processBlock(newLines, conflictBlock.start)
+	}
+
+	function acceptIncomingFunc(conflictBlock: ConflictBlock) {
+		const currentValue = model?.getValue();
+		const lines = currentValue.split('\n');
+		const newLines = lines.slice(0, conflictBlock.start - 1).concat(
+			lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
+			lines.slice(conflictBlock.end, -1)
+		);
+		
+		processBlock(newLines, conflictBlock.start)
+	}
 
 	function acceptBothFunc(conflictBlock: ConflictBlock) {
 		const currentValue = model?.getValue();
@@ -146,13 +208,8 @@ function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco:
 			lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
 			lines.slice(conflictBlock.end, -1)
 		);
-		const newFileValue = newLines.join('\n');
-		model.setValue(newFileValue);
-		const newConflictBlocks = conflictBlocks;
-		conflictBlocks.delete(conflictBlock.start);
-		setConflictBlocks(newConflictBlocks);
-		console.log("newFileValue", newFileValue);
-		console.log("newConflictBlocks", newConflictBlocks);
+		
+		processBlock(newLines, conflictBlock.start)
 	}
 
     for (const [start, conflictBlock] of conflictBlocks.entries()) {
@@ -185,7 +242,9 @@ function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco:
             }
         });
 
-		insertConflictWidget(conflictBlock, monaco, editor, acceptBothFunc);
+		const [widget, zoneId]: [MonacoEditor.editor.IContentWidget, string] = insertConflictWidget(conflictBlock, monaco, editor, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
+		widgets.set(start, widget);
+		zoneIds.set(start, zoneId);
     }
 
     editor.createDecorationsCollection(decorationsList);
@@ -193,11 +252,13 @@ function configEditor(editor: MonacoEditor.editor.IStandaloneCodeEditor, monaco:
 
 export default function ConflictResolution() {
 	const [conflictBlocks, setConflictBlocks] = useState<Map<number, ConflictBlock>>(getConflictBlocks(testValue));
+	const widgets = new Map<number, MonacoEditor.editor.IContentWidget>();
+	const zoneIds = new Map<number, string>();
 
     return (
         <div className={styles.conflictResolution}>
 			<Editor
-				onMount={(editor, monaco) => configEditor(editor, monaco, testValue, conflictBlocks, setConflictBlocks)}
+				onMount={(editor, monaco) => configEditor(editor, monaco, testValue, conflictBlocks, setConflictBlocks, widgets, zoneIds)}
 				className={styles.container}
 			/>
         </div>
