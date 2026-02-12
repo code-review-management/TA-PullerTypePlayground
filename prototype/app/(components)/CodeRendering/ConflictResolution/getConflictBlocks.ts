@@ -6,7 +6,7 @@ const END_MARKER = ">>>>>>>";
 
 /**
  * Parses a string representing a file to obtain merge conflict blocks.
- * Uses generated markers to determine the start, divier, and end of each conflict.
+ * Uses generated markers to determine the start, divider, and end of each conflict.
  * Returns: mapping of line number (start of each block) to its ConflictBlock object.
  */
 export default function getConflictBlocks(value: string): Map<number, ConflictBlock> {
@@ -17,7 +17,6 @@ export default function getConflictBlocks(value: string): Map<number, ConflictBl
 
     const lines = value.split('\n');
 
-    // TODO: handle case where conflict blocks get combine with each other from inaccurate divider line number
     for (let idx = 0; idx < lines.length; idx ++) {
         const lineNum = idx + 1;
         const line = lines[idx];
@@ -26,12 +25,14 @@ export default function getConflictBlocks(value: string): Map<number, ConflictBl
         } else if (line.startsWith(DIVIDER_MARKER)) {
             currentDivider = lineNum;
         } else if (line.startsWith(END_MARKER)) {
-            const block: ConflictBlock = {
-                start: currentStart,
-                divider: currentDivider,
-                end: lineNum,
-            };
-            conflictBlocks.set(currentStart, block);
+            if (!conflictBlocks.has(currentStart) && currentStart !== -1 && currentDivider > currentStart) {
+                const block: ConflictBlock = {
+                    start: currentStart,
+                    divider: currentDivider,
+                    end: lineNum,
+                };
+                conflictBlocks.set(currentStart, block);
+            }
         }
     }
 
