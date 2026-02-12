@@ -33,3 +33,18 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+.conflictWidgetButton:hover {
+    color: #3346d6;
+}
+
+@media (prefers-color-scheme: dark) {
+    .conflictWidgetButton:hover {
+        color: #949cd1;
+    }
+}
+
+.buttonDivider {
+    cursor: default;
+    user-select: none;
+}

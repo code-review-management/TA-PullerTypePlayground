@@ -47,8 +47,17 @@ function insertConflictWidget(
 			acceptBothFunc(conflictBlock);
 		});
 
+		const appendButtonDivider = () => {
+			const buttonDivider = document.createElement("span");
+			buttonDivider.innerText = "|";
+			buttonDivider.className = styles.buttonDivider;
+			node.appendChild(buttonDivider);
+		}
+
 		node.appendChild(acceptCurrent);
+		appendButtonDivider();
 		node.appendChild(acceptIncoming);
+		appendButtonDivider();
 		node.appendChild(acceptBoth);
 
         return node;
