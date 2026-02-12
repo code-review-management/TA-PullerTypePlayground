@@ -73,7 +73,7 @@ function insertConflictWidget(
 ): [MonacoEditor.editor.IContentWidget, string] {
     const widget: MonacoEditor.editor.IContentWidget = {
       getId() {
-        return "conflict.widget";
+        return `conflict.widget.${conflictBlock.start}`;
       },
 
       getDomNode() {
@@ -138,9 +138,78 @@ function insertConflictWidget(
 	return [widget, zoneId];
 }
 
+function clearWidgets(
+	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
+	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
+	zoneIds: Map<number, string>,
+	decorationsCollection: MonacoEditor.editor.IEditorDecorationsCollection,
+) {
+	for (const widget of widgets.values()) {
+		editor.removeContentWidget(widget);
+	}
+	editor.changeViewZones(accessor => {
+		for (const zoneId of zoneIds.values()) {
+			accessor.removeZone(zoneId);
+		}
+	});
+	decorationsCollection.clear();
+}
+
+function renderConflicts(
+	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
+	monaco: Monaco, 
+	conflictBlocks: Map<number, ConflictBlock>, 
+	decorationsCollection: MonacoEditor.editor.IEditorDecorationsCollection,
+	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
+	zoneIds: Map<number, string>,
+	acceptCurrentFunc: (conflictBlock: ConflictBlock) => void, 
+	acceptIncomingFunc: (conflictBlock: ConflictBlock) => void, 
+	acceptBothFunc: (conflictBlock: ConflictBlock) => void,
+) {
+	clearWidgets(editor, widgets, zoneIds, decorationsCollection);
+	const newDecorationsList = [];
+	console.log("rendering conflicts", conflictBlocks);
+	for (const [start, conflictBlock] of conflictBlocks.entries()) {
+        newDecorationsList.push({
+            range: new monaco.Range(conflictBlock.start, 1, conflictBlock.start, 1),
+            options: {
+                isWholeLine: true,
+			    className: styles.currentStrong,
+            }
+        });
+        newDecorationsList.push({
+            range: new monaco.Range(conflictBlock.start + 1, 1, conflictBlock.divider - 1, 1),
+            options: {
+                isWholeLine: true,
+			    className: styles.current,
+            }
+        });
+        newDecorationsList.push({
+            range: new monaco.Range(conflictBlock.divider + 1, 1, conflictBlock.end - 1, 1),
+            options: {
+                isWholeLine: true,
+			    className: styles.incoming,
+            }
+        });
+        newDecorationsList.push({
+            range: new monaco.Range(conflictBlock.end, 1, conflictBlock.end, 1),
+            options: {
+                isWholeLine: true,
+			    className: styles.incomingStrong,
+            }
+        });
+
+		const [widget, zoneId]: [MonacoEditor.editor.IContentWidget, string] = insertConflictWidget(conflictBlock, monaco, editor, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
+		widgets.set(start, widget);
+		zoneIds.set(start, zoneId);
+		decorationsCollection.set(newDecorationsList);
+    }
+}
+
 function configureEditor(
 	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
-	monaco: Monaco, initValue: string, 
+	monaco: Monaco, 
+	initValue: string,
 	conflictBlocks: Map<number, ConflictBlock>, 
 	setConflictBlocks: Dispatch<SetStateAction<Map<number, ConflictBlock>>>, 
 	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
@@ -150,9 +219,8 @@ function configureEditor(
 	editor.updateOptions({
 		fontSize: 12,
 	});
-
-    const decorationsList = [];
-	const model= editor.getModel();
+	const decorationsCollection: MonacoEditor.editor.IEditorDecorationsCollection = editor.createDecorationsCollection([]);
+	const model = editor.getModel();
 
 	function processBlock(newLines: string[], blockStart: number): void {
 		const newFileValue: string = newLines.join('\n');
@@ -217,42 +285,15 @@ function configureEditor(
 		}
 	}
 
-    for (const [start, conflictBlock] of conflictBlocks.entries()) {
-        decorationsList.push({
-            range: new monaco.Range(conflictBlock.start, 1, conflictBlock.start, 1),
-            options: {
-                isWholeLine: true,
-			    className: styles.currentStrong,
-            }
-        });
-        decorationsList.push({
-            range: new monaco.Range(conflictBlock.start + 1, 1, conflictBlock.divider - 1, 1),
-            options: {
-                isWholeLine: true,
-			    className: styles.current,
-            }
-        });
-        decorationsList.push({
-            range: new monaco.Range(conflictBlock.divider + 1, 1, conflictBlock.end - 1, 1),
-            options: {
-                isWholeLine: true,
-			    className: styles.incoming,
-            }
-        });
-        decorationsList.push({
-            range: new monaco.Range(conflictBlock.end, 1, conflictBlock.end, 1),
-            options: {
-                isWholeLine: true,
-			    className: styles.incomingStrong,
-            }
-        });
+    
+	renderConflicts(editor, monaco, conflictBlocks, decorationsCollection, widgets, zoneIds, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
 
-		const [widget, zoneId]: [MonacoEditor.editor.IContentWidget, string] = insertConflictWidget(conflictBlock, monaco, editor, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
-		widgets.set(start, widget);
-		zoneIds.set(start, zoneId);
-    }
-
-    editor.createDecorationsCollection(decorationsList);
+	editor.onDidChangeModelContent(() => {
+		const newConflictBlocks = getConflictBlocks(editor.getValue());
+		setConflictBlocks(newConflictBlocks);
+		console.log(newConflictBlocks);
+		renderConflicts(editor, monaco, newConflictBlocks, decorationsCollection, widgets, zoneIds, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
+	})
 }
 
 export default function ConflictResolution() {
