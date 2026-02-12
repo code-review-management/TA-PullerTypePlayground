@@ -168,7 +168,6 @@ function renderConflicts(
 ) {
 	clearWidgets(editor, widgets, zoneIds, decorationsCollection);
 	const newDecorationsList = [];
-	console.log("rendering conflicts", conflictBlocks);
 	for (const [start, conflictBlock] of conflictBlocks.entries()) {
         newDecorationsList.push({
             range: new monaco.Range(conflictBlock.start, 1, conflictBlock.start, 1),
@@ -291,7 +290,6 @@ function configureEditor(
 	editor.onDidChangeModelContent(() => {
 		const newConflictBlocks = getConflictBlocks(editor.getValue());
 		setConflictBlocks(newConflictBlocks);
-		console.log(newConflictBlocks);
 		renderConflicts(editor, monaco, newConflictBlocks, decorationsCollection, widgets, zoneIds, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
 	})
 }
