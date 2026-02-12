@@ -2,7 +2,8 @@
 /api/v1/pullRequest
 */
 
-import { getPRLastSyncTime } from "@/lib/database/queries/pull-request";
+import { setPullRequest, getPRLastSyncTime } from "@/lib/database/queries/pull-request";
+import { getConflictMarkers } from "./conflictFinder"
 import { pullRequest } from "@/lib/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
@@ -52,6 +53,18 @@ export async function POST(req: Request) {
     repo: repo,
     pull_number: pull_number
   });
+
+  getConflictMarkers(pr)
+
+  if (userLastAccessTime == null){
+    console.log("Lazy filling in pr: " + pr.id)
+    setPullRequest({
+      pr_id: pr.id,
+      owner_id: pr.user.id,
+      owner_repo_id: pr.base.repo.id,
+      number: pr.number
+    })
+  }
 
   // Filter response
   const pullRequest: pullRequest = {

@@ -1,9 +1,11 @@
 import { supabaseInstance } from "../client";
+import { Octokit } from "octokit";
 
 export interface UserData {
   user_id: number;
   login: string;
   installation_id: number;
+  last_synced_at?: string;
 }
 
 export interface RepoData {
@@ -66,6 +68,7 @@ const registerUser = async (userData: UserData) => {
         user_id: userData.user_id,
         login: userData.login,
         installation_id: userData.installation_id,
+        repo_last_sync_time: userData.last_synced_at
       },
       {
         onConflict: "user_id",
@@ -86,7 +89,7 @@ const registerUser = async (userData: UserData) => {
  * Bulk upserts a list of repositories from a GitHub App installation.
  */
 const registerRepos = async (repos: RepoData[]) => {
-  // Map GitHub payload to your Supabase schema
+  // Map GitHub payload to Supabase schema
   const repoData = repos.map((repo) => ({
     repo_id: repo.repo_id, // BIGINT
     name: repo.name,
@@ -98,7 +101,7 @@ const registerRepos = async (repos: RepoData[]) => {
     .from("repositories")
     .upsert(repoData, { onConflict: "repo_id" })
     .select();
-
+    
   if (error) {
     console.error("Repo Sync Error:", error.message);
     throw error;

@@ -34,36 +34,42 @@ export type Database = {
           last_synced_at: string
           number: number | null
           owner_id: number | null
+          owner_repo_id: number | null
           pr_id: number
         }
         Insert: {
           last_synced_at?: string
           number?: number | null
           owner_id?: number | null
+          owner_repo_id?: number | null
           pr_id?: number
         }
         Update: {
           last_synced_at?: string
           number?: number | null
           owner_id?: number | null
+          owner_repo_id?: number | null
           pr_id?: number
         }
         Relationships: []
       }
       repositories: {
         Row: {
+          created_at: string | null
           full_name: string
           last_synced_at: string | null
           name: string
           repo_id: number
         }
         Insert: {
+          created_at?: string | null
           full_name: string
           last_synced_at?: string | null
           name: string
           repo_id: number
         }
         Update: {
+          created_at?: string | null
           full_name?: string
           last_synced_at?: string | null
           name?: string
@@ -106,18 +112,21 @@ export type Database = {
           created_at: string | null
           installation_id: number | null
           login: string
+          repo_last_sync_time: string | null
           user_id: number
         }
         Insert: {
           created_at?: string | null
           installation_id?: number | null
           login: string
+          repo_last_sync_time?: string | null
           user_id: number
         }
         Update: {
           created_at?: string | null
           installation_id?: number | null
           login?: string
+          repo_last_sync_time?: string | null
           user_id?: number
         }
         Relationships: []
@@ -134,6 +143,15 @@ export type Database = {
       remove_user_repos: {
         Args: { repo_ids_to_remove: number[]; target_user_id: number }
         Returns: Json
+      }
+      upsert_repo_and_update_contributors: {
+        Args: {
+          p_full_name: string
+          p_last_synced_at: string
+          p_name: string
+          p_repo_id: number
+        }
+        Returns: undefined
       }
     }
     Enums: {

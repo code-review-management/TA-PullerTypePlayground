@@ -18,6 +18,7 @@ export function convertToUserData(
     user_id: payload.sender.id,
     login: payload.sender.login,
     installation_id: payload.installation.id,
+    last_synced_at: new Date().toISOString()
   };
 }
 

@@ -6,14 +6,21 @@ export const handleRepositoryRenamed = async (
   repositoryId: number,
   lastSyncedAt: string,
 ) => {
-  await supabaseInstance
-    .from("repositories")
-    .update({
-      last_synced_at: lastSyncedAt,
-      name: newName,
-      full_name: newFullName,
+  const {data, error} = await supabaseInstance
+    .rpc("upsert_repo_and_update_contributors",{
+      p_repo_id: repositoryId,
+      p_name: newName,
+      p_full_name: newFullName,
+      p_last_synced_at: lastSyncedAt
     })
-    .eq("repo_id", repositoryId);
+
+  if (error) {
+    console.error("upsert_repo_and_update_contributors RPC failed:", error.message);
+  } else {
+    console.log(
+      "upsert_repo_and_update_contributors RPC Responsless, probably means success?",
+    );
+  }
 };
 
 /**

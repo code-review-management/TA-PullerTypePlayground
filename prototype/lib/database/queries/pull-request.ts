@@ -4,6 +4,7 @@ export interface PullRequestData {
   pr_id: number;
   number: number;
   owner_id: number | undefined;
+  owner_repo_id: number;
   last_synced_at?: string;
 }
 
