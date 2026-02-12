@@ -7,13 +7,10 @@ export default function useIsDark() {
     const [isDark, setIsDark] = useState(false);
 
     function refreshIsDark(event: MediaQueryListEvent) {
-        console.log(event);
         if (event.matches) {
             setIsDark(true);
-            console.log("set to dark");
         } else {
             setIsDark(false);
-            console.log("set to light");
         }
     }
 
@@ -24,10 +21,7 @@ export default function useIsDark() {
         
         window
             .matchMedia("(prefers-color-scheme: dark)")
-            .addEventListener("change", (e) => {
-                refreshIsDark(e);
-                console.log("change");
-            });
+            .addEventListener("change", refreshIsDark);
 
         return () => {
             window
