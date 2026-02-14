@@ -11,4 +11,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/sign-in",
   },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      if (account && profile) {
+        token.accessToken = account.access_token; // GitHub personal access token
+        token.githubId = profile.id; // GitHub user ID
+        token.githubLogin = profile.login; // GitHub username
+      }
+      return token;
+    },
+  },
 });

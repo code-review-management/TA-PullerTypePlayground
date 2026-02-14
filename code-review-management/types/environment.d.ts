@@ -9,6 +9,7 @@ declare namespace NodeJS {
     SUPABASE_SERVICE_ROLE_KEY: string;
     AUTH_GITHUB_ID: string;
     AUTH_GITHUB_SECRET: string;
+    AUTH_SECRET: string;
     APP_ID: string;
     WEBHOOK_SECRET: string;
     PRIVATE_KEY_PATH: string;
