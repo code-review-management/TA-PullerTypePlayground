@@ -9,10 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@emotion/cache": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/material": "^7.3.8",
-    "@mui/material-nextjs": "^7.3.8",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
     "react": "19.2.3",

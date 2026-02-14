@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { signIn } from "@/lib/auth";
 import styles from "./page.module.css";
 
@@ -16,9 +15,9 @@ export default function SignIn() {
           await signIn("github", { redirectTo: "/dashboard" });
         }}
       >
-        <Button variant="contained" type="submit">
+        <button type="submit" className={styles.signInButton}>
           Sign in with GitHub
-        </Button>
+        </button>
       </form>
     </div>
   );
