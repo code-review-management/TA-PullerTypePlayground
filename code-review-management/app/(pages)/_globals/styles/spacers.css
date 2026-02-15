@@ -9,4 +9,8 @@
     --spacer-24: 24px;
     --spacer-48: 48px;
     --spacer-80: 80px;
+
+    --border-thin-width: 0.5px;
+    --border-normal-width: 1px;
+    --border-radius: 4px;
 }
