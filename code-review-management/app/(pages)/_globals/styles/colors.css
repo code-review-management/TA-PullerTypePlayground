@@ -1,6 +1,6 @@
 :root {
     /* Border colors */
-    --border-gray: rgb(226, 226, 226);
+    --border-gray: #e2e2e2;
 
     /* Diff-view colors */
     --diff-code-delete-bg-color: #fdeff0;
