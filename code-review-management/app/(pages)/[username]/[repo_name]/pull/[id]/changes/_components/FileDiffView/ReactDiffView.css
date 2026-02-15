@@ -1,0 +1,34 @@
+.diff {
+    /* Override default react-diff-view variables with our own color variables */
+    --diff-code-delete-background-color: var(--diff-code-delete-bg-color);
+    --diff-code-insert-background-color: var(--diff-code-insert-bg-color);
+    --diff-gutter-delete-background-color: var(--diff-gutter-delete-bg-color);
+    --diff-gutter-insert-background-color: var(--diff-gutter-insert-bg-color);
+    --diff-omit-gutter-line-color: transparent;
+
+    padding-top: var(--spacer-4);
+    border-top: var(--border-thin-width) solid var(--border-gray);
+    /* TODO: fix hard-coded font-size */
+    font-size: 0.80rem;
+}
+
+.diff * {
+    font-family: var(--font-roboto-mono);
+}
+
+.diff-gutter {
+    color: var(--diff-gutter-font-color);
+    border-right: var(--border-thin-width) solid var(--border-gray);
+}
+
+.diff-gutter-normal {
+    background-color: var(--diff-gutter-normal-bg-color);
+}
+
+.diff-gutter-delete {
+    border-right: var(--border-thin-width) solid var(--diff-gutter-delete-border-color);
+}
+
+.diff-gutter-insert {
+    border-right: var(--border-thin-width) solid var(--diff-gutter-insert-border-color);
+}

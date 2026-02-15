@@ -6,6 +6,7 @@
     --diff-code-delete-bg-color: #fdeff0;
     --diff-code-insert-bg-color: #eaffee;
 
+    --diff-gutter-font-color: #5e5e5e;
     --diff-gutter-normal-bg-color: #f9f9f9;
     --diff-gutter-delete-bg-color: #fadde0;
     --diff-gutter-delete-border-color: #eca7a7;
