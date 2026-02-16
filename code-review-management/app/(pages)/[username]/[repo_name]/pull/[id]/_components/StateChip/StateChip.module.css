@@ -1,7 +1,7 @@
 .stateChip {
     height: 32px;
 
-    padding: var(--spacer-8);
+    padding: 12px;
     border-radius: 16px;
     font-size: 0.875rem;
     color: var(--background-light);
