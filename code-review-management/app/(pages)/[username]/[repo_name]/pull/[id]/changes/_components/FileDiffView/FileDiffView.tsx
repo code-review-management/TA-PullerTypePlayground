@@ -1,4 +1,5 @@
 import refractor from "refractor";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -10,6 +11,7 @@ import {
   tokenize,
   ViewType,
 } from "react-diff-view";
+
 import { getLanguage } from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 
@@ -45,6 +47,8 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
 }) {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   const tokens = tokenize(hunks, {
     highlight: true,
     refractor: refractor,
@@ -53,23 +57,33 @@ export default function FileDiffView({
 
   return (
     <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
-      <FileDiffHeader diffType={diffType} oldPath={oldPath} newPath={newPath} />
-      <Diff
-        key={oldRevision + "-" + newRevision}
-        viewType={viewType}
+      <FileDiffHeader
         diffType={diffType}
-        hunks={hunks}
-        tokens={tokens}
-      >
-        {(hunks) =>
-          hunks.map((hunk) => (
-            <Fragment key={hunk.content}>
-              <Decoration>{hunk.content}</Decoration>
-              <Hunk hunk={hunk} />
-            </Fragment>
-          ))
-        }
-      </Diff>
+        oldPath={oldPath}
+        newPath={newPath}
+        isExpanded={isExpanded}
+        setIsExpanded={setIsExpanded}
+      />
+      <div>
+        {isExpanded && (
+          <Diff
+            key={oldRevision + "-" + newRevision}
+            viewType={viewType}
+            diffType={diffType}
+            hunks={hunks}
+            tokens={tokens}
+          >
+            {(hunks) =>
+              hunks.map((hunk) => (
+                <Fragment key={hunk.content}>
+                  <Decoration>{hunk.content}</Decoration>
+                  <Hunk hunk={hunk} />
+                </Fragment>
+              ))
+            }
+          </Diff>
+        )}
+      </div>
     </div>
   );
 }

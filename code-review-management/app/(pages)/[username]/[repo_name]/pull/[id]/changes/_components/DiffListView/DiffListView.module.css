@@ -1,6 +1,8 @@
 .diffListView {
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
     gap: var(--spacer-16);
-    margin: var(--spacer-16);
+    margin: var(--spacer-48);
+    width: 100%;
 }

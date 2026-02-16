@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@components/*": ["./app/(pages)/_components/*"],
       "@globals/*": ["./app/(pages)/_globals/*"]
     }
   },
