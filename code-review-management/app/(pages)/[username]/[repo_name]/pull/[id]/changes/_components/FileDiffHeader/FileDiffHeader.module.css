@@ -1,0 +1,5 @@
+.fileDiffHeader {
+    padding: var(--spacer-12);
+    font-size: var(--font-size-label);
+    font-weight: 450;
+}

@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@globals/*": ["./app/(pages)/_globals/*"]
     }
   },
   "include": [

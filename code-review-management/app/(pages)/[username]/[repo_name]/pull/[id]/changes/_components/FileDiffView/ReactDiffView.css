@@ -1,0 +1,46 @@
+.diff {
+    /* Override default react-diff-view variables with our own color variables */
+    --diff-code-delete-background-color: var(--diff-code-delete-bg-color);
+    --diff-code-insert-background-color: var(--diff-code-insert-bg-color);
+    --diff-gutter-delete-background-color: var(--diff-gutter-delete-bg-color);
+    --diff-gutter-insert-background-color: var(--diff-gutter-insert-bg-color);
+    --diff-omit-gutter-line-color: transparent;
+
+    border-top: var(--border-thin-width) solid var(--border-gray);
+    font-size: var(--font-size-diff-code);
+}
+
+.diff * {
+    font-family: var(--font-roboto-mono);
+}
+
+.diff-gutter {
+    color: var(--diff-gutter-font-color);
+    border-right: var(--border-thin-width) solid var(--border-gray);
+}
+
+.diff-gutter-delete {
+    border-right: var(--border-thin-width) solid var(--diff-gutter-delete-border-color);
+}
+
+.diff-gutter-insert {
+    border-right: var(--border-thin-width) solid var(--diff-gutter-insert-border-color);
+}
+
+.diff-gutter-omit,
+.diff-code-omit {
+    background-color: var(--diff-omit-bg-color);
+}
+
+.diff-gutter-omit {
+    border-right-color: var(--diff-omit-bg-color);
+}
+
+.diff-line .diff-code:nth-child(2) {
+    border-right: var(--border-thin-width) solid var(--border-gray);
+}
+
+.diff-decoration-content {
+    padding: var(--spacer-12);
+    background-color: var(--diff-decoration-bg-color);
+}

@@ -1,0 +1,16 @@
+:root {
+    /* Border colors */
+    --border-gray: #e2e2e2;
+
+    /* Diff-view colors */
+    --diff-omit-bg-color: #f9f9f9;
+    --diff-decoration-bg-color: #e2f4ff;
+    --diff-code-delete-bg-color: #fdeff0;
+    --diff-code-insert-bg-color: #eaffee;
+
+    --diff-gutter-font-color: #5e5e5e;
+    --diff-gutter-delete-bg-color: #fadde0;
+    --diff-gutter-delete-border-color: #eca7a7;
+    --diff-gutter-insert-bg-color: #d6fedb;
+    --diff-gutter-insert-border-color: #93de7a;
+}
