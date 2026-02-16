@@ -14,9 +14,9 @@ import { getLanguage } from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 
 import styles from "./FileDiffView.module.css";
+import "prism-color-variables/variables.css";
 import "react-diff-view/style/index.css";
 import "./ReactDiffView.css";
-import "prism-color-variables/variables.css";
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
