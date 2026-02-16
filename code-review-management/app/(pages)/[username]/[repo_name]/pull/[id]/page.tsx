@@ -8,7 +8,22 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
-        Viewing pull request {id} from {username}/{repo_name}
+        <div>
+          Page header
+        </div>
+        <div className={styles.pageBody}>
+          <div className={styles.bodyMain}>
+            <div>Body header Viewing pull request {id} from {username}/{repo_name}</div>
+            <div>Description</div>
+            <div>Timeline</div>
+          </div>
+          <div className={styles.infoColumn}>
+            <div>Status flags</div>
+            <div>Reviewers</div>
+            <div>Assignees</div>
+            <div>CI Checks</div>
+          </div>
+        </div>
     </div>
   );
 }
