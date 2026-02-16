@@ -1,6 +1,5 @@
 .fileDiffHeader {
     padding: var(--spacer-10);
-    /* TODO: fix hard-coded font-size */
-    font-size: 0.85rem;
+    font-size: var(--font-size-label);
     font-weight: 500;
 }

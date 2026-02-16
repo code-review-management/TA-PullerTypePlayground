@@ -8,8 +8,7 @@
 
     padding-top: var(--spacer-4);
     border-top: var(--border-thin-width) solid var(--border-gray);
-    /* TODO: fix hard-coded font-size */
-    font-size: 0.80rem;
+    font-size: var(--font-size-diff-code);
 }
 
 .diff * {
