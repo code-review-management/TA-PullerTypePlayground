@@ -20,16 +20,25 @@
     border-right: var(--border-thin-width) solid var(--border-gray);
 }
 
-.diff-gutter-normal {
-    background-color: var(--diff-gutter-normal-bg-color);
-}
-
 .diff-gutter-delete {
     border-right: var(--border-thin-width) solid var(--diff-gutter-delete-border-color);
 }
 
 .diff-gutter-insert {
     border-right: var(--border-thin-width) solid var(--diff-gutter-insert-border-color);
+}
+
+.diff-gutter-omit,
+.diff-code-omit {
+    background-color: var(--diff-omit-bg-color);
+}
+
+.diff-gutter-omit {
+    border-right-color: var(--diff-omit-bg-color);
+}
+
+.diff-line .diff-code:nth-child(2) {
+    border-right: var(--border-thin-width) solid var(--border-gray);
 }
 
 .diff-decoration-content {
