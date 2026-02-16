@@ -6,7 +6,6 @@
     --diff-gutter-insert-background-color: var(--diff-gutter-insert-bg-color);
     --diff-omit-gutter-line-color: transparent;
 
-    padding-top: var(--spacer-4);
     border-top: var(--border-thin-width) solid var(--border-gray);
     font-size: var(--font-size-diff-code);
 }
