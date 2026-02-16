@@ -1,5 +1,13 @@
+import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
-import { Diff, FileData, Hunk, HunkData, ViewType } from "react-diff-view";
+import {
+  Decoration,
+  Diff,
+  FileData,
+  Hunk,
+  HunkData,
+  ViewType,
+} from "react-diff-view";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 
 import styles from "./FileDiffView.module.css";
@@ -43,7 +51,12 @@ export default function FileDiffView({
         hunks={hunks}
       >
         {(hunks) =>
-          hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)
+          hunks.map((hunk) => (
+            <Fragment key={hunk.content}>
+              <Decoration>{hunk.content}</Decoration>
+              <Hunk hunk={hunk} />
+            </Fragment>
+          ))
         }
       </Diff>
     </div>

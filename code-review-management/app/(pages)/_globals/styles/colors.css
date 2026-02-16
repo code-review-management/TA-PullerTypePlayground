@@ -3,6 +3,7 @@
     --border-gray: #e2e2e2;
 
     /* Diff-view colors */
+    --diff-decoration-bg-color: #e2f4ff;
     --diff-code-delete-bg-color: #fdeff0;
     --diff-code-insert-bg-color: #eaffee;
 

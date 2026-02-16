@@ -31,3 +31,8 @@
 .diff-gutter-insert {
     border-right: var(--border-thin-width) solid var(--diff-gutter-insert-border-color);
 }
+
+.diff-decoration-content {
+    padding: var(--spacer-12);
+    background-color: var(--diff-decoration-bg-color);
+}
