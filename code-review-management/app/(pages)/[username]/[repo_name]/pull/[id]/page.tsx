@@ -1,10 +1,12 @@
 'use client';
+import PullBodyHeader from "./_components/PullBodyHeader/PullBodyHeader";
 import styles from "./page.module.css"
-import { useParams } from 'next/navigation'
+// import { useParams } from 'next/navigation'
 
 export default function Pull() {
-  const params = useParams();
-  const {username, repo_name, id} = params;
+  // TODO: Use params to fetch PR info
+  // const params = useParams();
+  // const {username, repo_name, id} = params;
 
   return (
     <div className={styles.page}>
@@ -13,7 +15,7 @@ export default function Pull() {
         </div>
         <div className={styles.pageBody}>
           <div className={styles.bodyMain}>
-            <div>Body header Viewing pull request {id} from {username}/{repo_name}</div>
+            <PullBodyHeader />
             <div>Description</div>
             <div>Timeline</div>
           </div>

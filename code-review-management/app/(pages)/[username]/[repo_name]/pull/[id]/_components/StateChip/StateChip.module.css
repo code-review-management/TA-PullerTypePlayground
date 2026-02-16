@@ -1,0 +1,28 @@
+.stateChip {
+    height: 32px;
+
+    padding: var(--spacer-8);
+    border-radius: 16px;
+    font-size: 0.875rem;
+    color: var(--background-light);
+
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-4);
+}
+
+.draft {
+    background-color: var(--status-draft);
+}
+
+.open {
+    background-color: var(--status-open);
+}
+
+.closed {
+    background-color: var(--status-closed);
+}
+
+.merged {
+    background-color: var(--status-merged);
+}

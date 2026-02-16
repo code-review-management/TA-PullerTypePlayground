@@ -1,0 +1,115 @@
+.pullBodyHeaderWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-24);
+}
+
+.pullBodyHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.titleLeft {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-16);
+}
+
+.titleIdentifierHeaders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-8);
+}
+
+.repoName {
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.pullTitle {
+    font-weight: 500;
+}
+
+.pullNumber {
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.titleLeftInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-16);
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-8);
+}
+
+.tempUserIcon {
+    height: 32px;
+    width: 32px;
+    background-color: var(--status-draft);
+    border-radius: 32px;
+    position: relative;
+}
+
+.branchDisplay {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-4);
+}
+
+.branchChip {
+    padding: var(--spacer-4) var(--spacer-8);
+    border-radius: 4px;
+    background-color: var(--background-secondary-light);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.branchName {
+    font-family: var(--font-roboto-mono);
+    font-size: 0.875rem;
+}
+
+.titleAndNum {
+    display: flex;
+}
+
+.titleRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: var(--spacer-8);
+}
+
+.updated {
+    color: var(--text-secondary);
+}
+
+.changesInfo {
+    display: flex;
+    gap: var(--spacer-8);
+    font-weight: 500;
+}
+
+.additions {
+    color: var(--color-success);
+}
+
+.deletions {
+    color: var(--color-failure);
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-gray-secondary);
+}
