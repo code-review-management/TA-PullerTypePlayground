@@ -1,14 +1,30 @@
-'use client';
-import styles from "./page.module.css"
-import { useParams } from 'next/navigation'
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { FileData, parseDiff } from "react-diff-view";
+import { readFile } from "@/lib/file-utils";
+import DiffListView from "./_components/DiffListView/DiffListView";
+import styles from "./page.module.css";
 
 export default function Changes() {
   const params = useParams();
-  const {username, repo_name, id} = params;
+  const { username, repo_name, id } = params;
+  const [diffs, setDiffs] = useState<FileData[]>();
+  
+  useEffect(() => {
+    const getParsedDiffs = async () => {
+      const diffString = await readFile("/mocks/diff-string.txt")
+      const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
+      setDiffs(parsedDiffs);
+    };
+
+    getParsedDiffs();
+  }, [username, repo_name, id]);
 
   return (
     <div className={styles.page}>
-        Viewing changes for pull request {id} from {username}/{repo_name}
+      <DiffListView diffs={diffs} />
     </div>
   );
 }
