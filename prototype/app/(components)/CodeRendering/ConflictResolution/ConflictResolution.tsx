@@ -1,0 +1,31 @@
+/**
+ * A component that uses the Monaco editor to implement a text editor for merge conflict resolution.
+ */
+
+"use client"
+import styles from "./ConflictResolution.module.css"
+import { Editor } from "@monaco-editor/react";
+import type * as MonacoEditor from "monaco-editor";
+import { useState } from "react";
+import { testValue } from "./conflictTestValue"
+import configureEditor from "./configureEditor"
+import { type ConflictBlock } from "./conflictBlock"
+import getConflictBlocks from "./getConflictBlocks";
+import useIsDark from "@/hooks/useIsDark"
+
+export default function ConflictResolution() {
+	const [conflictBlocks, setConflictBlocks] = useState<Map<number, ConflictBlock>>(getConflictBlocks(testValue));
+	const { isDark } = useIsDark();
+	const widgets = new Map<number, MonacoEditor.editor.IContentWidget>();
+	const zoneIds = new Map<number, string>();
+
+    return (
+		<div className={styles.conflictResolution}>
+			<Editor
+				onMount={(editor, monaco) => configureEditor(editor, monaco, testValue, conflictBlocks, setConflictBlocks, widgets, zoneIds)}
+				className={styles.container}
+				theme={isDark ? "vs-dark" : "vs-light"}
+			/>
+        </div>
+    );
+}

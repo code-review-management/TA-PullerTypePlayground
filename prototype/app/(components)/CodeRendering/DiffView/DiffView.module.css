@@ -1,0 +1,43 @@
+.wrapper {
+    display: flex;
+}
+
+.diffView {
+    display: flex;
+    flex: 5;
+}
+
+.codeViewWrapper {
+    flex: 1;
+}
+
+.commentColumn {
+    flex: 1;
+}
+
+.commentView {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid #3c3c3c;
+    padding: 4px;
+    background-color: #0a0a0a;
+    color: #ededed;
+}
+
+.commentButton {
+    border: 1px solid #484848;
+    padding: 2px 8px;
+    cursor: pointer;
+    background-color: #0a0a0a;
+}
+
+.commentButton:hover {
+    background-color: #202020;
+}

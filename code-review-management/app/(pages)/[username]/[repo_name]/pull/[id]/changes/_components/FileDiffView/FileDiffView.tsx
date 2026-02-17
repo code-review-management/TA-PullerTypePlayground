@@ -1,3 +1,4 @@
+import refractor from "refractor";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -6,11 +7,14 @@ import {
   FileData,
   Hunk,
   HunkData,
+  tokenize,
   ViewType,
 } from "react-diff-view";
+import { getLanguage } from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 
 import styles from "./FileDiffView.module.css";
+import "prism-color-variables/variables.css";
 import "react-diff-view/style/index.css";
 import "./ReactDiffView.css";
 
@@ -41,6 +45,12 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
 }) {
+  const tokens = tokenize(hunks, {
+    highlight: true,
+    refractor: refractor,
+    language: getLanguage(diffType === "delete" ? oldPath : newPath),
+  });
+
   return (
     <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
       <FileDiffHeader diffType={diffType} oldPath={oldPath} newPath={newPath} />
@@ -49,6 +59,7 @@ export default function FileDiffView({
         viewType={viewType}
         diffType={diffType}
         hunks={hunks}
+        tokens={tokens}
       >
         {(hunks) =>
           hunks.map((hunk) => (

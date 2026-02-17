@@ -9,18 +9,44 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@monaco-editor/react": "^4.7.0",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
+    "@mui/material-nextjs": "^7.3.7",
+    "@octokit/openapi-webhooks-types": "^12.1.0",
+    "@octokit/webhooks": "^14.2.0",
+    "@octokit/webhooks-types": "^7.6.1",
+    "@supabase/supabase-js": "^2.93.2",
+    "@tiptap/extensions": "^3.19.0",
+    "@tiptap/pm": "^3.19.0",
+    "@tiptap/react": "^3.19.0",
+    "@tiptap/starter-kit": "^3.19.0",
+    "@uiw/react-md-editor": "^4.0.11",
+    "diff": "^8.0.3",
+    "dotenv": "^17.2.3",
     "next": "16.1.6",
+    "next-auth": "^5.0.0-beta.30",
+    "octokit": "^5.0.5",
+    "prism-color-variables": "^1.0.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-diff-view": "^3.3.2",
+    "react-dom": "19.2.3",
+    "react-icons": "^5.5.0",
+    "refractor": "^3.6.0",
+    "supabase": "^2.72.9"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/refractor": "^3.4.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "tailwindcss": "^4.1.18",
+    "typescript": "5.9.3"
   }
 }
