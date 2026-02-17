@@ -1,6 +1,9 @@
 'use client';
+import Divider from "@/app/(pages)/_components/Divider/Divider";
+import PullBodyDescription from "./_components/PullBodyDescription/PullBodyDescription";
 import PullBodyHeader from "./_components/PullBodyHeader/PullBodyHeader";
 import styles from "./page.module.css"
+import MOCK_PULL from "@/mocks/pull.json"
 // import { useParams } from 'next/navigation'
 
 export default function Pull() {
@@ -16,7 +19,8 @@ export default function Pull() {
         <div className={styles.pageBody}>
           <div className={styles.bodyMain}>
             <PullBodyHeader />
-            <div>Description</div>
+            <Divider />
+            <PullBodyDescription username={MOCK_PULL.user} createdAt={MOCK_PULL.created_at} description={MOCK_PULL.description} />
             <div>Timeline</div>
           </div>
           <div className={styles.infoColumn}>

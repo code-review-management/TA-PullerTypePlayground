@@ -1,9 +1,3 @@
-.pullBodyHeaderWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-24);
-}
-
 .pullBodyHeader {
     display: flex;
     flex-direction: row;
@@ -26,7 +20,7 @@
 .repoName {
     font-size: 1.375rem;
     font-weight: 400;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
 }
 
 .pullTitle {
@@ -35,7 +29,7 @@
 
 .pullNumber {
     font-weight: 400;
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
 }
 
 .titleLeftInfo {
@@ -92,7 +86,7 @@
 }
 
 .updated {
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
 }
 
 .changesInfo {
@@ -107,9 +101,4 @@
 
 .deletions {
     color: var(--color-failure);
-}
-
-.divider {
-    border: none;
-    border-top: 1px solid var(--border-gray-secondary);
 }

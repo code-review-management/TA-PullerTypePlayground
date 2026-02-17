@@ -1,0 +1,10 @@
+.pullBodyDescription {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-8);
+}
+
+.sectionTitle {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
