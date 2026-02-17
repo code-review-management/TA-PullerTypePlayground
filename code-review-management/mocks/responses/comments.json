@@ -1,0 +1,71 @@
+[
+    {
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        },
+        "id": 2815233418,
+        "pullRequestReviewId": 3811991929,
+        "filename": "src/controllers/pokemon.ts",
+        "body": "Parent comment from L8-L10",
+        "createdAt": "2026-02-17T06:37:56Z",
+        "updatedAt": "2026-02-17T06:38:12Z",
+        "startLine": 8,
+        "endLine": 10,
+        "side": "LEFT",
+        "subjectType": "line"
+    },
+    {
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        },
+        "id": 2815233979,
+        "pullRequestReviewId": 3811991929,
+        "filename": "src/controllers/pokemon.ts",
+        "body": "Child comment from L8-L10",
+        "createdAt": "2026-02-17T06:38:05Z",
+        "updatedAt": "2026-02-17T06:38:12Z",
+        "startLine": 8,
+        "endLine": 10,
+        "inReplyTo": 2815233418,
+        "side": "LEFT",
+        "subjectType": "line"
+    },
+    {
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        },
+        "id": 2815236126,
+        "pullRequestReviewId": 3811994938,
+        "filename": "src/controllers/pokemon.ts",
+        "body": "Parent comment on R7-R8",
+        "createdAt": "2026-02-17T06:38:44Z",
+        "updatedAt": "2026-02-17T06:38:44Z",
+        "startLine": 7,
+        "endLine": 8,
+        "side": "RIGHT",
+        "subjectType": "line"
+    },
+    {
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        },
+        "id": 2815434284,
+        "pullRequestReviewId": 3812223553,
+        "filename": "src/controllers/pokemon.ts",
+        "body": "Unified R5",
+        "createdAt": "2026-02-17T07:41:05Z",
+        "updatedAt": "2026-02-17T07:41:08Z",
+        "startLine": null,
+        "endLine": 5,
+        "side": "RIGHT",
+        "subjectType": "line"
+    }
+]

@@ -1,0 +1,39 @@
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..90597e9
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1 @@
++Pokemini Express
+diff --git a/src/controllers/pokemon.ts b/src/controllers/pokemon.ts
+index 7596f42..16678b9 100644
+--- a/src/controllers/pokemon.ts
++++ b/src/controllers/pokemon.ts
+@@ -7,7 +7,6 @@ import {
+ 
+ import docClient from "../config/aws.ts";
+ 
+-// https://stackoverflow.com/questions/25237356/convert-meters-to-decimal-degrees
+ const metersToDegrees = (meters: number) => meters / 111320;
+ 
+ const POKEMON_TYPES = ["pikachu", "jigglypuff", "piplup", "eevee", "lickitung"];
+@@ -16,9 +15,6 @@ const ACTIVATE_RADIUS = metersToDegrees(10); // Proximity to pokemon in which la
+ const POKEMON_RADIUS = metersToDegrees(100); // Generate monsters within 50 meter radius.
+ const ACTIVATE_RAD_WITH_MARGIN = ACTIVATE_RADIUS * 3;
+ 
+-/**
+- * Retrieve data for a Pokemon given its UUID.
+- */
+ export const getPokemon = async (pokemonId: string) => {
+   const params = {
+     TableName: process.env.POKEMON_TABLE_NAME,
+@@ -35,9 +31,6 @@ export const getPokemon = async (pokemonId: string) => {
+   }
+ };
+ 
+-/**
+- * Retrieve data for all existing Pokemon available to be captured.
+- */
+ export const scanPokemon = async () => {
+   const params = {
+     TableName: process.env.POKEMON_TABLE_NAME,
