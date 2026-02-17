@@ -1,0 +1,20 @@
+.tiptap {
+    font-family: var(--font-geist-sans);
+    padding: 4px 8px;
+    outline: none;
+    word-break: break-all;
+}
+
+/* Copied from https://tiptap.dev/docs/editor/extensions/functionality/placeholder?gad_source=1&gad_campaignid=22014820935&gbraid=0AAAAAqkAF27TH7RLIwwHMjrMW-KIJbiQj&gclid=CjwKCAiAqKbMBhBmEiwAZ3UboMM1YGoZisSQkqBLsUDt_MQqa6NvrmVfpJM9gMQQD9L_BUzTcorkGRoCQ9oQAvD_BwE */
+.tiptap p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+/* TODO: add other heading components */
+.tiptap p {
+    margin: 0;
+}

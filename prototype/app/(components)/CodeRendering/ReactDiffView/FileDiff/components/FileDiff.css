@@ -1,0 +1,79 @@
+.diff {
+    --diff-font-family: var(--font-roboto-mono);
+    --diff-omit-gutter-line-color: none;
+    /* TODO: change to MUI variable */
+    font-size: 12px;
+}
+
+.diff-gutter {
+    color: var(--mui-palette-text-secondary);
+}
+
+/* DECORATION styling */
+
+.diff-decoration {
+    background-color: var(--mui-diff-decorationBg);
+}
+
+.diff-decoration-content {
+    padding-left: calc(var(--mui-spacing) * 2);
+}
+
+/* INSERT styling (new lines on RHS) */
+
+.diff-gutter-insert {
+    background-color: var(--mui-diff-gutter-insertBg);
+}
+
+.diff-code-insert {
+    background-color: var(--mui-diff-code-insertBg);
+}
+
+.diff-code-insert .diff-code-edit {
+    background-color: var(--mui-diff-code-insertEditBg);
+}
+
+/* DELETE styling (deleted lines on LHS) */
+
+.diff-gutter-delete {
+    background-color: var(--mui-diff-gutter-deleteBg);
+}
+
+.diff-code-delete {
+    background-color: var(--mui-diff-code-deleteBg);
+}
+
+.diff-code-delete .diff-code-edit {
+    background-color: var(--mui-diff-code-deleteEditBg);
+}
+
+/* OMIT styling (empty lines on LHS or RHS) */
+
+.diff-gutter-omit {
+    background-color: var(--mui-diff-gutter-omitBg);
+}
+
+.diff-code:empty {
+    background-color: var(--mui-diff-code-emptyBg);
+}
+
+/* HIGHLIGHT styling */
+
+.diff-gutter:has(.gutter-selected) {
+    background-color: var(--mui-diff-gutter-highlightBg);
+}
+
+td:has(.gutter-selected)+.diff-code,
+td:has(.gutter-selected)+.diff-code .diff-code-edit {
+    background-color: var(--mui-diff-code-highlightBg);
+}
+
+/* Reference in the future for Safari: https://stackoverflow.com/questions/28173410/selecting-highlighting-a-column-only-from-a-table-like-github-does-it */
+/* .unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+} */
