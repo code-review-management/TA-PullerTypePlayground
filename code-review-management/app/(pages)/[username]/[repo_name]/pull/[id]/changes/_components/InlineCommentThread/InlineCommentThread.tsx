@@ -22,7 +22,7 @@ export default function InlineCommentThread({ thread }: { thread: MockPublishedT
 
 function getThreadHeader(thread: MockPublishedThread) {
   // Placeholder in case the ending line and side are undefined.
-  if (!thread.line && !thread.side) return `Comment thread on ${thread.path}`;
+  if (!thread.line && !thread.side) return "File thread";
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
