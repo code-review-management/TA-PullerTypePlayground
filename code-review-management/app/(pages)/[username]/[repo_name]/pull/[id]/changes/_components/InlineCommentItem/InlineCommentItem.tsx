@@ -2,12 +2,12 @@ import styles from "./InlineCommentItem.module.css";
 
 export default function InlineCommentItem({
   username,
-  body,
   createdAt,
+  body,
 }: {
   username: string;
-  body: string;
   createdAt: string;
+  body: string;
 }) {
   return (
     <div className={styles.comment}>

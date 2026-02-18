@@ -1,15 +1,8 @@
-import {
-  MockPublishedComment,
-  MockPublishedThread,
-} from "@/mocks/types/comments";
+import { MockPublishedComment, MockPublishedThread } from "@/mocks/types/comments";
 import InlineCommentItem from "../InlineCommentItem/InlineCommentItem";
 import styles from "./InlineCommentThread.module.css";
 
-export default function InlineCommentThread({
-  thread,
-}: {
-  thread: MockPublishedThread;
-}) {
+export default function InlineCommentThread({ thread }: { thread: MockPublishedThread }) {
   return (
     <div>
       <span className={styles.threadHeader}>{getThreadHeader(thread)}</span>
@@ -18,8 +11,8 @@ export default function InlineCommentThread({
           <InlineCommentItem
             key={comment.id}
             username={comment.user.login}
-            body={comment.body}
             createdAt={comment.created_at}
+            body={comment.body}
           />
         ))}
       </div>
@@ -28,11 +21,13 @@ export default function InlineCommentThread({
 }
 
 function getThreadHeader(thread: MockPublishedThread) {
-  if (!thread.line && !thread.side) return "File comment";
+  // Placeholder in case the ending line and side are undefined.
+  if (!thread.line && !thread.side) return `Comment thread on ${thread.path}`;
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
 
+  // 'start_side' and 'start_line' are undefined when it is not a multi-line comment.
   if (thread.start_side && thread.start_line && thread.start_line !== thread.line) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
     return `Thread on lines ${startRange} to ${endRange}`;
