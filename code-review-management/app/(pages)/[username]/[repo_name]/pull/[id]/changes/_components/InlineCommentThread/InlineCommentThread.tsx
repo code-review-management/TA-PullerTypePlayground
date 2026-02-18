@@ -27,7 +27,7 @@ function getThreadHeader(thread: MockPublishedThread) {
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
 
-  // 'start_side' and 'start_line' are undefined when it is not a multi-line comment.
+  // Starting line and side are undefined when it is not a multi-line comment.
   if (thread.start_side && thread.start_line && thread.start_line !== thread.line) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
     return `Thread on lines ${startRange} to ${endRange}`;
