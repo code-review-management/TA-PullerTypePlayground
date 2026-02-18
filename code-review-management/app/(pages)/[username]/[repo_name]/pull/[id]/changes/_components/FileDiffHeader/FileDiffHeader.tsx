@@ -1,18 +1,40 @@
+import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 import { FileData } from "react-diff-view";
+import ChevronDownIcon from "@/public/icons/chevron_down.svg";
+import ChevronRightIcon from "@/public/icons/chevron_right.svg";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./FileDiffHeader.module.css";
 
 export default function FileDiffHeader({
   diffType,
   oldPath,
   newPath,
+  isExpanded,
+  setIsExpanded,
 }: {
   diffType: FileData["type"];
   oldPath: string;
   newPath: string;
+  isExpanded: boolean;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <div className={styles.fileDiffHeader}>
-      {diffType === "delete" ? oldPath : newPath}
+      <Image
+        src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
+        alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
+        className={styles.chevron}
+        onClick={() => setIsExpanded((prev) => !prev)}
+        data-tooltip-id="collapse-expand-tooltip"
+        data-tooltip-content={isExpanded ? "Collapse" : "Expand"}
+        data-tooltip-place="top"
+        data-tooltip-delay-show={100}
+      />
+      <IconTooltip id={"collapse-expand-tooltip"} />
+      <span className={styles.filename}>
+        {diffType === "delete" ? oldPath : newPath}
+      </span>
     </div>
   );
 }

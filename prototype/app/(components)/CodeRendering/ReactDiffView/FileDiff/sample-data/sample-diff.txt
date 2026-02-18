@@ -1,0 +1,240 @@
+diff --git a/app/(pages)/_components/Navbar/Navbar.module.scss b/app/(pages)/_components/Navbar/Navbar.module.scss
+index 2d33889..69da735 100644
+--- a/app/(pages)/_components/Navbar/Navbar.module.scss
++++ b/app/(pages)/_components/Navbar/Navbar.module.scss
+@@ -1,104 +1,11 @@
+ @use 'media';
+ 
+-$scale: 1.04;
+-
+-.relative_wrapper {
+-    position: relative;
+-    height: var(--navbar-height);
+-    width: 100%;
+-}
+-
+ .container {
+-    position: fixed;
+-    z-index: 10;
+-    width: 100%;
+-    height: var(--navbar-height);
+-    padding: 0 var(--medium-spacer);
+-    
+-    display: flex;
++	display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     align-items: center;
+ 
+-    background-color: var(--purple);
+-
+-    >h2 {
+-        color: var(--text-light);
+-    }
++    height: var(--navbar-height);
++    padding: 0 var(--medium-spacer);
+ }
+-
+-.nav_container {
+-    display: flex;
+-    flex-direction: row;
+-    align-items: center;
+-    flex-shrink: 0;
+-    gap: var(--spacer);
+-
+-    .links {
+-        display: flex;
+-        flex-direction: row;
+-        gap: var(--spacer);
+-        color: var(--text-light);
+-
+-        >* {
+-            padding: var(--tiny-spacer);
+-            @include media.tablet {
+-                text-align: center;
+-                padding: var(--small-spacer);
+-            }
+-        }
+-
+-        >*:hover {
+-            transform: scale($scale);
+-            @include media.tablet {
+-                transform: none;
+-                border-bottom: solid 2px var(--purple);
+-            }
+-        }
+-
+-        @include media.tablet {
+-            position: absolute;
+-            z-index: -1;
+-            top: 100%;
+-            left: 0;
+-            right: 0;
+-            height: 0;
+-            overflow: hidden;
+-            
+-            flex-direction: column;
+-            gap: 0;
+-            background-color: var(--background-primary);
+-            color: var(--text-dark);
+-
+-            transition: all 0.25s ease-in;
+-
+-        }
+-    }
+-
+-    @include media.tablet {
+-        .links.active {
+-            height: calc(100vh - var(--navbar-height));
+-        }
+-    }
+-
+-    .menu {
+-        display: none;
+-        background: none;
+-        border: none;
+-        font-size: 2rem;
+-        cursor: pointer;
+-
+-        * {
+-            color: var(--text-light);
+-        }
+-        @include media.tablet {
+-            display: flex;
+-            align-items: center;
+-            justify-content: center;
+-        }
+-    }
+-
+-    .menu:hover {
+-        transform: scale($scale);
+-    }
+-}
+\ No newline at end of file
+diff --git a/app/(pages)/_components/Navbar/Navbar.tsx b/app/(pages)/_components/Navbar/Navbar.tsx
+index 3bf114d..dc4f8ec 100644
+--- a/app/(pages)/_components/Navbar/Navbar.tsx
++++ b/app/(pages)/_components/Navbar/Navbar.tsx
+@@ -1,36 +1,25 @@
+-'use client';
+ import Link from 'next/link';
+-import { RxHamburgerMenu, RxCross2 } from 'react-icons/rx';
++import Image from 'next/image';
+ 
+-import styles from './Navbar.module.scss';
+-import useToggle from '@hooks/useToggle';
++import eStoreIcon from '/public/icons/e_store_icon.svg';
++import profileIcon from '/public/icons/profile.svg';
+ 
+-interface NavLink {
+-  name: string;
+-  slug: string;
+-}
++import styles from './Navbar.module.scss';
+ 
+-export default function Navbar({ navLinks }: { navLinks: NavLink[] }) {
+-  const [active, toggleActive, _, setInactive] = useToggle(false);
++export default function Navbar() {
+   return (
+-    <div className={styles.relative_wrapper}>
+-      <div className={styles.container}>
+-        <h2>LOGO IMG</h2>
+-        <div className={styles.nav_container}>
+-          <div className={`${styles.links} ${active ? styles.active : null}`}>
+-            {navLinks.map((link) => {
+-              return (
+-                <Link key={link.slug} href={link.slug} onClick={setInactive}>
+-                  {link.name}
+-                </Link>
+-              );
+-            })}
+-          </div>
+-          <button className={styles.menu} onClick={toggleActive}>
+-            {active ? <RxCross2 /> : <RxHamburgerMenu />}
+-          </button>
+-        </div>
+-      </div>
++    <div className={styles.container}>
++      <Link href="/">
++        <Image
++          src={eStoreIcon}
++          alt="#include E-Store icon"
++          width={120}
++          height={120}
++        />
++      </Link>
++      <Link href="/profile/account-settings">
++        <Image src={profileIcon} alt="profile icon" width={24} height={24} />
++      </Link>
+     </div>
+   );
+ }
+diff --git a/app/(pages)/_globals/styles/variables.scss b/app/(pages)/_globals/styles/variables.scss
+index aa76c3a..7683449 100644
+--- a/app/(pages)/_globals/styles/variables.scss
++++ b/app/(pages)/_globals/styles/variables.scss
+@@ -1,7 +1,7 @@
+ @use "media";
+ 
+ :root {
+-    --navbar-height: 80px;
++    --navbar-height: 60px;
+ 	--progress-bar-thickness: 2px;
+ 	--card-number-spacing: 4px;
+ }
+\ No newline at end of file
+diff --git a/app/(pages)/orders/view-order/_components/ContactInfo/ContactInfo.module.scss b/app/(pages)/orders/view-order/_components/ContactInfo/ContactInfo.module.scss
+new file mode 100644
+index 0000000..50bb331
+--- /dev/null
++++ b/app/(pages)/orders/view-order/_components/ContactInfo/ContactInfo.module.scss
+@@ -0,0 +1,49 @@
++@use 'media';
++
++.container {
++	display: flex;
++	flex-direction: column;
++
++	border-style: solid;
++	border-color: var(--gray-300);
++	border-width: var(--b-width);
++	border-radius: var(--b-radius);
++
++	.header {
++		display: flex;
++		align-items: center;
++		gap: var(--tiny-spacer);
++		padding: var(--spacer);
++
++		border-bottom-style: solid;
++		border-bottom-width: var(--b-width);
++		border-bottom-color: var(--gray-300);
++	}
++
++	.data {
++		display: flex;
++		flex-direction: column;
++		gap: var(--small-spacer);
++		padding: var(--spacer);
++
++		.field {
++			display: flex;
++			justify-content: space-between;
++			
++			@include media.tablet {
++				flex-direction: column;
++			}
++			
++			.value {
++				width: 50%;
++				text-overflow: ellipsis;
++				overflow: hidden;
++				white-space: nowrap;
++
++				@include media.tablet {
++					width: 100%;
++				}
++			}
++		}
++	}
++}
