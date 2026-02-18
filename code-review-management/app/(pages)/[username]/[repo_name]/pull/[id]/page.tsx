@@ -4,6 +4,7 @@ import PullBodyDescription from "./_components/PullBodyDescription/PullBodyDescr
 import PullBodyHeader from "./_components/PullBodyHeader/PullBodyHeader";
 import styles from "./page.module.css"
 import MOCK_PULL from "@/mocks/pull.json"
+import StatusSection from "./_components/StatusSection/StatusSection";
 // import { useParams } from 'next/navigation'
 
 export default function Pull() {
@@ -24,10 +25,14 @@ export default function Pull() {
             <div>Timeline</div>
           </div>
           <div className={styles.infoColumn}>
-            <div>Status flags</div>
+            <StatusSection />
+            <Divider />
             <div>Reviewers</div>
+            <Divider />
             <div>Assignees</div>
+            <Divider />
             <div>CI Checks</div>
+            <Divider />
           </div>
         </div>
     </div>

@@ -12,17 +12,17 @@
 }
 
 .draft {
-    background-color: var(--status-draft);
+    background-color: var(--state-draft);
 }
 
 .open {
-    background-color: var(--status-open);
+    background-color: var(--state-open);
 }
 
 .closed {
-    background-color: var(--status-closed);
+    background-color: var(--state-closed);
 }
 
 .merged {
-    background-color: var(--status-merged);
+    background-color: var(--state-merged);
 }

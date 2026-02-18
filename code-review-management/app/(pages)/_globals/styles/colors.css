@@ -5,7 +5,7 @@
 
     /* Component text colors */
     --text-primary: #49454f;
-    --text-secondary: #79747E;
+    --text-secondary: #79747e;
     --text-tertiary: #938f99;
 
     /* Semantic colors */
@@ -28,9 +28,21 @@
     --diff-gutter-insert-bg-color: #d6fedb;
     --diff-gutter-insert-border-color: #93de7a;
 
-    /* Diff status colors */
-    --status-draft: #989898;
-    --status-open: var(--color-success);
-    --status-closed: var(--color-failure);
-    --status-merged: #9F81d7;
+    /* Diff state colors */
+    --state-draft: #989898;
+    --state-open: var(--color-success);
+    --state-closed: var(--color-failure);
+    --state-merged: #9F81d7;
+
+    /* Diff status RGB values */
+    /* Use RBG for customizable alpha in RGBA, used for transparent chip backgrounds */
+    --status-ready-rgb: 60, 161, 51;
+    --status-waiting-rgb: 12, 162, 227;
+    --status-conflict-rgb: 255, 158, 2;
+    --status-failure-rgb: 227, 2, 2;
+
+    --status-ready: rgb(var(--status-ready-rgb));
+    --status-waiting: rgb(var(--status-waiting-rgb));
+    --status-conflict: rgb(var(--status-conflict-rgb));
+    --status-failure: rgb(var(--status-failure-rgb));
 }

@@ -6,7 +6,7 @@
 .tempUserIcon {
     height: 25px;
     width: 25px;
-    background-color: var(--status-draft);
+    background-color: var(--state-draft);
     border-radius: 32px;
     position: relative;
 }
