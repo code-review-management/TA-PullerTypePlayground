@@ -17,7 +17,7 @@ export default function DiffListView({
   return (
     <div className={styles.diffListView}>
       {diffs.map((diff) => {
-        const filePath = diff.type === "delete" ? diff.oldPath : diff.newPath;
+        const activePath = diff.type === "delete" ? diff.oldPath : diff.newPath;
         return (
           <FileDiffView
             key={diff.oldRevision + "-" + diff.newRevision}
@@ -28,7 +28,8 @@ export default function DiffListView({
             diffType={diff.type}
             viewType="split"
             hunks={diff.hunks}
-            publishedThreadsByLine={publishedThreads.get(filePath) ?? new Map()}
+            // When there are no published threads mapped to a file, pass an empty map.
+            publishedThreadsByLine={publishedThreads.get(activePath) ?? new Map()}
           />
         );
       })}
