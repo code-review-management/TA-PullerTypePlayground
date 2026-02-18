@@ -28,11 +28,11 @@ export default function InlineCommentPublishedThreadList({
   else {
     // Executes when change.type === "normal"
     return (
-      <div className={styles.normalSplitContainer}>
-        <div className={styles.normalSplitItems}>
+      <div className={styles.normalLineColumns}>
+        <div className={styles.normalLineSide}>
           <PublishedThreadList publishedThreads={leftPublishedThreads} />
         </div>
-        <div className={styles.normalSplitItems}>
+        <div className={styles.normalLineSide}>
           <PublishedThreadList publishedThreads={rightPublishedThreads} />
         </div>
       </div>

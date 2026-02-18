@@ -1,7 +1,7 @@
-.normalSplitContainer {
+.normalLineColumns {
     display: flex;
 }
 
-.normalSplitItems {
+.normalLineSide {
     flex: 1;
 }
