@@ -11,6 +11,11 @@
     /* Semantic colors */
     --color-success: #3ca133;
     --color-failure: #e30202;
+    /* Tooltip colors */
+    --tooltip-gray: #5f5f5f;
+
+    /* Icon colors */
+    --icon-hover-gray: #efefef;
 
     /* Border colors */
     --border-gray: #e2e2e2;

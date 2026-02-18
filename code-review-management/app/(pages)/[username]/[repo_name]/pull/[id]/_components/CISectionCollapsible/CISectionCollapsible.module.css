@@ -1,0 +1,4 @@
+.CISectionCollapsible {
+    display: flex;
+    justify-content: space-between;
+}
