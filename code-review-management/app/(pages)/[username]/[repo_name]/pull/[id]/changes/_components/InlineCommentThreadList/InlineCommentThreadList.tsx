@@ -1,16 +1,21 @@
-import { ChangeData, ViewType } from "react-diff-view";
+import { ChangeData } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
 import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
 import styles from "./InlineCommentThreadList.module.css";
 
+/**
+ * react-diff-view renders widgets for normal, unchanged lines across both sides
+ * of the diff. To keep widgets either on the LHS or RHS on normal lines, we
+ * render the left-threads and right-threads in a flex-box that distributes the
+ * space equally during "split" view.
+ */
+
 export default function InlineCommentPublishedThreadList({
   change,
-  viewType,
   leftPublishedThreads,
   rightPublishedThreads,
 }: {
   change: ChangeData;
-  viewType: ViewType;
   leftPublishedThreads: MockPublishedThread[];
   rightPublishedThreads: MockPublishedThread[];
 }) {
@@ -20,7 +25,7 @@ export default function InlineCommentPublishedThreadList({
   else if (change.type === "insert") {
     return <PublishedThreadList publishedThreads={rightPublishedThreads} />;
   }
-  else if (viewType === "split") {
+  else {
     return (
       <div className={styles.normalSplitContainer}>
         <div className={styles.normalSplitItems}>
@@ -29,14 +34,6 @@ export default function InlineCommentPublishedThreadList({
         <div className={styles.normalSplitItems}>
           <PublishedThreadList publishedThreads={rightPublishedThreads} />
         </div>
-      </div>
-    );
-  }
-  else {
-    return (
-      <div>
-        <PublishedThreadList publishedThreads={leftPublishedThreads} />
-        <PublishedThreadList publishedThreads={rightPublishedThreads} />
       </div>
     );
   }

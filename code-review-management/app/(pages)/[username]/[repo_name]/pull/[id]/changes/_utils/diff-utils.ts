@@ -61,7 +61,6 @@ export function getCommentWidgets(hunks: HunkData[], threadsByLine: PublishedThr
     if (leftPublishedThreads.length > 0 || rightPublishedThreads.length > 0) {
       widgets[changeKey] = InlineCommentThreadList({
         change,
-        viewType: "split",
         leftPublishedThreads,
         rightPublishedThreads,
       });
