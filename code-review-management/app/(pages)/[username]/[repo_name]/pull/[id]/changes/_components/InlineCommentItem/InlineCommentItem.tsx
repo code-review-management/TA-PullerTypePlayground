@@ -10,12 +10,12 @@ export default function InlineCommentItem({
   createdAt: string;
 }) {
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <span className={styles.username}>{username}</span>
+    <div className={styles.comment}>
+      <div className={styles.commentHeader}>
+        <span>{username}</span>
         <span>{createdAt}</span>
       </div>
-      <p>{body}</p>
+      <div>{body}</div>
     </div>
   );
 }
