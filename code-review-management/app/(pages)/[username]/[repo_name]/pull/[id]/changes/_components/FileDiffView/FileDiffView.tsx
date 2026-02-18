@@ -51,7 +51,6 @@ export default function FileDiffView({
   publishedThreadsByLine: PublishedThreadsByLine;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
-
   const tokens = tokenize(hunks, {
     highlight: true,
     refractor: refractor,
