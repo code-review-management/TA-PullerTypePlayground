@@ -1,4 +1,4 @@
-export interface MockPullRequestComment {
+export interface MockPublishedComment {
   user: { login: string; id: number; avatar_url: string };
   id: number; // ID of the pull request review comment
   pull_request_review_id: number | null; // ID of the pull request review to which the comment belongs
