@@ -1,7 +1,7 @@
 import { ChangeData, ViewType } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
 import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
-import styles from "./InlineCommentPublishedThreadList.module.css";
+import styles from "./InlineCommentThreadList.module.css";
 
 export default function InlineCommentPublishedThreadList({
   change,
