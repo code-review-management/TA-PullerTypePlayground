@@ -47,7 +47,7 @@ export function usePublishedThreads() {
 
   useEffect(() => {
     const getPublishedThreads = async () => {
-      const response = await readFile("/mocks/responses/comments.json");
+      const response = await readFile("/mocks/comments.json");
       const comments: MockPublishedComment[] = JSON.parse(response);
       const threads = buildCommentRelations(comments);
       setPublishedThreads(threads);

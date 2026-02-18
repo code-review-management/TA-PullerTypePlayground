@@ -16,7 +16,7 @@ export default function Changes() {
   const [diffs, setDiffs] = useState<FileData[]>();
   useEffect(() => {
     const getParsedDiffs = async () => {
-      const diffString = await readFile("/mocks/responses/diff-string.txt");
+      const diffString = await readFile("/mocks/diff-string.txt");
       const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
       setDiffs(parsedDiffs);
     };
