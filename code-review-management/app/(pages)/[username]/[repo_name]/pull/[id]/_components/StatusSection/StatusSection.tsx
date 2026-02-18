@@ -24,9 +24,11 @@ export default function StatusSection() {
 
     return(
         <div className={styles.statusSection}>
-            { statuses.map((status: Status, id: number) => 
-                <StatusFlagChip status={status} key={id} />
-            )}
+            <div className={styles.statusList}>
+                { statuses.map((status: Status, id: number) =>
+                    <StatusFlagChip status={status} key={id} />
+                )}
+            </div>
         </div>
     );
 }
