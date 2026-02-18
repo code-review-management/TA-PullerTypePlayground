@@ -1,0 +1,13 @@
+.comment {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    gap: var(--spacer-8);
+}
+
+.username {
+    font-weight: 500;
+}

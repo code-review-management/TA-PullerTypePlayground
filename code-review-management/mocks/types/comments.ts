@@ -13,3 +13,14 @@ export interface MockPublishedComment {
   side?: "LEFT" | "RIGHT"; // Side of the diff to which the comment applies. The side of the last line of the range for a multi-line comment
   subject_type?: "line" | "file"; // Level at which the comment is targeted, can be a diff line or a file
 }
+
+export interface MockPublishedThread {
+  id: number;
+  path: string;
+  start_line?: number | null;
+  line?: number;
+  start_side?: "LEFT" | "RIGHT" | null;
+  side?: "LEFT" | "RIGHT";
+  subject_type?: "line" | "file";
+  comments: MockPublishedComment[];
+}

@@ -1,71 +1,555 @@
 [
     {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819762483",
+        "pull_request_review_id": 3817049802,
+        "id": 2819762483,
+        "node_id": "PRRC_kwDORNcFi86oEikz",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */\n \n-void send_task_notification(uint8_t task_id, uint32_t bits) {\n-    for(int i=0; i<TASK_TABLE_LEN; i++) {\n-        if(task_table[i].id == task_id && task_table[i].FreeRTOS_handle) {\n-            xTaskNotify(task_table[i].FreeRTOS_handle, bits, eSetBits);\n-            break;\n-        }\n-    }\n-}\n+/*",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
         "user": {
             "login": "doanvalerie",
             "id": 116031083,
-            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
         },
-        "id": 2815233418,
-        "pullRequestReviewId": 3811991929,
-        "filename": "src/controllers/pokemon.ts",
-        "body": "Parent comment from L8-L10",
-        "createdAt": "2026-02-17T06:37:56Z",
-        "updatedAt": "2026-02-17T06:38:12Z",
-        "startLine": 8,
-        "endLine": 10,
-        "side": "LEFT",
-        "subjectType": "line"
-    },
-    {
-        "user": {
-            "login": "doanvalerie",
-            "id": 116031083,
-            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        "body": "Parent comment: R24-R28",
+        "created_at": "2026-02-18T00:43:51Z",
+        "updated_at": "2026-02-18T00:43:51Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819762483",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819762483"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819762483"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
         },
-        "id": 2815233979,
-        "pullRequestReviewId": 3811991929,
-        "filename": "src/controllers/pokemon.ts",
-        "body": "Child comment from L8-L10",
-        "createdAt": "2026-02-17T06:38:05Z",
-        "updatedAt": "2026-02-17T06:38:12Z",
-        "startLine": 8,
-        "endLine": 10,
-        "inReplyTo": 2815233418,
-        "side": "LEFT",
-        "subjectType": "line"
-    },
-    {
-        "user": {
-            "login": "doanvalerie",
-            "id": 116031083,
-            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819762483/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
         },
-        "id": 2815236126,
-        "pullRequestReviewId": 3811994938,
-        "filename": "src/controllers/pokemon.ts",
-        "body": "Parent comment on R7-R8",
-        "createdAt": "2026-02-17T06:38:44Z",
-        "updatedAt": "2026-02-17T06:38:44Z",
-        "startLine": 7,
-        "endLine": 8,
+        "start_line": 24,
+        "original_start_line": 24,
+        "start_side": "RIGHT",
+        "line": 28,
+        "original_line": 28,
         "side": "RIGHT",
-        "subjectType": "line"
+        "author_association": "COLLABORATOR",
+        "original_position": 12,
+        "position": 1,
+        "subject_type": "line"
     },
     {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819763102",
+        "pull_request_review_id": 3817050377,
+        "id": 2819763102,
+        "node_id": "PRRC_kwDORNcFi86oEiue",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */\n \n-void send_task_notification(uint8_t task_id, uint32_t bits) {\n-    for(int i=0; i<TASK_TABLE_LEN; i++) {\n-        if(task_table[i].id == task_id && task_table[i].FreeRTOS_handle) {\n-            xTaskNotify(task_table[i].FreeRTOS_handle, bits, eSetBits);\n-            break;\n-        }\n-    }\n-}\n+/*",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
         "user": {
             "login": "doanvalerie",
             "id": 116031083,
-            "avatarUrl": "https://avatars.githubusercontent.com/u/116031083?v=4"
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
         },
-        "id": 2815434284,
-        "pullRequestReviewId": 3812223553,
-        "filename": "src/controllers/pokemon.ts",
-        "body": "Unified R5",
-        "createdAt": "2026-02-17T07:41:05Z",
-        "updatedAt": "2026-02-17T07:41:08Z",
-        "startLine": null,
-        "endLine": 5,
+        "body": "First reply: R24-R28",
+        "created_at": "2026-02-18T00:44:08Z",
+        "updated_at": "2026-02-18T00:44:08Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819763102",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819763102"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819763102"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819763102/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": 24,
+        "original_start_line": 24,
+        "start_side": "RIGHT",
+        "line": 28,
+        "original_line": 28,
         "side": "RIGHT",
-        "subjectType": "line"
+        "in_reply_to_id": 2819762483,
+        "author_association": "COLLABORATOR",
+        "original_position": 12,
+        "position": 1,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764228",
+        "pull_request_review_id": 3817051357,
+        "id": 2819764228,
+        "node_id": "PRRC_kwDORNcFi86oEjAE",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */\n \n-void send_task_notification(uint8_t task_id, uint32_t bits) {\n-    for(int i=0; i<TASK_TABLE_LEN; i++) {\n-        if(task_table[i].id == task_id && task_table[i].FreeRTOS_handle) {\n-            xTaskNotify(task_table[i].FreeRTOS_handle, bits, eSetBits);\n-            break;\n-        }\n-    }\n-}\n+/*",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment: R24-R28 (V2)",
+        "created_at": "2026-02-18T00:44:40Z",
+        "updated_at": "2026-02-18T00:44:40Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819764228",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764228"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819764228"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764228/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": 24,
+        "original_start_line": 24,
+        "start_side": "RIGHT",
+        "line": 28,
+        "original_line": 28,
+        "side": "RIGHT",
+        "author_association": "COLLABORATOR",
+        "original_position": 12,
+        "position": 1,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764728",
+        "pull_request_review_id": 3817051867,
+        "id": 2819764728,
+        "node_id": "PRRC_kwDORNcFi86oEjH4",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */\n ",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment: R27",
+        "created_at": "2026-02-18T00:44:58Z",
+        "updated_at": "2026-02-18T00:44:58Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819764728",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764728"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819764728"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819764728/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": null,
+        "original_start_line": null,
+        "start_side": null,
+        "line": 27,
+        "original_line": 27,
+        "side": "RIGHT",
+        "author_association": "COLLABORATOR",
+        "original_position": 3,
+        "position": 3,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819797315",
+        "pull_request_review_id": 3817093990,
+        "id": 2819797315,
+        "node_id": "PRRC_kwDORNcFi86oErFD",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment R26 (clicked on left)",
+        "created_at": "2026-02-18T00:58:14Z",
+        "updated_at": "2026-02-18T00:58:19Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819797315",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819797315"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819797315"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819797315/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": null,
+        "original_start_line": null,
+        "start_side": null,
+        "line": 26,
+        "original_line": 26,
+        "side": "RIGHT",
+        "author_association": "COLLABORATOR",
+        "original_position": 2,
+        "position": 2,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819798676",
+        "pull_request_review_id": 3817095331,
+        "id": 2819798676,
+        "node_id": "PRRC_kwDORNcFi86oEraU",
+        "diff_hunk": "@@ -25,21 +25,29 @@\n \tIDLE\t\t 5\t\tIdle when no other mode is running\n */",
+        "path": "Src/scheduler/intelliTask.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment R26 (clicked on left) (V2)",
+        "created_at": "2026-02-18T00:58:37Z",
+        "updated_at": "2026-02-18T00:58:37Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819798676",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819798676"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819798676"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819798676/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": null,
+        "original_start_line": null,
+        "start_side": null,
+        "line": 26,
+        "original_line": 26,
+        "side": "RIGHT",
+        "author_association": "COLLABORATOR",
+        "original_position": 2,
+        "position": 2,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819802652",
+        "pull_request_review_id": 3817099206,
+        "id": 2819802652,
+        "node_id": "PRRC_kwDORNcFi86oEsYc",
+        "diff_hunk": "@@ -18,136 +18,56 @@\n #include \"scheduler/schedulerGlobals.h\"\n \n /* File Includes */\n-#include \"scheduler/watchdog.h\"\n-#include \"scheduler/intelliTask.h\"",
+        "path": "Src/main.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment L21-L22",
+        "created_at": "2026-02-18T01:00:10Z",
+        "updated_at": "2026-02-18T01:00:10Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819802652",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819802652"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819802652"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819802652/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": 21,
+        "original_start_line": 21,
+        "start_side": "LEFT",
+        "line": 22,
+        "original_line": 22,
+        "side": "LEFT",
+        "author_association": "COLLABORATOR",
+        "original_position": 5,
+        "position": 5,
+        "subject_type": "line"
+    },
+    {
+        "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819804338",
+        "pull_request_review_id": 3817101515,
+        "id": 2819804338,
+        "node_id": "PRRC_kwDORNcFi86oEsyy",
+        "diff_hunk": "@@ -18,136 +18,56 @@\n #include \"scheduler/schedulerGlobals.h\"\n \n /* File Includes */\n-#include \"scheduler/watchdog.h\"\n-#include \"scheduler/intelliTask.h\"\n-#include \"scheduler/status.h\"\n+// #include \"scheduler/watchdog.h\"\n+// #include \"scheduler/intelliTask.h\"",
+        "path": "Src/main.c",
+        "commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "original_commit_id": "3052595f27539524da28b3a7c9364d20e7544ac1",
+        "user": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "body": "Parent comment R21-R22",
+        "created_at": "2026-02-18T01:00:58Z",
+        "updated_at": "2026-02-18T01:00:58Z",
+        "html_url": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819804338",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819804338"
+            },
+            "html": {
+                "href": "https://github.com/nithinsenthil/IntestiSat/pull/4#discussion_r2819804338"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/4"
+            }
+        },
+        "reactions": {
+            "url": "https://api.github.com/repos/nithinsenthil/IntestiSat/pulls/comments/2819804338/reactions",
+            "total_count": 0,
+            "+1": 0,
+            "-1": 0,
+            "laugh": 0,
+            "hooray": 0,
+            "confused": 0,
+            "heart": 0,
+            "rocket": 0,
+            "eyes": 0
+        },
+        "start_line": 21,
+        "original_start_line": 21,
+        "start_side": "RIGHT",
+        "line": 22,
+        "original_line": 22,
+        "side": "RIGHT",
+        "author_association": "COLLABORATOR",
+        "original_position": 8,
+        "position": 8,
+        "subject_type": "line"
     }
 ]

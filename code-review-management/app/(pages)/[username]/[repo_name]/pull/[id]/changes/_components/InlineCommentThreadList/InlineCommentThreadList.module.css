@@ -1,0 +1,7 @@
+.normalSplitContainer {
+    display: flex;
+}
+
+.normalSplitItems {
+    flex: 1;
+}

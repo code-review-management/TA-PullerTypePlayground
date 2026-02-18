@@ -12,7 +12,8 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { getLanguage } from "../../_utils/diff-utils";
+import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
+import { getCommentWidgets, getLanguage } from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 
 import styles from "./FileDiffView.module.css";
@@ -38,6 +39,7 @@ export default function FileDiffView({
   diffType,
   viewType,
   hunks,
+  publishedThreadsByLine,
 }: {
   oldRevision: string;
   newRevision: string;
@@ -46,6 +48,7 @@ export default function FileDiffView({
   diffType: FileData["type"];
   viewType: ViewType;
   hunks: HunkData[];
+  publishedThreadsByLine: PublishedThreadsByLine;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -54,6 +57,7 @@ export default function FileDiffView({
     refractor: refractor,
     language: getLanguage(diffType === "delete" ? oldPath : newPath),
   });
+  const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
 
   return (
     <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
@@ -72,6 +76,7 @@ export default function FileDiffView({
             diffType={diffType}
             hunks={hunks}
             tokens={tokens}
+            widgets={widgets}
           >
             {(hunks) =>
               hunks.map((hunk) => (
