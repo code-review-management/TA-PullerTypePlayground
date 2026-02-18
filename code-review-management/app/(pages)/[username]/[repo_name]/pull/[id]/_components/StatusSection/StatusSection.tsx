@@ -20,8 +20,6 @@ export default function StatusSection() {
         }
     }
 
-    console.log(statuses);
-
     return(
         <div className={styles.statusSection}>
             <div className={styles.statusList}>
