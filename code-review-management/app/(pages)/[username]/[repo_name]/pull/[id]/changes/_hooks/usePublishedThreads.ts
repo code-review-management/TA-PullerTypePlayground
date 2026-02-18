@@ -30,14 +30,9 @@ export type PublishedThreadsByLine = Map<LineNumber, PublishedThreadsBySide>;
 /**
  * When building the array of 'MockPublishedThread', the threads are ordered
  * by their creation time (again, assuming the data we retrieve from GitHub
- * is sorted this way). The 'combined' field combines the threads on the left-
- * side of the diff and right-side of the diff (for the same line number) while
- * maintaining this ordering. This is necessary for when the diff is in
- * 'unified' view, so we can display comments on unchanged lines in the correct
- * order.
+ * is sorted this way).
  */
 export interface PublishedThreadsBySide {
-  combined: MockPublishedThread[];
   left: MockPublishedThread[];
   right: MockPublishedThread[];
 }
@@ -127,15 +122,13 @@ function groupThreadsByLineAndSide(threads: MockPublishedThread[]) {
     if (!line || !side || subject_type !== "line") continue;
 
     if (!threadsByLine.has(line)) {
-      threadsByLine.set(line, { left: [], right: [], combined: [] });
+      threadsByLine.set(line, { left: [], right: [] });
     }
 
     const diffSide = side === "LEFT" ? "left" : "right";
-
     // Use non-null assertion since it's guaranteed that 'line' is a key in
     // 'threadsByLine' since we set it above if it does not exist.
     threadsByLine.get(line)![diffSide].push(thread);
-    threadsByLine.get(line)!.combined.push(thread);
   }
 
   return threadsByLine;
