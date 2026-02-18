@@ -26,6 +26,7 @@ export default function InlineCommentPublishedThreadList({
     return <PublishedThreadList publishedThreads={rightPublishedThreads} />;
   }
   else {
+    // Executes when change.type === "normal"
     return (
       <div className={styles.normalSplitContainer}>
         <div className={styles.normalSplitItems}>
