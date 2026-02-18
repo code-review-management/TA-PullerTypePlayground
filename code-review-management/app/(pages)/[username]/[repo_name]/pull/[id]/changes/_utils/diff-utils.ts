@@ -18,7 +18,7 @@ export function getLanguage(filename: string) {
 /**
  * We have to group threads by side because for normal, unchanged lines,
  * react-diff-view shows the widget across both sides. We need to distinguish
- * threads on the left-side and right-side to show a side-by-side comments for
+ * threads on the left-side and right-side to show side-by-side comments for
  * normal lines.
  */
 function getPublishedThreadsBySide(change: ChangeData, threadsByLine: PublishedThreadsByLine) {
@@ -48,15 +48,15 @@ function getPublishedThreadsBySide(change: ChangeData, threadsByLine: PublishedT
 
 export function getCommentWidgets(hunks: HunkData[], threadsByLine: PublishedThreadsByLine) {
   // Docs: https://www.npmjs.com/package/react-diff-view#add-widgets
-  const changes = hunks.reduce<ChangeData[]>((result, { changes }) => [...result, ...changes], []);
+  const changes = hunks.flatMap(hunk => hunk.changes);
   const widgets: Record<string, ReactNode> = {};
 
   changes.forEach((change) => {
+    const changeKey = getChangeKey(change);
     const {
       leftPublishedThreads,
       rightPublishedThreads
     } = getPublishedThreadsBySide(change, threadsByLine);
-    const changeKey = getChangeKey(change);
 
     if (leftPublishedThreads.length > 0 || rightPublishedThreads.length > 0) {
       widgets[changeKey] = InlineCommentThreadList({
