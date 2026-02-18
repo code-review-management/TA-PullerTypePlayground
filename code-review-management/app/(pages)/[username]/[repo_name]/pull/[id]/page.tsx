@@ -5,6 +5,8 @@ import PullBodyHeader from "./_components/PullBodyHeader/PullBodyHeader";
 import styles from "./page.module.css"
 import MOCK_PULL from "@/mocks/pull.json"
 import StatusSection from "./_components/StatusSection/StatusSection";
+import Reviewers from "./_components/Reviewers/Reviewers";
+import Assignees from "./_components/Assignees/Assignees";
 // import { useParams } from 'next/navigation'
 
 export default function Pull() {
@@ -27,9 +29,9 @@ export default function Pull() {
           <div className={styles.infoColumn}>
             <StatusSection />
             <Divider />
-            <div>Reviewers</div>
+            <Reviewers />
             <Divider />
-            <div>Assignees</div>
+            <Assignees />
             <Divider />
             <div>CI Checks</div>
             <Divider />
