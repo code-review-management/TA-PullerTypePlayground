@@ -1,5 +1,11 @@
 import styles from "./StateChip.module.css";
 
+/**
+ * TODO: Match with GitHub API state responses
+ * Move logic to StateChip.tsx
+ * Move types to a types file.
+ */
+
 export type State = "open" | "closed" | "merged" | "draft";
 
 export const COLOR_CLASSES: Record<State, string> = {

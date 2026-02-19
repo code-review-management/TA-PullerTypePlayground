@@ -1,6 +1,12 @@
 import Image from "next/image";
 import styles from "./Comment.module.css"
 
+/**
+ * A minimalist comment component for display on the PR View page.
+ * @param username: Username of the user who wrote the comment.
+ * @param createdAt: The time that the comment was posted.
+ * @param description: The text content for the comment. Currently supports HTML for markup.
+ */
 export default function Comment({ username, createdAt, description } : {
     username: string,
     createdAt: string,

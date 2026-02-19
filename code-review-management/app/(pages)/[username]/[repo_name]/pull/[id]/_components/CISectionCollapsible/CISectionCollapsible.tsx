@@ -2,6 +2,12 @@ import Image from "next/image";
 import styles from "./CISectionCollapsible.module.css"
 import { ReactNode, useState } from "react";
 
+/**
+ * A "drawer" collapsible used in the CI section of the PR view page. Collapsed by default.
+ * @param iconSrc: Source string for the icon displayed in the header of the collapsible.
+ * @param headerText: String containing header text for the collapsible. 
+ * @param children: Component to be displayed as "drawer" (only shows when not collapsed).
+ */
 export default function CISectionCollapsible({ iconSrc, headerText, children } : {
     iconSrc?: string,
     headerText: string,

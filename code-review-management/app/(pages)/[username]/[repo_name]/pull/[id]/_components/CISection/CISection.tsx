@@ -1,6 +1,10 @@
 import CISectionCollapsible from "../CISectionCollapsible/CISectionCollapsible";
 import styles from "./CISection.module.css"
 
+/**
+ * The CI section of the PR View page. 
+ * Includes a header and collapsible sections for passing/failing tests.
+ */
 export default function CISection() {
     return(
         <div className={styles.CISection}>

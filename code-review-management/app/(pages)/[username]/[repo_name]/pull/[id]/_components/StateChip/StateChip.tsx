@@ -2,6 +2,11 @@ import Image from "next/image";
 import styles from "./StateChip.module.css"
 import { State, COLOR_CLASSES, ICONS } from "./stateConstants";
 
+/**
+ * State chip indicating whether a pull request is open, closed, merged, or draft
+ * displayed on the body header of the PR view page.
+ * @param state: open, closed, merged, or draft
+ */
 export default function StateChip({ state }:{
     state: State,
 }) {

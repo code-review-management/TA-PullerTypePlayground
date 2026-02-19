@@ -10,6 +10,7 @@ import Assignees from "./_components/Assignees/Assignees";
 import CISection from "./_components/CISection/CISection";
 // import { useParams } from 'next/navigation'
 
+// Pull Request View page.
 export default function Pull() {
   // TODO: Use params to fetch PR info
   // const params = useParams();

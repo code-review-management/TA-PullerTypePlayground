@@ -1,4 +1,7 @@
 .statusSection {
+    /* Math to align the bottom divider of this section to the bottom divider of the body header.
+    body header height is 120px, but body header has 24px gap to its divider,
+    and this section only has 16 px gap to its divider. */
     height: calc(120px + var(--spacer-24) - var(--spacer-16));
     display: flex;
     flex-direction: column;

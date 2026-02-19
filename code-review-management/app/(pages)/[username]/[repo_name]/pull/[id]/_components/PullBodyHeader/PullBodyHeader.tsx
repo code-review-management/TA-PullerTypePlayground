@@ -5,11 +5,22 @@ import styles from "./PullBodyHeader.module.css"
 import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
 
+// Used for display of the branch names in the pull body header
+// TODO: Move to root layout
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
+/**
+ * Header of the body of the PR page.
+ * Includes the name of the repo, the PR name and number,
+ * status of the pull request (open, closed, merged, draft),
+ * the name and image of the author,
+ * the names of the branches,
+ * the last update time,
+ * number of commits, and number of files changed, lines added, and lines deleted.
+ */
 export default function PullBodyHeader() {
     return(
           <div className={`${styles.pullBodyHeader} ${robotoMono.variable}`}>

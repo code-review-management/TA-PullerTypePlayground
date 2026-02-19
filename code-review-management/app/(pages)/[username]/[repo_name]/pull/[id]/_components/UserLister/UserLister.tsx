@@ -3,6 +3,11 @@ import styles from "./UserLister.module.css"
 
 export type UserListType = "reviewers" | "assignees";
 
+/**
+ * A row of the user list in the UserLister representing 1 user in the list.
+ * @param username: Username of the listed user
+ * @param imageSrc: String for the image source for the icon of the listed user.
+ */
 function UserListerRow({ username, imageSrc } : {
     username: string,
     imageSrc: string,
@@ -15,6 +20,14 @@ function UserListerRow({ username, imageSrc } : {
     );
 }
 
+/**
+ * A section of the PR view page where users can be dynamically added and the current list is displayed.
+ * Used for the reviewers and assignees section of the PR view page.
+ * @param listType: reviewers or assignees
+ * @param userList: A list of users. Currently a user is defined as type { username: string; imageSrc: string; }
+ * TODO: Add "add" functionality
+ * TODO: Use correct type for userList
+ */
 export default function UserLister({ listType, userList }: {
     listType: UserListType,
     userList: { username: string, imageSrc: string }[],
