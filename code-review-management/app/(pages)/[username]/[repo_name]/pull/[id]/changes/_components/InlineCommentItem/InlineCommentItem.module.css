@@ -1,0 +1,10 @@
+.comment {
+    display: flex;
+    flex-direction: column;
+    margin: 0 var(--spacer-16);
+}
+
+.commentHeader {
+    display: flex;
+    gap: var(--spacer-8);
+}

@@ -1,0 +1,7 @@
+.normalLineColumns {
+    display: flex;
+}
+
+.normalLineSide {
+    flex: 1;
+}
