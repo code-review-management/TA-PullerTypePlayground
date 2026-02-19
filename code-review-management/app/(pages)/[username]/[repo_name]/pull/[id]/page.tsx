@@ -7,6 +7,7 @@ import MOCK_PULL from "@/mocks/pull.json"
 import StatusSection from "./_components/StatusSection/StatusSection";
 import Reviewers from "./_components/Reviewers/Reviewers";
 import Assignees from "./_components/Assignees/Assignees";
+import CISection from "./_components/CISection/CISection";
 // import { useParams } from 'next/navigation'
 
 export default function Pull() {
@@ -33,7 +34,7 @@ export default function Pull() {
             <Divider />
             <Assignees />
             <Divider />
-            <div>CI Checks</div>
+            <CISection />
             <Divider />
           </div>
         </div>
