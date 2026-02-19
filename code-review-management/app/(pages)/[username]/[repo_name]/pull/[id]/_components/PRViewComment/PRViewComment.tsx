@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./Comment.module.css";
+import styles from "./PRViewComment.module.css";
 
 /**
  * A minimalist comment component for display on the PR View page.
@@ -7,7 +7,7 @@ import styles from "./Comment.module.css";
  * @param createdAt: The time that the comment was posted.
  * @param description: The text content for the comment. Currently supports HTML for markup.
  */
-export default function Comment({
+export default function PRViewComment({
   username,
   createdAt,
   description,
