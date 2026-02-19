@@ -26,17 +26,17 @@ export default function CISectionCollapsible({
       <div className={styles.CISectionTop}>
         <div className={styles.info}>
           {iconSrc && (
-            <Image src={iconSrc} alt={iconSrc} width={16} height={16} />
+            <Image src={iconSrc} alt={iconSrc} width={20} height={20} />
           )}
           <h5 className={styles.collapsibleHeader}>{headerText}</h5>
         </div>
         <button className={styles.chevronButton} onClick={toggleIsOpen}>
           <Image
-            className={`${styles.chevron} ${!isOpen && styles.closedChevron}`}
-            src="/icons/chevron_down_secondary.svg"
-            alt="Chevron down"
-            width={20}
-            height={20}
+            className={`${styles.chevron} ${isOpen && styles.closedChevron}`}
+            src="/icons/chevron_up_secondary.svg"
+            alt={`Chevron ${isOpen ? "down" : "up"}`}
+            width={12}
+            height={8}
           />
         </button>
       </div>

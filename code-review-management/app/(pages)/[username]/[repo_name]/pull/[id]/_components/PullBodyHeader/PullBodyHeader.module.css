@@ -1,5 +1,5 @@
 .pullBodyHeader {
-  height: 120px;
+  height: var(--pr-view-body-header-height);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -51,6 +51,10 @@
   background-color: var(--state-draft);
   border-radius: 32px;
   position: relative;
+}
+
+.user {
+  font-weight: 500;
 }
 
 .branchDisplay {

@@ -1,5 +1,5 @@
 .pullBodyDescription {
   display: flex;
   flex-direction: column;
-  gap: var(--spacer-8);
+  gap: var(--spacer-12);
 }

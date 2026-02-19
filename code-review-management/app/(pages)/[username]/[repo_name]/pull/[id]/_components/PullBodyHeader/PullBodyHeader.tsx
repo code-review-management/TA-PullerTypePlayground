@@ -41,7 +41,7 @@ export default function PullBodyHeader() {
               <Image src="/mock/octocat.png" alt="@octocat" fill />
             </div>{" "}
             {/** TODO: Replace with user icon component */}
-            <p>{MOCK_PULL.user}</p>
+            <p className={styles.user}>{MOCK_PULL.user}</p>
           </div>
           <div className={styles.branchDisplay}>
             <div className={styles.branchChip}>

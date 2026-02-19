@@ -32,4 +32,5 @@
 
 .date {
   color: var(--text-tertiary);
+  font-size: 0.9375rem; /* 1px smaller than username. Using rem here for accessibility*/
 }
