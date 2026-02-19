@@ -1,4 +1,4 @@
-import Comment from "../Comment/Comment";
+import PrViewComment from "../PRViewComment/PRViewComment";
 import styles from "./PullBodyDescription.module.css";
 
 /**
@@ -19,7 +19,7 @@ export default function PullBodyDescription({
   return (
     <div className={styles.pullBodyDescription}>
       <h4 className={styles.sectionTitle}>Description</h4>
-      <Comment
+      <PrViewComment
         username={username}
         createdAt={createdAt}
         description={description}
