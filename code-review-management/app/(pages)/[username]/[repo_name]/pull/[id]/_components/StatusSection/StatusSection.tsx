@@ -29,8 +29,8 @@ export default function StatusSection() {
   return (
     <div className={styles.statusSection}>
       <div className={styles.statusList}>
-        {statuses.map((status: Status, id: number) => (
-          <StatusFlagChip status={status} key={id} />
+        {statuses.map((status: Status) => (
+          <StatusFlagChip status={status} key={status} />
         ))}
       </div>
     </div>

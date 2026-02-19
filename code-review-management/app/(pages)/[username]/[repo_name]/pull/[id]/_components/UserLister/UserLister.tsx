@@ -53,11 +53,11 @@ export default function UserLister({
         />
       </div>
       <div className={styles.listedUsers}>
-        {userList.map((user, idx) => (
+        {userList.map((user) => (
           <UserListerRow
             username={user.username}
             imageSrc={user.imageSrc}
-            key={idx}
+            key={user.username}
           />
         ))}
       </div>
