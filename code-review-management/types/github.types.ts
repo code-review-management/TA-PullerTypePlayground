@@ -22,7 +22,7 @@ export const RepoSchema = z.object({
     description: z.string().nullable(),
 });
 
-const IssueSchema = z.object({
+export const IssueSchema = z.object({
     url: z.string(),
     id: z.number(),
     number: z.number(),
@@ -34,7 +34,7 @@ const IssueSchema = z.object({
     updated_at: z.string(),
 });
 
-const PullRequestSchema = z.object({
+export const PullRequestSchema = z.object({
     url: z.string(),
     id: z.number(),
     diff_url: z.string(),
@@ -45,7 +45,7 @@ const PullRequestSchema = z.object({
     user: UserSchema.nullable(),
 });
 
-const FileDiffSchema = z.object({
+export const FileDiffSchema = z.object({
     sha: z.string().nullable(),
     filename: z.string(),
     status: z.string(),
