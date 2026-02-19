@@ -1,28 +1,28 @@
 .stateChip {
-    height: 32px;
+  height: 32px;
 
-    padding: 12px;
-    border-radius: 16px;
-    font-size: 0.875rem;
-    color: var(--background-light);
+  padding: 12px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  color: var(--background-light);
 
-    display: flex;
-    align-items: center;
-    gap: var(--spacer-4);
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-4);
 }
 
 .draft {
-    background-color: var(--state-draft);
+  background-color: var(--state-draft);
 }
 
 .open {
-    background-color: var(--state-open);
+  background-color: var(--state-open);
 }
 
 .closed {
-    background-color: var(--state-closed);
+  background-color: var(--state-closed);
 }
 
 .merged {
-    background-color: var(--state-merged);
+  background-color: var(--state-merged);
 }

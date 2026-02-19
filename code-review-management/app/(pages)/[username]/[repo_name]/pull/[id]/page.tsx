@@ -1,9 +1,9 @@
-'use client';
+"use client";
 import Divider from "@/app/(pages)/_components/Divider/Divider";
 import PullBodyDescription from "./_components/PullBodyDescription/PullBodyDescription";
 import PullBodyHeader from "./_components/PullBodyHeader/PullBodyHeader";
-import styles from "./page.module.css"
-import MOCK_PULL from "@/mocks/pull.json"
+import styles from "./page.module.css";
+import MOCK_PULL from "@/mocks/pull.json";
 import StatusSection from "./_components/StatusSection/StatusSection";
 import Reviewers from "./_components/Reviewers/Reviewers";
 import Assignees from "./_components/Assignees/Assignees";
@@ -18,27 +18,29 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
-        <div>
-          Page header
+      <div>Page header</div>
+      <div className={styles.pageBody}>
+        <div className={styles.bodyMain}>
+          <PullBodyHeader />
+          <Divider />
+          <PullBodyDescription
+            username={MOCK_PULL.user}
+            createdAt={MOCK_PULL.created_at}
+            description={MOCK_PULL.description}
+          />
+          <div>Timeline</div>
         </div>
-        <div className={styles.pageBody}>
-          <div className={styles.bodyMain}>
-            <PullBodyHeader />
-            <Divider />
-            <PullBodyDescription username={MOCK_PULL.user} createdAt={MOCK_PULL.created_at} description={MOCK_PULL.description} />
-            <div>Timeline</div>
-          </div>
-          <div className={styles.infoColumn}>
-            <StatusSection />
-            <Divider />
-            <Reviewers />
-            <Divider />
-            <Assignees />
-            <Divider />
-            <CISection />
-            <Divider />
-          </div>
+        <div className={styles.infoColumn}>
+          <StatusSection />
+          <Divider />
+          <Reviewers />
+          <Divider />
+          <Assignees />
+          <Divider />
+          <CISection />
+          <Divider />
         </div>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./UserLister.module.css"
+import styles from "./UserLister.module.css";
 
 export type UserListType = "reviewers" | "assignees";
 
@@ -8,16 +8,19 @@ export type UserListType = "reviewers" | "assignees";
  * @param username: Username of the listed user
  * @param imageSrc: String for the image source for the icon of the listed user.
  */
-function UserListerRow({ username, imageSrc } : {
-    username: string,
-    imageSrc: string,
+function UserListerRow({
+  username,
+  imageSrc,
+}: {
+  username: string;
+  imageSrc: string;
 }) {
-    return(
-        <div className={styles.userListerRow}>
-            <Image src={imageSrc} alt={`@${username}`} width={25} height={25} />
-            <h5 className={styles.username}>{username}</h5>
-        </div>
-    );
+  return (
+    <div className={styles.userListerRow}>
+      <Image src={imageSrc} alt={`@${username}`} width={25} height={25} />
+      <h5 className={styles.username}>{username}</h5>
+    </div>
+  );
 }
 
 /**
@@ -28,24 +31,36 @@ function UserListerRow({ username, imageSrc } : {
  * TODO: Add "add" functionality
  * TODO: Use correct type for userList
  */
-export default function UserLister({ listType, userList }: {
-    listType: UserListType,
-    userList: { username: string, imageSrc: string }[],
+export default function UserLister({
+  listType,
+  userList,
+}: {
+  listType: UserListType;
+  userList: { username: string; imageSrc: string }[];
 }) {
-    const headerDisplay = `${listType[0].toUpperCase()}${listType.slice(1)}`;
-    
+  const headerDisplay = `${listType[0].toUpperCase()}${listType.slice(1)}`;
 
-    return(
-        <div className={styles.userLister}>
-            <div className={styles.headerRow}>
-                <h4>{headerDisplay}</h4>
-                <Image className={styles.plusIcon} src="/icons/plus.svg" alt="Plus icon" height={12} width={12} />
-            </div>
-            <div className={styles.listedUsers}>
-                {userList.map((user, idx) => 
-                    <UserListerRow username={user.username} imageSrc={user.imageSrc} key={idx}/>
-                )}
-            </div>
-        </div>
-    );
+  return (
+    <div className={styles.userLister}>
+      <div className={styles.headerRow}>
+        <h4>{headerDisplay}</h4>
+        <Image
+          className={styles.plusIcon}
+          src="/icons/plus.svg"
+          alt="Plus icon"
+          height={12}
+          width={12}
+        />
+      </div>
+      <div className={styles.listedUsers}>
+        {userList.map((user, idx) => (
+          <UserListerRow
+            username={user.username}
+            imageSrc={user.imageSrc}
+            key={idx}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }

@@ -27,4 +27,4 @@ export const TEXT: Record<Status, string> = {
   waiting: "Needs review",
   conflict: "Merge conflict",
   failure: "CI failed",
-}
+};
