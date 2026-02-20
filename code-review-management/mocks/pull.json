@@ -1,0 +1,20 @@
+{
+    "repo_name": "repository-capstone",
+    "title": "Update README.md",
+    "description": "<p>This PR updates the README.md file to include instructions on how to install the repository.<p>",
+    "number": 10,
+    "state": "open",
+    "user": "octocat",
+    "head_title": "demo-branch",
+    "base_title": "main",
+    "updated": "2 hours ago",
+    "commits": 3,
+    "changed_files": 7,
+    "additions": 53,
+    "deletions": 12,
+    "created_at": "Feb 2, 2026 at 10:30 AM",
+    "hasConflict": true,
+    "hasCIFailure": true,
+    "needsReview": true,
+    "mergeable": false
+}

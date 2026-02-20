@@ -1,0 +1,35 @@
+.CISectionCollapsible {
+  display: flex;
+  flex-direction: column;
+}
+
+.CISectionTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-8);
+}
+
+.collapsibleHeader {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.chevronButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.chevron {
+  transition: transform 0.2s ease-in-out;
+}
+
+.closedChevron {
+  transform: rotate(180deg);
+}

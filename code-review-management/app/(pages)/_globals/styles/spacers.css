@@ -13,4 +13,6 @@
     --border-thin-width: 0.5px;
     --border-normal-width: 1px;
     --border-radius: 4px;
+
+    --pr-view-body-header-height: 120px;
 }

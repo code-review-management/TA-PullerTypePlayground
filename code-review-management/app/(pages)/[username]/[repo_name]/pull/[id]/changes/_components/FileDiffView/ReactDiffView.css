@@ -10,7 +10,7 @@
     font-size: var(--font-size-diff-code);
 }
 
-.diff * {
+.diff-line * {
     font-family: var(--font-roboto-mono);
 }
 

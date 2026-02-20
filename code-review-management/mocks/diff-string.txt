@@ -1,861 +1,1370 @@
-diff --git a/app/(pages)/_components/Textbox/Textbox.module.scss b/app/(pages)/_components/Textbox/Textbox.module.scss
-index 2d18353..aad7477 100644
---- a/app/(pages)/_components/Textbox/Textbox.module.scss
-+++ b/app/(pages)/_components/Textbox/Textbox.module.scss
-@@ -1,88 +1,27 @@
--@use 'media';
--
- .textbox_container {
--    display: flex;
--    height: 155px;
--    flex-direction: column;
--    width: 100%;
-     margin: var(--tiny-spacer) 0;
--    border-style: solid;
--    border-width: 1px;
--    border-color: var(--gray-500);
--    border-radius: var(--tiny-spacer);
--    outline: none;
--
--    .edit_header {
--        display: flex;
--        align-items: center;
--        background-color: var(--background-primary);
--        border-radius: var(--tiny-spacer) var(--tiny-spacer) 0 0;
--        height: 40px;
--        border-bottom: 1px solid var(--gray-500);
--        padding: var(--tiny-spacer) 0;
--
--        @include media.tablet {
--            min-height: 40px;
--            height: auto;
--        }
--
--        @include media.phone {
--            overflow: scroll;
--            scrollbar-width: none;
--        }
--
--        .icon_group {
--            padding: var(--small-spacer);
--            margin: var(--tiny-spacer);
--            display: flex;
--            flex-direction: row;
--            gap: var(--small-spacer);
--            cursor: pointer;
--            
--            @include media.tablet {
--                padding: 0 var(--tiny-spacer);
--                margin: 0 var(--tiny-spacer);
--            }
--        }
--
--        .header_border {
--            width: 0.8px;
--            min-height: 40px;
--            background-color: var(--gray-500);
--
--            @include media.tablet {
--                display: none;
--            }
--        }
--    }
--
--    .input_text {
--        border: none;
--        margin: 0;
--        height: 100%;
--        padding: var(--small-spacer);
--        resize: none;
--        outline: none;
--        scrollbar-width: none;
--    }
--
--    .input_text::placeholder {
--        color: var(--gray-500);
--    }
--
--    .wordcount {
--        padding: var(--small-spacer) var(--tiny-spacer);
--        display: flex;
--        justify-content: end;
--        color: var(--gray-500);
--        font-weight: 300;
--    }
--
--    .wordcount_over {
--        padding: var(--small-spacer) var(--tiny-spacer);
--        display: flex;
--        justify-content: end;
--        color: var(--red);
--        font-weight: 300;
--    }
-+    position: relative;
-+  }
-+  
-+.quill.quill_style {
-+  border-style: solid;
-+  border-width: 1px;
-+  border-color: var(--gray-500);
-+}
-+
-+.wordcount {
-+  position: absolute;
-+  bottom: var(--tiny-spacer);
-+  right: var(--tiny-spacer);
-+  color: var(--gray-500);
-+  font-weight: 300;
-+}
-+
-+.wordcount-over {
-+  position: absolute;
-+  bottom: var(--tiny-spacer);
-+  right: var(--tiny-spacer);
-+  color: var(--gray-500);
-+  font-weight: 300;
-+  color: var(--red);
- }
+diff --git a/.DS_Store b/.DS_Store
+deleted file mode 100644
+index 4d1b0213..00000000
+Binary files a/.DS_Store and /dev/null differ
+diff --git a/.gitignore b/.gitignore
+index 47767618..1dd277b2 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -57,4 +57,7 @@ release
+ *.pdb
+ 
+ # Launch file
+-*.launch
 \ No newline at end of file
-diff --git a/app/(pages)/_components/Textbox/Textbox.tsx b/app/(pages)/_components/Textbox/Textbox.tsx
-index 99dcd29..8ee9709 100644
---- a/app/(pages)/_components/Textbox/Textbox.tsx
-+++ b/app/(pages)/_components/Textbox/Textbox.tsx
-@@ -1,101 +1,85 @@
- import styles from './Textbox.module.scss';
--import Image from 'next/image';
--import { useState } from 'react';
-+import { useState, useRef, useEffect } from 'react';
-+import 'react-quill/dist/quill.snow.css';
-+import dynamic from 'next/dynamic';
- 
--interface TextboxProps {
--  name: string;
--  placeholder: string;
-+const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
++*.launch
 +
-+interface QuillEditorInstance {
-+  getEditor: () => {
-+    getLength: () => number;
-+    setText: (text: string) => void;
-+    enable: (enabled: boolean) => void;
-+  };
++.DS_Store
++build/*
+\ No newline at end of file
+diff --git a/FreeRTOS/.DS_Store b/FreeRTOS/.DS_Store
+deleted file mode 100644
+index dd20d9f2..00000000
+Binary files a/FreeRTOS/.DS_Store and /dev/null differ
+diff --git a/FreeRTOS/Source/.DS_Store b/FreeRTOS/Source/.DS_Store
+deleted file mode 100644
+index 6f5fa037..00000000
+Binary files a/FreeRTOS/Source/.DS_Store and /dev/null differ
+diff --git a/FreeRTOS/Source/portable/.DS_Store b/FreeRTOS/Source/portable/.DS_Store
+deleted file mode 100644
+index 92d01a33..00000000
+Binary files a/FreeRTOS/Source/portable/.DS_Store and /dev/null differ
+diff --git a/FreeRTOS/Source/portable/GCC/.DS_Store b/FreeRTOS/Source/portable/GCC/.DS_Store
+deleted file mode 100644
+index c78af763..00000000
+Binary files a/FreeRTOS/Source/portable/GCC/.DS_Store and /dev/null differ
+diff --git a/FreeRTOS/Source/portable/MemMang/.DS_Store b/FreeRTOS/Source/portable/MemMang/.DS_Store
+deleted file mode 100644
+index b38d4cad..00000000
+Binary files a/FreeRTOS/Source/portable/MemMang/.DS_Store and /dev/null differ
+diff --git a/FreeRTOS/Source/portable/MemMang/heap_1.c b/FreeRTOS/Source/portable/MemMang/heap_1.c
+deleted file mode 100644
+index 59b82c76..00000000
+--- a/FreeRTOS/Source/portable/MemMang/heap_1.c
++++ /dev/null
+@@ -1,165 +0,0 @@
+-/*
+- * FreeRTOS Kernel V11.1.0
+- * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+- *
+- * SPDX-License-Identifier: MIT
+- *
+- * Permission is hereby granted, free of charge, to any person obtaining a copy of
+- * this software and associated documentation files (the "Software"), to deal in
+- * the Software without restriction, including without limitation the rights to
+- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+- * the Software, and to permit persons to whom the Software is furnished to do so,
+- * subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be included in all
+- * copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+- *
+- * https://www.FreeRTOS.org
+- * https://github.com/FreeRTOS
+- *
+- */
+-
+-
+-/*
+- * The simplest possible implementation of pvPortMalloc().  Note that this
+- * implementation does NOT allow allocated memory to be freed again.
+- *
+- * See heap_2.c, heap_3.c and heap_4.c for alternative implementations, and the
+- * memory management pages of https://www.FreeRTOS.org for more information.
+- */
+-#include <stdlib.h>
+-
+-/* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
+- * all the API functions to use the MPU wrappers.  That should only be done when
+- * task.h is included from an application file. */
+-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+-
+-#include "FreeRTOS.h"
+-#include "task.h"
+-
+-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
+-
+-#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
+-    #error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
+-#endif
+-
+-/* A few bytes might be lost to byte aligning the heap start address. */
+-#define configADJUSTED_HEAP_SIZE    ( configTOTAL_HEAP_SIZE - portBYTE_ALIGNMENT )
+-
+-/* Allocate the memory for the heap. */
+-#if ( configAPPLICATION_ALLOCATED_HEAP == 1 )
+-
+-/* The application writer has already defined the array used for the RTOS
+-* heap - probably so it can be placed in a special segment or address. */
+-    extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
+-#else
+-    static uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
+-#endif /* configAPPLICATION_ALLOCATED_HEAP */
+-
+-/* Index into the ucHeap array. */
+-static size_t xNextFreeByte = ( size_t ) 0U;
+-
+-/*-----------------------------------------------------------*/
+-
+-void * pvPortMalloc( size_t xWantedSize )
+-{
+-    void * pvReturn = NULL;
+-    static uint8_t * pucAlignedHeap = NULL;
+-
+-    /* Ensure that blocks are always aligned. */
+-    #if ( portBYTE_ALIGNMENT != 1 )
+-    {
+-        if( xWantedSize & portBYTE_ALIGNMENT_MASK )
+-        {
+-            /* Byte alignment required. Check for overflow. */
+-            if( ( xWantedSize + ( portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK ) ) ) > xWantedSize )
+-            {
+-                xWantedSize += ( portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK ) );
+-            }
+-            else
+-            {
+-                xWantedSize = 0;
+-            }
+-        }
+-    }
+-    #endif /* if ( portBYTE_ALIGNMENT != 1 ) */
+-
+-    vTaskSuspendAll();
+-    {
+-        if( pucAlignedHeap == NULL )
+-        {
+-            /* Ensure the heap starts on a correctly aligned boundary. */
+-            pucAlignedHeap = ( uint8_t * ) ( ( ( portPOINTER_SIZE_TYPE ) & ucHeap[ portBYTE_ALIGNMENT - 1 ] ) & ( ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) ) );
+-        }
+-
+-        /* Check there is enough room left for the allocation and. */
+-        if( ( xWantedSize > 0 ) &&                                /* valid size */
+-            ( ( xNextFreeByte + xWantedSize ) < configADJUSTED_HEAP_SIZE ) &&
+-            ( ( xNextFreeByte + xWantedSize ) > xNextFreeByte ) ) /* Check for overflow. */
+-        {
+-            /* Return the next free byte then increment the index past this
+-             * block. */
+-            pvReturn = pucAlignedHeap + xNextFreeByte;
+-            xNextFreeByte += xWantedSize;
+-        }
+-
+-        traceMALLOC( pvReturn, xWantedSize );
+-    }
+-    ( void ) xTaskResumeAll();
+-
+-    #if ( configUSE_MALLOC_FAILED_HOOK == 1 )
+-    {
+-        if( pvReturn == NULL )
+-        {
+-            vApplicationMallocFailedHook();
+-        }
+-    }
+-    #endif
+-
+-    return pvReturn;
+-}
+-/*-----------------------------------------------------------*/
+-
+-void vPortFree( void * pv )
+-{
+-    /* Memory cannot be freed using this scheme.  See heap_2.c, heap_3.c and
+-     * heap_4.c for alternative implementations, and the memory management pages of
+-     * https://www.FreeRTOS.org for more information. */
+-    ( void ) pv;
+-
+-    /* Force an assert as it is invalid to call this function. */
+-    configASSERT( pv == NULL );
+-}
+-/*-----------------------------------------------------------*/
+-
+-void vPortInitialiseBlocks( void )
+-{
+-    /* Only required when static memory is not cleared. */
+-    xNextFreeByte = ( size_t ) 0;
+-}
+-/*-----------------------------------------------------------*/
+-
+-size_t xPortGetFreeHeapSize( void )
+-{
+-    return( configADJUSTED_HEAP_SIZE - xNextFreeByte );
+-}
+-
+-/*-----------------------------------------------------------*/
+-
+-/*
+- * Reset the state in this file. This state is normally initialized at start up.
+- * This function must be called by the application before restarting the
+- * scheduler.
+- */
+-void vPortHeapResetState( void )
+-{
+-    xNextFreeByte = ( size_t ) 0U;
+-}
+-/*-----------------------------------------------------------*/
+diff --git a/FreeRTOS/Source/portable/MemMang/heap_4.c b/FreeRTOS/Source/portable/MemMang/heap_4.c
+new file mode 100644
+index 00000000..60cffb4f
+--- /dev/null
++++ b/FreeRTOS/Source/portable/MemMang/heap_4.c
+@@ -0,0 +1,626 @@
++/*
++ * FreeRTOS Kernel V11.1.0
++ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
++ *
++ * SPDX-License-Identifier: MIT
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy of
++ * this software and associated documentation files (the "Software"), to deal in
++ * the Software without restriction, including without limitation the rights to
++ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
++ * the Software, and to permit persons to whom the Software is furnished to do so,
++ * subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in all
++ * copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
++ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
++ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
++ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
++ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * https://www.FreeRTOS.org
++ * https://github.com/FreeRTOS
++ *
++ */
++
++/*
++ * A sample implementation of pvPortMalloc() and vPortFree() that combines
++ * (coalescences) adjacent memory blocks as they are freed, and in so doing
++ * limits memory fragmentation.
++ *
++ * See heap_1.c, heap_2.c and heap_3.c for alternative implementations, and the
++ * memory management pages of https://www.FreeRTOS.org for more information.
++ */
++#include <stdlib.h>
++#include <string.h>
++
++/* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
++ * all the API functions to use the MPU wrappers.  That should only be done when
++ * task.h is included from an application file. */
++#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
++
++#include "FreeRTOS.h"
++#include "task.h"
++
++#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
++
++#if ( configSUPPORT_DYNAMIC_ALLOCATION == 0 )
++    #error This file must not be used if configSUPPORT_DYNAMIC_ALLOCATION is 0
++#endif
++
++#ifndef configHEAP_CLEAR_MEMORY_ON_FREE
++    #define configHEAP_CLEAR_MEMORY_ON_FREE    0
++#endif
++
++/* Block sizes must not get too small. */
++#define heapMINIMUM_BLOCK_SIZE    ( ( size_t ) ( xHeapStructSize << 1 ) )
++
++/* Assumes 8bit bytes! */
++#define heapBITS_PER_BYTE         ( ( size_t ) 8 )
++
++/* Max value that fits in a size_t type. */
++#define heapSIZE_MAX              ( ~( ( size_t ) 0 ) )
++
++/* Check if multiplying a and b will result in overflow. */
++#define heapMULTIPLY_WILL_OVERFLOW( a, b )     ( ( ( a ) > 0 ) && ( ( b ) > ( heapSIZE_MAX / ( a ) ) ) )
++
++/* Check if adding a and b will result in overflow. */
++#define heapADD_WILL_OVERFLOW( a, b )          ( ( a ) > ( heapSIZE_MAX - ( b ) ) )
++
++/* Check if the subtraction operation ( a - b ) will result in underflow. */
++#define heapSUBTRACT_WILL_UNDERFLOW( a, b )    ( ( a ) < ( b ) )
++
++/* MSB of the xBlockSize member of an BlockLink_t structure is used to track
++ * the allocation status of a block.  When MSB of the xBlockSize member of
++ * an BlockLink_t structure is set then the block belongs to the application.
++ * When the bit is free the block is still part of the free heap space. */
++#define heapBLOCK_ALLOCATED_BITMASK    ( ( ( size_t ) 1 ) << ( ( sizeof( size_t ) * heapBITS_PER_BYTE ) - 1 ) )
++#define heapBLOCK_SIZE_IS_VALID( xBlockSize )    ( ( ( xBlockSize ) & heapBLOCK_ALLOCATED_BITMASK ) == 0 )
++#define heapBLOCK_IS_ALLOCATED( pxBlock )        ( ( ( pxBlock->xBlockSize ) & heapBLOCK_ALLOCATED_BITMASK ) != 0 )
++#define heapALLOCATE_BLOCK( pxBlock )            ( ( pxBlock->xBlockSize ) |= heapBLOCK_ALLOCATED_BITMASK )
++#define heapFREE_BLOCK( pxBlock )                ( ( pxBlock->xBlockSize ) &= ~heapBLOCK_ALLOCATED_BITMASK )
++
++/*-----------------------------------------------------------*/
++
++/* Allocate the memory for the heap. */
++#if ( configAPPLICATION_ALLOCATED_HEAP == 1 )
++
++/* The application writer has already defined the array used for the RTOS
++* heap - probably so it can be placed in a special segment or address. */
++    extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
++#else
++    PRIVILEGED_DATA static uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
++#endif /* configAPPLICATION_ALLOCATED_HEAP */
++
++/* Define the linked list structure.  This is used to link free blocks in order
++ * of their memory address. */
++typedef struct A_BLOCK_LINK
++{
++    struct A_BLOCK_LINK * pxNextFreeBlock; /**< The next free block in the list. */
++    size_t xBlockSize;                     /**< The size of the free block. */
++} BlockLink_t;
++
++/* Setting configENABLE_HEAP_PROTECTOR to 1 enables heap block pointers
++ * protection using an application supplied canary value to catch heap
++ * corruption should a heap buffer overflow occur.
++ */
++#if ( configENABLE_HEAP_PROTECTOR == 1 )
++
++/**
++ * @brief Application provided function to get a random value to be used as canary.
++ *
++ * @param pxHeapCanary [out] Output parameter to return the canary value.
++ */
++    extern void vApplicationGetRandomHeapCanary( portPOINTER_SIZE_TYPE * pxHeapCanary );
++
++/* Canary value for protecting internal heap pointers. */
++    PRIVILEGED_DATA static portPOINTER_SIZE_TYPE xHeapCanary;
++
++/* Macro to load/store BlockLink_t pointers to memory. By XORing the
++ * pointers with a random canary value, heap overflows will result
++ * in randomly unpredictable pointer values which will be caught by
++ * heapVALIDATE_BLOCK_POINTER assert. */
++    #define heapPROTECT_BLOCK_POINTER( pxBlock )    ( ( BlockLink_t * ) ( ( ( portPOINTER_SIZE_TYPE ) ( pxBlock ) ) ^ xHeapCanary ) )
++#else
++
++    #define heapPROTECT_BLOCK_POINTER( pxBlock )    ( pxBlock )
++
++#endif /* configENABLE_HEAP_PROTECTOR */
++
++/* Assert that a heap block pointer is within the heap bounds. */
++#define heapVALIDATE_BLOCK_POINTER( pxBlock )                          \
++    configASSERT( ( ( uint8_t * ) ( pxBlock ) >= &( ucHeap[ 0 ] ) ) && \
++                  ( ( uint8_t * ) ( pxBlock ) <= &( ucHeap[ configTOTAL_HEAP_SIZE - 1 ] ) ) )
++
++/*-----------------------------------------------------------*/
++
++/*
++ * Inserts a block of memory that is being freed into the correct position in
++ * the list of free memory blocks.  The block being freed will be merged with
++ * the block in front it and/or the block behind it if the memory blocks are
++ * adjacent to each other.
++ */
++static void prvInsertBlockIntoFreeList( BlockLink_t * pxBlockToInsert ) PRIVILEGED_FUNCTION;
++
++/*
++ * Called automatically to setup the required heap structures the first time
++ * pvPortMalloc() is called.
++ */
++static void prvHeapInit( void ) PRIVILEGED_FUNCTION;
++
++/*-----------------------------------------------------------*/
++
++/* The size of the structure placed at the beginning of each allocated memory
++ * block must by correctly byte aligned. */
++static const size_t xHeapStructSize = ( sizeof( BlockLink_t ) + ( ( size_t ) ( portBYTE_ALIGNMENT - 1 ) ) ) & ~( ( size_t ) portBYTE_ALIGNMENT_MASK );
++
++/* Create a couple of list links to mark the start and end of the list. */
++PRIVILEGED_DATA static BlockLink_t xStart;
++PRIVILEGED_DATA static BlockLink_t * pxEnd = NULL;
++
++/* Keeps track of the number of calls to allocate and free memory as well as the
++ * number of free bytes remaining, but says nothing about fragmentation. */
++PRIVILEGED_DATA static size_t xFreeBytesRemaining = ( size_t ) 0U;
++PRIVILEGED_DATA static size_t xMinimumEverFreeBytesRemaining = ( size_t ) 0U;
++PRIVILEGED_DATA static size_t xNumberOfSuccessfulAllocations = ( size_t ) 0U;
++PRIVILEGED_DATA static size_t xNumberOfSuccessfulFrees = ( size_t ) 0U;
++
++/*-----------------------------------------------------------*/
++
++void * pvPortMalloc( size_t xWantedSize )
++{
++    BlockLink_t * pxBlock;
++    BlockLink_t * pxPreviousBlock;
++    BlockLink_t * pxNewBlockLink;
++    void * pvReturn = NULL;
++    size_t xAdditionalRequiredSize;
++
++    if( xWantedSize > 0 )
++    {
++        /* The wanted size must be increased so it can contain a BlockLink_t
++         * structure in addition to the requested amount of bytes. */
++        if( heapADD_WILL_OVERFLOW( xWantedSize, xHeapStructSize ) == 0 )
++        {
++            xWantedSize += xHeapStructSize;
++
++            /* Ensure that blocks are always aligned to the required number
++             * of bytes. */
++            if( ( xWantedSize & portBYTE_ALIGNMENT_MASK ) != 0x00 )
++            {
++                /* Byte alignment required. */
++                xAdditionalRequiredSize = portBYTE_ALIGNMENT - ( xWantedSize & portBYTE_ALIGNMENT_MASK );
++
++                if( heapADD_WILL_OVERFLOW( xWantedSize, xAdditionalRequiredSize ) == 0 )
++                {
++                    xWantedSize += xAdditionalRequiredSize;
++                }
++                else
++                {
++                    xWantedSize = 0;
++                }
++            }
++            else
++            {
++                mtCOVERAGE_TEST_MARKER();
++            }
++        }
++        else
++        {
++            xWantedSize = 0;
++        }
++    }
++    else
++    {
++        mtCOVERAGE_TEST_MARKER();
++    }
++
++    vTaskSuspendAll();
++    {
++        /* If this is the first call to malloc then the heap will require
++         * initialisation to setup the list of free blocks. */
++        if( pxEnd == NULL )
++        {
++            prvHeapInit();
++        }
++        else
++        {
++            mtCOVERAGE_TEST_MARKER();
++        }
++
++        /* Check the block size we are trying to allocate is not so large that the
++         * top bit is set.  The top bit of the block size member of the BlockLink_t
++         * structure is used to determine who owns the block - the application or
++         * the kernel, so it must be free. */
++        if( heapBLOCK_SIZE_IS_VALID( xWantedSize ) != 0 )
++        {
++            if( ( xWantedSize > 0 ) && ( xWantedSize <= xFreeBytesRemaining ) )
++            {
++                /* Traverse the list from the start (lowest address) block until
++                 * one of adequate size is found. */
++                pxPreviousBlock = &xStart;
++                pxBlock = heapPROTECT_BLOCK_POINTER( xStart.pxNextFreeBlock );
++                heapVALIDATE_BLOCK_POINTER( pxBlock );
++
++                while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
++                {
++                    pxPreviousBlock = pxBlock;
++                    pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
++                    heapVALIDATE_BLOCK_POINTER( pxBlock );
++                }
++
++                /* If the end marker was reached then a block of adequate size
++                 * was not found. */
++                if( pxBlock != pxEnd )
++                {
++                    /* Return the memory space pointed to - jumping over the
++                     * BlockLink_t structure at its start. */
++                    pvReturn = ( void * ) ( ( ( uint8_t * ) heapPROTECT_BLOCK_POINTER( pxPreviousBlock->pxNextFreeBlock ) ) + xHeapStructSize );
++                    heapVALIDATE_BLOCK_POINTER( pvReturn );
++
++                    /* This block is being returned for use so must be taken out
++                     * of the list of free blocks. */
++                    pxPreviousBlock->pxNextFreeBlock = pxBlock->pxNextFreeBlock;
++
++                    /* If the block is larger than required it can be split into
++                     * two. */
++                    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
++
++                    if( ( pxBlock->xBlockSize - xWantedSize ) > heapMINIMUM_BLOCK_SIZE )
++                    {
++                        /* This block is to be split into two.  Create a new
++                         * block following the number of bytes requested. The void
++                         * cast is used to prevent byte alignment warnings from the
++                         * compiler. */
++                        pxNewBlockLink = ( void * ) ( ( ( uint8_t * ) pxBlock ) + xWantedSize );
++                        configASSERT( ( ( ( size_t ) pxNewBlockLink ) & portBYTE_ALIGNMENT_MASK ) == 0 );
++
++                        /* Calculate the sizes of two blocks split from the
++                         * single block. */
++                        pxNewBlockLink->xBlockSize = pxBlock->xBlockSize - xWantedSize;
++                        pxBlock->xBlockSize = xWantedSize;
++
++                        /* Insert the new block into the list of free blocks. */
++                        pxNewBlockLink->pxNextFreeBlock = pxPreviousBlock->pxNextFreeBlock;
++                        pxPreviousBlock->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxNewBlockLink );
++                    }
++                    else
++                    {
++                        mtCOVERAGE_TEST_MARKER();
++                    }
++
++                    xFreeBytesRemaining -= pxBlock->xBlockSize;
++
++                    if( xFreeBytesRemaining < xMinimumEverFreeBytesRemaining )
++                    {
++                        xMinimumEverFreeBytesRemaining = xFreeBytesRemaining;
++                    }
++                    else
++                    {
++                        mtCOVERAGE_TEST_MARKER();
++                    }
++
++                    /* The block is being returned - it is allocated and owned
++                     * by the application and has no "next" block. */
++                    heapALLOCATE_BLOCK( pxBlock );
++                    pxBlock->pxNextFreeBlock = NULL;
++                    xNumberOfSuccessfulAllocations++;
++                }
++                else
++                {
++                    mtCOVERAGE_TEST_MARKER();
++                }
++            }
++            else
++            {
++                mtCOVERAGE_TEST_MARKER();
++            }
++        }
++        else
++        {
++            mtCOVERAGE_TEST_MARKER();
++        }
++
++        traceMALLOC( pvReturn, xWantedSize );
++    }
++    ( void ) xTaskResumeAll();
++
++    #if ( configUSE_MALLOC_FAILED_HOOK == 1 )
++    {
++        if( pvReturn == NULL )
++        {
++            vApplicationMallocFailedHook();
++        }
++        else
++        {
++            mtCOVERAGE_TEST_MARKER();
++        }
++    }
++    #endif /* if ( configUSE_MALLOC_FAILED_HOOK == 1 ) */
++
++    configASSERT( ( ( ( size_t ) pvReturn ) & ( size_t ) portBYTE_ALIGNMENT_MASK ) == 0 );
++    return pvReturn;
++}
++/*-----------------------------------------------------------*/
++
++void vPortFree( void * pv )
++{
++    uint8_t * puc = ( uint8_t * ) pv;
++    BlockLink_t * pxLink;
++
++    if( pv != NULL )
++    {
++        /* The memory being freed will have an BlockLink_t structure immediately
++         * before it. */
++        puc -= xHeapStructSize;
++
++        /* This casting is to keep the compiler from issuing warnings. */
++        pxLink = ( void * ) puc;
++
++        heapVALIDATE_BLOCK_POINTER( pxLink );
++        configASSERT( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 );
++        configASSERT( pxLink->pxNextFreeBlock == NULL );
++
++        if( heapBLOCK_IS_ALLOCATED( pxLink ) != 0 )
++        {
++            if( pxLink->pxNextFreeBlock == NULL )
++            {
++                /* The block is being returned to the heap - it is no longer
++                 * allocated. */
++                heapFREE_BLOCK( pxLink );
++                #if ( configHEAP_CLEAR_MEMORY_ON_FREE == 1 )
++                {
++                    /* Check for underflow as this can occur if xBlockSize is
++                     * overwritten in a heap block. */
++                    if( heapSUBTRACT_WILL_UNDERFLOW( pxLink->xBlockSize, xHeapStructSize ) == 0 )
++                    {
++                        ( void ) memset( puc + xHeapStructSize, 0, pxLink->xBlockSize - xHeapStructSize );
++                    }
++                }
++                #endif
++
++                vTaskSuspendAll();
++                {
++                    /* Add this block to the list of free blocks. */
++                    xFreeBytesRemaining += pxLink->xBlockSize;
++                    traceFREE( pv, pxLink->xBlockSize );
++                    prvInsertBlockIntoFreeList( ( ( BlockLink_t * ) pxLink ) );
++                    xNumberOfSuccessfulFrees++;
++                }
++                ( void ) xTaskResumeAll();
++            }
++            else
++            {
++                mtCOVERAGE_TEST_MARKER();
++            }
++        }
++        else
++        {
++            mtCOVERAGE_TEST_MARKER();
++        }
++    }
++}
++/*-----------------------------------------------------------*/
++
++size_t xPortGetFreeHeapSize( void )
++{
++    return xFreeBytesRemaining;
++}
++/*-----------------------------------------------------------*/
++
++size_t xPortGetMinimumEverFreeHeapSize( void )
++{
++    return xMinimumEverFreeBytesRemaining;
++}
++/*-----------------------------------------------------------*/
++
++void vPortInitialiseBlocks( void )
++{
++    /* This just exists to keep the linker quiet. */
++}
++/*-----------------------------------------------------------*/
++
++void * pvPortCalloc( size_t xNum,
++                     size_t xSize )
++{
++    void * pv = NULL;
++
++    if( heapMULTIPLY_WILL_OVERFLOW( xNum, xSize ) == 0 )
++    {
++        pv = pvPortMalloc( xNum * xSize );
++
++        if( pv != NULL )
++        {
++            ( void ) memset( pv, 0, xNum * xSize );
++        }
++    }
++
++    return pv;
++}
++/*-----------------------------------------------------------*/
++
++static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
++{
++    BlockLink_t * pxFirstFreeBlock;
++    portPOINTER_SIZE_TYPE uxStartAddress, uxEndAddress;
++    size_t xTotalHeapSize = configTOTAL_HEAP_SIZE;
++
++    /* Ensure the heap starts on a correctly aligned boundary. */
++    uxStartAddress = ( portPOINTER_SIZE_TYPE ) ucHeap;
++
++    if( ( uxStartAddress & portBYTE_ALIGNMENT_MASK ) != 0 )
++    {
++        uxStartAddress += ( portBYTE_ALIGNMENT - 1 );
++        uxStartAddress &= ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK );
++        xTotalHeapSize -= ( size_t ) ( uxStartAddress - ( portPOINTER_SIZE_TYPE ) ucHeap );
++    }
++
++    #if ( configENABLE_HEAP_PROTECTOR == 1 )
++    {
++        vApplicationGetRandomHeapCanary( &( xHeapCanary ) );
++    }
++    #endif
++
++    /* xStart is used to hold a pointer to the first item in the list of free
++     * blocks.  The void cast is used to prevent compiler warnings. */
++    xStart.pxNextFreeBlock = ( void * ) heapPROTECT_BLOCK_POINTER( uxStartAddress );
++    xStart.xBlockSize = ( size_t ) 0;
++
++    /* pxEnd is used to mark the end of the list of free blocks and is inserted
++     * at the end of the heap space. */
++    uxEndAddress = uxStartAddress + ( portPOINTER_SIZE_TYPE ) xTotalHeapSize;
++    uxEndAddress -= ( portPOINTER_SIZE_TYPE ) xHeapStructSize;
++    uxEndAddress &= ~( ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK );
++    pxEnd = ( BlockLink_t * ) uxEndAddress;
++    pxEnd->xBlockSize = 0;
++    pxEnd->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( NULL );
++
++    /* To start with there is a single free block that is sized to take up the
++     * entire heap space, minus the space taken by pxEnd. */
++    pxFirstFreeBlock = ( BlockLink_t * ) uxStartAddress;
++    pxFirstFreeBlock->xBlockSize = ( size_t ) ( uxEndAddress - ( portPOINTER_SIZE_TYPE ) pxFirstFreeBlock );
++    pxFirstFreeBlock->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxEnd );
++
++    /* Only one block exists - and it covers the entire usable heap space. */
++    xMinimumEverFreeBytesRemaining = pxFirstFreeBlock->xBlockSize;
++    xFreeBytesRemaining = pxFirstFreeBlock->xBlockSize;
++}
++/*-----------------------------------------------------------*/
++
++static void prvInsertBlockIntoFreeList( BlockLink_t * pxBlockToInsert ) /* PRIVILEGED_FUNCTION */
++{
++    BlockLink_t * pxIterator;
++    uint8_t * puc;
++
++    /* Iterate through the list until a block is found that has a higher address
++     * than the block being inserted. */
++    for( pxIterator = &xStart; heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock ) < pxBlockToInsert; pxIterator = heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock ) )
++    {
++        /* Nothing to do here, just iterate to the right position. */
++    }
++
++    if( pxIterator != &xStart )
++    {
++        heapVALIDATE_BLOCK_POINTER( pxIterator );
++    }
++
++    /* Do the block being inserted, and the block it is being inserted after
++     * make a contiguous block of memory? */
++    puc = ( uint8_t * ) pxIterator;
++
++    if( ( puc + pxIterator->xBlockSize ) == ( uint8_t * ) pxBlockToInsert )
++    {
++        pxIterator->xBlockSize += pxBlockToInsert->xBlockSize;
++        pxBlockToInsert = pxIterator;
++    }
++    else
++    {
++        mtCOVERAGE_TEST_MARKER();
++    }
++
++    /* Do the block being inserted, and the block it is being inserted before
++     * make a contiguous block of memory? */
++    puc = ( uint8_t * ) pxBlockToInsert;
++
++    if( ( puc + pxBlockToInsert->xBlockSize ) == ( uint8_t * ) heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock ) )
++    {
++        if( heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock ) != pxEnd )
++        {
++            /* Form one big block from the two blocks. */
++            pxBlockToInsert->xBlockSize += heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock )->xBlockSize;
++            pxBlockToInsert->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxIterator->pxNextFreeBlock )->pxNextFreeBlock;
++        }
++        else
++        {
++            pxBlockToInsert->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxEnd );
++        }
++    }
++    else
++    {
++        pxBlockToInsert->pxNextFreeBlock = pxIterator->pxNextFreeBlock;
++    }
++
++    /* If the block being inserted plugged a gab, so was merged with the block
++     * before and the block after, then it's pxNextFreeBlock pointer will have
++     * already been set, and should not be set here as that would make it point
++     * to itself. */
++    if( pxIterator != pxBlockToInsert )
++    {
++        pxIterator->pxNextFreeBlock = heapPROTECT_BLOCK_POINTER( pxBlockToInsert );
++    }
++    else
++    {
++        mtCOVERAGE_TEST_MARKER();
++    }
++}
++/*-----------------------------------------------------------*/
++
++void vPortGetHeapStats( HeapStats_t * pxHeapStats )
++{
++    BlockLink_t * pxBlock;
++    size_t xBlocks = 0, xMaxSize = 0, xMinSize = portMAX_DELAY; /* portMAX_DELAY used as a portable way of getting the maximum value. */
++
++    vTaskSuspendAll();
++    {
++        pxBlock = heapPROTECT_BLOCK_POINTER( xStart.pxNextFreeBlock );
++
++        /* pxBlock will be NULL if the heap has not been initialised.  The heap
++         * is initialised automatically when the first allocation is made. */
++        if( pxBlock != NULL )
++        {
++            while( pxBlock != pxEnd )
++            {
++                /* Increment the number of blocks and record the largest block seen
++                 * so far. */
++                xBlocks++;
++
++                if( pxBlock->xBlockSize > xMaxSize )
++                {
++                    xMaxSize = pxBlock->xBlockSize;
++                }
++
++                if( pxBlock->xBlockSize < xMinSize )
++                {
++                    xMinSize = pxBlock->xBlockSize;
++                }
++
++                /* Move to the next block in the chain until the last block is
++                 * reached. */
++                pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
++            }
++        }
++    }
++    ( void ) xTaskResumeAll();
++
++    pxHeapStats->xSizeOfLargestFreeBlockInBytes = xMaxSize;
++    pxHeapStats->xSizeOfSmallestFreeBlockInBytes = xMinSize;
++    pxHeapStats->xNumberOfFreeBlocks = xBlocks;
++
++    taskENTER_CRITICAL();
++    {
++        pxHeapStats->xAvailableHeapSpaceInBytes = xFreeBytesRemaining;
++        pxHeapStats->xNumberOfSuccessfulAllocations = xNumberOfSuccessfulAllocations;
++        pxHeapStats->xNumberOfSuccessfulFrees = xNumberOfSuccessfulFrees;
++        pxHeapStats->xMinimumEverFreeBytesRemaining = xMinimumEverFreeBytesRemaining;
++    }
++    taskEXIT_CRITICAL();
++}
++/*-----------------------------------------------------------*/
++
++/*
++ * Reset the state in this file. This state is normally initialized at start up.
++ * This function must be called by the application before restarting the
++ * scheduler.
++ */
++void vPortHeapResetState( void )
++{
++    pxEnd = NULL;
++
++    xFreeBytesRemaining = ( size_t ) 0U;
++    xMinimumEverFreeBytesRemaining = ( size_t ) 0U;
++    xNumberOfSuccessfulAllocations = ( size_t ) 0U;
++    xNumberOfSuccessfulFrees = ( size_t ) 0U;
++}
++/*-----------------------------------------------------------*/
+diff --git a/FreeRTOSConfig.h b/FreeRTOSConfig.h
+index 9e96e1be..5d41a831 100644
+--- a/FreeRTOSConfig.h
++++ b/FreeRTOSConfig.h
+@@ -31,7 +31,7 @@
+ #define configTICK_RATE_HZ                                          250
+ 
+ // ... TODO: Might need to increase
+-#define configMAX_PRIORITIES                                        5
++#define configMAX_PRIORITIES                                        16
+ 
+ // Primarily sets the Idle mode stack size TODO: See if it can be reduced
+ #define configMINIMAL_STACK_SIZE                                    128
+@@ -85,7 +85,7 @@
+ 
+ #define configSUPPORT_DYNAMIC_ALLOCATION                            1
+ 
+-#define configTOTAL_HEAP_SIZE                                       10240
++#define configTOTAL_HEAP_SIZE                                       32768
+ 
+ #define configAPPLICATION_ALLOCATED_HEAP                            0
+ 
+diff --git a/Src/.DS_Store b/Src/.DS_Store
+deleted file mode 100644
+index 519c87c0..00000000
+Binary files a/Src/.DS_Store and /dev/null differ
+diff --git a/Src/integration/.DS_Store b/Src/integration/.DS_Store
+deleted file mode 100644
+index a4178d6f..00000000
+Binary files a/Src/integration/.DS_Store and /dev/null differ
+diff --git a/Src/integration/adcs_math/.DS_Store b/Src/integration/adcs_math/.DS_Store
+deleted file mode 100644
+index cfa55edb..00000000
+Binary files a/Src/integration/adcs_math/.DS_Store and /dev/null differ
+diff --git a/Src/main.c b/Src/main.c
+index 7ba88c57..8c008652 100644
+--- a/Src/main.c
++++ b/Src/main.c
+@@ -18,132 +18,56 @@
+ #include "scheduler/schedulerGlobals.h"
+ 
+ /* File Includes */
+-#include "scheduler/watchdog.h"
+-#include "scheduler/intelliTask.h"
+-#include "scheduler/status.h"
++// #include "scheduler/watchdog.h"
++// #include "scheduler/intelliTask.h"
++// #include "scheduler/status.h"
+ 
+ #include "FreeRTOS.h"
+-#include "task.h"
++// TODO include training_tasks.h
+ 
+-/* Macros */
+-#define SYSTICK_DUR_U 10000          // Config. of systick timer in usec (1 ms)
+-#define BATTERY_THRESHOLD 20        // TODO: Min. battery voltage value, below which mode -> CHARGING
+-
+-/* Misc variables */
+-int reboot_count;
+-// volatile uint16_t flagBits = 0;     // Declared in status.h
+-volatile struct operation_bits_t flag_bits = {0,0};
+-
+-/* Testing Variables */
+-int max_handler_count;
+-int systick_handler_count;
+-int is_unlimited_tick;
+-
+-// Define signal handler and timer
+-struct sigaction sysTick;
+-struct itimerval sysTick_timer;
+-
+-uint32_t main_stack_frame[32];
+-volatile uint32_t main_PC;
+-
+-static bool led_state = 0;
+-
+-uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
+-
+-
+-/* Prototypes */
+-void sysTick_handler(int signal);
+-//jmp_buf to_mode_select;
+-
+-/**
+- * @brief Initial startup mode
+- *
+- * The one-time 30 minute wait when the Intellisat
+- * is first released from the ISS.
+- *
+- * @note Load initial values from flash
+- * @todo Replace sleep time to 30 min
+- */
+-void startup() {
+-    // TODO: Retrieve base info from flash (flagBits, reboot_count, etc.)
+-    reboot_count++;
+-    if (!IS_BIT_SET(flag_bits.status_bits, START)) {
+-        //printMsg("First startup detected\nStarting 5 second wait...\n");
+-        delay_ms(5000); // TODO: replace with correct wait period (30min)
+-
+-        SET_BIT(flag_bits.status_bits, START); // TODO: Intentionally at the end in case of failure during wait state (REVISIT)
+-
+-    } else {
+-        //printMsg("Loading Backups\nPlease wait (5s)...\n");
+-        delay_ms(5000); // TESTING: remove when backups implemented
+-        // TODO: Load backups here
+-    }
+-}
++// #include "task.h"
+ 
+-
+-static const int led_delay_1 = 1111;
+-static const int led_delay_2 = 789;
+-
+-void toggle_LED(int pin) {
+-    led_d1(!led_state);
+-    led_state = !led_state;
+-}
+-
+-
+-/**
+- * 'Blink LED' task.
+- */
+-static void led_task(void *args) {
+-  int delay_ms = *(int*)args;
+-  
+-
+-  while (1) {
+-    // Toggle the LED.
+-	  int pin = 0;
+-	  led_d1(!led_state);
+-	  led_state = !led_state;
+-    // Delay for a second-ish.
+-    vTaskDelay(pdMS_TO_TICKS(delay_ms));
+-  };
+-}
++/* Macros */
++#define SYSTICK_DUR_U 10000  // Config. of systick timer in usec (1 ms)
++#define BATTERY_THRESHOLD 20 // TODO: Min. battery voltage value, below which mode -> CHARGING
+ 
+ /**
+- * @brief Superloop
++ * @brief The code inside the while loop will get run continuously until the reset button gets hit,
++ * at which point the program will restart.
+  *
+  * Contains initial timer and interrupt handler (TESTING) and
+  * the main superloop. Serves as standard behavior when
+  * there is no scheduler intervention.
+  */
+-int branch_main() {
++int branch_main()
++{
++  // ! Your training main code goes here
++  // TODO
+ 
+-    xTaskCreate(led_task, "LED_blink_1", 128, (void*)&led_delay_1, configMAX_PRIORITIES-2, NULL);
+-    xTaskCreate(led_task, "LED_blink_2", 128, (void*)&led_delay_2, configMAX_PRIORITIES-2, NULL);
++  while (1)
++  {
+ 
+-    xTaskCreate(watchdog, "Watchdog", 128, (void*)watchdog, configMAX_PRIORITIES-1, NULL);
++  }
+ 
+-    vTaskStartScheduler();
++  return 0;
++}
+ 
+-    while(1) {}
++#define RUN_TEST 0 // 0 = run IntelliSat, 1 = run a very specific test
++#define TEST_ID 1  // ID of the test to run in case RUN_TEST = 1
+ 
+-    return 0;
++// #include <TestDefinition.h>
+ 
+-}
++int main()
++{
++  init_init();
+ 
+-#define RUN_TEST	1	// 0 = run IntelliSat, 1 = run a very specific test
+-#define TEST_ID 	1	// ID of the test to run in case RUN_TEST = 1
+-
+-#include <TestDefinition.h>
+-
+-int main() {
+-    init_init();
+-    
+-    //TODO: use RTC first_time flag.
+-    //if (first_time) {
+-        init_first_time();
+-    //}
+-    
+-    init_platform(!RUN_TEST);
+-    // ^ don't want to run the Scheduler in case we are running other tests
+-    
+-    branch_main();
+-}
++  // TODO: use RTC first_time flag.
++  // if (first_time) {
++  init_first_time();
++  //}
++
++  init_platform(!RUN_TEST);
++  // ^ don't want to run the Scheduler in case we are running other tests
++
++  branch_main();
++}
+\ No newline at end of file
+diff --git a/Src/scheduler/.gitignore b/Src/scheduler/.gitignore
+deleted file mode 100644
+index 9bb88d37..00000000
+--- a/Src/scheduler/.gitignore
++++ /dev/null
+@@ -1 +0,0 @@
+-/.DS_Store
+diff --git a/Src/scheduler/intelliTask.c b/Src/scheduler/intelliTask.c
+index 1241e115..91afdcbd 100644
+--- a/Src/scheduler/intelliTask.c
++++ b/Src/scheduler/intelliTask.c
+@@ -24,12 +24,30 @@
+ 	Experiment	 4		Is an experiment ready to run?
+ 	IDLE		 5		Idle when no other mode is running
+ */
++
++/*
++For quick reference (DO NOT UNCOMMENT)
++
++typedef struct intellisat_task_t {
++    uint8_t id;                 // PRIMARY_KEY
++    const char *name;		    // Task name as string
++    uint32_t timeout;           // time before task times out (ms) 0 means no timeout
++    bool (*ready_ptr)(); 	    // returns true when task should be run
++    void (*config_ptr)();       // configure timers, other mode info.
++    void (*run_ptr)();          // the main func. for mode, via ADCS
++    void (*clean_ptr)();        // reset timers, clear temp buffers, etc
++    TaskHandle_t FreeRTOS_handle;// FreeRTOS task handle
++    uint8_t func_1;             // Open functionality
++} intelli_task_t;
++
++*/
++
+ intelli_task_t task_table[TASK_TABLE_LEN] = {
+-    {6, "LOW_PWR",      60000,  low_pwr_time,    config_low_pwr,    low_pwr,    clean_low_pwr,      NULL, NULL},  // Func1 - N/A
+-	{5, "DETUMBLE",     60000,  detumble_time,   config_detumble,   detumble,   clean_detumble,     NULL, NULL},  // Func1 - N/A
+-	{4, "COMMS",        60000,  comms_time,      config_comms,      comms,      clean_comms,        NULL, NULL},  // Func1 - N/A
+-    {3, "ECC",          60000,  ecc_time,        config_ecc,        ecc,        clean_ecc,          NULL, NULL},  // Func1 - N/A
+-    {2, "EXPERIMENT",   60000,  experiment_time, config_experiment, experiment, clean_experiment,   NULL, NULL},  // Func1 - Experiment ID (0 for none)
+-    {1, "PIZZA_TIME",   60000,  pizza_time,      config_pizza,      pizza,      clean_pizza,        NULL, NULL},
+-    {0, "IDLE",         0,      idle_time,       config_idle,       idle,       clean_idle,         NULL, NULL}   // Func1 - N/A
++    {7, "LOW_PWR",      60000,  low_pwr_time,    config_low_pwr,    low_pwr,    clean_low_pwr,      NULL, NULL},  // Func1 - N/A
++	{6, "DETUMBLE",     60000,  detumble_time,   config_detumble,   detumble,   clean_detumble,     NULL, NULL},  // Func1 - N/A
++	{5, "COMMS",        60000,  comms_time,      config_comms,      comms,      clean_comms,        NULL, NULL},  // Func1 - N/A
++    {4, "ECC",          60000,  ecc_time,        config_ecc,        ecc,        clean_ecc,          NULL, NULL},  // Func1 - N/A
++    {3, "EXPERIMENT",   60000,  experiment_time, config_experiment, experiment, clean_experiment,   NULL, NULL},  // Func1 - Experiment ID (0 for none)
++    {2, "PIZZA_TIME",   60000,  pizza_time,      config_pizza,      pizza,      clean_pizza,        NULL, NULL},
++    {1, "SCHEDIDLE",        0,  idle_time,       config_idle,       idle,       clean_idle,         NULL, NULL}
+ };
+diff --git a/Src/scheduler/intelliTask.h b/Src/scheduler/intelliTask.h
+index d0702fdc..548db037 100644
+--- a/Src/scheduler/intelliTask.h
++++ b/Src/scheduler/intelliTask.h
+@@ -10,7 +10,7 @@
+ 
+ #include <stdbool.h>
+ 
+-#define TASK_TABLE_LEN 6
++#define TASK_TABLE_LEN 7
+ 
+ 
+ /*
+diff --git a/Src/scheduler/intelliTasks/pizza.c b/Src/scheduler/intelliTasks/pizza.c
+index 297f532c..39637921 100644
+--- a/Src/scheduler/intelliTasks/pizza.c
++++ b/Src/scheduler/intelliTasks/pizza.c
+@@ -10,7 +10,9 @@ void config_pizza() {
  }
  
--const Textbox: React.FC<TextboxProps> = (props) => {
--  const [wordStats, setStats] = useState({
--    words: 0,
--    capacity: false,
--  });
--  function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
--    const temp = e.target.value;
--    const tmp = temp.split(/([\S])+/) || [];
--    const newStats = {
--      words: (tmp.length - 1) / 2,
--      capacity: (tmp.length - 1) / 2 > 300 ? true : false,
--    };
--    setStats(newStats);
--  }
-+const Textbox = () => {
-+  const [content, setContent] = useState<string>('');
-+  const quillRef = useRef<QuillEditorInstance | null>(null);
-+  const maxWords = 300;
-+
-+  const handleEditorChange = (newContent: string) => {
-+    const words = newContent
-+      .trim()
-+      .split(/\s+/)
-+      .filter((word) => word.length > 0);
-+
-+    if (words.length <= maxWords) {
-+      setContent(newContent);
-+      if (quillRef.current) {
-+        const editor = quillRef.current.getEditor();
-+        editor.enable(true); // Enable input if word count is within the limit
-+      }
-+    } else {
-+      if (quillRef.current) {
-+        const editor = quillRef.current.getEditor();
-+        editor.enable(false); // Disable input if word count exceeds the limit
-+      }
+ void pizza() {
+-    printMsg("pizza run\n\r");
++    while (1) {
++        printMsg("pizza run\n\r");
 +    }
-+  };
-+  const quillModules = {
-+    toolbar: [
-+      ['bold', 'italic', 'underline', 'strike'],
-+      [{ list: 'ordered' }, { list: 'bullet' }],
-+      [{ align: [] }],
-+    ],
-+  };
-+  const quillFormats = [
-+    'bold',
-+    'italic',
-+    'underline',
-+    'strike',
-+    'list',
-+    'bullet',
-+    'align',
-+  ];
+ }
+ 
+ void clean_pizza() {
+diff --git a/Src/scheduler/task_manager.c b/Src/scheduler/task_manager.c
+index 8cac9e05..43e43f1a 100644
+--- a/Src/scheduler/task_manager.c
++++ b/Src/scheduler/task_manager.c
+@@ -12,9 +12,9 @@
+ #include "task_manager.h"
+ #include "intelliTask.h"
+ 
+-#define TASK_MANAGER_YIELD_TICKS pdMS_TO_TICKS(10000) //TODO: temporary 10 seconds
++#define TASK_MANAGER_YIELD_TICKS pdMS_TO_TICKS(1000) //TODO: temporary 10 seconds 1\10
+ 
+-extern intelli_task_t task_table[6];
++extern intelli_task_t task_table[TASK_TABLE_LEN];
+ const intelli_task_t null_task = (intelli_task_t){TASK_TABLE_LEN, 0, 0, 0, 0, 0, 0, 0, 0};
+ 
+ 
+@@ -139,52 +139,61 @@ const intelli_task_t null_task = (intelli_task_t){TASK_TABLE_LEN, 0, 0, 0, 0, 0,
+ 
+ 
+ void task_manager(void *args) {
++	printMsg(":) Hello from the Task Manager! <3\n\r");
 +
-+  useEffect(() => {
-+    if (quillRef.current) {
-+      const editor = quillRef.current.getEditor();
-+      editor.setText(content);
-+    }
-+  }, [content]);
+ 	static intelli_task_t current_task = null_task;
+ 	static uint32_t current_task_dur = 0;
+ 
+-	bool cancel_current_task = false;
+-
+-    // Initi current_task on boot
+-    if (current_task.id == null_task.id) {
+-        current_task = task_table[TASK_TABLE_LEN - 1];
+-    }
+-
+-	current_task_dur += pdTICKS_TO_MS(TASK_MANAGER_YIELD_TICKS);
+-
+-	// If expired, cancel. Else if preempted, cancel.
+-	// TODO: check for current task yield via notif
+-	if (current_task.timeout != 0 && /* current task has a timeout */
+-		current_task_dur >= current_task.timeout /* and it expired */
+-	) {
+-		cancel_current_task = true;
+-	} else {
+-		for (int id = 0; id < current_task.id; id++) {
+-			if ((task_table[id]).ready_ptr()) {
+-				cancel_current_task = true;
+-				break;
++	while(1) {
++		printMsg("Running Task Manager\n\r");
++		bool cancel_current_task = false;
 +
-   return (
-     <div className={styles.textbox_container}>
--      <div className={styles.edit_header}>
--        <div className={styles.icon_group}>
--          <Image src="/icons/bold.svg" alt="bold icon" width={16} height={16} />
--          <Image
--            src="/icons/italicize.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--          <Image
--            src="/icons/underline.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--          <Image
--            src="/icons/strikethrough.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--        </div>
--        <div className={styles.header_border}></div>
--        <div className={styles.icon_group}>
--          <Image
--            src="/icons/columnleft.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--          <Image
--            src="/icons/columnmiddle.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--          <Image
--            src="/icons/columnright.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--        </div>
--        <div className={styles.header_border}></div>
--        <div className={styles.icon_group}>
--          <Image
--            src="/icons/numbers.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--          <Image
--            src="/icons/bullets.svg"
--            alt="bold icon"
--            width={16}
--            height={16}
--          />
--        </div>
--        <div className={styles.header_border}></div>
-+      <QuillEditor
-+        value={content}
-+        onChange={handleEditorChange}
-+        modules={quillModules}
-+        formats={quillFormats}
-+        className={styles.quill_style}
-+        theme="snow"
-+      />
-+      <div id="counter">
-+        {
-+          content
-+            .trim()
-+            .split(/\s+/)
-+            .filter((word) => word.length > 0).length
-+        }{' '}
-+        / {maxWords}
-       </div>
--      <textarea
--        onChange={onChange}
--        className={styles.input_text}
--        name={props.name}
--        placeholder={props.placeholder}
--      ></textarea>
--      <p
--        className={
--          wordStats.capacity ? styles.wordcount_over : styles.wordcount
--        }
--      >
--        {wordStats.words}/300
--      </p>
-     </div>
-   );
- };
-diff --git a/app/(pages)/products/product-form/_components/ProductForm.tsx b/app/(pages)/products/product-form/_components/ProductForm.tsx
-index cc867b6..92c7dc4 100644
---- a/app/(pages)/products/product-form/_components/ProductForm.tsx
-+++ b/app/(pages)/products/product-form/_components/ProductForm.tsx
-@@ -82,14 +82,11 @@ export default function ProductForm() {
-           </div>
-           <div className={styles.input_container}>
-             <p>Product Description</p>
--            <Textbox
--              name="product_description"
--              placeholder="Desk. Mingen. Rengen. Mobildagis. Krov."
--            />
-+            <Textbox />
-           </div>
-           <div className={styles.input_container}>
-             <p>Product Details</p>
--            <Textbox name="product_details" placeholder="Colors, Material..." />
-+            <Textbox />
-           </div>
-         </div>
-         <div className={styles.button_container}>
-diff --git a/package-lock.json b/package-lock.json
-index 52450b7..cd5f0af 100644
---- a/package-lock.json
-+++ b/package-lock.json
-@@ -12,9 +12,11 @@
-         "@apollo/experimental-nextjs-app-support": "^0.8.0",
-         "mongodb": "^6.3.0",
-         "next": "14.0.4",
-+        "quill": "^2.0.2",
-         "react": "^18",
-         "react-dom": "^18",
-         "react-icons": "^4.11.0",
-+        "react-quill": "^2.0.0",
-         "readline": "^1.3.0",
-         "sass": "^1.69.5"
-       },
-@@ -730,6 +732,19 @@
-       "integrity": "sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==",
-       "devOptional": true
-     },
-+    "node_modules/@types/quill": {
-+      "version": "1.3.10",
-+      "resolved": "https://registry.npmjs.org/@types/quill/-/quill-1.3.10.tgz",
-+      "integrity": "sha512-IhW3fPW+bkt9MLNlycw8u8fWb7oO7W5URC9MfZYHBlA24rex9rs23D5DETChu1zvgVdc5ka64ICjJOgQMr6Shw==",
-+      "dependencies": {
-+        "parchment": "^1.1.2"
-+      }
-+    },
-+    "node_modules/@types/quill/node_modules/parchment": {
-+      "version": "1.1.4",
-+      "resolved": "https://registry.npmjs.org/parchment/-/parchment-1.1.4.tgz",
-+      "integrity": "sha512-J5FBQt/pM2inLzg4hEWmzQx/8h8D0CiDxaG3vyp9rKrQRSDgBlhjdP5jQGgosEajXPSQouXGHOmVdgo7QmJuOg=="
-+    },
-     "node_modules/@types/react": {
-       "version": "18.2.46",
-       "resolved": "https://registry.npmjs.org/@types/react/-/react-18.2.46.tgz",
-@@ -1504,14 +1519,18 @@
-       }
-     },
-     "node_modules/call-bind": {
--      "version": "1.0.5",
--      "resolved": "https://registry.npmjs.org/call-bind/-/call-bind-1.0.5.tgz",
--      "integrity": "sha512-C3nQxfFZxFRVoJoGKKI8y3MOEo129NQ+FgQ08iye+Mk4zNZZGdjfs06bVTr+DBSlA66Q2VEcMki/cUCP4SercQ==",
--      "dev": true,
-+      "version": "1.0.7",
-+      "resolved": "https://registry.npmjs.org/call-bind/-/call-bind-1.0.7.tgz",
-+      "integrity": "sha512-GHTSNSYICQ7scH7sZ+M2rFopRoLh8t2bLSW6BbgrtLsahOIB5iyAVJf9GjWK3cYTDaMj4XdBpM1cA6pIS0Kv2w==",
-       "dependencies": {
-+        "es-define-property": "^1.0.0",
-+        "es-errors": "^1.3.0",
-         "function-bind": "^1.1.2",
--        "get-intrinsic": "^1.2.1",
--        "set-function-length": "^1.1.1"
-+        "get-intrinsic": "^1.2.4",
-+        "set-function-length": "^1.2.1"
-+      },
-+      "engines": {
-+        "node": ">= 0.4"
-       },
-       "funding": {
-         "url": "https://github.com/sponsors/ljharb"
-@@ -1652,7 +1671,6 @@
-       "version": "2.1.2",
-       "resolved": "https://registry.npmjs.org/clone/-/clone-2.1.2.tgz",
-       "integrity": "sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==",
--      "dev": true,
-       "engines": {
-         "node": ">=0.8"
-       }
-@@ -1783,6 +1801,25 @@
-         }
-       }
-     },
-+    "node_modules/deep-equal": {
-+      "version": "1.1.2",
-+      "resolved": "https://registry.npmjs.org/deep-equal/-/deep-equal-1.1.2.tgz",
-+      "integrity": "sha512-5tdhKF6DbU7iIzrIOa1AOUt39ZRm13cmL1cGEh//aqR8x9+tNfbywRf0n5FD/18OKMdo7DNEtrX2t22ZAkI+eg==",
-+      "dependencies": {
-+        "is-arguments": "^1.1.1",
-+        "is-date-object": "^1.0.5",
-+        "is-regex": "^1.1.4",
-+        "object-is": "^1.1.5",
-+        "object-keys": "^1.1.1",
-+        "regexp.prototype.flags": "^1.5.1"
-+      },
-+      "engines": {
-+        "node": ">= 0.4"
-+      },
-+      "funding": {
-+        "url": "https://github.com/sponsors/ljharb"
-+      }
-+    },
-     "node_modules/deep-is": {
-       "version": "0.1.4",
-       "resolved": "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz",
-@@ -1824,17 +1861,19 @@
-       }
-     },
-     "node_modules/define-data-property": {
--      "version": "1.1.1",
--      "resolved": "https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.1.tgz",
--      "integrity": "sha512-E7uGkTzkk1d0ByLeSc6ZsFS79Axg+m1P/VsgYsxHgiuc3tFSj+MjMIwe90FC4lOAZzNBdY7kkO2P2wKdsQ1vgQ==",
--      "dev": true,
-+      "version": "1.1.4",
-+      "resolved": "https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.4.tgz",
-+      "integrity": "sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==",
-       "dependencies": {
--        "get-intrinsic": "^1.2.1",
--        "gopd": "^1.0.1",
--        "has-property-descriptors": "^1.0.0"
-+        "es-define-property": "^1.0.0",
-+        "es-errors": "^1.3.0",
-+        "gopd": "^1.0.1"
-       },
-       "engines": {
-         "node": ">= 0.4"
-+      },
-+      "funding": {
-+        "url": "https://github.com/sponsors/ljharb"
-       }
-     },
-     "node_modules/define-lazy-prop": {
-@@ -1853,7 +1892,6 @@
-       "version": "1.2.1",
-       "resolved": "https://registry.npmjs.org/define-properties/-/define-properties-1.2.1.tgz",
-       "integrity": "sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==",
--      "dev": true,
-       "dependencies": {
-         "define-data-property": "^1.0.1",
-         "has-property-descriptors": "^1.0.0",
-@@ -2034,6 +2072,25 @@
-         "url": "https://github.com/sponsors/ljharb"
-       }
-     },
-+    "node_modules/es-define-property": {
-+      "version": "1.0.0",
-+      "resolved": "https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.0.tgz",
-+      "integrity": "sha512-jxayLKShrEqqzJ0eumQbVhTYQM27CfT1T35+gCgDFoL82JLsXqTJ76zv6A0YLOgEnLUMvLzsDsGIrl8NFpT2gQ==",
-+      "dependencies": {
-+        "get-intrinsic": "^1.2.4"
-+      },
-+      "engines": {
-+        "node": ">= 0.4"
-+      }
-+    },
-+    "node_modules/es-errors": {
-+      "version": "1.3.0",
-+      "resolved": "https://registry.npmjs.org/es-errors/-/es-errors-1.3.0.tgz",
-+      "integrity": "sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==",
-+      "engines": {
-+        "node": ">= 0.4"
-+      }
-+    },
-     "node_modules/es-iterator-helpers": {
-       "version": "1.0.15",
-       "resolved": "https://registry.npmjs.org/es-iterator-helpers/-/es-iterator-helpers-1.0.15.tgz",
-@@ -2898,6 +2955,11 @@
-         "node": ">=0.10.0"
-       }
-     },
-+    "node_modules/eventemitter3": {
-+      "version": "5.0.1",
-+      "resolved": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-5.0.1.tgz",
-+      "integrity": "sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA=="
-+    },
-     "node_modules/execa": {
-       "version": "7.2.0",
-       "resolved": "https://registry.npmjs.org/execa/-/execa-7.2.0.tgz",
-@@ -2921,6 +2983,11 @@
-         "url": "https://github.com/sindresorhus/execa?sponsor=1"
-       }
-     },
-+    "node_modules/extend": {
-+      "version": "3.0.2",
-+      "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.2.tgz",
-+      "integrity": "sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g=="
-+    },
-     "node_modules/fast-deep-equal": {
-       "version": "3.1.3",
-       "resolved": "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz",
-@@ -2930,8 +2997,7 @@
-     "node_modules/fast-diff": {
-       "version": "1.3.0",
-       "resolved": "https://registry.npmjs.org/fast-diff/-/fast-diff-1.3.0.tgz",
--      "integrity": "sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==",
--      "dev": true
-+      "integrity": "sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw=="
-     },
-     "node_modules/fast-glob": {
-       "version": "3.3.2",
-@@ -3114,7 +3180,6 @@
-       "version": "1.1.2",
-       "resolved": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz",
-       "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==",
--      "dev": true,
-       "funding": {
-         "url": "https://github.com/sponsors/ljharb"
-       }
-@@ -3147,22 +3212,24 @@
-       "version": "1.2.3",
-       "resolved": "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz",
-       "integrity": "sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==",
--      "dev": true,
-       "funding": {
-         "url": "https://github.com/sponsors/ljharb"
-       }
-     },
-     "node_modules/get-intrinsic": {
--      "version": "1.2.2",
--      "resolved": "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.2.2.tgz",
--      "integrity": "sha512-0gSo4ml/0j98Y3lngkFEot/zhiCeWsbYIlZ+uZOVgzLyLaUw7wxUL+nCTP0XJvJg1AXulJRI3UJi8GsbDuxdGA==",
--      "dev": true,
-+      "version": "1.2.4",
-+      "resolved": "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.2.4.tgz",
-+      "integrity": "sha512-5uYhsJH8VJBTv7oslg4BznJYhDoRI6waYCxMmCdnTrcCrHA/fCFKoTFz2JKKE0HdDFUF7/oQuhzumXJK7paBRQ==",
-       "dependencies": {
-+        "es-errors": "^1.3.0",
-         "function-bind": "^1.1.2",
-         "has-proto": "^1.0.1",
-         "has-symbols": "^1.0.3",
-         "hasown": "^2.0.0"
-       },
-+      "engines": {
-+        "node": ">= 0.4"
-+      },
-       "funding": {
-         "url": "https://github.com/sponsors/ljharb"
-       }
-@@ -3298,7 +3365,6 @@
-       "version": "1.0.1",
-       "resolved": "https://registry.npmjs.org/gopd/-/gopd-1.0.1.tgz",
-       "integrity": "sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==",
--      "dev": true,
-       "dependencies": {
-         "get-intrinsic": "^1.1.3"
-       },
-@@ -3359,12 +3425,11 @@
-       }
-     },
-     "node_modules/has-property-descriptors": {
--      "version": "1.0.1",
--      "resolved": "https://registry.npmjs.org/has-property-descriptors/-/has-property-descriptors-1.0.1.tgz",
--      "integrity": "sha512-VsX8eaIewvas0xnvinAe9bw4WfIeODpGYikiWYLH+dma0Jw6KHYqWiWfhQlgOVK8D6PvjubK5Uc4P0iIhIcNVg==",
--      "dev": true,
-+      "version": "1.0.2",
-+      "resolved": "https://registry.npmjs.org/has-property-descriptors/-/has-property-descriptors-1.0.2.tgz",
-+      "integrity": "sha512-55JNKuIW+vq4Ke1BjOTjM2YctQIvCT7GFzHwmfZPGo5wnrgkid0YQtnAleFSqumZm4az3n2BS+erby5ipJdgrg==",
-       "dependencies": {
--        "get-intrinsic": "^1.2.2"
-+        "es-define-property": "^1.0.0"
-       },
-       "funding": {
-         "url": "https://github.com/sponsors/ljharb"
-@@ -3374,7 +3439,6 @@
-       "version": "1.0.1",
-       "resolved": "https://registry.npmjs.org/has-proto/-/has-proto-1.0.1.tgz",
-       "integrity": "sha512-7qE+iP+O+bgF9clE5+UoBFzE65mlBiVj3tKCrlNQ0Ogwm0BjpT/gK4SlLYDMybDh5I3TCTKnPPa0oMG7JDYrhg==",
--      "dev": true,
-       "engines": {
-         "node": ">= 0.4"
-       },
-@@ -3386,7 +3450,6 @@
-       "version": "1.0.3",
-       "resolved": "https://registry.npmjs.org/has-symbols/-/has-symbols-1.0.3.tgz",
-       "integrity": "sha512-l3LCuF6MgDNwTDKkdYGEihYjt5pRPbEg46rtlmnSPlUbgmB8LOIrKJbYYFBSbnPaJexMKtiPO8hmeRjRz2Td+A==",
--      "dev": true,
-       "engines": {
-         "node": ">= 0.4"
-       },
-@@ -3398,7 +3461,6 @@
-       "version": "1.0.0",
-       "resolved": "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.0.tgz",
-       "integrity": "sha512-kFjcSNhnlGV1kyoGk7OXKSawH5JOb/LzUc5w9B02hOTO0dfFRjbHQKvg1d6cf3HbeUmtU9VbbV3qzZ2Teh97WQ==",
--      "dev": true,
-       "dependencies": {
-         "has-symbols": "^1.0.2"
-       },
-@@ -3413,7 +3475,6 @@
-       "version": "2.0.0",
-       "resolved": "https://registry.npmjs.org/hasown/-/hasown-2.0.0.tgz",
-       "integrity": "sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==",
--      "dev": true,
-       "dependencies": {
-         "function-bind": "^1.1.2"
-       },
-@@ -3531,6 +3592,21 @@
-         "node": ">=4.0.0"
-       }
-     },
-+    "node_modules/is-arguments": {
-+      "version": "1.1.1",
-+      "resolved": "https://registry.npmjs.org/is-arguments/-/is-arguments-1.1.1.tgz",
-+      "integrity": "sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA==",
-+      "dependencies": {
-+        "call-bind": "^1.0.2",
-+        "has-tostringtag": "^1.0.0"
-+      },
-+      "engines": {
-+        "node": ">= 0.4"
-+      },
-+      "funding": {
-+        "url": "https://github.com/sponsors/ljharb"
-+      }
-+    },
-     "node_modules/is-array-buffer": {
-       "version": "3.0.2",
-       "resolved": "https://registry.npmjs.org/is-array-buffer/-/is-array-buffer-3.0.2.tgz",
-@@ -3648,7 +3724,6 @@
-       "version": "1.0.5",
-       "resolved": "https://registry.npmjs.org/is-date-object/-/is-date-object-1.0.5.tgz",
-       "integrity": "sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==",
--      "dev": true,
-       "dependencies": {
-         "has-tostringtag": "^1.0.0"
-       },
-@@ -3804,7 +3879,6 @@
-       "version": "1.1.4",
-       "resolved": "https://registry.npmjs.org/is-regex/-/is-regex-1.1.4.tgz",
-       "integrity": "sha512-kvRdxDsxZjhzUX07ZnLydzS1TU/TJlTUHHY4YLL87e37oUA49DfkLqgy+VjFocowy29cKvcSiu+kIv728jTTVg==",
--      "dev": true,
-       "dependencies": {
-         "call-bind": "^1.0.2",
-         "has-tostringtag": "^1.0.0"
-@@ -4168,6 +4242,26 @@
-         "url": "https://github.com/sponsors/sindresorhus"
-       }
-     },
-+    "node_modules/lodash": {
-+      "version": "4.17.21",
-+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz",
-+      "integrity": "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
-+    },
-+    "node_modules/lodash-es": {
-+      "version": "4.17.21",
-+      "resolved": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz",
-+      "integrity": "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="
-+    },
-+    "node_modules/lodash.clonedeep": {
-+      "version": "4.5.0",
-+      "resolved": "https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz",
-+      "integrity": "sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ=="
-+    },
-+    "node_modules/lodash.isequal": {
-+      "version": "4.5.0",
-+      "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.5.0.tgz",
-+      "integrity": "sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ=="
-+    },
-     "node_modules/lodash.merge": {
-       "version": "4.6.2",
-       "resolved": "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz",
-@@ -4524,11 +4618,25 @@
-         "url": "https://github.com/sponsors/ljharb"
-       }
-     },
-+    "node_modules/object-is": {
-+      "version": "1.1.6",
-+      "resolved": "https://registry.npmjs.org/object-is/-/object-is-1.1.6.tgz",
-+      "integrity": "sha512-F8cZ+KfGlSGi09lJT7/Nd6KJZ9ygtvYC0/UYYLI9nmQKLMnydpB9yvbv9K1uSkEu7FU9vYPmVwLg328tX+ot3Q==",
-+      "dependencies": {
-+        "call-bind": "^1.0.7",
-+        "define-properties": "^1.2.1"
-+      },
-+      "engines": {
-+        "node": ">= 0.4"
-+      },
-+      "funding": {
-+        "url": "https://github.com/sponsors/ljharb"
-+      }
-+    },
-     "node_modules/object-keys": {
-       "version": "1.1.1",
-       "resolved": "https://registry.npmjs.org/object-keys/-/object-keys-1.1.1.tgz",
-       "integrity": "sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==",
--      "dev": true,
-       "engines": {
-         "node": ">= 0.4"
-       }
-@@ -4744,6 +4852,11 @@
-         "node": ">=6"
-       }
-     },
-+    "node_modules/parchment": {
-+      "version": "3.0.0",
-+      "resolved": "https://registry.npmjs.org/parchment/-/parchment-3.0.0.tgz",
-+      "integrity": "sha512-HUrJFQ/StvgmXRcQ1ftY6VEZUq3jA2t9ncFN4F84J/vN0/FPpQF+8FKXb3l6fLces6q0uOHj6NJn+2xvZnxO6A=="
-+    },
-     "node_modules/parent-module": {
-       "version": "1.0.1",
-       "resolved": "https://registry.npmjs.org/parent-module/-/parent-module-1.0.1.tgz",
-@@ -5133,6 +5246,33 @@
-         }
-       ]
-     },
-+    "node_modules/quill": {
-+      "version": "2.0.2",
-+      "resolved": "https://registry.npmjs.org/quill/-/quill-2.0.2.tgz",
-+      "integrity": "sha512-QfazNrhMakEdRG57IoYFwffUIr04LWJxbS/ZkidRFXYCQt63c1gK6Z7IHUXMx/Vh25WgPBU42oBaNzQ0K1R/xw==",
-+      "dependencies": {
-+        "eventemitter3": "^5.0.1",
-+        "lodash-es": "^4.17.21",
-+        "parchment": "^3.0.0",
-+        "quill-delta": "^5.1.0"
-+      },
-+      "engines": {
-+        "npm": ">=8.2.3"
-+      }
-+    },
-+    "node_modules/quill-delta": {
-+      "version": "5.1.0",
-+      "resolved": "https://registry.npmjs.org/quill-delta/-/quill-delta-5.1.0.tgz",
-+      "integrity": "sha512-X74oCeRI4/p0ucjb5Ma8adTXd9Scumz367kkMK5V/IatcX6A0vlgLgKbzXWy5nZmCGeNJm2oQX0d2Eqj+ZIlCA==",
-+      "dependencies": {
-+        "fast-diff": "^1.3.0",
-+        "lodash.clonedeep": "^4.5.0",
-+        "lodash.isequal": "^4.5.0"
-+      },
-+      "engines": {
-+        "node": ">= 12.0.0"
-+      }
-+    },
-     "node_modules/react": {
-       "version": "18.2.0",
-       "resolved": "https://registry.npmjs.org/react/-/react-18.2.0.tgz",
-@@ -5169,6 +5309,61 @@
-       "resolved": "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz",
-       "integrity": "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
-     },
-+    "node_modules/react-quill": {
-+      "version": "2.0.0",
-+      "resolved": "https://registry.npmjs.org/react-quill/-/react-quill-2.0.0.tgz",
-+      "integrity": "sha512-4qQtv1FtCfLgoD3PXAur5RyxuUbPXQGOHgTlFie3jtxp43mXDtzCKaOgQ3mLyZfi1PUlyjycfivKelFhy13QUg==",
-+      "dependencies": {
-+        "@types/quill": "^1.3.10",
-+        "lodash": "^4.17.4",
-+        "quill": "^1.3.7"
-+      },
-+      "peerDependencies": {
-+        "react": "^16 || ^17 || ^18",
-+        "react-dom": "^16 || ^17 || ^18"
-+      }
-+    },
-+    "node_modules/react-quill/node_modules/eventemitter3": {
-+      "version": "2.0.3",
-+      "resolved": "https://registry.npmjs.org/eventemitter3/-/eventemitter3-2.0.3.tgz",
-+      "integrity": "sha512-jLN68Dx5kyFHaePoXWPsCGW5qdyZQtLYHkxkg02/Mz6g0kYpDx4FyP6XfArhQdlOC4b8Mv+EMxPo/8La7Tzghg=="
-+    },
-+    "node_modules/react-quill/node_modules/fast-diff": {
-+      "version": "1.1.2",
-+      "resolved": "https://registry.npmjs.org/fast-diff/-/fast-diff-1.1.2.tgz",
-+      "integrity": "sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig=="
-+    },
-+    "node_modules/react-quill/node_modules/parchment": {
-+      "version": "1.1.4",
-+      "resolved": "https://registry.npmjs.org/parchment/-/parchment-1.1.4.tgz",
-+      "integrity": "sha512-J5FBQt/pM2inLzg4hEWmzQx/8h8D0CiDxaG3vyp9rKrQRSDgBlhjdP5jQGgosEajXPSQouXGHOmVdgo7QmJuOg=="
-+    },
-+    "node_modules/react-quill/node_modules/quill": {
-+      "version": "1.3.7",
-+      "resolved": "https://registry.npmjs.org/quill/-/quill-1.3.7.tgz",
-+      "integrity": "sha512-hG/DVzh/TiknWtE6QmWAF/pxoZKYxfe3J/d/+ShUWkDvvkZQVTPeVmUJVu1uE6DDooC4fWTiCLh84ul89oNz5g==",
-+      "dependencies": {
-+        "clone": "^2.1.1",
-+        "deep-equal": "^1.0.1",
-+        "eventemitter3": "^2.0.3",
-+        "extend": "^3.0.2",
-+        "parchment": "^1.1.4",
-+        "quill-delta": "^3.6.2"
-+      }
-+    },
-+    "node_modules/react-quill/node_modules/quill-delta": {
-+      "version": "3.6.3",
-+      "resolved": "https://registry.npmjs.org/quill-delta/-/quill-delta-3.6.3.tgz",
-+      "integrity": "sha512-wdIGBlcX13tCHOXGMVnnTVFtGRLoP0imqxM696fIPwIf5ODIYUHIvHbZcyvGlZFiFhK5XzDC2lpjbxRhnM05Tg==",
-+      "dependencies": {
-+        "deep-equal": "^1.0.1",
-+        "extend": "^3.0.2",
-+        "fast-diff": "1.1.2"
-+      },
-+      "engines": {
-+        "node": ">=0.10"
-+      }
-+    },
-     "node_modules/read-cache": {
-       "version": "1.0.0",
-       "resolved": "https://registry.npmjs.org/read-cache/-/read-cache-1.0.0.tgz",
-@@ -5335,7 +5530,6 @@
-       "version": "1.5.1",
-       "resolved": "https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.5.1.tgz",
-       "integrity": "sha512-sy6TXMN+hnP/wMy+ISxg3krXx7BAtWVO4UouuCN/ziM9UEne0euamVNafDfvC83bRNr95y0V5iijeDQFUNpvrg==",
--      "dev": true,
-       "dependencies": {
-         "call-bind": "^1.0.2",
-         "define-properties": "^1.2.0",
-@@ -5698,15 +5892,16 @@
-       "integrity": "sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA=="
-     },
-     "node_modules/set-function-length": {
--      "version": "1.1.1",
--      "resolved": "https://registry.npmjs.org/set-function-length/-/set-function-length-1.1.1.tgz",
--      "integrity": "sha512-VoaqjbBJKiWtg4yRcKBQ7g7wnGnLV3M8oLvVWwOk2PdYY6PEFegR1vezXR0tw6fZGF9csVakIRjrJiy2veSBFQ==",
--      "dev": true,
-+      "version": "1.2.2",
-+      "resolved": "https://registry.npmjs.org/set-function-length/-/set-function-length-1.2.2.tgz",
-+      "integrity": "sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==",
-       "dependencies": {
--        "define-data-property": "^1.1.1",
--        "get-intrinsic": "^1.2.1",
-+        "define-data-property": "^1.1.4",
-+        "es-errors": "^1.3.0",
-+        "function-bind": "^1.1.2",
-+        "get-intrinsic": "^1.2.4",
-         "gopd": "^1.0.1",
--        "has-property-descriptors": "^1.0.0"
-+        "has-property-descriptors": "^1.0.2"
-       },
-       "engines": {
-         "node": ">= 0.4"
-@@ -5716,7 +5911,6 @@
-       "version": "2.0.1",
-       "resolved": "https://registry.npmjs.org/set-function-name/-/set-function-name-2.0.1.tgz",
-       "integrity": "sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==",
--      "dev": true,
-       "dependencies": {
-         "define-data-property": "^1.0.1",
-         "functions-have-names": "^1.2.3",
-diff --git a/package.json b/package.json
-index 09f8e17..98f4899 100644
---- a/package.json
-+++ b/package.json
-@@ -17,9 +17,11 @@
-     "@apollo/experimental-nextjs-app-support": "^0.8.0",
-     "mongodb": "^6.3.0",
-     "next": "14.0.4",
-+    "quill": "^2.0.2",
-     "react": "^18",
-     "react-dom": "^18",
-     "react-icons": "^4.11.0",
-+    "react-quill": "^2.0.0",
-     "readline": "^1.3.0",
-     "sass": "^1.69.5"
-   },
++		// Initi current_task on boot
++		if (current_task.id == null_task.id) {
++			current_task = task_table[TASK_TABLE_LEN - 1];
++		}
++
++		current_task_dur += pdTICKS_TO_MS(TASK_MANAGER_YIELD_TICKS);
++
++		// If expired, cancel. Else if preempted, cancel.
++		// TODO: check for current task yield via notif
++		if (current_task.timeout != 0 && /* current task has a timeout */
++			current_task_dur >= current_task.timeout /* and it expired */
++		) {
++			cancel_current_task = true;
++		} else {
++			// Scan for ready task from the next-highest priority downwards
++			for (int id = task_table[0].id; id > current_task.id; id--) {
++				if ((task_table[id]).ready_ptr()) {
++					cancel_current_task = true;
++					break;
++				}
+ 			}
+ 		}
+-	}
+ 
+-	if (cancel_current_task == false) {
+-		vTaskResume(current_task.FreeRTOS_handle);
+-	} else {
+-		// Suspend current_task
+-		vTaskSuspend(current_task.FreeRTOS_handle);
+-		current_task.clean_ptr(); //clean must run after suspend!
+-		current_task = null_task;
+-		current_task_dur = 0;
+-
+-		// Schedule another task, highest priority first
+-		for (int id = 0; id < TASK_TABLE_LEN; id++) {
+-			if (task_table[id].ready_ptr()) {
+-				current_task = task_table[id];
+-				vTaskResume(current_task.FreeRTOS_handle);
+-				//TODO: send the new task a start notification
+-				break;
++		if (cancel_current_task == false) {
++			vTaskResume(current_task.FreeRTOS_handle);
++		} else {
++			// Suspend current_task
++			if (current_task.id != null_task.id) {
++				vTaskSuspend(current_task.FreeRTOS_handle);
++				current_task.clean_ptr(); //clean must run after suspend!
++				current_task = null_task;
++				current_task_dur = 0;
++			}
++
++			// Schedule another task, highest priority first
++			for (int id = 0; id < TASK_TABLE_LEN; id++) {
++				if (task_table[id].ready_ptr()) {
++					current_task = task_table[id];
++					current_task.config_ptr();
++					vTaskResume(current_task.FreeRTOS_handle);
++					//TODO: send the new task a start notification
++					break;
++				}
+ 			}
+ 		}
+-	}
+ 
+-	vTaskDelay((TickType_t) TASK_MANAGER_YIELD_TICKS);
++		vTaskDelay((TickType_t) TASK_MANAGER_YIELD_TICKS);
++	}
+ }
+diff --git a/Src/scheduler/task_manager.h b/Src/scheduler/task_manager.h
+index 8c492ac4..84812564 100644
+--- a/Src/scheduler/task_manager.h
++++ b/Src/scheduler/task_manager.h
+@@ -12,7 +12,7 @@
+ #include "FreeRTOS.h"
+ #include "task.h"
+ 
+-#define TASK_MANAGER_PRIORITY 1
++#define TASK_MANAGER_PRIORITY (configMAX_PRIORITIES-2)
+ 
+ /**@brief Handle task expiration and preemption.
+  *
+diff --git a/Src/scheduler/watchdog.c b/Src/scheduler/watchdog.c
+index 330633af..41f9eaec 100644
+--- a/Src/scheduler/watchdog.c
++++ b/Src/scheduler/watchdog.c
+@@ -9,8 +9,8 @@
+ #include "task_manager.h"
+ #include "intelliTask.h"
+ 
+-#define WATCHDOG_YIELD_TICKS 		pdMS_TO_TICKS(86400000) // 1 day TODO fix
+-#define WATCHDOG_IDLE_PERIOD_TICKS 	pdMS_TO_TICKS(20000) // 1 minute TODO fix
++#define WATCHDOG_YIELD_TICKS 		pdMS_TO_TICKS(3000) // 1 day TODO fix 3\86400
++#define WATCHDOG_IDLE_PERIOD_TICKS 	pdMS_TO_TICKS(2000) // 1 minute TODO fix 2\20
+ 
+ extern intelli_task_t task_table[TASK_TABLE_LEN];
+ 
+@@ -19,6 +19,7 @@ void watchdog(void *args) {
+ 	printMsg(":) Hello from the Scheduler Watchdog! <3\n\r");
+ 
+ 	while (true) {
++		printMsg("Running watchdog\r\n");
+ 		static TaskHandle_t task_manager_handle = NULL;
+ 
+ 		//Tear down all tasks
+@@ -28,6 +29,7 @@ void watchdog(void *args) {
+ 		for (int taskid = 0; taskid < TASK_TABLE_LEN; taskid++) {
+ 			intelli_task_t task = task_table[taskid];
+ 			if (task.FreeRTOS_handle != NULL) {
++				task.clean_ptr();
+ 				vTaskDelete(task.FreeRTOS_handle);
+ 			}
+ 		}
+@@ -37,30 +39,38 @@ void watchdog(void *args) {
+ 
+ 		//Pull up all tasks
+ 		BaseType_t status = xTaskCreate( task_manager,
+-										":) Hello from the Task Manager! <3",
++										"Task_Manager",
+ 										1000, //TODO change. # words in stack
+ 										NULL,
+ 										TASK_MANAGER_PRIORITY,
+ 										&task_manager_handle
+ 									);
+ 		if (status != pdPASS) {
+-			printMsg("OOM allocating task manager task\n");
++			printMsg("OOM allocating task manager task\r\n");
++			NVIC_SystemReset(); // If we OOM, we have no recourse but to hard reset
+ 		}
++		
+ 		for (int taskid = 0; taskid < TASK_TABLE_LEN; taskid++) {
+ 			intelli_task_t task = task_table[taskid];
+ 			status = xTaskCreate(	task.run_ptr,
+ 									task.name,
+-									1000, //TODO: make task-specific
++									100, //TODO: make task-specific
+ 									NULL, //no parameters
+ 									task.id,
+-									&(task.FreeRTOS_handle)
++									&(task_table[taskid].FreeRTOS_handle)
+ 								);
++			// Make sure the task does not seize control right after \
++			// the watchdog and task manager yield
+ 			if (status != pdPASS) {
+ 				printMsg("OOM allocating %s task with error %d\n\r", task.name, status);
++				NVIC_SystemReset(); // If we OOM, ... (as above)
++			} else {
++				vTaskSuspend(task_table[taskid].FreeRTOS_handle);
+ 			}
+ 		}
+ 
+-		//Yield to regular scheduling
++		//Yield to regular scheduling.
++		//Should directly enter the Task Manager task.
+ 		vTaskDelay((TickType_t) WATCHDOG_YIELD_TICKS);
+ 	}
+ }
+diff --git a/Src/system_config/RTC/rtc.c b/Src/system_config/RTC/rtc.c
+index c403fba7..03e8fc5c 100644
+--- a/Src/system_config/RTC/rtc.c
++++ b/Src/system_config/RTC/rtc.c
+@@ -24,7 +24,9 @@ void rtc_openWritingPriveledge() {
+ 
+ 	// Enter RTC Initialization mode, wait for confirmation of initialization mode
+ 	RTC->ISR |= RTC_ISR_INIT;
+-	while (!(RTC->ISR & RTC_ISR_INITF));
++	while (!(RTC->ISR & RTC_ISR_INITF)) {
++		nop(1);
++	}
+ }
+ 
+ void rtc_closeWritingPriveledge() {
+diff --git a/Src/system_config/Timers/startup_timer.c b/Src/system_config/Timers/startup_timer.c
+index ee75a86a..d006d3b5 100644
+--- a/Src/system_config/Timers/startup_timer.c
++++ b/Src/system_config/Timers/startup_timer.c
+@@ -15,7 +15,7 @@
+ //#define MAX_STARTUP_COUNT (30 * 60)		// 30 minutes * 60 seconds per minute
+ # define MAX_STARTUP_COUNT (3)
+ 
+-int startup_count = 0;
++volatile int startup_count = 0;
+ 
+ 
+ void timer_initStartupTimer() {
+@@ -56,7 +56,9 @@ void timer_waitStartupTime() {
+ 	timer_initStartupTimer();
+ 
+ 	timer_startupTimerOn();
+-	while (startup_count < MAX_STARTUP_COUNT);
++	while (startup_count < MAX_STARTUP_COUNT) {
++		nop(1);
++	}
+ 	timer_startupTimerOff();
+ }
+ 

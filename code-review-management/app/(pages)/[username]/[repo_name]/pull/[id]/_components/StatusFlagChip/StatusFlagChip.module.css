@@ -1,0 +1,32 @@
+.statusFlagChip {
+  height: 32px;
+
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: var(--background-light);
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-4);
+}
+
+.ready {
+  border: 1px solid var(--status-ready);
+  background-color: rgba(var(--status-ready-rgb), 0.72);
+}
+
+.waiting {
+  border: 1px solid var(--status-waiting);
+  background-color: rgba(var(--status-waiting-rgb), 0.72);
+}
+
+.conflict {
+  border: 1px solid var(--status-conflict);
+  background: rgba(var(--status-conflict-rgb), 0.72);
+}
+
+.failure {
+  border: 1px solid var(--status-failure);
+  background-color: rgba(var(--status-failure-rgb), 0.72);
+}

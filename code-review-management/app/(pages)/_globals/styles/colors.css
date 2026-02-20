@@ -1,6 +1,26 @@
 :root {
+    /* Component background colors */
+    --background-light: #ffffff;
+    --background-secondary-light: #f2f2f2;
+
+    /* Component text colors */
+    --text-primary: #49454f;
+    --text-secondary: #79747e;
+    --text-tertiary: #938f99;
+
+    /* Semantic colors */
+    --color-success: #3ca133;
+    --color-failure: #e30202;
+    
+    /* Tooltip colors */
+    --tooltip-gray: #5f5f5f;
+
+    /* Icon colors */
+    --icon-hover-gray: #efefef;
+
     /* Border colors */
     --border-gray: #e2e2e2;
+    --border-gray-secondary: #cac4d0; /* Darker borders */
 
     /* Diff-view colors */
     --diff-omit-bg-color: #f9f9f9;
@@ -13,4 +33,22 @@
     --diff-gutter-delete-border-color: #eca7a7;
     --diff-gutter-insert-bg-color: #d6fedb;
     --diff-gutter-insert-border-color: #93de7a;
+
+    /* Diff state colors */
+    --state-draft: #989898;
+    --state-open: var(--color-success);
+    --state-closed: var(--color-failure);
+    --state-merged: #9F81d7;
+
+    /* Diff status RGB values */
+    /* Use RBG for customizable alpha in RGBA, used for transparent chip backgrounds */
+    --status-ready-rgb: 60, 161, 51;
+    --status-waiting-rgb: 12, 162, 227;
+    --status-conflict-rgb: 255, 158, 2;
+    --status-failure-rgb: 227, 2, 2;
+
+    --status-ready: rgb(var(--status-ready-rgb));
+    --status-waiting: rgb(var(--status-waiting-rgb));
+    --status-conflict: rgb(var(--status-conflict-rgb));
+    --status-failure: rgb(var(--status-failure-rgb));
 }
