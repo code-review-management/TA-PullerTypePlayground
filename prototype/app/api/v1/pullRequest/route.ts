@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     pull_number: pull_number
   });
 
-  getConflictMarkers(pr)
+  getConflictMarkers(pr, token)
 
   if (userLastAccessTime == null){
     console.log("Lazy filling in pr: " + pr.id)
