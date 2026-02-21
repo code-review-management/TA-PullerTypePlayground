@@ -1,7 +1,7 @@
 import refractor from "refractor";
 import path from "path";
 import { ReactNode } from "react";
-import { ChangeData, getChangeKey, HunkData } from "react-diff-view";
+import { ChangeData, FileData, getChangeKey, HunkData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineCommentThreadList from "../_components/InlineCommentThreadList/InlineCommentThreadList";
@@ -11,6 +11,14 @@ export function getLineNumber(change: ChangeData, side: Side) {
     return change.lineNumber;
   }
   return side === "new" ? change.newLineNumber : change.oldLineNumber;
+}
+
+export function getActivePath(
+  diffType: FileData["type"],
+  oldPath: string,
+  newPath: string,
+) {
+  return diffType === "delete" ? oldPath : newPath;
 }
 
 export function getLanguage(filename: string) {
