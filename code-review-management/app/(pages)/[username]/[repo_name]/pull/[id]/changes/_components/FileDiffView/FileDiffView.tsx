@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -58,22 +58,21 @@ export default function FileDiffView({
     language: getLanguage(diffType === "delete" ? oldPath : newPath),
   });
 
-  const widgets = useMemo(
-    () => getCommentWidgets(hunks, publishedThreadsByLine),
-    [hunks, publishedThreadsByLine],
-  );
+  const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
 
-  const renderGutter = useCallback(
-    ({ change, side, renderDefault, wrapInAnchor }: GutterOptions) => (
-      <Gutter
-        change={change}
-        side={side}
-        renderDefault={renderDefault}
-        wrapInAnchor={wrapInAnchor}
-        activeHighlight={activeHighlight}
-      />
-    ),
-    [activeHighlight],
+  const renderGutter = ({
+    change,
+    side,
+    renderDefault,
+    wrapInAnchor,
+  }: GutterOptions) => (
+    <Gutter
+      change={change}
+      side={side}
+      renderDefault={renderDefault}
+      wrapInAnchor={wrapInAnchor}
+      activeHighlight={activeHighlight}
+    />
   );
 
   return (
