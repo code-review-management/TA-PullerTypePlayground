@@ -20,9 +20,7 @@ export default function DiffListView({
         const activePath = diff.type === "delete" ? diff.oldPath : diff.newPath;
         return (
           <FileDiffView
-            key={diff.oldRevision + "-" + diff.newRevision}
-            oldRevision={diff.oldRevision}
-            newRevision={diff.newRevision}
+            key={diff.oldPath + "-" + diff.newPath}
             oldPath={diff.oldPath}
             newPath={diff.newPath}
             diffType={diff.type}

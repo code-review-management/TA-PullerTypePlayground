@@ -32,8 +32,6 @@ const robotoMono = Roboto_Mono({
  */
 
 export default function FileDiffView({
-  oldRevision,
-  newRevision,
   oldPath,
   newPath,
   diffType,
@@ -41,8 +39,6 @@ export default function FileDiffView({
   hunks,
   publishedThreadsByLine,
 }: {
-  oldRevision: string;
-  newRevision: string;
   oldPath: string;
   newPath: string;
   diffType: FileData["type"];
@@ -75,7 +71,6 @@ export default function FileDiffView({
       <div>
         {isExpanded && (
           <Diff
-            key={oldRevision + "-" + newRevision}
             viewType={viewType}
             diffType={diffType}
             hunks={hunks}
