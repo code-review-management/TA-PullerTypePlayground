@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -51,12 +51,17 @@ export default function FileDiffView({
   publishedThreadsByLine: PublishedThreadsByLine;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
+
   const tokens = tokenize(hunks, {
     highlight: true,
     refractor: refractor,
     language: getLanguage(diffType === "delete" ? oldPath : newPath),
   });
-  const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
+
+  const widgets = useMemo(
+    () => getCommentWidgets(hunks, publishedThreadsByLine),
+    [hunks, publishedThreadsByLine],
+  );
 
   return (
     <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
