@@ -3,18 +3,6 @@
     justify-content: flex-end;
 }
 
-.icon {
-    display: none;
-}
-
-.gutter:hover .icon {
-    display: inline;
-    padding-right: var(--spacer-4);
-    padding-left: var(--spacer-6);
-    margin-right: auto;
-}
-
 .number {
-    align-self: flex-end;
     padding-right: var(--spacer-6);
 }

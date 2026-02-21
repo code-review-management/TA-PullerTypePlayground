@@ -16,7 +16,7 @@ export default function Gutter({
 }) {
   return (
     <div className={styles.gutter}>
-      <span className={styles.icon}>+</span>
+      <span className="diff-gutter-icon">+</span>
       <div className={styles.number}>{renderDefault()}</div>
     </div>
   );
