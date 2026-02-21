@@ -1,5 +1,6 @@
 import { ChangeData } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
+import { DraftItem } from "../../_hooks/useDrafts";
 import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
 import styles from "./InlineCommentThreadList.module.css";
 
@@ -10,42 +11,63 @@ import styles from "./InlineCommentThreadList.module.css";
  * space equally during "split" view.
  */
 
-export default function InlineCommentPublishedThreadList({
+export default function InlineCommentThreadList({
   change,
-  leftPublishedThreads,
-  rightPublishedThreads,
+  publishedThreadsBySide,
+  draftBySide,
 }: {
   change: ChangeData;
-  leftPublishedThreads: MockPublishedThread[];
-  rightPublishedThreads: MockPublishedThread[];
+  publishedThreadsBySide: { left: MockPublishedThread[]; right: MockPublishedThread[] };
+  draftBySide: { left: DraftItem | null; right: DraftItem | null };
 }) {
   if (change.type === "delete") {
-    return <PublishedThreadList publishedThreads={leftPublishedThreads} />;
-  }
-  else if (change.type === "insert") {
-    return <PublishedThreadList publishedThreads={rightPublishedThreads} />;
-  }
-  else {
+    return (
+      <ThreadList
+        publishedThreads={publishedThreadsBySide.left}
+        draft={draftBySide.left}
+      />
+    );
+  } else if (change.type === "insert") {
+    return (
+      <ThreadList
+        publishedThreads={publishedThreadsBySide.right}
+        draft={draftBySide.right}
+      />
+    );
+  } else {
     // Executes when change.type === "normal"
     return (
       <div className={styles.normalLineColumns}>
         <div className={styles.normalLineSide}>
-          <PublishedThreadList publishedThreads={leftPublishedThreads} />
+          <ThreadList
+            publishedThreads={publishedThreadsBySide.left}
+            draft={draftBySide.left}
+          />
         </div>
         <div className={styles.normalLineSide}>
-          <PublishedThreadList publishedThreads={rightPublishedThreads} />
+          <ThreadList
+            publishedThreads={publishedThreadsBySide.right}
+            draft={draftBySide.right}
+          />
         </div>
       </div>
     );
   }
 }
 
-function PublishedThreadList({ publishedThreads }: { publishedThreads: MockPublishedThread[] }) {
+function ThreadList({
+  publishedThreads,
+  draft,
+}: {
+  publishedThreads: MockPublishedThread[];
+  draft: DraftItem | null;
+}) {
   return (
     <div>
       {publishedThreads.map((thread) => (
         <InlineCommentThread key={thread.id} thread={thread} />
       ))}
+      {draft && <div>Draft created at {draft.createdAt}</div>}
     </div>
   );
 }

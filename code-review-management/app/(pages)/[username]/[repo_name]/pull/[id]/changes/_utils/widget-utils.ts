@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import { ChangeData, getChangeKey, HunkData } from "react-diff-view";
+import { Drafts, getDraftsKey } from "../_hooks/useDrafts"
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineCommentThreadList from "../_components/InlineCommentThreadList/InlineCommentThreadList";
-
+;
 /**
  * We have to group threads by side because for normal, unchanged lines,
  * react-diff-view shows the widget across both sides. We need to distinguish
@@ -15,47 +16,81 @@ function getPublishedThreadsBySide(
 ) {
   if (change.type === "normal") {
     return {
-      leftPublishedThreads: threadsByLine.get(change.oldLineNumber)?.left ?? [],
-      rightPublishedThreads:
-        threadsByLine.get(change.newLineNumber)?.right ?? [],
+      left: threadsByLine.get(change.oldLineNumber)?.left ?? [],
+      right: threadsByLine.get(change.newLineNumber)?.right ?? [],
     };
   }
 
   if (change.type === "delete") {
     return {
-      leftPublishedThreads: threadsByLine.get(change.lineNumber)?.left ?? [],
-      rightPublishedThreads: [],
+      left: threadsByLine.get(change.lineNumber)?.left ?? [],
+      right: [],
     };
   }
 
   if (change.type === "insert") {
     return {
-      leftPublishedThreads: [],
-      rightPublishedThreads: threadsByLine.get(change.lineNumber)?.right ?? [],
+      left: [],
+      right: threadsByLine.get(change.lineNumber)?.right ?? [],
     };
   }
 
-  return { leftPublishedThreads: [], rightPublishedThreads: [] };
+  return { left: [], right: [] };
 }
 
-export function getCommentWidgets(
+function getDraftBySide(
+  activePath: string,
+  change: ChangeData,
+  drafts: Drafts,
+) {
+  if (change.type === "normal") {
+    return {
+      left: drafts[getDraftsKey(activePath, change.oldLineNumber, "old")],
+      right: drafts[getDraftsKey(activePath, change.newLineNumber, "new")],
+    };
+  }
+
+  if (change.type === "delete") {
+    return {
+      left: drafts[getDraftsKey(activePath, change.lineNumber, "old")],
+      right: null,
+    };
+  }
+
+  if (change.type === "insert") {
+    return {
+      left: null,
+      right: drafts[getDraftsKey(activePath, change.lineNumber, "new")],
+    };
+  }
+
+  return { left: null, right: null };
+}
+
+export function getWidgets(
+  activePath: string,
   hunks: HunkData[],
   threadsByLine: PublishedThreadsByLine,
+  drafts: Drafts,
 ) {
   // Docs: https://www.npmjs.com/package/react-diff-view#add-widgets
   const changes = hunks.flatMap((hunk) => hunk.changes);
   const widgets: Record<string, ReactNode> = {};
 
   changes.forEach((change) => {
-    const changeKey = getChangeKey(change);
-    const { leftPublishedThreads, rightPublishedThreads } =
-      getPublishedThreadsBySide(change, threadsByLine);
+    const publishedThreadsBySide = getPublishedThreadsBySide(change, threadsByLine);
+    const draftBySide = getDraftBySide(activePath, change, drafts);
 
-    if (leftPublishedThreads.length > 0 || rightPublishedThreads.length > 0) {
-      widgets[changeKey] = InlineCommentThreadList({
+    const hasPublishedThreads =
+      publishedThreadsBySide.left.length > 0 ||
+      publishedThreadsBySide.right.length > 0;
+    const hasDrafts = draftBySide.left || draftBySide.right;
+
+    if (hasPublishedThreads || hasDrafts) {
+      widgets[getChangeKey(change)] = InlineCommentThreadList({
         change,
-        leftPublishedThreads,
-        rightPublishedThreads,
+        publishedThreadsBySide,
+        draftBySide,
       });
     }
   });

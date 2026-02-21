@@ -17,7 +17,7 @@ import { Side } from "react-diff-view/types/interface";
  * 1. https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html
  */
 type FileName = string;
-type LineNumber = string;
+type LineNumber = number;
 type DraftKey = `${FileName}:${LineNumber}:${Side}`;
 
 export type Drafts = Record<DraftKey, DraftItem>;
@@ -34,4 +34,12 @@ export interface DraftItem {
 export function useDrafts() {
   const [drafts, setDrafts] = useState<Drafts>({});
   return { drafts, setDrafts };
+}
+
+export function getDraftsKey(
+  fileName: string,
+  lineNumber: number,
+  side: Side,
+): DraftKey {
+  return `${fileName}:${lineNumber}:${side}`;
 }

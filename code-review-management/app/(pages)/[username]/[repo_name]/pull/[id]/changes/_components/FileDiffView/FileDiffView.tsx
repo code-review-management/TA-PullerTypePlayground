@@ -16,11 +16,8 @@ import {
 import { useHighlight } from "../../_hooks/useHighlight";
 import { Drafts } from "../../_hooks/useDrafts";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
-import {
-  getActivePath,
-  getLanguage,
-} from "../../_utils/diff-utils";
-import { getCommentWidgets } from "../../_utils/widget-utils";
+import { getActivePath, getLanguage } from "../../_utils/diff-utils";
+import { getWidgets } from "../../_utils/widget-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -65,7 +62,7 @@ export default function FileDiffView({
   );
   const [isExpanded, setIsExpanded] = useState(true);
 
-  // useMemo required to reduce lag while highlighting
+  // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
     () =>
       tokenize(hunks, {
@@ -76,7 +73,11 @@ export default function FileDiffView({
     [activePath, hunks],
   );
 
-  const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
+  // Use memoization to avoid re-rendering drafts while highlighting.
+  const widgets = useMemo(
+    () => getWidgets(activePath, hunks, publishedThreadsByLine, drafts),
+    [activePath, hunks, publishedThreadsByLine, drafts],
+  );
 
   const renderGutter = ({
     change,
