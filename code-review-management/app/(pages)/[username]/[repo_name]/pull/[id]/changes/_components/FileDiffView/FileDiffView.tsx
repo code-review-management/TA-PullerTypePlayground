@@ -1,11 +1,12 @@
 import refractor from "refractor";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
   Decoration,
   Diff,
   FileData,
+  GutterOptions,
   Hunk,
   HunkData,
   tokenize,
@@ -15,6 +16,7 @@ import {
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getCommentWidgets, getLanguage } from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
+import Gutter from "../Gutter/Gutter";
 
 import styles from "./FileDiffView.module.css";
 import "prism-color-variables/variables.css";
@@ -59,6 +61,18 @@ export default function FileDiffView({
     [hunks, publishedThreadsByLine],
   );
 
+  const renderGutter = useCallback(
+    ({ change, side, renderDefault, wrapInAnchor }: GutterOptions) => (
+      <Gutter
+        change={change}
+        side={side}
+        renderDefault={renderDefault}
+        wrapInAnchor={wrapInAnchor}
+      />
+    ),
+    [],
+  );
+
   return (
     <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
       <FileDiffHeader
@@ -76,6 +90,7 @@ export default function FileDiffView({
             hunks={hunks}
             tokens={tokens}
             widgets={widgets}
+            renderGutter={renderGutter}
           >
             {(hunks) =>
               hunks.map((hunk) => (
