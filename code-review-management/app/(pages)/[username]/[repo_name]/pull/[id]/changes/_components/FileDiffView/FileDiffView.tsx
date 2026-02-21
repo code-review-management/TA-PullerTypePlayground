@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -14,8 +14,13 @@ import {
 } from "react-diff-view";
 
 import { useHighlight } from "../../_hooks/useHighlight";
+import { Drafts } from "../../_hooks/useDrafts";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
-import { getCommentWidgets, getLanguage } from "../../_utils/diff-utils";
+import {
+  getActivePath,
+  getCommentWidgets,
+  getLanguage,
+} from "../../_utils/diff-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -41,6 +46,8 @@ export default function FileDiffView({
   viewType,
   hunks,
   publishedThreadsByLine,
+  drafts,
+  setDrafts,
 }: {
   oldPath: string;
   newPath: string;
@@ -48,15 +55,26 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
+  drafts: Drafts;
+  setDrafts: Dispatch<SetStateAction<Drafts>>;
 }) {
-  const { activeHighlight, highlightEvents } = useHighlight();
+  const activePath = getActivePath(diffType, oldPath, newPath);
+  const { activeHighlight, highlightEvents } = useHighlight(
+    activePath,
+    setDrafts,
+  );
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const tokens = tokenize(hunks, {
-    highlight: true,
-    refractor: refractor,
-    language: getLanguage(diffType === "delete" ? oldPath : newPath),
-  });
+  // useMemo required to reduce lag while highlighting
+  const tokens = useMemo(
+    () =>
+      tokenize(hunks, {
+        highlight: true,
+        refractor: refractor,
+        language: getLanguage(activePath),
+      }),
+    [activePath, hunks],
+  );
 
   const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
 
