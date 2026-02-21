@@ -18,9 +18,9 @@ import { Drafts } from "../../_hooks/useDrafts";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import {
   getActivePath,
-  getCommentWidgets,
   getLanguage,
 } from "../../_utils/diff-utils";
+import { getCommentWidgets } from "../../_utils/widget-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
