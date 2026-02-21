@@ -47,3 +47,12 @@ export function highlightOnMouseEnter(
     end: line,
   }));
 }
+
+export function highlightOnMouseUp(
+  setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
+) {
+  setActiveHighlight((prev) => ({
+    ...prev,
+    isHighlighting: false,
+  }));
+}

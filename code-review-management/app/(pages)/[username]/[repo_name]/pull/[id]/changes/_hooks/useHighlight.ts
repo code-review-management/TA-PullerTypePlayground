@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DiffProps } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import {
   highlightOnMouseDown,
   highlightOnMouseEnter,
+  highlightOnMouseUp,
 } from "../_utils/highlight-utils";
 
 export interface ActiveHighlight {
@@ -20,6 +21,19 @@ export function useHighlight() {
     end: null,
     side: null,
   });
+
+  useEffect(() => {
+    const handleMouseUp = () => {
+      if (activeHighlight.isHighlighting) {
+        highlightOnMouseUp(setActiveHighlight);
+      }
+    };
+
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [activeHighlight]);
 
   const highlightEvents: DiffProps["gutterEvents"] = {
     onMouseDown: ({ change, side }) => {
