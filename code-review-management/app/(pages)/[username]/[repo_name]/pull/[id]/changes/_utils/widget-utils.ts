@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ChangeData, getChangeKey, HunkData } from "react-diff-view";
 import { Drafts, getDraftsKey } from "../_hooks/useDrafts"
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
-import InlineCommentThreadList from "../_components/InlineCommentThreadList/InlineCommentThreadList";
+import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
 ;
 /**
  * We have to group threads by side because for normal, unchanged lines,
@@ -87,7 +87,7 @@ export function getWidgets(
     const hasDrafts = draftBySide.left || draftBySide.right;
 
     if (hasPublishedThreads || hasDrafts) {
-      widgets[getChangeKey(change)] = InlineCommentThreadList({
+      widgets[getChangeKey(change)] = InlineThreadList({
         change,
         publishedThreadsBySide,
         draftBySide,

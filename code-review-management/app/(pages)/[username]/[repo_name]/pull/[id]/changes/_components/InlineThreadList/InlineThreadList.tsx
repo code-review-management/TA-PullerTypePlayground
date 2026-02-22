@@ -2,7 +2,7 @@ import { ChangeData } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
 import { DraftItem } from "../../_hooks/useDrafts";
 import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
-import styles from "./InlineCommentThreadList.module.css";
+import styles from "./InlineThreadList.module.css";
 
 /**
  * react-diff-view renders widgets for normal, unchanged lines across both sides
@@ -11,7 +11,7 @@ import styles from "./InlineCommentThreadList.module.css";
  * space equally during "split" view.
  */
 
-export default function InlineCommentThreadList({
+export default function InlineThreadList({
   change,
   publishedThreadsBySide,
   draftBySide,
