@@ -1,6 +1,6 @@
 import { ChangeData } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
-import { DraftItem } from "../../_hooks/useDrafts";
+import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
 import styles from "./InlineThreadList.module.css";
 
@@ -18,7 +18,7 @@ export default function InlineThreadList({
 }: {
   change: ChangeData;
   publishedThreadsBySide: { left: MockPublishedThread[]; right: MockPublishedThread[] };
-  draftBySide: { left: DraftItem | null; right: DraftItem | null };
+  draftBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
 }) {
   if (change.type === "delete") {
     return (
@@ -60,14 +60,14 @@ function ThreadList({
   draft,
 }: {
   publishedThreads: MockPublishedThread[];
-  draft: DraftItem | null;
+  draft: DraftThreadItem | null;
 }) {
   return (
     <div>
       {publishedThreads.map((thread) => (
         <InlineCommentThread key={thread.id} thread={thread} />
       ))}
-      {draft && <div>Draft created at {draft.createdAt}</div>}
+      {draft && <div>Draft created at {draft.created}</div>}
     </div>
   );
 }

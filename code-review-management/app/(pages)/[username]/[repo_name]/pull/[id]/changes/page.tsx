@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FileData, parseDiff } from "react-diff-view";
 import { readFile } from "@/lib/file-utils";
-import { useDrafts } from "./_hooks/useDrafts";
+import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import styles from "./page.module.css";
@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 export default function Changes() {
   const params = useParams();
   const { username, repo_name, id } = params;
-  const { drafts, setDrafts } = useDrafts();
+  const { draftThreads, setDraftThreads } = useDraftThreads();
   const { publishedThreads } = usePublishedThreads();
   const [diffs, setDiffs] = useState<FileData[]>();
 
@@ -31,8 +31,8 @@ export default function Changes() {
       <DiffListView
         diffs={diffs}
         publishedThreads={publishedThreads}
-        drafts={drafts}
-        setDrafts={setDrafts}
+        draftThreads={draftThreads}
+        setDraftThreads={setDraftThreads}
       />
     </div>
   );

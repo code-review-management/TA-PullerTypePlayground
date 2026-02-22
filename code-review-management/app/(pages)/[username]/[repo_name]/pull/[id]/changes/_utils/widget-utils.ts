@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { ChangeData, getChangeKey, HunkData } from "react-diff-view";
-import { Drafts, getDraftsKey } from "../_hooks/useDrafts"
+import { DraftThreads, getDraftThreadKey } from "../_hooks/useDraftThreads"
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
 ;
@@ -41,18 +41,18 @@ function getPublishedThreadsBySide(
 function getDraftBySide(
   activePath: string,
   change: ChangeData,
-  drafts: Drafts,
+  drafts: DraftThreads,
 ) {
   if (change.type === "normal") {
     return {
-      left: drafts[getDraftsKey(activePath, change.oldLineNumber, "old")],
-      right: drafts[getDraftsKey(activePath, change.newLineNumber, "new")],
+      left: drafts[getDraftThreadKey(activePath, change.oldLineNumber, "old")],
+      right: drafts[getDraftThreadKey(activePath, change.newLineNumber, "new")],
     };
   }
 
   if (change.type === "delete") {
     return {
-      left: drafts[getDraftsKey(activePath, change.lineNumber, "old")],
+      left: drafts[getDraftThreadKey(activePath, change.lineNumber, "old")],
       right: null,
     };
   }
@@ -60,7 +60,7 @@ function getDraftBySide(
   if (change.type === "insert") {
     return {
       left: null,
-      right: drafts[getDraftsKey(activePath, change.lineNumber, "new")],
+      right: drafts[getDraftThreadKey(activePath, change.lineNumber, "new")],
     };
   }
 
@@ -71,7 +71,7 @@ export function getWidgets(
   activePath: string,
   hunks: HunkData[],
   threadsByLine: PublishedThreadsByLine,
-  drafts: Drafts,
+  drafts: DraftThreads,
 ) {
   // Docs: https://www.npmjs.com/package/react-diff-view#add-widgets
   const changes = hunks.flatMap((hunk) => hunk.changes);

@@ -6,7 +6,7 @@ import {
   highlightOnMouseEnter,
   highlightOnMouseUp,
 } from "../_utils/highlight-utils";
-import { Drafts } from "./useDrafts";
+import { DraftThreads } from "./useDraftThreads";
 
 export interface ActiveHighlight {
   isHighlighting: boolean;
@@ -17,8 +17,8 @@ export interface ActiveHighlight {
 
 export function useHighlight(
   activePath: string,
-  drafts: Drafts,
-  setDrafts: Dispatch<SetStateAction<Drafts>>,
+  draftThreads: DraftThreads,
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
   const [activeHighlight, setActiveHighlight] = useState<ActiveHighlight>({
     isHighlighting: false,
@@ -34,8 +34,8 @@ export function useHighlight(
           activePath,
           activeHighlight,
           setActiveHighlight,
-          drafts,
-          setDrafts,
+          draftThreads,
+          setDraftThreads,
         );
       }
     };
@@ -44,7 +44,7 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [activePath, activeHighlight, drafts, setDrafts]);
+  }, [activePath, activeHighlight, draftThreads, setDraftThreads]);
 
   const highlightEvents: DiffProps["gutterEvents"] = {
     onMouseDown: ({ change, side }) => {

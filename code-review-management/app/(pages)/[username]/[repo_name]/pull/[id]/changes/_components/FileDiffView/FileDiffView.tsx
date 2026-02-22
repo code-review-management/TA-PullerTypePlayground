@@ -14,7 +14,7 @@ import {
 } from "react-diff-view";
 
 import { useHighlight } from "../../_hooks/useHighlight";
-import { Drafts } from "../../_hooks/useDrafts";
+import { DraftThreads } from "../../_hooks/useDraftThreads";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
@@ -43,8 +43,8 @@ export default function FileDiffView({
   viewType,
   hunks,
   publishedThreadsByLine,
-  drafts,
-  setDrafts,
+  draftThreads,
+  setDraftThreads,
 }: {
   oldPath: string;
   newPath: string;
@@ -52,14 +52,14 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
-  drafts: Drafts;
-  setDrafts: Dispatch<SetStateAction<Drafts>>;
+  draftThreads: DraftThreads;
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { activeHighlight, highlightEvents } = useHighlight(
     activePath,
-    drafts,
-    setDrafts,
+    draftThreads,
+    setDraftThreads,
   );
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -76,8 +76,8 @@ export default function FileDiffView({
 
   // Use memoization to avoid re-rendering drafts while highlighting.
   const widgets = useMemo(
-    () => getWidgets(activePath, hunks, publishedThreadsByLine, drafts),
-    [activePath, hunks, publishedThreadsByLine, drafts],
+    () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
+    [activePath, hunks, publishedThreadsByLine, draftThreads],
   );
 
   const renderGutter = ({

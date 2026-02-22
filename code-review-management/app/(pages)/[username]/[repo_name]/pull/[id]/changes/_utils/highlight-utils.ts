@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { ChangeData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
-import { Drafts } from "../_hooks/useDrafts";
+import { DraftThreads } from "../_hooks/useDraftThreads";
 import { ActiveHighlight } from "../_hooks/useHighlight";
 import { getLineNumber } from "./diff-utils";
 
@@ -39,8 +39,8 @@ export function highlightOnMouseUp(
   activePath: string,
   activeHighlight: ActiveHighlight,
   setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
-  drafts: Drafts,
-  setDrafts: Dispatch<SetStateAction<Drafts>>,
+  draftThreads: DraftThreads,
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
   setActiveHighlight((prev) => ({
     ...prev,
@@ -52,19 +52,19 @@ export function highlightOnMouseUp(
 
   const minLine = Math.min(activeHighlight.start, activeHighlight.end);
   const maxLine = Math.max(activeHighlight.start, activeHighlight.end);
-  const draftKey = `${activePath}:${maxLine}:${activeHighlight.side}`;
+  const draftThreadKey = `${activePath}:${maxLine}:${activeHighlight.side}`;
 
-  if (draftKey in drafts) return;
+  if (draftThreadKey in draftThreads) return;
 
-  setDrafts((prev) => ({
+  setDraftThreads((prev) => ({
     ...prev,
-    [draftKey]: {
-      path: activePath,
-      body: "",
-      startLine: minLine,
-      endLine: maxLine,
+    [draftThreadKey]: {
+      filename: activePath,
+      start: minLine,
+      end: maxLine,
       side: activeHighlight.side,
-      createdAt: new Date().toISOString(),
+      created: new Date().toISOString(),
+      body: "",
     },
   }));
 }
