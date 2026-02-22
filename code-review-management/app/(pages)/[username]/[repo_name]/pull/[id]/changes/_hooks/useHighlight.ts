@@ -17,6 +17,7 @@ export interface ActiveHighlight {
 
 export function useHighlight(
   activePath: string,
+  drafts: Drafts,
   setDrafts: Dispatch<SetStateAction<Drafts>>,
 ) {
   const [activeHighlight, setActiveHighlight] = useState<ActiveHighlight>({
@@ -33,6 +34,7 @@ export function useHighlight(
           activePath,
           activeHighlight,
           setActiveHighlight,
+          drafts,
           setDrafts,
         );
       }
@@ -42,7 +44,7 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [activePath, activeHighlight, setDrafts]);
+  }, [activePath, activeHighlight, drafts, setDrafts]);
 
   const highlightEvents: DiffProps["gutterEvents"] = {
     onMouseDown: ({ change, side }) => {

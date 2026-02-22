@@ -39,6 +39,7 @@ export function highlightOnMouseUp(
   activePath: string,
   activeHighlight: ActiveHighlight,
   setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
+  drafts: Drafts,
   setDrafts: Dispatch<SetStateAction<Drafts>>,
 ) {
   setActiveHighlight((prev) => ({
@@ -52,6 +53,8 @@ export function highlightOnMouseUp(
   const minLine = Math.min(activeHighlight.start, activeHighlight.end);
   const maxLine = Math.max(activeHighlight.start, activeHighlight.end);
   const draftKey = `${activePath}:${maxLine}:${activeHighlight.side}`;
+
+  if (draftKey in drafts) return;
 
   setDrafts((prev) => ({
     ...prev,

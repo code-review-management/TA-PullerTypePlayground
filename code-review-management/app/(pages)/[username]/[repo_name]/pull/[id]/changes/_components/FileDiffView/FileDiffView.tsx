@@ -58,6 +58,7 @@ export default function FileDiffView({
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { activeHighlight, highlightEvents } = useHighlight(
     activePath,
+    drafts,
     setDrafts,
   );
   const [isExpanded, setIsExpanded] = useState(true);
