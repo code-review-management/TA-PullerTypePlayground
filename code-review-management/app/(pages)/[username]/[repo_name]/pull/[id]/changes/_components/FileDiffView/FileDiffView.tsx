@@ -80,17 +80,11 @@ export default function FileDiffView({
     [activePath, hunks, publishedThreadsByLine, draftThreads],
   );
 
-  const renderGutter = ({
-    change,
-    side,
-    renderDefault,
-    wrapInAnchor,
-  }: GutterOptions) => (
+  const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter
       change={change}
       side={side}
       renderDefault={renderDefault}
-      wrapInAnchor={wrapInAnchor}
       activeHighlight={activeHighlight}
     />
   );

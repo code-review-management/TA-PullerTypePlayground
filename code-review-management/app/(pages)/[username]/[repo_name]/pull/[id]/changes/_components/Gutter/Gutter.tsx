@@ -6,17 +6,27 @@ import { getLineNumber } from "../../_utils/diff-utils";
 import { isInsideHighlightRange } from "../../_utils/highlight-utils";
 import styles from "./Gutter.module.css";
 
+/**
+ * Gutter that contains the line numbers in the diff view. Dynamically sets
+ * classname if line is currently highlighted. To indicate that a comment can be
+ * created, renders '+' icon while hovered.
+ *
+ * Docs: https://www.npmjs.com/package/react-diff-view#customize-gutter
+ *
+ * @param change: `Change` object containing data about the line associated with the gutter.
+ * @param side: The side of the gutter ("old" or "new").
+ * @param renderDefault: A default render function provided by react-diff-view, which returns line number if possible.
+ * @param activeHighlight: The state of the active highlight in the file diff.
+ */
 export default function Gutter({
   change,
   side,
   renderDefault,
-  wrapInAnchor,
   activeHighlight,
 }: {
   change: ChangeData;
   side: Side;
   renderDefault: () => ReactNode;
-  wrapInAnchor: (element: ReactNode) => ReactNode;
   activeHighlight: ActiveHighlight;
 }) {
   const line = getLineNumber(change, side);
@@ -27,7 +37,7 @@ export default function Gutter({
       className={`${styles.gutter} ${isHighlighted ? "diff-gutter-highlighted" : ""}`}
     >
       <span className="diff-gutter-icon">+</span>
-      <div className={styles.number}>{renderDefault()}</div>
+      <span className={styles.number}>{renderDefault()}</span>
     </div>
   );
 }
