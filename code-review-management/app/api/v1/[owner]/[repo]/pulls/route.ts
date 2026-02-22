@@ -24,7 +24,6 @@ export async function GET(
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
     console.log("Unauthorized request at ${new Date()}");
-    // Return non-authenticated request
     return new Response(null, { status: 401 });
   }
 
@@ -44,6 +43,7 @@ export async function GET(
       repo: params.repo,
     });
 
+    // Filter response
     const filteredResponse: PullRequest[] = contents.map((item: any) =>
       PullRequestSchema.parse(item),
     );
@@ -56,8 +56,10 @@ export async function GET(
     });
   } catch (error) {
     if (error instanceof RequestError && error.status) {
+      // Octokit Http error
       return new Response(error.message, { status: error.status });
     } else {
+      // Parsing/other error
       return new Response("Server error", { status: 500 });
     }
   }
