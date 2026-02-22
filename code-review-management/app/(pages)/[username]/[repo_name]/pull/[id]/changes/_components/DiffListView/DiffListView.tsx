@@ -1,9 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
 import { FileData } from "react-diff-view";
+import { DraftThreads } from "../../_hooks/useDraftThreads";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import styles from "./DiffListView.module.css";
-import { DraftThreads } from "../../_hooks/useDraftThreads";
-import { Dispatch, SetStateAction } from "react";
 
 export default function DiffListView({
   diffs,
