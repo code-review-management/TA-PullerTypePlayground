@@ -43,7 +43,7 @@ export async function GET(
     });
 
     // Filter response
-    const filteredResponse: PullRequest[] = contents.map((item: any) =>
+    const filteredResponse: PullRequest[] = contents.map((item) =>
       PullRequestSchema.parse(item),
     );
 

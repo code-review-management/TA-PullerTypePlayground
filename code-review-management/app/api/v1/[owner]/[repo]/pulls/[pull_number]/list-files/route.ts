@@ -43,7 +43,7 @@ export async function GET(
     });
 
     // Filter response
-    const filteredResponse: FileDiff[] = contents.map((item: any) =>
+    const filteredResponse: FileDiff[] = contents.map((item) =>
       FileDiffSchema.parse(item),
     );
 

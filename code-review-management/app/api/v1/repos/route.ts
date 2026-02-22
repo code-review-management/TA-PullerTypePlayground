@@ -24,7 +24,7 @@ export async function GET(req: Request) {
       await octokit.rest.repos.listForAuthenticatedUser();
 
     // Filter response
-    const filteredResponse: Repo[] = contents.map((item: any) =>
+    const filteredResponse: Repo[] = contents.map((item) =>
       RepoSchema.parse(item),
     );
 
