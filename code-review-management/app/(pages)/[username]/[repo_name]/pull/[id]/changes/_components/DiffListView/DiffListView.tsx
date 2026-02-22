@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { FileData } from "react-diff-view";
 import { DraftThreads } from "../../_hooks/useDraftThreads";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import { getActivePath } from "../../_utils/diff-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import styles from "./DiffListView.module.css";
 
@@ -23,7 +24,7 @@ export default function DiffListView({
   return (
     <div className={styles.diffListView}>
       {diffs.map((diff) => {
-        const activePath = diff.type === "delete" ? diff.oldPath : diff.newPath;
+        const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         return (
           <FileDiffView
             key={diff.oldPath + "-" + diff.newPath}
