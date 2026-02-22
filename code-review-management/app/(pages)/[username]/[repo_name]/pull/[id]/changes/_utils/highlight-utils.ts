@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, RefObject, SetStateAction } from "react";
 import { ChangeData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import { DraftThreads } from "../_hooks/useDraftThreads";
@@ -55,10 +55,10 @@ export function isInsideHighlightRange(
 export function highlightOnMouseDown(
   change: ChangeData,
   side: Side,
-  setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
+  setActiveHighlightSync: (data: ActiveHighlight) => void,
 ) {
   const line = getLineNumber(change, side);
-  setActiveHighlight({
+  setActiveHighlightSync({
     isHighlighting: true,
     start: line,
     end: line,
@@ -75,22 +75,23 @@ export function highlightOnMouseDown(
  *
  * @param change: `Change` object containing data about the line associated with the gutter that was entered.
  * @param side: The side of the gutter that was entered ("old" or "new").
- * @param activeHighlight: The state of the active highlight in the file diff.
- * @param setActiveHighlight: The state setter for `activeHighlight`.
+ * @param activeHighlightRef: The ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: The setter for `activeHighlight` and its corresponding ref.
  */
 export function highlightOnMouseEnter(
   change: ChangeData,
   side: Side,
-  activeHighlight: ActiveHighlight,
-  setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
+  activeHighlightRef: RefObject<ActiveHighlight>,
+  setActiveHighlightSync: (data: ActiveHighlight) => void,
 ) {
+  const activeHighlight = activeHighlightRef.current;
   if (!activeHighlight.isHighlighting || side !== activeHighlight.side) return;
 
   const line = getLineNumber(change, side);
-  setActiveHighlight((prev) => ({
-    ...prev,
+  setActiveHighlightSync({
+    ...activeHighlight,
     end: line,
-  }));
+  });
 }
 
 /**
@@ -100,22 +101,21 @@ export function highlightOnMouseEnter(
  * highlighted lines.
  *
  * @param filename: The file associated with this active highlight state.
- * @param activeHighlight: The state of the active highlight in the file diff.
- * @param setActiveHighlight: The state setter for `activeHighlight`.
- * @param draftThreads: The state of draft threads in the pull request diff.
+ * @param activeHighlightRef: The ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: The setter for `activeHighlight` and its corresponding ref.
  * @param setDraftThreads: The state setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
   filename: string,
-  activeHighlight: ActiveHighlight,
-  setActiveHighlight: Dispatch<SetStateAction<ActiveHighlight>>,
-  draftThreads: DraftThreads,
+  activeHighlighRef: RefObject<ActiveHighlight>,
+  setActiveHighlightSync: (data: ActiveHighlight) => void,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
-  setActiveHighlight((prev) => ({
-    ...prev,
+  const activeHighlight = activeHighlighRef.current;
+  setActiveHighlightSync({
+    ...activeHighlight,
     isHighlighting: false,
-  }));
+  });
 
   if (!activeHighlight.start || !activeHighlight.end || !activeHighlight.side)
     return;
@@ -124,6 +124,7 @@ export function highlightOnMouseUp(
     activeHighlight.start,
     activeHighlight.end,
   );
+  
   const draftThreadKey = `${filename}:${maxLine}:${activeHighlight.side}`;
 
   /**
@@ -132,17 +133,18 @@ export function highlightOnMouseUp(
    * only be associated with 1 draft thread at a time (same behavior as GitHub),
    * and we do not want to override the already existing draft.
    */
-  if (draftThreadKey in draftThreads) return;
-
-  setDraftThreads((prev) => ({
-    ...prev,
-    [draftThreadKey]: {
-      filename: filename,
-      start: minLine,
-      end: maxLine,
-      side: activeHighlight.side,
-      created: new Date().toISOString(),
-      body: "",
-    },
-  }));
+  setDraftThreads((prev) => {
+    if (draftThreadKey in prev) return prev;
+    return {
+      ...prev,
+      [draftThreadKey]: {
+        filename: filename,
+        start: minLine,
+        end: maxLine,
+        side: activeHighlight.side,
+        created: new Date().toISOString(),
+        body: "",
+      },
+    };
+  });
 }

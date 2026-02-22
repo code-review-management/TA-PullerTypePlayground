@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { DiffProps } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import {
@@ -22,32 +22,41 @@ export interface ActiveHighlight {
  * generated and associated with those highlighted lines.
  *
  * @param filename: The file associated with this active highlight state.
- * @param draftThreads: The state of draft threads in the pull request diff.
  * @param setDraftThreads: The state setter for `draftThreads`.
  * @returns: The `activeHighlight` state and associated gutter events for highlighting.
  */
 export function useHighlight(
   filename: string,
-  draftThreads: DraftThreads,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
-  const [activeHighlight, setActiveHighlight] = useState<ActiveHighlight>({
+  const [activeHighlight, _setActiveHighlight] = useState<ActiveHighlight>({
     isHighlighting: false,
     start: null,
     end: null,
     side: null,
   });
 
+  const activeHighlightRef = useRef(activeHighlight);
+  const setActiveHighlightSync = (data: ActiveHighlight) => {
+    _setActiveHighlight(data);
+    activeHighlightRef.current = data;
+  };
+
   const highlightEvents: DiffProps["gutterEvents"] = {
     // Starts a new highlight session when the user clicks on a gutter.
     onMouseDown: ({ change, side }) => {
       if (!change || !side) return;
-      highlightOnMouseDown(change, side, setActiveHighlight);
+      highlightOnMouseDown(change, side, setActiveHighlightSync);
     },
     // Updates the highlighted lines as the user drags their mouse through the gutters.
     onMouseEnter: ({ change, side }) => {
       if (!change || !side) return;
-      highlightOnMouseEnter(change, side, activeHighlight, setActiveHighlight);
+      highlightOnMouseEnter(
+        change,
+        side,
+        activeHighlightRef,
+        setActiveHighlightSync,
+      );
     },
   };
 
@@ -59,12 +68,11 @@ export function useHighlight(
    */
   useEffect(() => {
     const handleMouseUp = () => {
-      if (activeHighlight.isHighlighting) {
+      if (activeHighlightRef.current.isHighlighting) {
         highlightOnMouseUp(
           filename,
-          activeHighlight,
-          setActiveHighlight,
-          draftThreads,
+          activeHighlightRef,
+          setActiveHighlightSync,
           setDraftThreads,
         );
       }
@@ -74,7 +82,7 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [filename, activeHighlight, draftThreads, setDraftThreads]);
+  }, [filename, setDraftThreads]);
 
   return { activeHighlight, highlightEvents };
 }
