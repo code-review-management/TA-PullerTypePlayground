@@ -46,19 +46,6 @@
     background-color: var(--diff-code-highlight-bg-color);
 }
 
-.diff-gutter-icon {
-    display: none;
-}
-
-.diff-gutter-normal:hover .diff-gutter-icon,
-.diff-gutter-delete:hover .diff-gutter-icon,
-.diff-gutter-insert:hover .diff-gutter-icon {
-    display: inline;
-    padding-left: var(--spacer-6);
-    padding-right: var(--spacer-2);
-    margin-right: auto;
-}
-
 .diff-line .diff-code:nth-child(2) {
     border-right: var(--border-thin-width) solid var(--border-gray);
 }

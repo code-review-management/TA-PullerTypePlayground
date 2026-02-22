@@ -8,8 +8,7 @@ import styles from "./Gutter.module.css";
 
 /**
  * Gutter that contains the line numbers in the diff view. Dynamically sets
- * classname if line is currently highlighted. To indicate that a comment can be
- * created, renders '+' icon while hovered.
+ * classname if line is currently highlighted.
  *
  * Docs: https://www.npmjs.com/package/react-diff-view#customize-gutter
  *
@@ -36,7 +35,6 @@ export default function Gutter({
     <div
       className={`${styles.gutter} ${isHighlighted ? "diff-gutter-highlighted" : ""}`}
     >
-      <span className="diff-gutter-icon">+</span>
       <span className={styles.number}>{renderDefault()}</span>
     </div>
   );
