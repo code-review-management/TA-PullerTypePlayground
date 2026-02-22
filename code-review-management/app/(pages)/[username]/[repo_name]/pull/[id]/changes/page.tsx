@@ -12,6 +12,7 @@ import styles from "./page.module.css";
 export default function Changes() {
   const params = useParams();
   const { username, repo_name, id } = params;
+
   const { draftThreads, setDraftThreads } = useDraftThreads();
   const { publishedThreads } = usePublishedThreads();
   const [diffs, setDiffs] = useState<FileData[]>();
