@@ -1,6 +1,6 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 
-export default function InlineDraftThreadItem({
+export default function InlineDraftThread({
   draft,
 }: {
   draft: DraftThreadItem;
