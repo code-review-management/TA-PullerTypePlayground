@@ -58,8 +58,9 @@ export function useHighlight(
 
   /**
    * Registers an event listener to stop highlighting when the user's mouse is
-   * released. This is NOT registered as a gutter event because the user might
-   * drag their cursor outside the gutter, then release their mouse.
+   * released. This is registered as a document listener – NOT as a gutter event
+   * – because the user might drag their cursor outside the gutter, then release
+   * their mouse.
    */
   useEffect(() => {
     const handleMouseUp = () => {
