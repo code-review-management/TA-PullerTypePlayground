@@ -10,21 +10,21 @@ import { DraftThreads } from "./useDraftThreads";
 
 export interface ActiveHighlight {
   isHighlighting: boolean;
-  start: number | null;
-  end: number | null;
+  start: number | null; // Number of the first line clicked to begin highlight.
+  end: number | null; // Number of the last line entered before ending highlight.
   side: Side | null;
 }
 
 /**
- * A hook to maintain the active highlight state in a file of a pull request
- * diff. Registers event handlers to keep track of when the user's mouse clicks
- * down and through the gutters. When the user's mouse goes back up, a new
- * draft thread is generated and associated with those highlighted lines.
+ * A hook to maintain the active highlight state in a file diff. Registers event
+ * handlers to keep track of when the user's mouse clicks down and drags through
+ * the gutters. When the user's mouse is released, a new draft thread is
+ * generated and associated with those highlighted lines.
  *
- * @param filename: The file in the pull request diff associated with this active highlight state.
+ * @param filename: The file associated with this active highlight state.
  * @param draftThreads: The state of draft threads in the pull request diff.
  * @param setDraftThreads: The state setter for `draftThreads`.
- * @returns: The `activeHighlight` state and registered gutter events for highlighting.
+ * @returns: The `activeHighlight` state and associated gutter events for highlighting.
  */
 export function useHighlight(
   filename: string,
@@ -38,18 +38,13 @@ export function useHighlight(
     side: null,
   });
 
-  /**
-   * Registers event listeners for the user's interaction with the gutter. The
-   * handler for `onMouseDown` starts a new highlight session when the user
-   * clicks down on a gutter. The handler for `onMouseEnter` updates the set of
-   * currently highlighted lines as the user drags their cursor through the
-   * gutters.
-   */
   const highlightEvents: DiffProps["gutterEvents"] = {
+    // Starts a new highlight session when the user clicks on a gutter.
     onMouseDown: ({ change, side }) => {
       if (!change || !side) return;
       highlightOnMouseDown(change, side, setActiveHighlight);
     },
+    // Updates the highlighted lines as the user drags their mouse through the gutters.
     onMouseEnter: ({ change, side }) => {
       if (!change || !side) return;
       highlightOnMouseEnter(change, side, activeHighlight, setActiveHighlight);
