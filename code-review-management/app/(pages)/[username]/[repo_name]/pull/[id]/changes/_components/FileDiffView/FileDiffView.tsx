@@ -13,8 +13,8 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { useHighlight } from "../../_hooks/useHighlight";
 import { DraftThreads } from "../../_hooks/useDraftThreads";
+import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
