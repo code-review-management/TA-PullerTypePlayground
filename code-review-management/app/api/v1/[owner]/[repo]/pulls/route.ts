@@ -17,8 +17,7 @@ export async function GET(
   req: Request,
   { params }: { params: { owner: string; repo: string } },
 ) {
-  params = await params;
-
+  const { owner, repo } = await params;
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -28,7 +27,7 @@ export async function GET(
   }
 
   // Validate required parameters
-  if (!params.owner || !params.repo) {
+  if (!owner || !repo) {
     return Response.json(
       { error: "Missing required parameters" },
       { status: 400 },
@@ -39,8 +38,8 @@ export async function GET(
 
   try {
     const { data: contents } = await octokit.rest.pulls.list({
-      owner: params.owner,
-      repo: params.repo,
+      owner: owner,
+      repo: repo,
     });
 
     // Filter response
