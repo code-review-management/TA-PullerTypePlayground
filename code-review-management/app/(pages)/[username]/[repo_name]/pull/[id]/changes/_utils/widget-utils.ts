@@ -1,96 +1,93 @@
 import { ReactNode } from "react";
 import { ChangeData, getChangeKey, HunkData } from "react-diff-view";
-import { DraftThreads, getDraftThreadKey } from "../_hooks/useDraftThreads"
+import { DraftThreads, getDraftThreadKey } from "../_hooks/useDraftThreads";
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
-;
+
 /**
- * We have to group threads by side because for normal, unchanged lines,
- * react-diff-view shows the widget across both sides. We need to distinguish
- * threads on the left-side and right-side to show side-by-side comments for
- * normal lines.
+ * For a given line number, group its published and draft threads by side.
+ * 
+ * @param filename 
+ * @param change 
+ * @param threadsByLine 
+ * @param drafts 
+ * @returns 
  */
-function getPublishedThreadsBySide(
+function getThreadsBySide(
+  filename: string,
   change: ChangeData,
   threadsByLine: PublishedThreadsByLine,
+  draftThreads: DraftThreads,
 ) {
   if (change.type === "normal") {
     return {
-      left: threadsByLine.get(change.oldLineNumber)?.left ?? [],
-      right: threadsByLine.get(change.newLineNumber)?.right ?? [],
+      published: {
+        left: threadsByLine.get(change.oldLineNumber)?.left ?? [],
+        right: threadsByLine.get(change.newLineNumber)?.right ?? [],
+      },
+      draft: {
+        left: draftThreads[getDraftThreadKey(filename, change.oldLineNumber, "old")],
+        right: draftThreads[getDraftThreadKey(filename, change.newLineNumber, "new")],
+      },
     };
   }
 
   if (change.type === "delete") {
     return {
-      left: threadsByLine.get(change.lineNumber)?.left ?? [],
-      right: [],
+      published: {
+        left: threadsByLine.get(change.lineNumber)?.left ?? [],
+        right: [],
+      },
+      draft: {
+        left: draftThreads[getDraftThreadKey(filename, change.lineNumber, "old")],
+        right: null,
+      },
     };
   }
 
   if (change.type === "insert") {
     return {
-      left: [],
-      right: threadsByLine.get(change.lineNumber)?.right ?? [],
+      published: {
+        left: [],
+        right: threadsByLine.get(change.lineNumber)?.right ?? [],
+      },
+      draft: {
+        left: null,
+        right: draftThreads[getDraftThreadKey(filename, change.lineNumber, "new")],
+      },
     };
   }
 
-  return { left: [], right: [] };
-}
-
-function getDraftBySide(
-  activePath: string,
-  change: ChangeData,
-  drafts: DraftThreads,
-) {
-  if (change.type === "normal") {
-    return {
-      left: drafts[getDraftThreadKey(activePath, change.oldLineNumber, "old")],
-      right: drafts[getDraftThreadKey(activePath, change.newLineNumber, "new")],
-    };
-  }
-
-  if (change.type === "delete") {
-    return {
-      left: drafts[getDraftThreadKey(activePath, change.lineNumber, "old")],
-      right: null,
-    };
-  }
-
-  if (change.type === "insert") {
-    return {
-      left: null,
-      right: drafts[getDraftThreadKey(activePath, change.lineNumber, "new")],
-    };
-  }
-
-  return { left: null, right: null };
+  return {
+    published: { left: [], right: [] },
+    draft: { left: null, right: null },
+  };
 }
 
 export function getWidgets(
-  activePath: string,
+  filename: string,
   hunks: HunkData[],
-  threadsByLine: PublishedThreadsByLine,
-  drafts: DraftThreads,
+  publishedThreadsByLine: PublishedThreadsByLine,
+  draftThreads: DraftThreads,
 ) {
-  // Docs: https://www.npmjs.com/package/react-diff-view#add-widgets
   const changes = hunks.flatMap((hunk) => hunk.changes);
   const widgets: Record<string, ReactNode> = {};
 
   changes.forEach((change) => {
-    const publishedThreadsBySide = getPublishedThreadsBySide(change, threadsByLine);
-    const draftBySide = getDraftBySide(activePath, change, drafts);
+    const { published: publishedThreadsBySide, draft: draftThreadsBySide } =
+      getThreadsBySide(filename, change, publishedThreadsByLine, draftThreads);
 
-    const hasPublishedThreads =
+    const hasContent =
       publishedThreadsBySide.left.length > 0 ||
-      publishedThreadsBySide.right.length > 0;
-    const hasDrafts = draftBySide.left || draftBySide.right;
+      publishedThreadsBySide.right.length > 0 ||
+      draftThreadsBySide.left ||
+      draftThreadsBySide.right;
 
-    if (hasPublishedThreads || hasDrafts) {
+    if (hasContent) {
       widgets[getChangeKey(change)] = InlineThreadList({
         change,
         publishedThreadsBySide,
-        draftBySide,
+        draftThreadsBySide,
       });
     }
   });

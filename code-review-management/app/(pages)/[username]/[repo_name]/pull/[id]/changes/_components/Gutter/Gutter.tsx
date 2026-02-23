@@ -3,12 +3,12 @@ import { ChangeData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import { ActiveHighlight } from "../../_hooks/useHighlight";
 import { getLineNumber } from "../../_utils/diff-utils";
-import { isInsideHighlightRange } from "../../_utils/highlight-utils";
+import { isWithinHighlightRange } from "../../_utils/highlight-utils";
 import styles from "./Gutter.module.css";
 
 /**
  * Gutter that contains the line numbers in the diff view. Dynamically sets
- * classname if line is currently highlighted.
+ * classname if gutter is currently highlighted.
  *
  * Docs: https://www.npmjs.com/package/react-diff-view#customize-gutter
  *
@@ -29,9 +29,11 @@ export default function Gutter({
   activeHighlight: ActiveHighlight;
 }) {
   const line = getLineNumber(change, side);
-  const isHighlighted = isInsideHighlightRange(line, side, activeHighlight);
+  const isHighlighted = isWithinHighlightRange(line, side, activeHighlight);
 
   return (
+    // Do not use CSS module for "diff-gutter-highlighted" class, so we can
+    // access it in ReactDiffView.css when overriding react-diff-view styling.
     <div
       className={`${styles.gutter} ${isHighlighted ? "diff-gutter-highlighted" : ""}`}
     >

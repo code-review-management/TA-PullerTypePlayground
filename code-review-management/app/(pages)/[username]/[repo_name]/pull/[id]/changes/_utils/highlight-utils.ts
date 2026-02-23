@@ -28,7 +28,7 @@ function getMinMaxLines(line1: number, line2: number) {
  * @param activeHighlight: The state of the active highlight in the file diff.
  * @returns: True if this line is within the active highlight range; false otherwise.
  */
-export function isInsideHighlightRange(
+export function isWithinHighlightRange(
   line: number,
   side: Side,
   activeHighlight: ActiveHighlight,
@@ -101,8 +101,8 @@ export function highlightOnMouseEnter(
  * highlighted lines.
  *
  * @param filename: The file associated with this active highlight state.
- * @param activeHighlightRef: The ref of the `activeHighlight` state in the file diff.
- * @param setActiveHighlightSync: The setter for `activeHighlight` and its corresponding ref.
+ * @param activeHighlighRef: The state of the active highlight in the file diff.
+ * @param setActiveHighlightSync: The state setter for `activeHighlight`.
  * @param setDraftThreads: The state setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
@@ -124,7 +124,6 @@ export function highlightOnMouseUp(
     activeHighlight.start,
     activeHighlight.end,
   );
-  
   const draftThreadKey = `${filename}:${maxLine}:${activeHighlight.side}`;
 
   /**
