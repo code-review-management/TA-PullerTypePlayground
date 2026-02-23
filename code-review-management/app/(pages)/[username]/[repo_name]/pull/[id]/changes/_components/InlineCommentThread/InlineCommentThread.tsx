@@ -4,9 +4,9 @@ import styles from "./InlineCommentThread.module.css";
 
 export default function InlineCommentThread({ thread }: { thread: MockPublishedThread }) {
   return (
-    <div>
-      <span className={styles.threadHeader}>{getThreadHeader(thread)}</span>
-      <div className={styles.commentList}>
+    <div className={styles.thread}>
+      <div className={styles.header}>{getThreadHeader(thread)}</div>
+      <div className={styles.comments}>
         {thread.comments.map((comment: MockPublishedComment) => (
           <InlineCommentItem
             key={comment.id}

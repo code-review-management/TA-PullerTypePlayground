@@ -77,7 +77,7 @@ function ThreadList({
   draftThread: DraftThreadItem | null;
 }) {
   return (
-    <div>
+    <div className={styles.list}>
       {publishedThreads.map((publishedThread) => (
         <InlineCommentThread key={publishedThread.id} thread={publishedThread} />
       ))}

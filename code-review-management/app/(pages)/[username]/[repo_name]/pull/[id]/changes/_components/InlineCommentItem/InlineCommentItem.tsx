@@ -11,7 +11,7 @@ export default function InlineCommentItem({
 }) {
   return (
     <div className={styles.comment}>
-      <div className={styles.commentHeader}>
+      <div className={styles.header}>
         <span>{username}</span>
         <span>{createdAt}</span>
       </div>

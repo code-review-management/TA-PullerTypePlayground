@@ -1,9 +1,20 @@
-.threadHeader {
+.thread {
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+    padding: var(--spacer-10);
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
+    background-color: var(--diff-omit-bg-color);
     font-weight: 500;
 }
 
-.commentList {
+.comments {
     display: flex;
     flex-direction: column;
-    gap: var(--spacer-4);
+    gap: var(--spacer-10);
+    padding: var(--spacer-10);
 }

@@ -1,3 +1,10 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-10);
+    margin: var(--spacer-10);
+}
+
 .normalLineColumns {
     display: flex;
 }
