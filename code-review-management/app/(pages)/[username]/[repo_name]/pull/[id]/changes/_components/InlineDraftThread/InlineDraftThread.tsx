@@ -2,9 +2,9 @@ import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import styles from "./InlineDraftThread.module.css";
 
 /**
- * Component to display a draft thread that is anchored to specific lines in a
- * file diff. Will eventually contain an editor where the user can draft a
- * comment associated with those lines, and begin a new thread upon submission.
+ * Display a draft thread that is anchored to specific lines in a file diff.
+ * Will eventually contain an editor where the user can draft a comment
+ * associated with those lines, and begin a new thread upon submission.
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
