@@ -17,7 +17,6 @@
 .diff-gutter {
     color: var(--diff-gutter-font-color);
     border-right: var(--border-thin-width) solid var(--border-gray);
-    padding: 0;
 }
 
 .diff-gutter-delete {

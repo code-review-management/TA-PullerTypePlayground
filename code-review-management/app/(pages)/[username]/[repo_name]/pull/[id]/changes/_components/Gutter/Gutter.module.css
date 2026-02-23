@@ -1,8 +1,0 @@
-.gutter {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.number {
-    padding-right: var(--spacer-6);
-}
