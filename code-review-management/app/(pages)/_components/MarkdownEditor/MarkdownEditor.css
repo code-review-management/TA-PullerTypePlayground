@@ -1,0 +1,17 @@
+.tiptap code {
+    font-family: var(--font-roboto-mono);
+}
+
+.tiptap > *:first-child {
+    margin-top: 0;
+}
+
+.tiptap h1,
+.tiptap h2,
+.tiptap h3,
+.tiptap h4,
+.tiptap h5,
+.tiptap h6 {
+    margin-top: .75rem;
+    margin-bottom: .75rem;
+}

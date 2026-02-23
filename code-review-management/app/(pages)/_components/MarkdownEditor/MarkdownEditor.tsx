@@ -1,18 +1,24 @@
 "use client";
 
 import { useEditor, EditorContent } from "@tiptap/react";
+import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
+import "./MarkdownEditor.css";
 
 /**
  * Docs:
  * 1. https://tiptap.dev/docs/editor/getting-started/install/nextjs
+ * 2. https://tiptap.dev/docs/editor/markdown/getting-started/installation
+ *
+ * TODO: Configure GitHub Flavored Markdown
  */
 export default function MarkdownEditor({ content }: { content: string }) {
   const editor = useEditor({
-    extensions: [StarterKit],
-    content,
-    immediatelyRender: false,
+    extensions: [StarterKit, Markdown],
     editable: false,
+    content: content,
+    contentType: "markdown",
+    immediatelyRender: false,
   });
 
   return <EditorContent editor={editor} />;
