@@ -73,7 +73,7 @@ export default function FileDiffView({
     [activePath, hunks],
   );
 
-  // Use memoization to avoid re-rendering drafts while highlighting.
+  // Use memoization to avoid unnecessary re-rendering of widgets while highlighting.
   const widgets = useMemo(
     () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
     [activePath, hunks, publishedThreadsByLine, draftThreads],
