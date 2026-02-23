@@ -1,6 +1,6 @@
 .comment {
     display: flex;
-    gap: var(--spacer-10);
+    gap: var(--spacer-12);
 }
 
 .userIcon {
