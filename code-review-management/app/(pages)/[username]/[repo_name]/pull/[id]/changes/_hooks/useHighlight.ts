@@ -36,6 +36,15 @@ export function useHighlight(
     side: null,
   });
 
+  /**
+   * We need a ref to access a mutable value that persists across re-renders,
+   * and this ref will stay in sync with the `activeHighlight` state. Without
+   * it, there are issues where the event handler for `onMouseUp` will access
+   * the stale value of `activeHighlight`. This is because React batches state
+   * updates, so state updates are not applied immediately. By updating the ref
+   * everytime we update the state, we can access the most up-to-date value of
+   * `activeHighlight` through this ref before the re-render occurs.
+   */
   const activeHighlightRef = useRef(activeHighlight);
   const setActiveHighlightSync = (data: ActiveHighlight) => {
     _setActiveHighlight(data);
