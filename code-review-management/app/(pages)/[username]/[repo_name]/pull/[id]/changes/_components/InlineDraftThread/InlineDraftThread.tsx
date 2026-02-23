@@ -29,7 +29,7 @@ export default function InlineDraftThread({
  * Otherwise, if it is a new file or deleted file, react-diff-view does not do a
  * split view, so it does not make sense to show "R" or "L".
  *
- * @param draft `DraftThreadItem` object containing data about the draft thread.
+ * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
 function getDraftHeader(draft: DraftThreadItem) {
   const side = draft.side === "new" ? "R" : "L";

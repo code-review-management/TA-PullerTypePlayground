@@ -6,33 +6,39 @@ import InlineDraftThread from "../InlineDraftThread/InlineDraftThread";
 import styles from "./InlineThreadList.module.css";
 
 /**
- * react-diff-view renders widgets for normal, unchanged lines across both sides
- * of the diff. To keep widgets either on the LHS or RHS on normal lines, we
- * render the left-threads and right-threads in a flex-box that distributes the
- * space equally during "split" view.
+ * For a given line on a file diff, displays all threads (published and drafts)
+ * that are anchored to it.
+ *
+ * Note: react-diff-view renders widgets for normal (unchanged) lines across the
+ * entire diff without separating them by side. To position comments on the
+ * correct LHS or RHS column, we use a flex-box that distributes the space
+ * equally between the left-threads and right-threads during "split" view.
+ *
+ * @param change: `Change` object containing data about the line these threads are anchored to.
+ * @param publishedThreadsBySide: Published threads grouped by side.
+ * @param draftThreadsBySide: Draft threads grouped by side.
  */
-
 export default function InlineThreadList({
   change,
   publishedThreadsBySide,
-  draftBySide,
+  draftThreadsBySide,
 }: {
   change: ChangeData;
   publishedThreadsBySide: { left: MockPublishedThread[]; right: MockPublishedThread[] };
-  draftBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
+  draftThreadsBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
 }) {
   if (change.type === "delete") {
     return (
       <ThreadList
         publishedThreads={publishedThreadsBySide.left}
-        draft={draftBySide.left}
+        draftThread={draftThreadsBySide.left}
       />
     );
   } else if (change.type === "insert") {
     return (
       <ThreadList
         publishedThreads={publishedThreadsBySide.right}
-        draft={draftBySide.right}
+        draftThread={draftThreadsBySide.right}
       />
     );
   } else {
@@ -42,13 +48,13 @@ export default function InlineThreadList({
         <div className={styles.normalLineSide}>
           <ThreadList
             publishedThreads={publishedThreadsBySide.left}
-            draft={draftBySide.left}
+            draftThread={draftThreadsBySide.left}
           />
         </div>
         <div className={styles.normalLineSide}>
           <ThreadList
             publishedThreads={publishedThreadsBySide.right}
-            draft={draftBySide.right}
+            draftThread={draftThreadsBySide.right}
           />
         </div>
       </div>
@@ -56,19 +62,26 @@ export default function InlineThreadList({
   }
 }
 
+/**
+ * Used by `InlineThreadList` to render a list of published threads followed by
+ * a draft thread if present.
+ *
+ * @param publishedThreads: List of published threads to render.
+ * @param draftThread: Draft thread to render, or null if none exists.
+ */
 function ThreadList({
   publishedThreads,
-  draft,
+  draftThread,
 }: {
   publishedThreads: MockPublishedThread[];
-  draft: DraftThreadItem | null;
+  draftThread: DraftThreadItem | null;
 }) {
   return (
     <div>
-      {publishedThreads.map((thread) => (
-        <InlineCommentThread key={thread.id} thread={thread} />
+      {publishedThreads.map((publishedThread) => (
+        <InlineCommentThread key={publishedThread.id} thread={publishedThread} />
       ))}
-      {draft && <InlineDraftThread draft={draft} />}
+      {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>
   );
 }
