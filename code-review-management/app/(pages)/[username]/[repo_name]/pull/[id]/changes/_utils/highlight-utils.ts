@@ -101,17 +101,17 @@ export function highlightOnMouseEnter(
  * with the highlighted lines.
  *
  * @param filename: File associated with this active highlight state.
- * @param activeHighlighRef: Ref of the `activeHighlight` state in the file diff.
+ * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
  * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
  * @param setDraftThreads: State setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
   filename: string,
-  activeHighlighRef: RefObject<ActiveHighlight>,
+  activeHighlightRef: RefObject<ActiveHighlight>,
   setActiveHighlightSync: (data: ActiveHighlight) => void,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
-  const activeHighlight = activeHighlighRef.current;
+  const activeHighlight = activeHighlightRef.current;
   setActiveHighlightSync({
     ...activeHighlight,
     isHighlighting: false,
