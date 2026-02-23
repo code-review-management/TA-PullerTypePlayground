@@ -1,3 +1,4 @@
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentItem.module.css";
 
 export default function InlineCommentItem({
@@ -15,7 +16,7 @@ export default function InlineCommentItem({
         <span>{username}</span>
         <span>{createdAt}</span>
       </div>
-      <div>{body}</div>
+      <MarkdownEditor content={body} />
     </div>
   );
 }
