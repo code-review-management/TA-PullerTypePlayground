@@ -39,10 +39,10 @@ export function useDraftThreads() {
 /**
  * Gets the key to index into the `draftThreads` state record.
  *
- * @param filename: The file containing the draft thread.
- * @param lineNumber: The max line number that the draft thread is anchored to.
- * @param side: The side of the diff that the draft thread is on ("old" or "new").
- * @returns: The key to index into the `draftThreads` state record.
+ * @param filename: File containing the draft thread.
+ * @param lineNumber: Max line number that the draft thread is anchored to.
+ * @param side: Side of the diff that the draft thread is on ("old" or "new").
+ * @returns: Key to index into the `draftThreads` state record.
  */
 export function getDraftThreadKey(
   filename: string,

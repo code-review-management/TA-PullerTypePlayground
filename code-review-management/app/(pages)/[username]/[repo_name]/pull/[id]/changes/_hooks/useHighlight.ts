@@ -21,8 +21,8 @@ export interface ActiveHighlight {
  * the gutters. When the user's mouse is released, a new draft thread is
  * generated and associated with those highlighted lines.
  *
- * @param filename: The file associated with this active highlight state.
- * @param setDraftThreads: The state setter for `draftThreads`.
+ * @param filename: File associated with this active highlight state.
+ * @param setDraftThreads: State setter for `draftThreads`.
  * @returns: The `activeHighlight` state and associated gutter events for highlighting.
  */
 export function useHighlight(

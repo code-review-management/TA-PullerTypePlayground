@@ -12,9 +12,9 @@ import { isWithinHighlightRange } from "../../_utils/highlight-utils";
  * Docs: https://www.npmjs.com/package/react-diff-view#customize-gutter
  *
  * @param change: `Change` object containing data about the line associated with the gutter.
- * @param side: The side of the gutter ("old" or "new").
- * @param renderDefault: A default render function provided by react-diff-view, which returns line number if possible.
- * @param activeHighlight: The state of the active highlight in the file diff.
+ * @param side: Side of the gutter ("old" or "new").
+ * @param renderDefault: Default render function provided by react-diff-view, which returns line number if possible.
+ * @param activeHighlight: State of the active highlight in the file diff.
  */
 export default function Gutter({
   change,

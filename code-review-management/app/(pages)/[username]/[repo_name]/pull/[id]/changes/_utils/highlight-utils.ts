@@ -10,9 +10,9 @@ import { getLineNumber } from "./diff-utils";
  * comparing the start and end lines of a highlight range. The start line is the
  * minimum when dragged downwards, yet the maximum when dragged upwards.
  *
- * @param line1: The number of the first line to compare.
- * @param line2: The number of the second line to compare.
- * @returns: An array containing the minimum line followed by the maximum line.
+ * @param line1: Number of the first line to compare.
+ * @param line2: Number of the second line to compare.
+ * @returns: Array containing the minimum line followed by the maximum line.
  */
 function getMinMaxLines(line1: number, line2: number) {
   const minLine = Math.min(line1, line2);
@@ -23,9 +23,9 @@ function getMinMaxLines(line1: number, line2: number) {
 /**
  * Checks if a line is currently highlighted.
  *
- * @param line: The line number.
- * @param side: The side of the diff that the line is on ("old" or "new").
- * @param activeHighlight: The state of the active highlight in the file diff.
+ * @param line: Line number.
+ * @param side: Side of the diff that the line is on ("old" or "new").
+ * @param activeHighlight: State of the active highlight in the file diff.
  * @returns: True if this line is within the active highlight range; false otherwise.
  */
 export function isWithinHighlightRange(
@@ -49,8 +49,8 @@ export function isWithinHighlightRange(
  * new highlight session. Updates the `activeHighlight` state and ref.
  *
  * @param change: `Change` object containing data about the line associated with the clicked gutter.
- * @param side: The side of the clicked gutter ("old" or "new").
- * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
+ * @param side: Side of the clicked gutter ("old" or "new").
+ * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
  */
 export function highlightOnMouseDown(
   change: ChangeData,
@@ -74,9 +74,9 @@ export function highlightOnMouseDown(
  * with the last line of the gutter that they have entered.
  *
  * @param change: `Change` object containing data about the line associated with the gutter that was entered.
- * @param side: The side of the gutter that was entered ("old" or "new").
- * @param activeHighlightRef: The ref of the `activeHighlight` state in the file diff.
- * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
+ * @param side: Side of the gutter that was entered ("old" or "new").
+ * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
  */
 export function highlightOnMouseEnter(
   change: ChangeData,
@@ -100,10 +100,10 @@ export function highlightOnMouseEnter(
  * the user has stopped highlighting. Generates a new draft thread associated
  * with the highlighted lines.
  *
- * @param filename: The file associated with this active highlight state.
- * @param activeHighlighRef: The ref of the `activeHighlight` state in the file diff.
- * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
- * @param setDraftThreads: The state setter for `draftThreads`.
+ * @param filename: File associated with this active highlight state.
+ * @param activeHighlighRef: Ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
+ * @param setDraftThreads: State setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
   filename: string,

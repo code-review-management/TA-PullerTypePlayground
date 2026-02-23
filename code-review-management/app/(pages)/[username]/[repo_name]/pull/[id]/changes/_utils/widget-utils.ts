@@ -8,7 +8,7 @@ import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
  * For a given line in the file diff, group its published and draft threads by
  * side (left or right).
  * 
- * @param filename: The file associated with these threads.
+ * @param filename: File associated with these threads.
  * @param change: `Change` object containing data about this line in the file diff.
  * @param publishedThreads: Published threads for this file, keyed by line number.
  * @param draftThreads: Draft threads for this file, keyed by draft thread key.
@@ -69,11 +69,11 @@ function getThreadsBySide(
 /**
  * Builds a map of widgets to render within `react-diff-view`.
  * 
- * @param filename: The file being diffed.
- * @param hunks: The hunks that make up this file's diff.
+ * @param filename: File being diffed.
+ * @param hunks: Hunks that make up this file's diff.
  * @param publishedThreads: Published threads for this file, keyed by line number.
  * @param draftThreads: Draft threads for this file, keyed by draft thread key.
- * @returns: A record that maps change keys to their corresponding thread list widgets.
+ * @returns: A record that maps change-keys to their corresponding thread list widgets.
  */
 export function getWidgets(
   filename: string,
