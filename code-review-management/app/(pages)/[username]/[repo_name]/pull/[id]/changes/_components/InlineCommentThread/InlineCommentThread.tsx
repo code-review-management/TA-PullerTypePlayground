@@ -9,12 +9,7 @@ export default function InlineCommentThread({ thread }: { thread: MockPublishedT
       <InlineThreadHeader title={getThreadHeader(thread)} />
       <div className={styles.comments}>
         {thread.comments.map((comment: MockPublishedComment) => (
-          <InlineCommentItem
-            key={comment.id}
-            username={comment.user.login}
-            createdAt={comment.created_at}
-            body={comment.body}
-          />
+          <InlineCommentItem key={comment.id} comment={comment} />
         ))}
       </div>
     </div>
