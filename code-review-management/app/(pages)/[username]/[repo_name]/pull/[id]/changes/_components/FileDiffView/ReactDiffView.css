@@ -53,3 +53,8 @@
     padding: var(--spacer-12);
     background-color: var(--diff-decoration-bg-color);
 }
+
+/* Docs: https://stackoverflow.com/questions/8720931/can-css-detect-the-number-of-children-an-element-has */
+.diff-widget:has(> :last-child:nth-child(2)) > .diff-widget-content {
+    border-right: var(--border-thin-width) solid var(--border-gray);
+}

@@ -5,3 +5,7 @@
 .normalLineSide {
     flex: 1;
 }
+
+.normalLineColumns > .normalLineSide:first-child {
+    border-right: var(--border-thin-width) solid var(--border-gray);
+}
