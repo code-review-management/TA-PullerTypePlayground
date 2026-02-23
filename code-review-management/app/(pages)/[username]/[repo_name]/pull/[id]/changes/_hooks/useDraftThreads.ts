@@ -24,6 +24,10 @@ export interface DraftThreadItem {
  *
  * TODO: Handle reply drafts when responding to an already published thread.
  * Create a new hook `useDraftReplies` to achieve this.
+ * 
+ * TODO: Refactor `usePublishedThreads` to follow the same data structure as
+ * `useDraftThreads` since Record<Key, Item> is easier to work with than nested
+ * maps when updating state.
  *
  * @returns: The `draftThreads` state and `setDraftThreads` setter.
  */
