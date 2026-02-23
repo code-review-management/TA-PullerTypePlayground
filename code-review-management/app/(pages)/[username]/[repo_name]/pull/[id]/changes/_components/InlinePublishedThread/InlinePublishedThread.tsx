@@ -1,15 +1,15 @@
 import { MockPublishedComment, MockPublishedThread } from "@/mocks/types/comments";
-import InlineCommentItem from "../InlineCommentItem/InlineCommentItem";
+import InlinePublishedComment from "../InlinePublishedComment/InlinePublishedComment";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
-import styles from "./InlineCommentThread.module.css";
+import styles from "./InlinePublishedThread.module.css";
 
-export default function InlineCommentThread({ thread }: { thread: MockPublishedThread }) {
+export default function InlinePublishedThread({ thread }: { thread: MockPublishedThread }) {
   return (
     <div className={styles.thread}>
       <InlineThreadHeader title={getThreadHeader(thread)} />
       <div className={styles.comments}>
         {thread.comments.map((comment: MockPublishedComment) => (
-          <InlineCommentItem key={comment.id} comment={comment} />
+          <InlinePublishedComment key={comment.id} comment={comment} />
         ))}
       </div>
     </div>

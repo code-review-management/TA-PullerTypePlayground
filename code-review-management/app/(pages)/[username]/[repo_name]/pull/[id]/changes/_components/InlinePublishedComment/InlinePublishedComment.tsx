@@ -1,9 +1,9 @@
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import { MockPublishedComment } from "@/mocks/types/comments";
-import styles from "./InlineCommentItem.module.css";
+import styles from "./InlinePublishedComment.module.css";
 
-export default function InlineCommentItem({
+export default function InlinePublishedComment({
   comment,
 }: {
   comment: MockPublishedComment;

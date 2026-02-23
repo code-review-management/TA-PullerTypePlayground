@@ -1,8 +1,8 @@
 import { ChangeData } from "react-diff-view";
 import { MockPublishedThread } from "@/mocks/types/comments";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import InlineCommentThread from "../InlineCommentThread/InlineCommentThread";
 import InlineDraftThread from "../InlineDraftThread/InlineDraftThread";
+import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import styles from "./InlineThreadList.module.css";
 
 /**
@@ -79,7 +79,7 @@ function ThreadList({
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => (
-        <InlineCommentThread key={publishedThread.id} thread={publishedThread} />
+        <InlinePublishedThread key={publishedThread.id} thread={publishedThread} />
       ))}
       {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>
