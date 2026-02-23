@@ -1,5 +1,7 @@
-import { DraftThreadItem } from "../../_hooks/useDraftThreads";
+import Image from "next/image";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
+import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import styles from "./InlineDraftThread.module.css";
 
 /**
@@ -17,7 +19,22 @@ export default function InlineDraftThread({
   return (
     <div className={styles.draft}>
       <InlineThreadHeader title={getDraftHeader(draft)} />
-      <div className={styles.body}>Created at {draft.created}</div>
+      <div className={styles.comment}>
+        <div className={styles.userIcon}>
+          <Image src="/mock/octocat.png" alt="@octocat" fill />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <span className={styles.login}>octocat</span>
+            <span className={styles.date}>
+              {/* TODO: Change date format. */}
+              {new Date(draft.created).toDateString()}
+            </span>
+          </div>
+          {/* TODO: Add placeholder to editor. */}
+          <MarkdownEditor content={"Write a comment..."} editable={true} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -12,10 +12,16 @@ import "./MarkdownEditor.css";
  *
  * TODO: Configure GitHub Flavored Markdown
  */
-export default function MarkdownEditor({ content }: { content: string }) {
+export default function MarkdownEditor({
+  content,
+  editable,
+}: {
+  content: string;
+  editable: boolean;
+}) {
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
-    editable: false,
+    editable: editable,
     content: content,
     contentType: "markdown",
     immediatelyRender: false,

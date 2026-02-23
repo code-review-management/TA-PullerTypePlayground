@@ -25,7 +25,7 @@ export default function InlineCommentItem({
             {new Date(comment.created_at).toDateString()}
           </span>
         </div>
-        <MarkdownEditor content={comment.body} />
+        <MarkdownEditor content={comment.body} editable={false} />
       </div>
     </div>
   );
