@@ -1,14 +1,21 @@
+import { Dispatch, SetStateAction } from "react";
 import { FileData } from "react-diff-view";
+import { DraftThreads } from "../../_hooks/useDraftThreads";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import { getActivePath } from "../../_utils/diff-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
   diffs,
   publishedThreads,
+  draftThreads,
+  setDraftThreads,
 }: {
   diffs?: FileData[];
   publishedThreads?: PublishedThreads;
+  draftThreads: DraftThreads;
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   if (!diffs || !publishedThreads) {
     return <div>Loading...</div>;
@@ -17,12 +24,10 @@ export default function DiffListView({
   return (
     <div className={styles.diffListView}>
       {diffs.map((diff) => {
-        const activePath = diff.type === "delete" ? diff.oldPath : diff.newPath;
+        const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         return (
           <FileDiffView
-            key={diff.oldRevision + "-" + diff.newRevision}
-            oldRevision={diff.oldRevision}
-            newRevision={diff.newRevision}
+            key={diff.oldPath + "-" + diff.newPath}
             oldPath={diff.oldPath}
             newPath={diff.newPath}
             diffType={diff.type}
@@ -30,6 +35,8 @@ export default function DiffListView({
             hunks={diff.hunks}
             // When there are no published threads mapped to a file, pass an empty map.
             publishedThreadsByLine={publishedThreads.get(activePath) ?? new Map()}
+            draftThreads={draftThreads}
+            setDraftThreads={setDraftThreads}
           />
         );
       })}

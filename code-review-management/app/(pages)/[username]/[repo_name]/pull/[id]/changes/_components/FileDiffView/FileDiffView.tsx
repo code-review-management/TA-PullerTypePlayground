@@ -1,20 +1,25 @@
 import refractor from "refractor";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
   Decoration,
   Diff,
   FileData,
+  GutterOptions,
   Hunk,
   HunkData,
   tokenize,
   ViewType,
 } from "react-diff-view";
 
+import { DraftThreads } from "../../_hooks/useDraftThreads";
+import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
-import { getCommentWidgets, getLanguage } from "../../_utils/diff-utils";
+import { getActivePath, getLanguage } from "../../_utils/diff-utils";
+import { getWidgets } from "../../_utils/widget-utils";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
+import Gutter from "../Gutter/Gutter";
 
 import styles from "./FileDiffView.module.css";
 import "prism-color-variables/variables.css";
@@ -32,34 +37,61 @@ const robotoMono = Roboto_Mono({
  */
 
 export default function FileDiffView({
-  oldRevision,
-  newRevision,
   oldPath,
   newPath,
   diffType,
   viewType,
   hunks,
   publishedThreadsByLine,
+  draftThreads,
+  setDraftThreads,
 }: {
-  oldRevision: string;
-  newRevision: string;
   oldPath: string;
   newPath: string;
   diffType: FileData["type"];
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
+  draftThreads: DraftThreads;
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
+  const activePath = getActivePath(diffType, oldPath, newPath);
+  const { activeHighlight, highlightEvents } = useHighlight(
+    activePath,
+    setDraftThreads,
+  );
   const [isExpanded, setIsExpanded] = useState(true);
-  const tokens = tokenize(hunks, {
-    highlight: true,
-    refractor: refractor,
-    language: getLanguage(diffType === "delete" ? oldPath : newPath),
-  });
-  const widgets = getCommentWidgets(hunks, publishedThreadsByLine);
+
+  // Use memoization to reduce lag while highlighting.
+  const tokens = useMemo(
+    () =>
+      tokenize(hunks, {
+        highlight: true,
+        refractor: refractor,
+        language: getLanguage(activePath),
+      }),
+    [activePath, hunks],
+  );
+
+  // Use memoization to avoid re-calculations of widgets while highlighting.
+  const widgets = useMemo(
+    () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
+    [activePath, hunks, publishedThreadsByLine, draftThreads],
+  );
+
+  const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
+    <Gutter
+      change={change}
+      side={side}
+      renderDefault={renderDefault}
+      activeHighlight={activeHighlight}
+    />
+  );
 
   return (
-    <div className={`${styles.fileDiffView} ${robotoMono.variable}`}>
+    <div
+      className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""} ${robotoMono.variable}`}
+    >
       <FileDiffHeader
         diffType={diffType}
         oldPath={oldPath}
@@ -70,12 +102,13 @@ export default function FileDiffView({
       <div>
         {isExpanded && (
           <Diff
-            key={oldRevision + "-" + newRevision}
             viewType={viewType}
             diffType={diffType}
             hunks={hunks}
             tokens={tokens}
             widgets={widgets}
+            renderGutter={renderGutter}
+            gutterEvents={highlightEvents}
           >
             {(hunks) =>
               hunks.map((hunk) => (
