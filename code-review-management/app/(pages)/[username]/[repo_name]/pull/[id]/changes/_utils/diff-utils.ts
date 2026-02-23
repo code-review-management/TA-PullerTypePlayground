@@ -7,6 +7,7 @@ export function getLineNumber(change: ChangeData, side: Side) {
   if (change.type === "delete" || change.type === "insert") {
     return change.lineNumber;
   }
+  // Executes when change.type === "normal":
   return side === "new" ? change.newLineNumber : change.oldLineNumber;
 }
 
