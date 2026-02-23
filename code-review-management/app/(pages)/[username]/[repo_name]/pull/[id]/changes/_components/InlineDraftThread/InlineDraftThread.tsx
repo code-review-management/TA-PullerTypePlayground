@@ -1,4 +1,5 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
+import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
 
 /**
@@ -14,9 +15,9 @@ export default function InlineDraftThread({
   draft: DraftThreadItem;
 }) {
   return (
-    <div>
-      <div className={styles.header}>{getDraftHeader(draft)}</div>
-      <div>Created at {draft.created}</div>
+    <div className={styles.draft}>
+      <InlineThreadHeader title={getDraftHeader(draft)} />
+      <div className={styles.body}>Created at {draft.created}</div>
     </div>
   );
 }

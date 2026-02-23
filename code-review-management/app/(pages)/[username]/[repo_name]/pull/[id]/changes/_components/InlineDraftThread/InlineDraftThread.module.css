@@ -1,3 +1,10 @@
-.header {
-    font-weight: 500;
+.draft {
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.body {
+    padding: var(--spacer-10);
 }
