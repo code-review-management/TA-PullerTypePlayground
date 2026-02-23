@@ -5,25 +5,27 @@ import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
 
 /**
- * For a given line number, group its published and draft threads by side.
+ * For a given line in the file diff, group its published and draft threads by
+ * side (left or right).
  * 
- * @param filename 
- * @param change 
- * @param threadsByLine 
- * @param drafts 
- * @returns 
+ * @param filename: The file associated with these threads.
+ * @param change: `Change` object containing data about this line in the file diff.
+ * @param publishedThreads: Published threads for this file, keyed by line number.
+ * @param draftThreads: Draft threads for this file, keyed by draft thread key.
+ * @returns: An object with `published` and `draft` sub-objects that groups
+ *           threads by left and right sides.
  */
 function getThreadsBySide(
   filename: string,
   change: ChangeData,
-  threadsByLine: PublishedThreadsByLine,
+  publishedThreads: PublishedThreadsByLine,
   draftThreads: DraftThreads,
 ) {
   if (change.type === "normal") {
     return {
       published: {
-        left: threadsByLine.get(change.oldLineNumber)?.left ?? [],
-        right: threadsByLine.get(change.newLineNumber)?.right ?? [],
+        left: publishedThreads.get(change.oldLineNumber)?.left ?? [],
+        right: publishedThreads.get(change.newLineNumber)?.right ?? [],
       },
       draft: {
         left: draftThreads[getDraftThreadKey(filename, change.oldLineNumber, "old")],
@@ -35,7 +37,7 @@ function getThreadsBySide(
   if (change.type === "delete") {
     return {
       published: {
-        left: threadsByLine.get(change.lineNumber)?.left ?? [],
+        left: publishedThreads.get(change.lineNumber)?.left ?? [],
         right: [],
       },
       draft: {
@@ -49,7 +51,7 @@ function getThreadsBySide(
     return {
       published: {
         left: [],
-        right: threadsByLine.get(change.lineNumber)?.right ?? [],
+        right: publishedThreads.get(change.lineNumber)?.right ?? [],
       },
       draft: {
         left: null,
@@ -64,10 +66,19 @@ function getThreadsBySide(
   };
 }
 
+/**
+ * Builds a map of widgets to render within `react-diff-view`.
+ * 
+ * @param filename: The file being diffed.
+ * @param hunks: The hunks that make up this file's diff.
+ * @param publishedThreads: Published threads for this file, keyed by line number.
+ * @param draftThreads: Draft threads for this file, keyed by draft thread key.
+ * @returns: A record that maps change keys to their corresponding thread list widgets.
+ */
 export function getWidgets(
   filename: string,
   hunks: HunkData[],
-  publishedThreadsByLine: PublishedThreadsByLine,
+  publishedThreads: PublishedThreadsByLine,
   draftThreads: DraftThreads,
 ) {
   const changes = hunks.flatMap((hunk) => hunk.changes);
@@ -75,7 +86,7 @@ export function getWidgets(
 
   changes.forEach((change) => {
     const { published: publishedThreadsBySide, draft: draftThreadsBySide } =
-      getThreadsBySide(filename, change, publishedThreadsByLine, draftThreads);
+      getThreadsBySide(filename, change, publishedThreads, draftThreads);
 
     const hasContent =
       publishedThreadsBySide.left.length > 0 ||

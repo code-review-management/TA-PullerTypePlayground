@@ -46,11 +46,11 @@ export function isWithinHighlightRange(
 
 /**
  * Gutter event handler that fires when the user clicks on a gutter. Starts a
- * new highlight session and updates the `activeHighlight` state.
+ * new highlight session. Updates the `activeHighlight` state and ref.
  *
  * @param change: `Change` object containing data about the line associated with the clicked gutter.
  * @param side: The side of the clicked gutter ("old" or "new").
- * @param setActiveHighlight: The state setter for `activeHighlight`.
+ * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
  */
 export function highlightOnMouseDown(
   change: ChangeData,
@@ -70,13 +70,13 @@ export function highlightOnMouseDown(
  * Gutter event handler that fires when the user's mouse enters a gutter. Does
  * not do anything if the user is not currently highlighting, or if their mouse
  * has entered a gutter on the opposite side of the diff from where the
- * highlight started. Otherwise, updates the `activeHighlight` state with the
- * last line of the gutter that they have entered.
+ * highlight started. Otherwise, updates the `activeHighlight` state and ref
+ * with the last line of the gutter that they have entered.
  *
  * @param change: `Change` object containing data about the line associated with the gutter that was entered.
  * @param side: The side of the gutter that was entered ("old" or "new").
  * @param activeHighlightRef: The ref of the `activeHighlight` state in the file diff.
- * @param setActiveHighlightSync: The setter for `activeHighlight` and its corresponding ref.
+ * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
  */
 export function highlightOnMouseEnter(
   change: ChangeData,
@@ -96,13 +96,13 @@ export function highlightOnMouseEnter(
 
 /**
  * Document event handler that fires when the user's mouse is released while
- * highlighting. Updates the `activeHighlight` state to indicate that the user
- * has stopped highlighting. Generates a new draft thread associated with the
- * highlighted lines.
+ * highlighting. Updates the `activeHighlight` state and ref to indicate that
+ * the user has stopped highlighting. Generates a new draft thread associated
+ * with the highlighted lines.
  *
  * @param filename: The file associated with this active highlight state.
- * @param activeHighlighRef: The state of the active highlight in the file diff.
- * @param setActiveHighlightSync: The state setter for `activeHighlight`.
+ * @param activeHighlighRef: The ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: The state setter for `activeHighlight` and its corresponding ref.
  * @param setDraftThreads: The state setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
