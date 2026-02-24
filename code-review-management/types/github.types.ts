@@ -5,10 +5,13 @@ export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
 export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
+export type Reaction = z.infer<typeof ReactionSchema>;
+export type Comment = z.infer<typeof CommentSchema>;
 
 export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
+  avatar_url: z.string(),
 });
 
 export const RepoSchema = z.object({
@@ -52,4 +55,40 @@ export const FileDiffSchema = z.object({
   changes: z.number(),
   contents_url: z.string(),
   patch: z.string().optional(),
+});
+
+export const ReactionSchema = z.object({
+  total_count: z.number(),
+  "+1": z.number(),
+  "-1": z.number(),
+  laugh: z.number(),
+  hooray: z.number(),
+  confused: z.number(),
+  heart: z.number(),
+  rocket: z.number(),
+  eyes: z.number(),
+});
+
+export const CommentSchema = z.object({
+  pull_request_review_id: z.number(),
+  id: z.number(),
+  diff_hunk: z.string(),
+  path: z.string(),
+  commit_id: z.string(),
+  original_commit_id: z.string(),
+  user: UserSchema,
+  body: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  reactions: ReactionSchema,
+  start_line: z.number().nullable(),
+  original_start_line: z.number().nullable(),
+  start_side: z.string().nullable(),
+  line: z.number().nullable(),
+  original_line: z.number().nullable(),
+  side: z.string(),
+  in_reply_to_id: z.number().nullish(),
+  author_association: z.string(),
+  original_position: z.number(),
+  position: z.number(),
 });
