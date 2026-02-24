@@ -29,18 +29,6 @@ export default function Pull() {
             createdAt={MOCK_PULL.created_at}
             description={MOCK_PULL.description}
           />
-          {/* <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div>
-          <div className={styles.timelinePlaceholder}>Timeline</div> */}
         </div>
         <div className={styles.infoColumn}>
           <StatusSection />
