@@ -1,16 +1,16 @@
 .headerButton {
-    padding: 10px 16px;
-    border-radius: 100px;
-    cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 100px;
+  cursor: pointer;
 }
 
 .secondary {
-    background: none;
-    border: 1px solid var(--border-gray-secondary);
+  background: none;
+  border: 1px solid var(--border-gray-secondary);
 }
 
 .primary {
-    background-color: var(--color-success);
-    border: none;
-    color: var(--background-light);
+  background-color: var(--color-success);
+  border: none;
+  color: var(--background-light);
 }
