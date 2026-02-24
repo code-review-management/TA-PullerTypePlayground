@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { GitHubContent, GitHubContentSchema } from './merge-github.types';
+import { Octokit } from 'octokit';
 
 export interface ConflictFileContent {
     fileName: string;
@@ -19,16 +19,13 @@ export async function retrieveConflictContents(
     featureSha: string,
     owner: string,
     repo: string,
-    headers: {
-        Authorization: string,
-        Accept: string
-    }
+    octokit: Octokit
 ): Promise<ConflictFileContent[]> {
     const promises = fileList.map(async (fileName) => {
         const [ancestor, target, feature] = await Promise.all([
-            fetchRawContent(fileName, ancestorSha, owner, repo, headers),
-            fetchRawContent(fileName, targetSha, owner, repo, headers),
-            fetchRawContent(fileName, featureSha, owner, repo, headers)
+            fetchRawContent(fileName, ancestorSha, owner, repo, octokit),
+            fetchRawContent(fileName, targetSha, owner, repo, octokit),
+            fetchRawContent(fileName, featureSha, owner, repo, octokit)
         ]);
 
         return {
@@ -46,14 +43,20 @@ export async function retrieveConflictContents(
  * Helper: Fetches a single file's content from a specific commit/ref.
  * Returns null if the file is not found
  */
-async function fetchRawContent(path: string, ref: string, 
-    owner: string, repo: string, headers: {
-        Authorization: string,
-        Accept: string
-    }): Promise<string | null> {
+async function fetchRawContent(
+    path: string, 
+    ref: string, 
+    owner: string, 
+    repo: string, 
+    octokit: Octokit
+    ): Promise<string | null> {
     try {
-        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${ref}`;
-        const response = await axios.get(url, { headers });
+        const response = await octokit.rest.repos.getContent({
+            owner,
+            repo,
+            path,
+            ref,
+        });
         const validatedReponse: GitHubContent = GitHubContentSchema.parse(response.data)
 
         // GitHub API returns content as Base64

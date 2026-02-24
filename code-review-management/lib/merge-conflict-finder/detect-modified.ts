@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { CompareResponse, CompareResponseSchema } from './merge-github.types';
+import { Octokit } from 'octokit';
 
 export interface ConflictingFilesResponse{
     merge_base_commit: string,
@@ -11,27 +11,26 @@ export const findConflictingFiles = async (
     repo: string,
     targetBranch: string,
     featureBranch: string,
-    headers: {
-        Authorization: string,
-        Accept: string
-    }
+    octokit: Octokit
 ): Promise<ConflictingFilesResponse>  => {
     try {
-        const baseUrl:string = `https://api.github.com/repos/${owner}/${repo}`;
-        const baseHead: string = `${encodeURIComponent(targetBranch)}...${encodeURIComponent(featureBranch)}`;
-        const featureResponse = await axios(
-            `${baseUrl}/compare/${baseHead}`,
-            { headers }
-        );
+        const featureResponse = await octokit.rest.repos.compareCommits({
+                owner,
+                repo,
+                base: targetBranch,
+                head: featureBranch,
+        });
         const validatedFeatureReponse: CompareResponse = CompareResponseSchema.parse(featureResponse)
 
         const ancestorSha = validatedFeatureReponse.merge_base_commit.sha;
         const featureFiles = validatedFeatureReponse.files.map(f => f.filename);
 
-        const targetResponse = await axios.get(
-            `${baseUrl}/compare/${ancestorSha}...${targetBranch}`,
-            { headers }
-        );
+        const targetResponse = await octokit.rest.repos.compareCommits({
+                owner,
+                repo,
+                base: ancestorSha,
+                head: featureBranch,
+        });
         const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse)
         
         const targetFiles = validatedTargetReponse.files.map(f => f.filename);

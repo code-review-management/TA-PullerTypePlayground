@@ -1,3 +1,4 @@
+import { Octokit } from "octokit"
 import { findConflictingFiles, ConflictingFilesResponse } from "./detect-modified"
 import { retrieveConflictContents, ConflictFileContent } from "./get-files"
 import { FileMergeOutput, attemptFileMerge } from "./get-merge-diff"
@@ -9,29 +10,18 @@ export interface MergeOutput{
 }
 
 export interface ConflictInput{
-    githubToken: string,
     owner: string,
     repo: string,
     targetBranch: string,
     featureBranch: string,
 }
 
-export const getMergeConflict = async (conflictInput: ConflictInput) : Promise<MergeOutput[]> => {
-    if (!conflictInput.githubToken.startsWith("Bearer ")){
-        conflictInput.githubToken = "Bearer " + conflictInput.githubToken;
-    }
-
-    const headers = {
-        Authorization: `${conflictInput.githubToken}`,
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-    };
-
+export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput[]> => {
     const mergeCandidates: ConflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
         conflictInput.repo, 
         conflictInput.targetBranch,
         conflictInput.featureBranch, 
-        headers);
+        octokit);
 
     const mergeCandidatesContent: ConflictFileContent[] = await retrieveConflictContents(mergeCandidates.files, 
         mergeCandidates.merge_base_commit, 
@@ -39,7 +29,7 @@ export const getMergeConflict = async (conflictInput: ConflictInput) : Promise<M
         conflictInput.featureBranch, 
         conflictInput.owner, 
         conflictInput.repo, 
-        headers);
+        octokit);
         
     const mergedFiles: (MergeOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
     return mergedFiles;
