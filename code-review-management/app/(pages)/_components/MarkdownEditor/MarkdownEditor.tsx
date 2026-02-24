@@ -21,8 +21,8 @@ export default function MarkdownEditor({
 }) {
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
-    editable: editable,
-    content: content,
+    editable,
+    content,
     contentType: "markdown",
     immediatelyRender: false,
   });
