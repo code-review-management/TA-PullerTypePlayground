@@ -17,7 +17,7 @@ export default function InlineDraftThread({
 }) {
   return (
     <div className={styles.draft}>
-      <InlineThreadHeader title={getDraftHeader(draft)} />
+      <InlineThreadHeader title={getThreadTitle(draft)} />
       <div className={styles.comment}>
         <InlineCommentEntry
           avatar={"/mock/octocat.png"}
@@ -41,7 +41,7 @@ export default function InlineDraftThread({
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
-function getDraftHeader(draft: DraftThreadItem) {
+function getThreadTitle(draft: DraftThreadItem) {
   const side = draft.side === "new" ? "R" : "L";
   const end = `${side}${draft.end}`;
 
