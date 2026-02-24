@@ -2,7 +2,8 @@ import { CompareResponse, CompareResponseSchema } from './merge-github.types';
 import { Octokit } from 'octokit';
 
 export interface ConflictingFilesResponse{
-    merge_base_commit: string,
+    mergeBaseCommit: string,
+    targetShaAtMerge: string,
     files: string[]
 }
 
@@ -22,8 +23,9 @@ export const findConflictingFiles = async (
         });
         const validatedFeatureReponse: CompareResponse = CompareResponseSchema.parse(featureResponse)
 
-        const ancestorSha = validatedFeatureReponse.merge_base_commit.sha;
-        const featureFiles = validatedFeatureReponse.files.map(f => f.filename);
+        const ancestorSha: string = validatedFeatureReponse.merge_base_commit.sha;
+        const targetSha: string = validatedFeatureReponse.base_commit.sha;
+        const featureFiles: string[] = validatedFeatureReponse.files.map(f => f.filename);
 
         const targetResponse = await octokit.rest.repos.compareCommits({
                 owner,
@@ -37,7 +39,8 @@ export const findConflictingFiles = async (
         const overlappingFiles = featureFiles.filter(file => targetFiles.includes(file));
 
         return  {
-            merge_base_commit: ancestorSha,
+            mergeBaseCommit: ancestorSha,
+            targetShaAtMerge: targetSha,
             files: overlappingFiles
         }
     } catch (error: any) {

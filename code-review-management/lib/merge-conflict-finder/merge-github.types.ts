@@ -35,5 +35,8 @@ export const CompareResponseSchema = z.object({
   merge_base_commit: z.object({
     sha: z.string(),
   }),
+  base_commit: z.object({
+    sha: z.string(),
+  }),
   files: z.array(FileChangeSchema),
 });

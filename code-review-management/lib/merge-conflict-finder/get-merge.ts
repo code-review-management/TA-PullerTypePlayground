@@ -4,6 +4,11 @@ import { retrieveConflictContents, ConflictFileContent } from "./get-files"
 import { FileMergeOutput, attemptFileMerge } from "./get-merge-diff"
 
 export interface MergeOutput{
+    targetShaAtMerge: string,
+    mergedFiles: MergeFileOutput[]
+}
+
+interface MergeFileOutput {
     filename: string,
     hasConflict: boolean,
     contents: string
@@ -16,7 +21,7 @@ export interface ConflictInput{
     featureBranch: string,
 }
 
-export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput[]> => {
+export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput> => {
     const mergeCandidates: ConflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
         conflictInput.repo, 
         conflictInput.targetBranch,
@@ -24,18 +29,21 @@ export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Oc
         octokit);
 
     const mergeCandidatesContent: ConflictFileContent[] = await retrieveConflictContents(mergeCandidates.files, 
-        mergeCandidates.merge_base_commit, 
+        mergeCandidates.mergeBaseCommit, 
         conflictInput.targetBranch, 
         conflictInput.featureBranch, 
         conflictInput.owner, 
         conflictInput.repo, 
         octokit);
         
-    const mergedFiles: (MergeOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
-    return mergedFiles;
+    const mergedFiles: (MergeFileOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
+    return {
+        targetShaAtMerge: mergeCandidates.targetShaAtMerge,
+        mergedFiles: mergedFiles
+    }
 }
 
-function MakeMerge(fileContent: ConflictFileContent): MergeOutput {
+function MakeMerge(fileContent: ConflictFileContent): MergeFileOutput {
     let ancestor: string = ""
     let target: string = ""
     let feature: string = ""
