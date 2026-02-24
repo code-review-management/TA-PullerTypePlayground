@@ -9,8 +9,8 @@ import styles from "./InlineCommentEntry.module.css";
  * @param username: Username of the comment author.
  * @param created: Date of comment creation.
  * @param body: Contents of the comment.
- * @param editable: Whether the editor should be editable by default (e.g. false
- *                  for published comments and true for draft comments)
+ * @param editable: Whether the editor should be editable by default (e.g.,
+ *                  false for published comments and true for draft comments)
  */
 export default function InlineCommentEntry({
   avatar,

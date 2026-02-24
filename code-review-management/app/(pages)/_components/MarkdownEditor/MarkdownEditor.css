@@ -2,7 +2,7 @@
     font-family: var(--font-roboto-mono);
 }
 
-.tiptap :first-child {
+.tiptap > :first-child {
     /* Do not show top-margin of first Markdown line */
     margin-top: 0;
 }
