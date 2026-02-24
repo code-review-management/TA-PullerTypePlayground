@@ -1,5 +1,5 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import InlineCommentItem from "../InlineCommentItem/InlineCommentItem";
+import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
 
@@ -19,7 +19,7 @@ export default function InlineDraftThread({
     <div className={styles.draft}>
       <InlineThreadHeader title={getDraftHeader(draft)} />
       <div className={styles.comment}>
-        <InlineCommentItem
+        <InlineCommentEntry
           avatar={"/mock/octocat.png"}
           username="octocat"
           created={draft.created}

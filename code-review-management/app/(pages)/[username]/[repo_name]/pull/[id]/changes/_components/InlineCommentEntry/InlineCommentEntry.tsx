@@ -1,8 +1,8 @@
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
-import styles from "./InlineCommentItem.module.css";
+import styles from "./InlineCommentEntry.module.css";
 
-export default function InlineCommentItem({
+export default function InlineCommentEntry({
   avatar,
   username,
   created,
