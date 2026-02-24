@@ -89,6 +89,4 @@ export const CommentSchema = z.object({
   side: z.string(),
   in_reply_to_id: z.number().nullish(),
   author_association: z.string(),
-  original_position: z.number(),
-  position: z.number(),
 });
