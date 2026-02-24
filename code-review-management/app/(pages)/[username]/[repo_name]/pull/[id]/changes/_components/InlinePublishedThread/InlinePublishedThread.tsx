@@ -3,6 +3,11 @@ import InlinePublishedComment from "../InlinePublishedComment/InlinePublishedCom
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
+/**
+ * Displays a published thread that is anchored to specific lines in a file diff.
+ * 
+ * @param thread: `MockPublishedThread` object containing data about the published thread.
+ */
 export default function InlinePublishedThread({ thread }: { thread: MockPublishedThread }) {
   return (
     <div className={styles.thread}>
