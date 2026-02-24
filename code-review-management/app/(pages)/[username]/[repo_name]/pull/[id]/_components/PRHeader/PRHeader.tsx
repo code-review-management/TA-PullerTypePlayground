@@ -33,7 +33,7 @@ export default function PRHeader() {
         href={`/${username}/${repo_name}/pull/${id}/changes`}
         variant="secondary"
       >
-        View Files
+        View files
       </HeaderButton>
       <HeaderButton
         href={`/${username}/${repo_name}/pull/${id}/changes`}
