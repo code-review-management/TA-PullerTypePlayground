@@ -1,4 +1,4 @@
-.draft {
+.thread {
     border: var(--border-normal-width) solid var(--border-gray);
     border-radius: var(--border-radius);
     overflow: hidden;

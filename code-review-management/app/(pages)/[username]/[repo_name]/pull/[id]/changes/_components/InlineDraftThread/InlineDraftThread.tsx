@@ -16,7 +16,7 @@ export default function InlineDraftThread({
   draft: DraftThreadItem;
 }) {
   return (
-    <div className={styles.draft}>
+    <div className={styles.thread}>
       <InlineThreadHeader title={getThreadTitle(draft)} />
       <div className={styles.comment}>
         <InlineCommentEntry
