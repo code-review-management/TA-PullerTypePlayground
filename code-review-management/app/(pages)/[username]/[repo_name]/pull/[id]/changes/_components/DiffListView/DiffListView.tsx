@@ -26,7 +26,7 @@ export default function DiffListView({
   } = useFileDiffsQuery(username, repo_name, id);
 
   const diffs = useMemo(() => {
-    if (!diffString) return []; // Fallback to handle type errors, but won't render during pending/error state.
+    if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
     return parseDiff(diffString, { nearbySequences: "zip" });
   }, [diffString]);
 
