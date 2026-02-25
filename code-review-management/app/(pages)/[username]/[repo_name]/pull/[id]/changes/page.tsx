@@ -24,12 +24,12 @@ export default function Changes() {
    * instead of returning at the page-level. Remove `!publishedThreads` check
    * once we query from the comments API.
    */
-  if (isPending || !publishedThreads) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  if (isPending || !publishedThreads) return <div>Loading changes...</div>;
+  if (isError) return <div>Failed to load changes.</div>;
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>{pull.title}</h1>
+      <h1>{pull.title}</h1>
       <DiffListView
         publishedThreads={publishedThreads}
         draftThreads={draftThreads}
