@@ -54,4 +54,6 @@
     --status-waiting: rgb(var(--status-waiting-rgb));
     --status-conflict: rgb(var(--status-conflict-rgb));
     --status-failure: rgb(var(--status-failure-rgb));
+
+    --box-shadow: 0 2px 2px 0 rgba(150, 136, 136, 0.10);
 }

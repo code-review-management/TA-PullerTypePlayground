@@ -8,6 +8,7 @@ import StatusSection from "./_components/StatusSection/StatusSection";
 import Reviewers from "./_components/Reviewers/Reviewers";
 import Assignees from "./_components/Assignees/Assignees";
 import CISection from "./_components/CISection/CISection";
+import PRHeader from "./_components/PRHeader/PRHeader";
 // import { useParams } from 'next/navigation'
 
 // Pull Request View page.
@@ -18,7 +19,7 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
-      <div>Page header</div>
+      <PRHeader />
       <div className={styles.pageBody}>
         <div className={styles.bodyMain}>
           <PullBodyHeader />
@@ -28,7 +29,6 @@ export default function Pull() {
             createdAt={MOCK_PULL.created_at}
             description={MOCK_PULL.description}
           />
-          <div>Timeline</div>
         </div>
         <div className={styles.infoColumn}>
           <StatusSection />
