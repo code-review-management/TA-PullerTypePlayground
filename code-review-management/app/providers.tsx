@@ -3,12 +3,18 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: process.env.NODE_ENV === "production",
+    },
+  },
+});
 
 /**
  * Providers to wrap around the application's root layout. Includes TanStack
  * Query client provider.
- * 
+ *
  * Docs:
  * 1. https://tanstack.com/query/latest/docs/framework/react/examples/simple?panel=code
  *
