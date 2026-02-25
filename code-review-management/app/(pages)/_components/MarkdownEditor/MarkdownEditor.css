@@ -1,0 +1,13 @@
+.tiptap code {
+    font-family: var(--font-roboto-mono);
+}
+
+.tiptap > :first-child {
+    /* Do not show top-margin of first Markdown line */
+    margin-top: 0;
+}
+
+.tiptap :is(h1, h2, h3, h4, h5, h6) {
+    margin-top: .75rem;
+    margin-bottom: .75rem;
+}

@@ -1,7 +1,18 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-12);
+    margin: var(--spacer-12);
+}
+
 .normalLineColumns {
     display: flex;
 }
 
 .normalLineSide {
     flex: 1;
+}
+
+.normalLineColumns > .normalLineSide:first-child {
+    border-right: var(--border-thin-width) solid var(--border-gray);
 }

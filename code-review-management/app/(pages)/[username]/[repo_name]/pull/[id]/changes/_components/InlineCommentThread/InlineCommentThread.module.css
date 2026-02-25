@@ -1,9 +1,0 @@
-.threadHeader {
-    font-weight: 500;
-}
-
-.commentList {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-4);
-}
