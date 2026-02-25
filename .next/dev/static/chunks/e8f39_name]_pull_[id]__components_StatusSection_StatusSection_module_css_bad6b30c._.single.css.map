@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/StatusSection/StatusSection.module.css"],"sourcesContent":[".statusSection {\n  /* Math to align the bottom divider of this section to the bottom divider of the body header.\n    body header height is 120px, but body header has 24px gap to its divider,\n    and this section only has 16 px gap to its divider. */\n  height: var(--pr-view-body-header-height);\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-end;\n}\n\n.statusList {\n  display: flex;\n  flex-wrap: wrap;\n  gap: var(--spacer-8);\n  row-gap: var(--spacer-8);\n}\n"],"names":[],"mappings":"AAAA;;;;;;;AAUA"}}]
+}

@@ -1,0 +1,18 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/TimelineDisplay/TimelineDisplay.module.css [app-client] (css) */
+.TimelineDisplay-module__FGPx7a__timeline {
+  gap: var(--spacer-16);
+  flex-direction: column;
+  display: flex;
+}
+
+.TimelineDisplay-module__FGPx7a__eventSmall {
+  gap: var(--spacer-24);
+  display: flex;
+}
+
+.TimelineDisplay-module__FGPx7a__timelineIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/*# sourceMappingURL=e8f39_name%5D_pull_%5Bid%5D__components_TimelineDisplay_TimelineDisplay_module_css_bad6b30c._.single.css.map*/

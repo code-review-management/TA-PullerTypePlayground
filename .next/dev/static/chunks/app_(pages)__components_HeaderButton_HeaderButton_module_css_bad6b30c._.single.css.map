@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/_components/HeaderButton/HeaderButton.module.css"],"sourcesContent":[".headerButton {\n  padding: 10px 16px;\n  border-radius: 100px;\n  cursor: pointer;\n  text-decoration: none;\n  color: var(--text-primary);\n}\n\n.secondary {\n  background: none;\n  border: 1px solid var(--border-gray-secondary);\n}\n\n.primary {\n  background-color: var(--color-success);\n  border: none;\n  color: var(--background-light);\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;AAQA;;;;;AAKA"}}]
+}

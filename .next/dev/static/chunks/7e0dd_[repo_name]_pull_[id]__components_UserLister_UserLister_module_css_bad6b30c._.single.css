@@ -1,0 +1,29 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/UserLister/UserLister.module.css [app-client] (css) */
+.UserLister-module__Ar5Wkq__userLister {
+  gap: var(--spacer-12);
+  flex-direction: column;
+  display: flex;
+}
+
+.UserLister-module__Ar5Wkq__headerRow {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.UserLister-module__Ar5Wkq__plusIcon {
+  cursor: pointer;
+}
+
+.UserLister-module__Ar5Wkq__userListerRow {
+  align-items: center;
+  gap: var(--spacer-16);
+  display: flex;
+}
+
+.UserLister-module__Ar5Wkq__username {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/*# sourceMappingURL=7e0dd_%5Brepo_name%5D_pull_%5Bid%5D__components_UserLister_UserLister_module_css_bad6b30c._.single.css.map*/

@@ -1,0 +1,33 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/StatusFlagChip/StatusFlagChip.module.css [app-client] (css) */
+.StatusFlagChip-module__8oRMna__statusFlagChip {
+  height: 32px;
+  color: var(--background-light);
+  align-items: center;
+  gap: var(--spacer-4);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: .875rem;
+  display: flex;
+}
+
+.StatusFlagChip-module__8oRMna__ready {
+  border: 1px solid var(--status-ready);
+  background-color: rgba(var(--status-ready-rgb), .72);
+}
+
+.StatusFlagChip-module__8oRMna__waiting {
+  border: 1px solid var(--status-waiting);
+  background-color: rgba(var(--status-waiting-rgb), .72);
+}
+
+.StatusFlagChip-module__8oRMna__conflict {
+  border: 1px solid var(--status-conflict);
+  background: rgba(var(--status-conflict-rgb), .72);
+}
+
+.StatusFlagChip-module__8oRMna__failure {
+  border: 1px solid var(--status-failure);
+  background-color: rgba(var(--status-failure-rgb), .72);
+}
+
+/*# sourceMappingURL=e8f39_name%5D_pull_%5Bid%5D__components_StatusFlagChip_StatusFlagChip_module_css_bad6b30c._.single.css.map*/

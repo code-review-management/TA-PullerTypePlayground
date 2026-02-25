@@ -1,0 +1,17 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/DiscussionBox/DiscussionBox.module.css [app-client] (css) */
+.DiscussionBox-module__VeQg0q__discussionBox {
+  resize: vertical;
+  width: 100%;
+  min-height: 80px;
+  padding: var(--spacer-12) var(--spacer-16);
+  border: 1px solid var(--border-gray-secondary);
+  color: var(--text-primary);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.DiscussionBox-module__VeQg0q__discussionBox::placeholder {
+  color: var(--text-secondary);
+}
+
+/*# sourceMappingURL=e8f39_name%5D_pull_%5Bid%5D__components_DiscussionBox_DiscussionBox_module_css_bad6b30c._.single.css.map*/

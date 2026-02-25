@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/UserLister/UserLister.module.css"],"sourcesContent":[".userLister {\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-12);\n}\n\n.headerRow {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n.plusIcon {\n  cursor: pointer;\n}\n\n.userListerRow {\n  display: flex;\n  align-items: center;\n  gap: var(--spacer-16);\n}\n\n.username {\n  font-size: 1rem;\n  font-weight: 500;\n}\n"],"names":[],"mappings":"AAAA;;;;;;AAMA;;;;;;AAMA;;;;AAIA;;;;;;AAMA"}}]
+}

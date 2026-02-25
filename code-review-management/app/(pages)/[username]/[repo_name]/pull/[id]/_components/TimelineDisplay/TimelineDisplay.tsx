@@ -2,12 +2,21 @@ import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
 import MOCK_TIMELINE from "@/mocks/timeline.json";
 import { ReactNode } from "react";
-import { GoBookmark, GoCommit, GoEye, GoGitBranch, GoGitMerge, GoPencil, GoX } from "react-icons/go";
+import {
+  GoBookmark,
+  GoCommit,
+  GoEye,
+  GoGitBranch,
+  GoGitMerge,
+  GoPencil,
+  GoX,
+} from "react-icons/go";
 
 export default function TimelineDisplay() {
+  
   return (
     <div className={styles.timeline}>
-      {MOCK_TIMELINE.map((event, idx) => (
+      {MOCK_TIMELINE.toReversed().map((event, idx) => (
         <TimelineEvent key={event.node_id} event_idx={idx} />
       ))}
     </div>
@@ -15,7 +24,8 @@ export default function TimelineDisplay() {
 }
 
 function TimelineEvent({ event_idx }: { event_idx: number }) {
-  const event = MOCK_TIMELINE[event_idx];
+  const timeline = MOCK_TIMELINE.toReversed();
+  const event = timeline[event_idx];
 
   if (event.event === "committed") {
     const abbr_sha = event.sha?.slice(0, 7);
@@ -44,11 +54,22 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
       </div>
     );
   } else if (event.event === "review_dismissed") {
-    return <TimelineEventSmall event_type={event.event}>{event.actor?.login} dismissed a review</TimelineEventSmall>;
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        {event.actor?.login} dismissed a review
+      </TimelineEventSmall>
+    );
   } else if (event.event === "merged") {
-    return <TimelineEventSmall event_type={event.event}>{event.actor?.login} merged the PR</TimelineEventSmall>;
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        {event.actor?.login} merged the PR
+      </TimelineEventSmall>
+    );
   } else if (event.event === "closed") {
-    return <Divider />; {/** TODO: make custom divider */}
+    return <Divider />;
+    {
+      /** TODO: make custom divider */
+    }
   } else {
     return (
       <TimelineEventSmall event_type={event.event}>
@@ -84,7 +105,7 @@ function TimelineEventSmall({
       case "head_ref_deleted":
         return <GoGitBranch className={styles.timelineIcon} />;
       case "connected":
-        return <GoBookmark className={styles.timelineIcon} />
+        return <GoBookmark className={styles.timelineIcon} />;
       default:
         return <div />;
     }

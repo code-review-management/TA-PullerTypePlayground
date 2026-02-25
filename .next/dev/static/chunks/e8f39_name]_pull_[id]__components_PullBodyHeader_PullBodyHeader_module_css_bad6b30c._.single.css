@@ -1,0 +1,111 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/PullBodyHeader/PullBodyHeader.module.css [app-client] (css) */
+.PullBodyHeader-module__AQD8Da__pullBodyHeader {
+  height: var(--pr-view-body-header-height);
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__titleLeft {
+  gap: var(--spacer-16);
+  flex-direction: column;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__titleIdentifierHeaders {
+  gap: var(--spacer-8);
+  flex-direction: column;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__repoName {
+  color: var(--text-tertiary);
+  font-size: 1.375rem;
+  font-weight: 400;
+}
+
+.PullBodyHeader-module__AQD8Da__pullTitle {
+  font-weight: 500;
+}
+
+.PullBodyHeader-module__AQD8Da__pullNumber {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.PullBodyHeader-module__AQD8Da__titleLeftInfo {
+  align-items: center;
+  gap: var(--spacer-16);
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__userInfo {
+  align-items: center;
+  gap: var(--spacer-8);
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__tempUserIcon {
+  background-color: var(--state-draft);
+  border-radius: 32px;
+  width: 32px;
+  height: 32px;
+  position: relative;
+}
+
+.PullBodyHeader-module__AQD8Da__user {
+  font-weight: 500;
+}
+
+.PullBodyHeader-module__AQD8Da__branchDisplay {
+  align-items: center;
+  gap: var(--spacer-4);
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__branchChip {
+  padding: var(--spacer-4) var(--spacer-8);
+  background-color: var(--background-secondary-light);
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__branchName {
+  font-family: var(--font-roboto-mono);
+  font-size: .875rem;
+}
+
+.PullBodyHeader-module__AQD8Da__titleAndNum {
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__titleRight {
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: var(--spacer-8);
+  flex-direction: column;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__updated {
+  color: var(--text-tertiary);
+}
+
+.PullBodyHeader-module__AQD8Da__changesInfo {
+  gap: var(--spacer-8);
+  font-weight: 500;
+  display: flex;
+}
+
+.PullBodyHeader-module__AQD8Da__additions {
+  color: var(--color-success);
+}
+
+.PullBodyHeader-module__AQD8Da__deletions {
+  color: var(--color-failure);
+}
+
+/*# sourceMappingURL=e8f39_name%5D_pull_%5Bid%5D__components_PullBodyHeader_PullBodyHeader_module_css_bad6b30c._.single.css.map*/

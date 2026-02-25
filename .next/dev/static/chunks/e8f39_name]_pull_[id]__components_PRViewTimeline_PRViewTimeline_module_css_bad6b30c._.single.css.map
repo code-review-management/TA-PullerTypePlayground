@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/PRViewTimeline/PRViewTimeline.module.css"],"sourcesContent":[".timeline {\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-24);\n}\n"],"names":[],"mappings":"AAAA"}}]
+}

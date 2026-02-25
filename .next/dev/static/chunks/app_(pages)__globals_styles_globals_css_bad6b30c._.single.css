@@ -1,0 +1,35 @@
+/* [project]/app/(pages)/_globals/styles/globals.css [app-client] (css) */
+:root {
+  --background: #fff;
+  --foreground: #171717;
+  color: var(--text-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-roboto);
+  margin: 0;
+  padding: 0;
+}
+
+h4 {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --lightningcss-light: initial;
+    --lightningcss-dark: ;
+    color-scheme: light;
+  }
+}
+
+/*# sourceMappingURL=app_%28pages%29__globals_styles_globals_css_bad6b30c._.single.css.map*/

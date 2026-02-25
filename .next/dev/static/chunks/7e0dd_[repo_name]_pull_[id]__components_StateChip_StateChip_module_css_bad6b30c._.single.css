@@ -1,0 +1,29 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/StateChip/StateChip.module.css [app-client] (css) */
+.StateChip-module__LjLH9W__stateChip {
+  height: 32px;
+  color: var(--background-light);
+  align-items: center;
+  gap: var(--spacer-4);
+  border-radius: 16px;
+  padding: 12px;
+  font-size: .875rem;
+  display: flex;
+}
+
+.StateChip-module__LjLH9W__draft {
+  background-color: var(--state-draft);
+}
+
+.StateChip-module__LjLH9W__open {
+  background-color: var(--state-open);
+}
+
+.StateChip-module__LjLH9W__closed {
+  background-color: var(--state-closed);
+}
+
+.StateChip-module__LjLH9W__merged {
+  background-color: var(--state-merged);
+}
+
+/*# sourceMappingURL=7e0dd_%5Brepo_name%5D_pull_%5Bid%5D__components_StateChip_StateChip_module_css_bad6b30c._.single.css.map*/

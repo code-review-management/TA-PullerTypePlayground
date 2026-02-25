@@ -1,0 +1,31 @@
+/* [project]/app/(pages)/[username]/[repo_name]/pull/[id]/page.module.css [app-client] (css) */
+.page-module__hVkq9a__page {
+  flex-direction: column;
+  min-height: 100vh;
+  display: flex;
+}
+
+.page-module__hVkq9a__pageBody {
+  align-items: stretch;
+  gap: var(--spacer-80);
+  padding: var(--spacer-24) var(--spacer-48);
+  flex-direction: row;
+  display: flex;
+}
+
+.page-module__hVkq9a__bodyMain {
+  gap: var(--spacer-24);
+  flex-direction: column;
+  flex: 2;
+  display: flex;
+}
+
+.page-module__hVkq9a__infoColumn {
+  gap: var(--spacer-24);
+  flex-direction: column;
+  flex: 1;
+  max-width: 350px;
+  display: flex;
+}
+
+/*# sourceMappingURL=app_%28pages%29_%5Busername%5D_%5Brepo_name%5D_pull_%5Bid%5D_page_module_css_bad6b30c._.single.css.map*/

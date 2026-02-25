@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/page.module.css"],"sourcesContent":[".page {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n}\n\n.pageBody {\n  display: flex;\n  flex-direction: row;\n  align-items: stretch;\n  gap: var(--spacer-80);\n  padding: var(--spacer-24) var(--spacer-48);\n}\n\n.bodyMain {\n  flex: 2;\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-24);\n}\n\n.infoColumn {\n  flex: 1;\n  max-width: 350px;\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-24);\n}\n"],"names":[],"mappings":"AAAA;;;;;;AAMA;;;;;;;;AAQA;;;;;;;AAOA"}}]
+}

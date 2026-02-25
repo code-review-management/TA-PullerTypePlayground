@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/_globals/styles/typography.css"],"sourcesContent":[":root {\n    --font-size-label: 0.875rem;\n    --font-size-tooltip: 0.75rem;\n    --font-size-diff-code: 0.75rem;\n}\n"],"names":[],"mappings":"AAAA"}}]
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/StateChip/StateChip.module.css"],"sourcesContent":[".stateChip {\n  height: 32px;\n\n  padding: 12px;\n  border-radius: 16px;\n  font-size: 0.875rem;\n  color: var(--background-light);\n\n  display: flex;\n  align-items: center;\n  gap: var(--spacer-4);\n}\n\n.draft {\n  background-color: var(--state-draft);\n}\n\n.open {\n  background-color: var(--state-open);\n}\n\n.closed {\n  background-color: var(--state-closed);\n}\n\n.merged {\n  background-color: var(--state-merged);\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;;;AAaA;;;;AAIA;;;;AAIA;;;;AAIA"}}]
+}

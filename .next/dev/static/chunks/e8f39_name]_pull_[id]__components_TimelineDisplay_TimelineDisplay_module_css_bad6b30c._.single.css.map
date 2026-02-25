@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/TimelineDisplay/TimelineDisplay.module.css"],"sourcesContent":[".timeline {\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-16);\n}\n\n.eventSmall {\n    display: flex;\n    gap: var(--spacer-24);\n}\n\n.timelineIcon {\n    width: 20px;\n    height: 20px;\n}"],"names":[],"mappings":"AAAA;;;;;;AAMA;;;;;AAKA"}}]
+}
