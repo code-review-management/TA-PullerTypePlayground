@@ -3,7 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
-import "./MarkdownEditor.css";
+import "./TiptapEditor.css";
 
 /**
  * Docs:
