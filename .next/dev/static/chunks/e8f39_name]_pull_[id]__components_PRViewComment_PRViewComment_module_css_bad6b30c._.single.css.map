@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/PRViewComment/PRViewComment.module.css"],"sourcesContent":[".comment {\n  display: flex;\n  gap: var(--spacer-8);\n}\n\n.tempUserIcon {\n  height: 25px;\n  width: 25px;\n  background-color: var(--state-draft);\n  border-radius: 32px;\n  position: relative;\n}\n\n.commentContent {\n  padding: var(--spacer-4);\n\n  display: flex;\n  flex-direction: column;\n  gap: var(--spacer-8);\n}\n\n.usernameAndDate {\n  display: flex;\n  align-items: center;\n  gap: var(--spacer-8);\n}\n\n.username {\n  font-weight: 500;\n  font-size: 1rem;\n}\n\n.date {\n  color: var(--text-tertiary);\n  font-size: 0.9375rem; /* 1px smaller than username. Using rem here for accessibility*/\n}\n"],"names":[],"mappings":"AAAA;;;;;AAKA;;;;;;;;AAQA;;;;;;;AAQA;;;;;;AAMA;;;;;AAKA"}}]
-}

@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/DiscussionBox/DiscussionBox.module.css"],"sourcesContent":[".discussionBox {\n  min-height: 80px;\n  width: 100%;\n  resize: vertical;\n\n  border-radius: 8px;\n  padding: var(--spacer-12) var(--spacer-16);\n  border: 1px solid var(--border-gray-secondary);\n  font-size: 1rem;\n  color: var(--text-primary);\n}\n\n.discussionBox::placeholder {\n  color: var(--text-secondary);\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;;;AAYA"}}]
-}

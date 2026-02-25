@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/[username]/[repo_name]/pull/[id]/_components/StatusFlagChip/StatusFlagChip.module.css"],"sourcesContent":[".statusFlagChip {\n  height: 32px;\n\n  padding: 12px;\n  border-radius: 12px;\n  font-size: 0.875rem;\n  color: var(--background-light);\n\n  display: flex;\n  align-items: center;\n  gap: var(--spacer-4);\n}\n\n.ready {\n  border: 1px solid var(--status-ready);\n  background-color: rgba(var(--status-ready-rgb), 0.72);\n}\n\n.waiting {\n  border: 1px solid var(--status-waiting);\n  background-color: rgba(var(--status-waiting-rgb), 0.72);\n}\n\n.conflict {\n  border: 1px solid var(--status-conflict);\n  background: rgba(var(--status-conflict-rgb), 0.72);\n}\n\n.failure {\n  border: 1px solid var(--status-failure);\n  background-color: rgba(var(--status-failure-rgb), 0.72);\n}\n"],"names":[],"mappings":"AAAA;;;;;;;;;;;AAaA;;;;;AAKA;;;;;AAKA;;;;;AAKA"}}]
-}

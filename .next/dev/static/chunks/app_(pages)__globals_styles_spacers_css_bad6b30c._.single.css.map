@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/(pages)/_globals/styles/spacers.css"],"sourcesContent":[":root {\n    --spacer-2: 2px;\n    --spacer-4: 4px;\n    --spacer-6: 6px;\n    --spacer-8: 8px;\n    --spacer-10: 10px;\n    --spacer-12: 12px;\n    --spacer-16: 16px;\n    --spacer-24: 24px;\n    --spacer-48: 48px;\n    --spacer-80: 80px;\n\n    --border-thin-width: 0.5px;\n    --border-normal-width: 1px;\n    --border-radius: 4px;\n\n    --pr-view-body-header-height: 120px;\n}\n"],"names":[],"mappings":"AAAA"}}]
-}
