@@ -3,3 +3,13 @@
   flex-direction: column;
   gap: var(--spacer-16);
 }
+
+.eventSmall {
+    display: flex;
+    gap: var(--spacer-24);
+}
+
+.timelineIcon {
+    width: 20px;
+    height: 20px;
+}
