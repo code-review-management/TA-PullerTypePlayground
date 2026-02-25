@@ -22,6 +22,7 @@ export interface ConflictInput{
 }
 
 export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput> => {
+    try{
     const mergeCandidates: ConflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
         conflictInput.repo, 
         conflictInput.targetBranch,
@@ -40,6 +41,10 @@ export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Oc
     return {
         targetShaAtMerge: mergeCandidates.targetShaAtMerge,
         mergedFiles: mergedFiles
+    }
+    } catch (error){
+        console.log("Error in get merge conflict: " + error)
+        throw (error)
     }
 }
 
