@@ -1,8 +1,11 @@
 "use client";
 
+import { ReactNode } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
+
+import styles from "./MarkdownEditor.module.css";
 import "./TiptapEditor.css";
 
 /**
@@ -13,11 +16,13 @@ import "./TiptapEditor.css";
  * TODO: Configure GitHub Flavored Markdown
  */
 export default function MarkdownEditor({
-  content,
   editable,
+  content,
+  actions,
 }: {
-  content: string;
   editable: boolean;
+  content?: string;
+  actions?: ReactNode;
 }) {
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
@@ -25,7 +30,13 @@ export default function MarkdownEditor({
     content,
     contentType: "markdown",
     immediatelyRender: false,
+    autofocus: "end",
   });
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div className={`${styles.editor} ${editable && styles.editable}`}>
+      <EditorContent editor={editor} />
+      {editable && actions && <div className={styles.actions}>{actions}</div>}
+    </div>
+  );
 }

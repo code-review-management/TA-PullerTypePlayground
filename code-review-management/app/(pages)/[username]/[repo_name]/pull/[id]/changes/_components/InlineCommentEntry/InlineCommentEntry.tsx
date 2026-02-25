@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentEntry.module.css";
@@ -18,12 +19,14 @@ export default function InlineCommentEntry({
   created,
   body,
   editable,
+  actions,
 }: {
   avatar: string;
   username: string;
   created: string;
-  body: string;
+  body?: string;
   editable: boolean;
+  actions: ReactNode;
 }) {
   return (
     <div className={styles.comment}>
@@ -38,7 +41,7 @@ export default function InlineCommentEntry({
             {new Date(created).toDateString()}
           </span>
         </div>
-        <MarkdownEditor content={body} editable={editable} />
+        <MarkdownEditor content={body} editable={editable} actions={actions} />
       </div>
     </div>
   );
