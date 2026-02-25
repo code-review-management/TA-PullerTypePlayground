@@ -7,13 +7,13 @@ import { PullRequest } from "@/types/github.types";
  * 
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
- * @param id: Pull request number.
+ * @param pullNumber: Pull request number.
  * @returns: TanStack query result containing the pull request data.
  */
-export function usePullQuery(owner: string, repo: string, id: string) {
+export function usePullQuery(owner: string, repo: string, pullNumber: string) {
   return useQuery({
-    queryKey: ["pull", owner, repo, id],
+    queryKey: ["pull", owner, repo, pullNumber],
     queryFn: async (): Promise<PullRequest> =>
-      fetcher(`/api/v1/${owner}/${repo}/pulls/${id}`),
+      fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}`),
   });
 }

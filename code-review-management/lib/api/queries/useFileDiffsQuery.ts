@@ -6,13 +6,13 @@ import { fetcher } from "@/lib/api/utils/fetcher";
  * 
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
- * @param id: Pull request number.
+ * @param pullNumber: Pull request number.
  * @returns: TanStack query result containing the diff-string.
  */
-export function useFileDiffsQuery(owner: string, repo: string, id: string) {
+export function useFileDiffsQuery(owner: string, repo: string, pullNumber: string) {
   return useQuery({
-    queryKey: ["file-diffs", owner, repo, id],
+    queryKey: ["file-diffs", owner, repo, pullNumber],
     queryFn: async (): Promise<string> =>
-      fetcher(`/api/v1/${owner}/${repo}/pulls/${id}/file-diffs`),
+      fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/file-diffs`),
   });
 }
