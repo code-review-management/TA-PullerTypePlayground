@@ -2,7 +2,7 @@
     border: var(--border-normal-width) solid var(--border-gray);
     border-radius: var(--border-radius);
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--box-shadow-soft);
 }
 
 .comments {
