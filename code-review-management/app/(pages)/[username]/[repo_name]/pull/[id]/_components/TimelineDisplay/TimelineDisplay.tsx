@@ -6,7 +6,6 @@ import { EventType, ICONS } from "./constants";
 import Image from "next/image";
 
 export default function TimelineDisplay() {
-  
   return (
     <div className={styles.timeline}>
       {MOCK_TIMELINE.toReversed().map((event, idx) => (
@@ -24,7 +23,16 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
     const abbr_sha = event.sha?.slice(0, 7);
     return (
       <TimelineEventSmall event_type={event.event}>
-        commit {abbr_sha}: {event.message}
+        <div className={styles.committedLine}>
+          <p className={styles.commitLineText}>
+            <span className={styles.commitSha}>#{abbr_sha}</span>{" "}
+            {event.message}
+          </p>
+          {/** TODO: Replace with user icon component */}
+          <div className={styles.tempUserIcon}>
+            <Image src="/mock/octocat.png" alt="@octocat" fill />
+          </div>{" "}
+        </div>
       </TimelineEventSmall>
     );
   } else if (event.event === "renamed") {
@@ -79,10 +87,16 @@ function TimelineEventSmall({
   event_type: EventType;
   children: ReactNode;
 }) {
-
   return (
     <div className={styles.eventSmall}>
-      <div><Image src={`/icons/timeline/${ICONS[event_type]}.svg`} alt="timeline_commit" height={20} width={20}/></div>
+      <div>
+        <Image
+          src={`/icons/timeline/${ICONS[event_type]}.svg`}
+          alt="timeline_commit"
+          height={20}
+          width={20}
+        />
+      </div>
       {children}
     </div>
   );

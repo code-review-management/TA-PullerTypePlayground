@@ -5,11 +5,33 @@
 }
 
 .eventSmall {
-    display: flex;
-    gap: var(--spacer-24);
+  display: flex;
+  gap: var(--spacer-24);
 }
 
 .timelineIcon {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.committedLine {
+  display: flex;
+  gap: var(--spacer-12);
+}
+
+.commitLineText {
+  color: var(--text-tertiary);
+}
+
+.commitSha {
+  color: var(--text-accent);
+  font-weight: 700;
+}
+
+.tempUserIcon {
+  height: 18px;
+  width: 18px;
+  background-color: var(--state-draft);
+  border-radius: 32px;
+  position: relative;
 }
