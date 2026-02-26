@@ -5,28 +5,68 @@ import { ReactNode } from "react";
 import { EventType, ICONS } from "./constants";
 import Image from "next/image";
 import Link from "next/link";
+import PRViewComment from "../PRViewComment/PRViewComment";
 
 export default function TimelineDisplay() {
+  const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(MOCK_TIMELINE) || [];
+
   return (
     <div className={styles.timeline}>
-      {MOCK_TIMELINE.toReversed().map((event, idx) => (
-        <TimelineEvent key={event.node_id} event_idx={idx} />
+      {afterCloseTimeline.map((event: eventInterface) => (
+        <TimelineEvent key={event.node_id} event={event} />
       ))}
-      <div className={styles.timelineLineBackground}/>
+      <div className={styles.beforeCloseTimeline}>
+        {beforeCloseTimeline.map((event: eventInterface) => (
+          <TimelineEvent key={event.node_id} event={event} />
+        ))}
+        <div className={styles.timelineLineBackground} />
+      </div>
     </div>
   );
 }
 
+interface eventInterface {
+  event: string;
+  node_id: string;
+  sha?: string;
+  message?: string;
+  actor?: { login: string };
+  rename?: {
+    from: string;
+    to: string;
+  };
+  review_requester?: { login: string };
+  requested_reviewer?: { login: string };
+  body?: string;
+  user?: { login: string };
+  submitted_at?: string;
+}
+
+function processTimeline(timeline: eventInterface[]): {
+  beforeCloseTimeline: eventInterface[];
+  afterCloseTimeline: eventInterface[];
+} {
+  const processedTimeline = timeline.toReversed();
+  const closedIdx = processedTimeline.findIndex(
+    (event) => event.event === "closed",
+  );
+  if (closedIdx !== -1) {
+    return {
+      beforeCloseTimeline: processedTimeline.slice(closedIdx, timeline.length),
+      afterCloseTimeline: processedTimeline.slice(0, closedIdx),
+    };
+  } else {
+    return { beforeCloseTimeline: processedTimeline, afterCloseTimeline: [] };
+  }
+}
+
 /**
  * TODO: Separate different event type components this code is very ugly lol
- * TODO: Use schemas for different event types instead of hacky idx fix
+ * TODO: Use schemas for different event types instead of this YOLOed interface
  * TODO: Get info not provided by timeline endpoint (commit pfps, linked issue, branch name)
- * @param event_idx IDX of the event to be displayed from the timeline. Used to avoid typing problems for now (temporary)
+ * @param event Object representing the event from the timeline.
  */
-function TimelineEvent({ event_idx }: { event_idx: number }) {
-  const timeline = MOCK_TIMELINE.toReversed();
-  const event = timeline[event_idx];
-
+function TimelineEvent({ event }: { event: eventInterface }) {
   if (event.event === "committed") {
     const abbr_sha = event.sha?.slice(0, 7);
     return (
@@ -63,10 +103,19 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
       </TimelineEventSmall>
     );
   } else if (event.event === "reviewed") {
+    if (event.body === null) {
+      return (
+        <div>
+          reviewed by {event.user?.login}: {event.body}
+        </div>
+      );
+    }
     return (
-      <div>
-        reviewed by {event.user?.login}: {event.body}
-      </div>
+      <PRViewComment
+        username={event.user?.login || ""}
+        createdAt={event.submitted_at || ""}
+        description={event.body || ""}
+      />
     );
   } else if (event.event === "review_dismissed") {
     return (
@@ -93,8 +142,8 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
     return (
       <TimelineEventSmall event_type={event.event}>
         <p>
-          <UserLink username={event.actor?.login || ""} />{" "}
-          marked this pull request as ready for review
+          <UserLink username={event.actor?.login || ""} /> marked this pull
+          request as ready for review
         </p>
       </TimelineEventSmall>
     );
@@ -102,8 +151,8 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
     return (
       <TimelineEventSmall event_type={event.event}>
         <p>
-          <UserLink username={event.actor?.login || ""} />{" "}
-          connected this pull request to issue....??
+          <UserLink username={event.actor?.login || ""} /> connected this pull
+          request to issue....??
         </p>
       </TimelineEventSmall>
     );
@@ -111,8 +160,7 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
     return (
       <TimelineEventSmall event_type={event.event}>
         <p>
-          <UserLink username={event.actor?.login || ""} />{" "}
-          deleted branch.....
+          <UserLink username={event.actor?.login || ""} /> deleted branch.....
         </p>
       </TimelineEventSmall>
     );
@@ -128,7 +176,11 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
 }
 
 function UserLink({ username }: { username: string }) {
-  return <Link href={`https://github.com/${username}`} className={styles.userLink}>{username}</Link>;
+  return (
+    <Link href={`https://github.com/${username}`} className={styles.userLink}>
+      {username}
+    </Link>
+  );
 }
 
 function TimelineEventSmall({
