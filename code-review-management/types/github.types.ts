@@ -3,6 +3,7 @@ import * as z from "zod";
 export type User = z.infer<typeof UserSchema>;
 export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
+export type Branch = z.infer<typeof BranchSchema>;
 export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
@@ -21,6 +22,14 @@ export const RepoSchema = z.object({
   owner: UserSchema,
   html_url: z.string(),
   description: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  pushed_at: z.string(),
+  stargazers_count: z.number(),
+  watchers_count: z.number(),
+  open_issues_count: z.number(),
+  has_pull_requests: z.boolean(),
+  visibility: z.string(),
 });
 
 export const IssueSchema = z.object({
@@ -35,6 +44,14 @@ export const IssueSchema = z.object({
   updated_at: z.string(),
 });
 
+export const BranchSchema = z.object({
+  label: z.string(),
+  ref: z.string(),
+  sha: z.string(),
+  user: UserSchema,
+  repo: RepoSchema,
+});
+
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
@@ -44,6 +61,30 @@ export const PullRequestSchema = z.object({
   locked: z.boolean(),
   title: z.string(),
   user: UserSchema.nullable(),
+  body: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  closed_at: z.string().nullable(),
+  merged_at: z.string().nullable(),
+  merge_commit_sha: z.string().nullable(),
+  assignees: z.array(UserSchema).nullable(),
+  requested_reviewers: z.array(UserSchema).nullable(),
+  draft: z.boolean(),
+  head: BranchSchema,
+  base: BranchSchema,
+  author_association: z.string(),
+  assignee: UserSchema.nullable(),
+  merged: z.boolean(),
+  mergeable: z.boolean(),
+  rebaseable: z.boolean(),
+  mergeable_state: z.string(),
+  merged_by: UserSchema.nullable(),
+  comments: z.number(),
+  review_comments: z.number(),
+  commits: z.number(),
+  additions: z.number(),
+  deletions: z.number(),
+  changed_files: z.number(),
 });
 
 export const FileDiffSchema = z.object({
