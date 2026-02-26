@@ -1,25 +1,24 @@
 /*
 /api/v1/{owner}/{repo}/pulls/{pull_number}/comments
 
+Method: GET
+
 *NOT TO BE POLLED*
 
 Polling can be enabled dependent on the status of the PR or comment access tag.
 */
 
 import { CommentSchema, Comment } from "@/types/github.types";
-import { CommentCreateRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
 
-export async function POST(
+export async function get(
   req: Request,
   { params }: { params: { owner: string; repo: string; pull_number: number } },
 ) {
   const { owner, repo, pull_number } = await params;
-  const reqBody = await req.json();
-  const reqArgs = CommentCreateRequestSchema.safeParse(reqBody);
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -29,43 +28,28 @@ export async function POST(
   }
 
   // Validate required parameters
-  if (!owner || !repo || !pull_number || !reqArgs.success) {
+  if (!owner || !repo || !pull_number) {
     return Response.json(
-      { error: "Issue with required parameters" },
+      { error: "Missing required parameters" },
       { status: 400 },
     );
   }
 
-  const {
-    body,
-    commit_id,
-    path,
-    side,
-    line,
-    start_line,
-    start_side,
-    in_reply_to,
-  } = reqArgs.data;
-
   const octokit: Octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } = await octokit.rest.pulls.createReviewComment({
+    const { data: contents } = await octokit.rest.pulls.listReviewComments({
       owner: owner,
       repo: repo,
       pull_number: pull_number,
-      body: body,
-      commit_id: commit_id,
-      path: path,
-      side: side,
-      line: line,
-      start_line: start_line,
-      start_side: start_side,
-      in_reply_to: in_reply_to,
+      sort: "created",
+      direction: "asc",
     });
 
     // Filter response
-    const filteredResponse: Comment = CommentSchema.parse(contents);
+    const filteredResponse: Comment[] = contents.map((item) =>
+      CommentSchema.parse(item),
+    );
 
     return new Response(JSON.stringify(filteredResponse, null, 2), {
       status: 200,
