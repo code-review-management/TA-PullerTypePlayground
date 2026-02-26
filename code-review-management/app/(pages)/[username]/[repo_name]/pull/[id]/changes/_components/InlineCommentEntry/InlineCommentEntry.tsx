@@ -1,11 +1,11 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentEntry.module.css";
 
 /**
  * Used to render published and draft comment entries.
- * 
+ *
  * @param avatar: The link/path to the avatar picture of the comment author.
  * @param username: Username of the comment author.
  * @param created: Date of comment creation.
@@ -29,8 +29,6 @@ export default function InlineCommentEntry({
   content?: string;
   actions?: ReactNode;
 }) {
-  const [editable, setEditable] = useState(editableDefault);
-
   return (
     <div className={styles.comment}>
       <div className={styles.avatar}>
@@ -44,7 +42,11 @@ export default function InlineCommentEntry({
             {new Date(created).toDateString()}
           </span>
         </div>
-        <MarkdownEditor editable={editable} content={content} actions={actions} />
+        <MarkdownEditor
+          editableDefault={editableDefault}
+          content={content}
+          actions={actions}
+        />
       </div>
     </div>
   );
