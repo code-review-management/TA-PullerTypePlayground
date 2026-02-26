@@ -8,3 +8,7 @@
 .isHighlighting {
     user-select: none;
 }
+
+.collapsed {
+    display: none;
+}

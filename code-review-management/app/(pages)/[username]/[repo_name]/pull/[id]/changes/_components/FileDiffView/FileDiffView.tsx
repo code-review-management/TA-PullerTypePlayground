@@ -99,27 +99,25 @@ export default function FileDiffView({
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
       />
-      <div>
-        {isExpanded && (
-          <Diff
-            viewType={viewType}
-            diffType={diffType}
-            hunks={hunks}
-            tokens={tokens}
-            widgets={widgets}
-            renderGutter={renderGutter}
-            gutterEvents={highlightEvents}
-          >
-            {(hunks) =>
-              hunks.map((hunk) => (
-                <Fragment key={hunk.content}>
-                  <Decoration>{hunk.content}</Decoration>
-                  <Hunk hunk={hunk} />
-                </Fragment>
-              ))
-            }
-          </Diff>
-        )}
+      <div className={!isExpanded ? styles.collapsed : ""}>
+        <Diff
+          viewType={viewType}
+          diffType={diffType}
+          hunks={hunks}
+          tokens={tokens}
+          widgets={widgets}
+          renderGutter={renderGutter}
+          gutterEvents={highlightEvents}
+        >
+          {(hunks) =>
+            hunks.map((hunk) => (
+              <Fragment key={hunk.content}>
+                <Decoration>{hunk.content}</Decoration>
+                <Hunk hunk={hunk} />
+              </Fragment>
+            ))
+          }
+        </Diff>
       </div>
     </div>
   );
