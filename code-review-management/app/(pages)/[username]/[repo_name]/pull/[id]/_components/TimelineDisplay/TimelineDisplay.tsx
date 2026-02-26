@@ -20,6 +20,7 @@ export default function TimelineDisplay() {
 /**
  * TODO: Separate different event type components this code is very ugly lol
  * TODO: Use schemas for different event types instead of hacky idx fix
+ * TODO: Get info not provided by timeline endpoint (commit pfps, linked issue, branch name)
  * @param event_idx IDX of the event to be displayed from the timeline. Used to avoid typing problems for now (temporary)
  */
 function TimelineEvent({ event_idx }: { event_idx: number }) {

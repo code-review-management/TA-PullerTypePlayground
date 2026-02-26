@@ -17,6 +17,7 @@
 
 .eventSmall {
   display: flex;
+  align-items: center;
   gap: var(--spacer-24);
   color: var(--text-secondary);
 }
