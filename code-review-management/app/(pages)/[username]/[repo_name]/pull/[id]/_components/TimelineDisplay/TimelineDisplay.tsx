@@ -12,10 +12,16 @@ export default function TimelineDisplay() {
       {MOCK_TIMELINE.toReversed().map((event, idx) => (
         <TimelineEvent key={event.node_id} event_idx={idx} />
       ))}
+      <div className={styles.timelineLineBackground}/>
     </div>
   );
 }
 
+/**
+ * TODO: Separate different event type components this code is very ugly lol
+ * TODO: Use schemas for different event types instead of hacky idx fix
+ * @param event_idx IDX of the event to be displayed from the timeline. Used to avoid typing problems for now (temporary)
+ */
 function TimelineEvent({ event_idx }: { event_idx: number }) {
   const timeline = MOCK_TIMELINE.toReversed();
   const event = timeline[event_idx];
@@ -133,7 +139,7 @@ function TimelineEventSmall({
 }) {
   return (
     <div className={styles.eventSmall}>
-      <div>
+      <div className={styles.timelineIcon}>
         <Image
           src={`/icons/timeline/${ICONS[event_type]}.svg`}
           alt="timeline_commit"

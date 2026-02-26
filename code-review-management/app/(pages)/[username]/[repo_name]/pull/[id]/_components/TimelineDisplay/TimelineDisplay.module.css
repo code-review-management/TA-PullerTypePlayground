@@ -2,6 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacer-16);
+  position: relative;
+}
+
+.timelineLineBackground {
+  position: absolute;
+  margin: 9.5px;
+  border-left: 1px solid var(--border-gray-secondary);
+  z-index: -1;
+  top: 0;
+  height: 100%;
+  width: 100%;
 }
 
 .eventSmall {
@@ -11,18 +22,21 @@
 }
 
 .userLink {
-    color: var(--text-primary);
-    text-decoration: none;
-    font-weight: 500;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .userLink:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .timelineIcon {
-  width: 20px;
-  height: 20px;
+  padding: var(--spacer-4) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-light);
 }
 
 .committedLine {
