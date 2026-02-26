@@ -4,6 +4,7 @@ import MOCK_TIMELINE from "@/mocks/timeline.json";
 import { ReactNode } from "react";
 import { EventType, ICONS } from "./constants";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function TimelineDisplay() {
   return (
@@ -38,14 +39,20 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
   } else if (event.event === "renamed") {
     return (
       <TimelineEventSmall event_type={event.event}>
-        {event.actor?.login} renamed to {event.rename?.to}
+        <p>
+          <UserLink username={event.actor?.login || ""} /> renamed the pull
+          request to {event.rename?.to}
+        </p>
       </TimelineEventSmall>
     );
   } else if (event.event === "review_requested") {
     return (
       <TimelineEventSmall event_type={event.event}>
-        {event.review_requester?.login} requested review from{" "}
-        {event.requested_reviewer?.login}
+        <p>
+          <UserLink username={event.review_requester?.login || ""} /> requested
+          a review from{" "}
+          <UserLink username={event.requested_reviewer?.login || ""} />
+        </p>
       </TimelineEventSmall>
     );
   } else if (event.event === "reviewed") {
@@ -57,13 +64,17 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
   } else if (event.event === "review_dismissed") {
     return (
       <TimelineEventSmall event_type={event.event}>
-        {event.actor?.login} dismissed a review
+        <p>
+          <UserLink username={event.actor?.login || ""} /> dismissed a review
+        </p>
       </TimelineEventSmall>
     );
   } else if (event.event === "merged") {
     return (
       <TimelineEventSmall event_type={event.event}>
-        {event.actor?.login} merged the PR
+        <p>
+          <UserLink username={event.actor?.login || ""} /> merged commit
+        </p>
       </TimelineEventSmall>
     );
   } else if (event.event === "closed") {
@@ -71,13 +82,46 @@ function TimelineEvent({ event_idx }: { event_idx: number }) {
     {
       /** TODO: make custom divider */
     }
+  } else if (event.event === "ready_for_review") {
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        <p>
+          <UserLink username={event.actor?.login || ""} />{" "}
+          marked this pull request as ready for review
+        </p>
+      </TimelineEventSmall>
+    );
+  } else if (event.event === "connected") {
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        <p>
+          <UserLink username={event.actor?.login || ""} />{" "}
+          connected this pull request to issue....??
+        </p>
+      </TimelineEventSmall>
+    );
+  } else if (event.event === "head_ref_deleted") {
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        <p>
+          <UserLink username={event.actor?.login || ""} />{" "}
+          deleted branch.....
+        </p>
+      </TimelineEventSmall>
+    );
   } else {
     return (
       <TimelineEventSmall event_type={event.event as EventType}>
-        {event.actor?.login} {event.event}
+        <p>
+          {event.actor?.login} {event.event}
+        </p>
       </TimelineEventSmall>
     );
   }
+}
+
+function UserLink({ username }: { username: string }) {
+  return <Link href={`https://github.com/${username}`} className={styles.userLink}>{username}</Link>;
 }
 
 function TimelineEventSmall({

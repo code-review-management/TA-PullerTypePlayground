@@ -7,6 +7,17 @@
 .eventSmall {
   display: flex;
   gap: var(--spacer-24);
+  color: var(--text-secondary);
+}
+
+.userLink {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.userLink:hover {
+    text-decoration: underline;
 }
 
 .timelineIcon {
