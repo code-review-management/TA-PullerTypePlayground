@@ -34,7 +34,7 @@ export default function MarkdownEditor({
   });
 
   return (
-    <div className={`${styles.editor} ${editable && styles.editable}`}>
+    <div className={editable ? styles.editable : ""}>
       <EditorContent editor={editor} />
       {editable && actions && <div className={styles.actions}>{actions}</div>}
     </div>
