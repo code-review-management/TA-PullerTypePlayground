@@ -24,7 +24,7 @@ export default function InlineDraftThread({
           avatar={"/mock/octocat.png"}
           username="octocat"
           created={draft.created}
-          editable={true}
+          editableDef={true}
           actions={<DraftCommentActions />}
         />
       </div>

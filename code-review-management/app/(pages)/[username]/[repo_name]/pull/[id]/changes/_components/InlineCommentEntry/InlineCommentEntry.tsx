@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentEntry.module.css";
@@ -17,17 +17,19 @@ export default function InlineCommentEntry({
   avatar,
   username,
   created,
-  editable,
+  editableDef,
   content,
   actions,
 }: {
   avatar: string;
   username: string;
   created: string;
-  editable: boolean;
+  editableDef: boolean;
   content?: string;
   actions?: ReactNode;
 }) {
+  const [editable, setEditable] = useState(editableDef);
+
   return (
     <div className={styles.comment}>
       <div className={styles.avatar}>
