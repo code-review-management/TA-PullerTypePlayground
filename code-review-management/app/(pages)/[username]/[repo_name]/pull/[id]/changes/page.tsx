@@ -3,9 +3,9 @@
 import { useParams } from "next/navigation";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { PullParams } from "@/types/routing.types";
-import { DraftThreadsContext } from "./_contexts/DraftThreadsContext";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
+import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import styles from "./page.module.css";
 

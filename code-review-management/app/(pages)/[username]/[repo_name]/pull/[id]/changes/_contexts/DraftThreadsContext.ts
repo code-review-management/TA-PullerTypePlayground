@@ -5,7 +5,7 @@ import { DraftThreads } from "../_hooks/useDraftThreads";
  * Docs:
  * 1. https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
  */
-export const DraftThreadsContext = createContext<{
+const DraftThreadsContext = createContext<{
   draftThreads: DraftThreads;
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 } | null>(null);
@@ -19,3 +19,5 @@ export const useDraftThreadsContext = () => {
   }
   return context;
 };
+
+export default DraftThreadsContext;
