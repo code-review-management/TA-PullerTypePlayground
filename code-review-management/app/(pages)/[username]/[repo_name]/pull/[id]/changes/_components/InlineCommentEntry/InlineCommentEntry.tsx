@@ -41,7 +41,7 @@ export default function InlineCommentEntry({
             {new Date(created).toDateString()}
           </span>
         </div>
-        <MarkdownEditor content={body} editable={editable} actions={actions} />
+        <MarkdownEditor editable={editable} content={body} actions={actions} />
       </div>
     </div>
   );
