@@ -9,24 +9,24 @@ import styles from "./InlineCommentEntry.module.css";
  * @param avatar: The link/path to the avatar picture of the comment author.
  * @param username: Username of the comment author.
  * @param created: Date of comment creation.
- * @param body: Contents of the comment.
  * @param editable: Whether the editor should be editable by default (e.g.,
  *                  false for published comments and true for draft comments)
+ * @param body: Contents of the comment.
  */
 export default function InlineCommentEntry({
   avatar,
   username,
   created,
-  body,
   editable,
+  body,
   actions,
 }: {
   avatar: string;
   username: string;
   created: string;
-  body?: string;
   editable: boolean;
-  actions: ReactNode;
+  body?: string;
+  actions?: ReactNode;
 }) {
   return (
     <div className={styles.comment}>
