@@ -11,21 +11,21 @@ import styles from "./InlineCommentEntry.module.css";
  * @param created: Date of comment creation.
  * @param editable: Whether the editor should be editable by default (e.g.,
  *                  false for published comments and true for draft comments)
- * @param body: Contents of the comment.
+ * @param content: Contents of the comment.
  */
 export default function InlineCommentEntry({
   avatar,
   username,
   created,
   editable,
-  body,
+  content,
   actions,
 }: {
   avatar: string;
   username: string;
   created: string;
   editable: boolean;
-  body?: string;
+  content?: string;
   actions?: ReactNode;
 }) {
   return (
@@ -41,7 +41,7 @@ export default function InlineCommentEntry({
             {new Date(created).toDateString()}
           </span>
         </div>
-        <MarkdownEditor editable={editable} content={body} actions={actions} />
+        <MarkdownEditor editable={editable} content={content} actions={actions} />
       </div>
     </div>
   );

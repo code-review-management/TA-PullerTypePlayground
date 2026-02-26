@@ -20,7 +20,7 @@ export default function InlinePublishedThread({ thread }: { thread: MockPublishe
             username={comment.user.login}
             created={comment.created_at}
             editable={false}
-            body={comment.body}
+            content={comment.body}
           />
         ))}
       </div>
