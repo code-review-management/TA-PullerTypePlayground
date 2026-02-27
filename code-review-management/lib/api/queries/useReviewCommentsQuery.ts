@@ -17,7 +17,7 @@ export function useReviewCommentsQuery(
 ) {
   return useQuery({
     queryKey: ["review-comments", owner, repo, pullNumber],
-    queryFn: async (): Promise<Comment> =>
+    queryFn: async (): Promise<Comment[]> =>
       fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/comments`),
   });
 }
