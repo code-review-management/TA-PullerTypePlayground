@@ -3,6 +3,19 @@ import * as z from "zod";
 export type GitHubContent = z.infer<typeof GitHubContentSchema>;
 export type FileChange = z.infer<typeof FileChangeSchema>;
 export type CompareResponse = z.infer<typeof CompareResponseSchema>;
+export type MergeFileOutput = z.infer<typeof MergeFileOutputSchema>;
+export type MergeOutput = z.infer<typeof MergeOutputSchema>;
+
+export const MergeFileOutputSchema = z.object({
+    filename: z.string(),
+    hasConflict: z.boolean(),
+    contents: z.string(),
+});
+
+export const MergeOutputSchema = z.object({
+    targetShaAtMerge: z.string(),
+    mergedFiles: z.array(MergeFileOutputSchema),
+});
 
 export const GitHubContentSchema = z.object({
   type: z.string(),

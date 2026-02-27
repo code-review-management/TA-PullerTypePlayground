@@ -1,0 +1,50 @@
+.container {
+    min-height: 600px;
+}
+
+.currentStrong {
+    background: #158c3b8e;
+}
+
+.current {
+    background: #158c3b35;
+}
+
+.incoming {
+    background: #1b4f9d35;
+}
+
+.incomingStrong {
+    background: #1b4f9d8e;
+}
+
+.viewZone {
+    padding: 8px;
+}
+
+.conflictWidget {
+    display: flex !important;
+    width: 400px;
+    font-size: 12px;
+    gap: 10px;
+}
+
+.conflictWidgetButton {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.conflictWidgetButton:hover {
+    color: #3346d6;
+}
+
+@media (prefers-color-scheme: dark) {
+    .conflictWidgetButton:hover {
+        color: #949cd1;
+    }
+}
+
+.buttonDivider {
+    cursor: default;
+    user-select: none;
+}

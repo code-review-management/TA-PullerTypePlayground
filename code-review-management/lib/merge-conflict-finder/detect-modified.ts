@@ -21,7 +21,7 @@ export const findConflictingFiles = async (
                 base: targetBranch,
                 head: featureBranch,
         });
-        const validatedFeatureReponse: CompareResponse = CompareResponseSchema.parse(featureResponse)
+        const validatedFeatureReponse: CompareResponse = CompareResponseSchema.parse(featureResponse.data)
 
         const ancestorSha: string = validatedFeatureReponse.merge_base_commit.sha;
         const targetSha: string = validatedFeatureReponse.base_commit.sha;
@@ -33,7 +33,7 @@ export const findConflictingFiles = async (
                 base: ancestorSha,
                 head: featureBranch,
         });
-        const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse)
+        const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse.data)
         
         const targetFiles = validatedTargetReponse.files.map(f => f.filename);
         const overlappingFiles = featureFiles.filter(file => targetFiles.includes(file));
