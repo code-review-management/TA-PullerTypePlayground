@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { poster } from "../utils/poster";
-import { Comment } from "@/types/github.types";
+import { CommentCreateRequest } from "@/types/request.types";
 
 export function useCreateReviewCommentMutation(
   owner: string,
@@ -8,7 +8,7 @@ export function useCreateReviewCommentMutation(
   pullNumber: string,
 ) {
   return useMutation({
-    mutationFn: async (comment: Comment) =>
+    mutationFn: async (comment: CommentCreateRequest) =>
       poster(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/comments`,
         JSON.stringify(comment),
