@@ -30,8 +30,8 @@ export default function MarkdownEditor({
 
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
-    editable,
-    content: editorContent,
+    editable: defaultEditable,
+    content: defaultContent,
     contentType: "markdown",
     immediatelyRender: false,
     autofocus: "end",
