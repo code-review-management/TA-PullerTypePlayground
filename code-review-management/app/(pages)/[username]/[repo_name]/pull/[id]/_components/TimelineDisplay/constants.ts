@@ -1,6 +1,7 @@
 export const event_types = [
   "assigned",
   "committed",
+  "closed",
   "head_ref_deleted",
   "merged",
   "ready_for_review",
@@ -12,20 +13,10 @@ export const event_types = [
 
 export type EventType = typeof event_types[number];
 
-// export type EventType =
-//   | "assigned"
-//   | "committed"
-//   | "head_ref_deleted"
-//   | "merged"
-//   | "ready_for_review"
-//   | "renamed"
-//   | "review_dismissed"
-//   | "review_requested"
-//   | "reviewed";
-
 export const ICONS: Record<EventType, string> = {
   assigned: "user",
   committed: "commit",
+  closed: "",
   head_ref_deleted: "branch",
   merged: "merge",
   ready_for_review: "eye",
