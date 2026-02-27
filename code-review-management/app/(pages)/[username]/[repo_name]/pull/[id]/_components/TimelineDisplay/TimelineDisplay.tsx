@@ -8,7 +8,8 @@ import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
 
 export default function TimelineDisplay() {
-  const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(MOCK_TIMELINE) || [];
+  const { beforeCloseTimeline, afterCloseTimeline } =
+    processTimeline(MOCK_TIMELINE as eventInterface[]) || [];
 
   return (
     <div className={styles.timeline}>
@@ -37,6 +38,7 @@ interface eventInterface {
   };
   review_requester?: { login: string };
   requested_reviewer?: { login: string };
+  assignee?: { login: string };
   body?: string;
   user?: { login: string };
   submitted_at?: string;
@@ -161,6 +163,26 @@ function TimelineEvent({ event }: { event: eventInterface }) {
       <TimelineEventSmall event_type={event.event}>
         <p>
           <UserLink username={event.actor?.login || ""} /> deleted branch.....
+        </p>
+      </TimelineEventSmall>
+    );
+  } else if (event.event === "assigned") {
+    const assigner = event.actor?.login || "";
+    const assignee = event.assignee?.login || "";
+    const self_assign = assigner === assignee;
+    return (
+      <TimelineEventSmall event_type={event.event}>
+        <p>
+          {self_assign ? (
+            <>
+              <UserLink username={assigner} /> self-assigned this
+            </>
+          ) : (
+            <>
+              <UserLink username={assigner} /> assigned this to{" "}
+              <UserLink username={assignee} />
+            </>
+          )}
         </p>
       </TimelineEventSmall>
     );

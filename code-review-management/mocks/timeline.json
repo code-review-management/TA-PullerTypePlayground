@@ -1,29 +1,29 @@
 [
     {
-        "sha": "b694018443132d6e1f7283daa390996f674fd88a",
-        "node_id": "C_kwDOQ-jhCtoAKGI2OTQwMTg0NDMxMzJkNmUxZjcyODNkYWEzOTA5OTZmNjc0ZmQ4OGE",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/b694018443132d6e1f7283daa390996f674fd88a",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/b694018443132d6e1f7283daa390996f674fd88a",
+        "sha": "b0a798274c6f4ffce48b4b14cc0fa783955674c5",
+        "node_id": "C_kwDOQ-jhCtoAKGIwYTc5ODI3NGM2ZjRmZmNlNDhiNGIxNGNjMGZhNzgzOTU1Njc0YzU",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/b0a798274c6f4ffce48b4b14cc0fa783955674c5",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/b0a798274c6f4ffce48b4b14cc0fa783955674c5",
         "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T08:31:11Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-24T20:17:49Z"
         },
         "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T08:31:11Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-24T20:17:49Z"
         },
         "tree": {
-            "sha": "5c79da45f6123ea3e9dd3730c9e48de24888c064",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/5c79da45f6123ea3e9dd3730c9e48de24888c064"
+            "sha": "83ead0d99746cd8154eaa02f88f44d280bd6f57d",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/83ead0d99746cd8154eaa02f88f44d280bd6f57d"
         },
-        "message": "init: Set up PR view skeleton",
+        "message": "feat: Add get PR comments endpoint",
         "parents": [
             {
-                "sha": "844558b72427ecbd7063b4baadf255694293d3cf",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/844558b72427ecbd7063b4baadf255694293d3cf",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/844558b72427ecbd7063b4baadf255694293d3cf"
+                "sha": "7e789fecc3f5e453fb9c35a5424377efcd20a9a5",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/7e789fecc3f5e453fb9c35a5424377efcd20a9a5",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/7e789fecc3f5e453fb9c35a5424377efcd20a9a5"
             }
         ],
         "verification": {
@@ -36,30 +36,30 @@
         "event": "committed"
     },
     {
-        "sha": "1964dd46e94431a5a1296d94b40bbd047303b9be",
-        "node_id": "C_kwDOQ-jhCtoAKDE5NjRkZDQ2ZTk0NDMxYTVhMTI5NmQ5NGI0MGJiZDA0NzMwM2I5YmU",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/1964dd46e94431a5a1296d94b40bbd047303b9be",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/1964dd46e94431a5a1296d94b40bbd047303b9be",
+        "sha": "4825dca2823fe83dacdee70c6c595ce9ba4cb2a5",
+        "node_id": "C_kwDOQ-jhCtoAKDQ4MjVkY2EyODIzZmU4M2RhY2RlZTcwYzZjNTk1Y2U5YmE0Y2IyYTU",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4825dca2823fe83dacdee70c6c595ce9ba4cb2a5",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4825dca2823fe83dacdee70c6c595ce9ba4cb2a5",
         "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T08:56:34Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-24T20:29:22Z"
         },
         "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T08:56:34Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-24T20:29:22Z"
         },
         "tree": {
-            "sha": "69d4bdda24944f280da78fbc82181364f18a9e7c",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/69d4bdda24944f280da78fbc82181364f18a9e7c"
+            "sha": "c7e19d3ea2cca8beb06cdfe3bd98df52b4f08e2a",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/c7e19d3ea2cca8beb06cdfe3bd98df52b4f08e2a"
         },
-        "message": "feat(pr-view): Implement body header with mock data",
+        "message": "fix: Remove deprecated attribute",
         "parents": [
             {
-                "sha": "b694018443132d6e1f7283daa390996f674fd88a",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/b694018443132d6e1f7283daa390996f674fd88a",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/b694018443132d6e1f7283daa390996f674fd88a"
+                "sha": "b0a798274c6f4ffce48b4b14cc0fa783955674c5",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/b0a798274c6f4ffce48b4b14cc0fa783955674c5",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/b0a798274c6f4ffce48b4b14cc0fa783955674c5"
             }
         ],
         "verification": {
@@ -72,26 +72,62 @@
         "event": "committed"
     },
     {
-        "id": 22818556455,
-        "node_id": "COE_lADOQ-jhCs7rPNUjzwAAAAVQF4on",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22818556455",
+        "sha": "4cea29bc36e1473964e0d7765e134b554b9f4f6b",
+        "node_id": "C_kwDOQ-jhCtoAKDRjZWEyOWJjMzZlMTQ3Mzk2NGUwZDc3NjVlMTM0YjU1NGI5ZjRmNmI",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4cea29bc36e1473964e0d7765e134b554b9f4f6b",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4cea29bc36e1473964e0d7765e134b554b9f4f6b",
+        "author": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T04:14:56Z"
+        },
+        "committer": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T04:14:56Z"
+        },
+        "tree": {
+            "sha": "4f3f01f0ae205262ea199dc4ae3a72b26d0e36de",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/4f3f01f0ae205262ea199dc4ae3a72b26d0e36de"
+        },
+        "message": "feat: Add post PR comment endpoint",
+        "parents": [
+            {
+                "sha": "4825dca2823fe83dacdee70c6c595ce9ba4cb2a5",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4825dca2823fe83dacdee70c6c595ce9ba4cb2a5",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4825dca2823fe83dacdee70c6c595ce9ba4cb2a5"
+            }
+        ],
+        "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+        },
+        "event": "committed"
+    },
+    {
+        "id": 23089895585,
+        "node_id": "COE_lADOQ-jhCs7uAuryzwAAAAVgQ9ih",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/23089895585",
         "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
+            "login": "nithinsenthil",
+            "id": 66451044,
+            "node_id": "MDQ6VXNlcjY2NDUxMDQ0",
+            "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4",
             "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
+            "url": "https://api.github.com/users/nithinsenthil",
+            "html_url": "https://github.com/nithinsenthil",
+            "followers_url": "https://api.github.com/users/nithinsenthil/followers",
+            "following_url": "https://api.github.com/users/nithinsenthil/following{/other_user}",
+            "gists_url": "https://api.github.com/users/nithinsenthil/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/nithinsenthil/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/nithinsenthil/subscriptions",
+            "organizations_url": "https://api.github.com/users/nithinsenthil/orgs",
+            "repos_url": "https://api.github.com/users/nithinsenthil/repos",
+            "events_url": "https://api.github.com/users/nithinsenthil/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/nithinsenthil/received_events",
             "type": "User",
             "user_view_type": "public",
             "site_admin": false
@@ -99,546 +135,86 @@
         "event": "connected",
         "commit_id": null,
         "commit_url": null,
-        "created_at": "2026-02-16T08:56:56Z",
+        "created_at": "2026-02-26T04:15:52Z",
         "performed_via_github_app": null
     },
     {
-        "sha": "d4b2c21e1beabd82949690613a9e52c1733b52aa",
-        "node_id": "C_kwDOQ-jhCtoAKGQ0YjJjMjFlMWJlYWJkODI5NDk2OTA2MTNhOWU1MmMxNzMzYjUyYWE",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d4b2c21e1beabd82949690613a9e52c1733b52aa",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d4b2c21e1beabd82949690613a9e52c1733b52aa",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T08:59:39Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-16T09:00:17Z"
-        },
-        "tree": {
-            "sha": "73a66732360bd33ffe1f6496071adb38e9b82fd5",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/73a66732360bd33ffe1f6496071adb38e9b82fd5"
-        },
-        "message": "style(pr-view): Increase state chip padding",
-        "parents": [
-            {
-                "sha": "1964dd46e94431a5a1296d94b40bbd047303b9be",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/1964dd46e94431a5a1296d94b40bbd047303b9be",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/1964dd46e94431a5a1296d94b40bbd047303b9be"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6",
-        "node_id": "C_kwDOQ-jhCtoAKDZhYTM4Y2MzMTgwYzMxZTJkYmMyMGZkY2NiYjRmNWQ4YjkwYTZlZDY",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T21:45:21Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T21:45:21Z"
-        },
-        "tree": {
-            "sha": "e3db0b3a87f906d0840bbbbd9d5bdc5dffc8de45",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/e3db0b3a87f906d0840bbbbd9d5bdc5dffc8de45"
-        },
-        "message": "Merge branch 'main' of https://github.com/nithinsenthil/CodeReviewManagementTool into 41-pr-view-ui",
-        "parents": [
-            {
-                "sha": "d4b2c21e1beabd82949690613a9e52c1733b52aa",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d4b2c21e1beabd82949690613a9e52c1733b52aa",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d4b2c21e1beabd82949690613a9e52c1733b52aa"
-            },
-            {
-                "sha": "c963121ecffb09fbb6d8c83d08184fda2994528e",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/c963121ecffb09fbb6d8c83d08184fda2994528e",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/c963121ecffb09fbb6d8c83d08184fda2994528e"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "a67718d1210e4d7d0bf258c695cd69a499c62479",
-        "node_id": "C_kwDOQ-jhCtoAKGE2NzcxOGQxMjEwZTRkN2QwYmYyNThjNjk1Y2Q2OWE0OTljNjI0Nzk",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/a67718d1210e4d7d0bf258c695cd69a499c62479",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/a67718d1210e4d7d0bf258c695cd69a499c62479",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T21:54:43Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T21:54:43Z"
-        },
-        "tree": {
-            "sha": "172b7064eb3a7bb29c3d6d13a99257d6276be0a2",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/172b7064eb3a7bb29c3d6d13a99257d6276be0a2"
-        },
-        "message": "fix(pr-view): Update draft status icon",
-        "parents": [
-            {
-                "sha": "6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/6aa38cc3180c31e2dbc20fdccbb4f5d8b90a6ed6"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52",
-        "node_id": "C_kwDOQ-jhCtoAKDllZWFmNDQyMTE3ZThkMzMyYWFmOWYxZjdhNTEwYWQ5ZWQzYTBhNTI",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T23:25:43Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-17T23:25:43Z"
-        },
-        "tree": {
-            "sha": "f7226a930c8de47da7c87ef010a56d9982ed4f36",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/f7226a930c8de47da7c87ef010a56d9982ed4f36"
-        },
-        "message": "feat(pr-view): Add PR description component",
-        "parents": [
-            {
-                "sha": "a67718d1210e4d7d0bf258c695cd69a499c62479",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/a67718d1210e4d7d0bf258c695cd69a499c62479",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/a67718d1210e4d7d0bf258c695cd69a499c62479"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "d31e61a94b1745d7148a5bb0ad7920c993f8d67b",
-        "node_id": "C_kwDOQ-jhCtoAKGQzMWU2MWE5NGIxNzQ1ZDcxNDhhNWJiMGFkNzkyMGM5OTNmOGQ2N2I",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d31e61a94b1745d7148a5bb0ad7920c993f8d67b",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d31e61a94b1745d7148a5bb0ad7920c993f8d67b",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T01:19:20Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T01:19:20Z"
-        },
-        "tree": {
-            "sha": "4c99142093d2ab0764dbfe42caedff2eff621b7c",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/4c99142093d2ab0764dbfe42caedff2eff621b7c"
-        },
-        "message": "feat(pr-view): Implement status section",
-        "parents": [
-            {
-                "sha": "9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/9eeaf442117e8d332aaf9f1f7a510ad9ed3a0a52"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "5fda121f1aadebe3fc91ee0fc64d3af50a6648bd",
-        "node_id": "C_kwDOQ-jhCtoAKDVmZGExMjFmMWFhZGViZTNmYzkxZWUwZmM2NGQzYWY1MGE2NjQ4YmQ",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/5fda121f1aadebe3fc91ee0fc64d3af50a6648bd",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/5fda121f1aadebe3fc91ee0fc64d3af50a6648bd",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:12:05Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:12:05Z"
-        },
-        "tree": {
-            "sha": "486726d4284ea5dda1354d09138dd85ca681e7af",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/486726d4284ea5dda1354d09138dd85ca681e7af"
-        },
-        "message": "feat(pr-view): Add reviewers and assignees base UI",
-        "parents": [
-            {
-                "sha": "d31e61a94b1745d7148a5bb0ad7920c993f8d67b",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d31e61a94b1745d7148a5bb0ad7920c993f8d67b",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d31e61a94b1745d7148a5bb0ad7920c993f8d67b"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "58140df2a00771201bfbfc004f286af1868a80eb",
-        "node_id": "C_kwDOQ-jhCtoAKDU4MTQwZGYyYTAwNzcxMjAxYmZiZmMwMDRmMjg2YWYxODY4YTgwZWI",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/58140df2a00771201bfbfc004f286af1868a80eb",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/58140df2a00771201bfbfc004f286af1868a80eb",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:18:46Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:18:46Z"
-        },
-        "tree": {
-            "sha": "e9eb821ec36f00d999e11842af1ba8963b2bc38e",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/e9eb821ec36f00d999e11842af1ba8963b2bc38e"
-        },
-        "message": "style(pr-view): Align top two components of page",
-        "parents": [
-            {
-                "sha": "5fda121f1aadebe3fc91ee0fc64d3af50a6648bd",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/5fda121f1aadebe3fc91ee0fc64d3af50a6648bd",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/5fda121f1aadebe3fc91ee0fc64d3af50a6648bd"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "584370598b221ce673e4c7939f07162de3329722",
-        "node_id": "C_kwDOQ-jhCtoAKDU4NDM3MDU5OGIyMjFjZTY3M2U0Yzc5MzlmMDcxNjJkZTMzMjk3MjI",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/584370598b221ce673e4c7939f07162de3329722",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/584370598b221ce673e4c7939f07162de3329722",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:21:44Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:21:44Z"
-        },
-        "tree": {
-            "sha": "279e635eef4d86a4bd70f1310160759fe7908ad5",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/279e635eef4d86a4bd70f1310160759fe7908ad5"
-        },
-        "message": "clean(pr-view): Remove status section console.log",
-        "parents": [
-            {
-                "sha": "58140df2a00771201bfbfc004f286af1868a80eb",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/58140df2a00771201bfbfc004f286af1868a80eb",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/58140df2a00771201bfbfc004f286af1868a80eb"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "e1eeb1d2202d41efa7a3f1d7111a8737629a25f2",
-        "node_id": "C_kwDOQ-jhCtoAKGUxZWViMWQyMjAyZDQxZWZhN2EzZjFkNzExMWE4NzM3NjI5YTI1ZjI",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/e1eeb1d2202d41efa7a3f1d7111a8737629a25f2",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/e1eeb1d2202d41efa7a3f1d7111a8737629a25f2",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:46:05Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-18T02:46:05Z"
-        },
-        "tree": {
-            "sha": "11e37e0c850449689266a01ce6c0d3c44970f13e",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/11e37e0c850449689266a01ce6c0d3c44970f13e"
-        },
-        "message": "merge(pr-view): Get changes from maing",
-        "parents": [
-            {
-                "sha": "584370598b221ce673e4c7939f07162de3329722",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/584370598b221ce673e4c7939f07162de3329722",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/584370598b221ce673e4c7939f07162de3329722"
-            },
-            {
-                "sha": "4f09bfe24ae1e6a1478f74085820ad88d99834c9",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4f09bfe24ae1e6a1478f74085820ad88d99834c9",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4f09bfe24ae1e6a1478f74085820ad88d99834c9"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "d6813e0c8f081eb1955ce315068863816cb3078c",
-        "node_id": "C_kwDOQ-jhCtoAKGQ2ODEzZTBjOGYwODFlYjE5NTVjZTMxNTA2ODg2MzgxNmNiMzA3OGM",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d6813e0c8f081eb1955ce315068863816cb3078c",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d6813e0c8f081eb1955ce315068863816cb3078c",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T02:04:36Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T02:04:36Z"
-        },
-        "tree": {
-            "sha": "505bc2c8530fa326707548c3fac1468b5b364ac3",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/505bc2c8530fa326707548c3fac1468b5b364ac3"
-        },
-        "message": "feat(pr-view): Implement CI section",
-        "parents": [
-            {
-                "sha": "e1eeb1d2202d41efa7a3f1d7111a8737629a25f2",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/e1eeb1d2202d41efa7a3f1d7111a8737629a25f2",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/e1eeb1d2202d41efa7a3f1d7111a8737629a25f2"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "f1db08a2253a5ca1584d96264d4c37564dba0794",
-        "node_id": "C_kwDOQ-jhCtoAKGYxZGIwOGEyMjUzYTVjYTE1ODRkOTYyNjRkNGMzNzU2NGRiYTA3OTQ",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/f1db08a2253a5ca1584d96264d4c37564dba0794",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/f1db08a2253a5ca1584d96264d4c37564dba0794",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T05:25:30Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T05:25:30Z"
-        },
-        "tree": {
-            "sha": "f0e08a6ed5188bcf8e34bb2419d03559f326a14f",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/f0e08a6ed5188bcf8e34bb2419d03559f326a14f"
-        },
-        "message": "docs(pr-view): Write comments for functions and components",
-        "parents": [
-            {
-                "sha": "d6813e0c8f081eb1955ce315068863816cb3078c",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d6813e0c8f081eb1955ce315068863816cb3078c",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d6813e0c8f081eb1955ce315068863816cb3078c"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "851ae41cd240ea60b5a1649efeda31cec07c6138",
-        "node_id": "C_kwDOQ-jhCtoAKDg1MWFlNDFjZDI0MGVhNjBiNWExNjQ5ZWZlZGEzMWNlYzA3YzYxMzg",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/851ae41cd240ea60b5a1649efeda31cec07c6138",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/851ae41cd240ea60b5a1649efeda31cec07c6138",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T05:44:07Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T05:44:07Z"
-        },
-        "tree": {
-            "sha": "4e9b5a9e3aed4547a8924f0ec6b9e46829044c13",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/4e9b5a9e3aed4547a8924f0ec6b9e46829044c13"
-        },
-        "message": "format(pr-view): Use Prettier formatting on all files",
-        "parents": [
-            {
-                "sha": "f1db08a2253a5ca1584d96264d4c37564dba0794",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/f1db08a2253a5ca1584d96264d4c37564dba0794",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/f1db08a2253a5ca1584d96264d4c37564dba0794"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "id": 22904816107,
-        "node_id": "RTE_lADOQ-jhCs7rPNUjzwAAAAVVO8Hr",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22904816107",
+        "id": 23089896406,
+        "node_id": "AE_lADOQ-jhCs7uAuryzwAAAAVgQ9vW",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/23089896406",
         "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
+            "login": "nithinsenthil",
+            "id": 66451044,
+            "node_id": "MDQ6VXNlcjY2NDUxMDQ0",
+            "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4",
             "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
+            "url": "https://api.github.com/users/nithinsenthil",
+            "html_url": "https://github.com/nithinsenthil",
+            "followers_url": "https://api.github.com/users/nithinsenthil/followers",
+            "following_url": "https://api.github.com/users/nithinsenthil/following{/other_user}",
+            "gists_url": "https://api.github.com/users/nithinsenthil/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/nithinsenthil/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/nithinsenthil/subscriptions",
+            "organizations_url": "https://api.github.com/users/nithinsenthil/orgs",
+            "repos_url": "https://api.github.com/users/nithinsenthil/repos",
+            "events_url": "https://api.github.com/users/nithinsenthil/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/nithinsenthil/received_events",
             "type": "User",
             "user_view_type": "public",
             "site_admin": false
         },
-        "event": "renamed",
+        "event": "assigned",
         "commit_id": null,
         "commit_url": null,
-        "created_at": "2026-02-19T06:07:52Z",
-        "rename": {
-            "from": "41 - PR View UI",
-            "to": "41 -- PR View UI"
-        },
-        "performed_via_github_app": null
-    },
-    {
-        "id": 22904820045,
-        "node_id": "RTE_lADOQ-jhCs7rPNUjzwAAAAVVO9FN",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22904820045",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
+        "created_at": "2026-02-26T04:15:55Z",
+        "assignee": {
+            "login": "nithinsenthil",
+            "id": 66451044,
+            "node_id": "MDQ6VXNlcjY2NDUxMDQ0",
+            "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4",
             "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
+            "url": "https://api.github.com/users/nithinsenthil",
+            "html_url": "https://github.com/nithinsenthil",
+            "followers_url": "https://api.github.com/users/nithinsenthil/followers",
+            "following_url": "https://api.github.com/users/nithinsenthil/following{/other_user}",
+            "gists_url": "https://api.github.com/users/nithinsenthil/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/nithinsenthil/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/nithinsenthil/subscriptions",
+            "organizations_url": "https://api.github.com/users/nithinsenthil/orgs",
+            "repos_url": "https://api.github.com/users/nithinsenthil/repos",
+            "events_url": "https://api.github.com/users/nithinsenthil/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/nithinsenthil/received_events",
             "type": "User",
             "user_view_type": "public",
             "site_admin": false
         },
-        "event": "renamed",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T06:07:58Z",
-        "rename": {
-            "from": "41 -- PR View UI",
-            "to": "41 - PR View UI"
-        },
         "performed_via_github_app": null
     },
     {
-        "sha": "4e1d900315895c30b320ab577c2973eff721e999",
-        "node_id": "C_kwDOQ-jhCtoAKDRlMWQ5MDAzMTU4OTVjMzBiMzIwYWI1NzdjMjk3M2VmZjcyMWU5OTk",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4e1d900315895c30b320ab577c2973eff721e999",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4e1d900315895c30b320ab577c2973eff721e999",
+        "sha": "d28cb9b29d73ba887aec4f070b80aa519f84acce",
+        "node_id": "C_kwDOQ-jhCtoAKGQyOGNiOWIyOWQ3M2JhODg3YWVjNGYwNzBiODBhYTUxOWY4NGFjY2U",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d28cb9b29d73ba887aec4f070b80aa519f84acce",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d28cb9b29d73ba887aec4f070b80aa519f84acce",
         "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:13Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T05:49:19Z"
         },
         "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:13Z"
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T05:49:19Z"
         },
         "tree": {
-            "sha": "5738e48ded7fca72dbf684696adcd99850945121",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/5738e48ded7fca72dbf684696adcd99850945121"
+            "sha": "29c6d60583c62c8238433510d97df47ef6b88d7c",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/29c6d60583c62c8238433510d97df47ef6b88d7c"
         },
-        "message": "Rename Comment component to PRViewComment",
+        "message": "fix: consolidate comment endpoints into a single path",
         "parents": [
             {
-                "sha": "851ae41cd240ea60b5a1649efeda31cec07c6138",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/851ae41cd240ea60b5a1649efeda31cec07c6138",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/851ae41cd240ea60b5a1649efeda31cec07c6138"
+                "sha": "4cea29bc36e1473964e0d7765e134b554b9f4f6b",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4cea29bc36e1473964e0d7765e134b554b9f4f6b",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4cea29bc36e1473964e0d7765e134b554b9f4f6b"
             }
         ],
         "verification": {
@@ -651,413 +227,8 @@
         "event": "committed"
     },
     {
-        "sha": "e56a8479de968565b336efd4d53ad8eb188879ba",
-        "node_id": "C_kwDOQ-jhCtoAKGU1NmE4NDc5ZGU5Njg1NjViMzM2ZWZkNGQ1M2FkOGViMTg4ODc5YmE",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/e56a8479de968565b336efd4d53ad8eb188879ba",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/e56a8479de968565b336efd4d53ad8eb188879ba",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:13Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:21Z"
-        },
-        "tree": {
-            "sha": "5738e48ded7fca72dbf684696adcd99850945121",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/5738e48ded7fca72dbf684696adcd99850945121"
-        },
-        "message": "chore(pr-view): Rename Comment component to PRViewComment",
-        "parents": [
-            {
-                "sha": "851ae41cd240ea60b5a1649efeda31cec07c6138",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/851ae41cd240ea60b5a1649efeda31cec07c6138",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/851ae41cd240ea60b5a1649efeda31cec07c6138"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "sha": "068738541901ad9fcc05dc17f4c8663c381db191",
-        "node_id": "C_kwDOQ-jhCtoAKDA2ODczODU0MTkwMWFkOWZjYzA1ZGMxN2Y0Yzg2NjNjMzgxZGIxOTE",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/068738541901ad9fcc05dc17f4c8663c381db191",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/068738541901ad9fcc05dc17f4c8663c381db191",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:38Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T06:11:38Z"
-        },
-        "tree": {
-            "sha": "5738e48ded7fca72dbf684696adcd99850945121",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/5738e48ded7fca72dbf684696adcd99850945121"
-        },
-        "message": "Merge branch '41-pr-view-ui' of https://github.com/nithinsenthil/CodeReviewManagementTool into 41-pr-view-ui",
-        "parents": [
-            {
-                "sha": "e56a8479de968565b336efd4d53ad8eb188879ba",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/e56a8479de968565b336efd4d53ad8eb188879ba",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/e56a8479de968565b336efd4d53ad8eb188879ba"
-            },
-            {
-                "sha": "4e1d900315895c30b320ab577c2973eff721e999",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4e1d900315895c30b320ab577c2973eff721e999",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4e1d900315895c30b320ab577c2973eff721e999"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "id": 22904959668,
-        "node_id": "RFRE_lADOQ-jhCs7rPNUjzwAAAAVVPfK0",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22904959668",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "event": "ready_for_review",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T06:15:42Z",
-        "performed_via_github_app": null
-    },
-    {
-        "id": 22904965020,
-        "node_id": "RRE_lADOQ-jhCs7rPNUjzwAAAAVVPgec",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22904965020",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "event": "review_requested",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T06:16:02Z",
-        "review_requester": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "requested_reviewer": {
-            "login": "doanvalerie",
-            "id": 116031083,
-            "node_id": "U_kgDOBup-aw",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/doanvalerie",
-            "html_url": "https://github.com/doanvalerie",
-            "followers_url": "https://api.github.com/users/doanvalerie/followers",
-            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
-            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
-            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
-            "repos_url": "https://api.github.com/users/doanvalerie/repos",
-            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "performed_via_github_app": null
-    },
-    {
-        "id": 3823868020,
-        "node_id": "PRR_kwDOQ-jhCs7j65h0",
-        "user": {
-            "login": "doanvalerie",
-            "id": 116031083,
-            "node_id": "U_kgDOBup-aw",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/doanvalerie",
-            "html_url": "https://github.com/doanvalerie",
-            "followers_url": "https://api.github.com/users/doanvalerie/followers",
-            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
-            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
-            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
-            "repos_url": "https://api.github.com/users/doanvalerie/repos",
-            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "body": "LOOKS 🔥😼!! I just left some comments primarily about spacing, but they're more like my personal design preferences so you can take them with a grain of salt if you do not agree. It's lwk because I was not very careful when I did the spacing in the Figma designs for this page, but lmk what you think!\n\nThe only other thing was about using the index as the key when iterating through a map. I'm thinking we might have to potentially change that in the future if it causes problems.",
-        "commit_id": "068738541901ad9fcc05dc17f4c8663c381db191",
-        "submitted_at": "2026-02-19T21:22:36Z",
-        "state": "dismissed",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/43#pullrequestreview-3823868020",
-        "pull_request_url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/43",
-        "_links": {
-            "html": {
-                "href": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/43#pullrequestreview-3823868020"
-            },
-            "pull_request": {
-                "href": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/43"
-            }
-        },
-        "updated_at": "2026-02-19T22:39:27Z",
-        "author_association": "COLLABORATOR",
-        "event": "reviewed"
-    },
-    {
-        "sha": "2832c5812237da76460e538c64f164af40235916",
-        "node_id": "C_kwDOQ-jhCtoAKDI4MzJjNTgxMjIzN2RhNzY0NjBlNTM4YzY0ZjE2NGFmNDAyMzU5MTY",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/2832c5812237da76460e538c64f164af40235916",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/2832c5812237da76460e538c64f164af40235916",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T22:39:24Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T22:39:24Z"
-        },
-        "tree": {
-            "sha": "cab4b811f5f4bc3a5e3b6ffee080ba1be38b848e",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/cab4b811f5f4bc3a5e3b6ffee080ba1be38b848e"
-        },
-        "message": "design(pr-view): Resolve visual nits",
-        "parents": [
-            {
-                "sha": "068738541901ad9fcc05dc17f4c8663c381db191",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/068738541901ad9fcc05dc17f4c8663c381db191",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/068738541901ad9fcc05dc17f4c8663c381db191"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "id": 22931326081,
-        "node_id": "RDE_lADOQ-jhCs7rPNUjzwAAAAVW0ESB",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22931326081",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "event": "review_dismissed",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T22:39:27Z",
-        "dismissed_review": {
-            "state": "approved",
-            "review_id": 3823868020,
-            "dismissal_message": null,
-            "dismissal_commit_id": "2832c5812237da76460e538c64f164af40235916"
-        },
-        "performed_via_github_app": null
-    },
-    {
-        "sha": "65c9b07e2c67c90b2c70059ce276c122e5ad1b74",
-        "node_id": "C_kwDOQ-jhCtoAKDY1YzliMDdlMmM2N2M5MGIyYzcwMDU5Y2UyNzZjMTIyZTVhZDFiNzQ",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/65c9b07e2c67c90b2c70059ce276c122e5ad1b74",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/65c9b07e2c67c90b2c70059ce276c122e5ad1b74",
-        "author": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T22:42:29Z"
-        },
-        "committer": {
-            "name": "Naomi Zhao",
-            "email": "naomitan.zhao@gmail.com",
-            "date": "2026-02-19T22:42:29Z"
-        },
-        "tree": {
-            "sha": "c8b0a17ae6da9dd98ad09caa8289f6dfe6acaf95",
-            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/c8b0a17ae6da9dd98ad09caa8289f6dfe6acaf95"
-        },
-        "message": "fix(pr-view): Use data values as map keys",
-        "parents": [
-            {
-                "sha": "2832c5812237da76460e538c64f164af40235916",
-                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/2832c5812237da76460e538c64f164af40235916",
-                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/2832c5812237da76460e538c64f164af40235916"
-            }
-        ],
-        "verification": {
-            "verified": false,
-            "reason": "unsigned",
-            "signature": null,
-            "payload": null,
-            "verified_at": null
-        },
-        "event": "committed"
-    },
-    {
-        "id": 22931402221,
-        "node_id": "RRE_lADOQ-jhCs7rPNUjzwAAAAVW0W3t",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22931402221",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "event": "review_requested",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T22:43:16Z",
-        "review_requester": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "requested_reviewer": {
-            "login": "doanvalerie",
-            "id": 116031083,
-            "node_id": "U_kgDOBup-aw",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/doanvalerie",
-            "html_url": "https://github.com/doanvalerie",
-            "followers_url": "https://api.github.com/users/doanvalerie/followers",
-            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
-            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
-            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
-            "repos_url": "https://api.github.com/users/doanvalerie/repos",
-            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
-        },
-        "performed_via_github_app": null
-    },
-    {
-        "id": 3828940958,
-        "node_id": "PRR_kwDOQ-jhCs7kOQCe",
+        "id": 3858910739,
+        "node_id": "PRR_kwDOQ-jhCs7mAk4T",
         "user": {
             "login": "doanvalerie",
             "id": 116031083,
@@ -1080,115 +251,166 @@
             "site_admin": false
         },
         "body": null,
-        "commit_id": "65c9b07e2c67c90b2c70059ce276c122e5ad1b74",
-        "submitted_at": "2026-02-19T22:49:12Z",
-        "state": "approved",
-        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/43#pullrequestreview-3828940958",
-        "pull_request_url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/43",
+        "commit_id": "d28cb9b29d73ba887aec4f070b80aa519f84acce",
+        "submitted_at": "2026-02-26T08:10:16Z",
+        "state": "changes_requested",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/75#pullrequestreview-3858910739",
+        "pull_request_url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/75",
         "_links": {
             "html": {
-                "href": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/43#pullrequestreview-3828940958"
+                "href": "https://github.com/nithinsenthil/CodeReviewManagementTool/pull/75#pullrequestreview-3858910739"
             },
             "pull_request": {
-                "href": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/43"
+                "href": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/pulls/75"
             }
         },
-        "updated_at": "2026-02-19T22:49:12Z",
+        "updated_at": "2026-02-26T08:10:16Z",
         "author_association": "COLLABORATOR",
         "event": "reviewed"
     },
     {
-        "id": 22931544987,
-        "node_id": "ME_lADOQ-jhCs7rPNUjzwAAAAVW05ub",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22931544987",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
+        "sha": "8c6b66f36caa7250a097a0e1b72e3908ba3f1926",
+        "node_id": "C_kwDOQ-jhCtoAKDhjNmI2NmYzNmNhYTcyNTBhMDk3YTBlMWI3MmUzOTA4YmEzZjE5MjY",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/8c6b66f36caa7250a097a0e1b72e3908ba3f1926",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/8c6b66f36caa7250a097a0e1b72e3908ba3f1926",
+        "author": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T08:35:32Z"
         },
-        "event": "merged",
-        "commit_id": "13d33851c8dc7a294418555fa952d3698f05ddfe",
-        "commit_url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/commits/13d33851c8dc7a294418555fa952d3698f05ddfe",
-        "created_at": "2026-02-19T22:49:45Z",
-        "performed_via_github_app": null
+        "committer": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T08:35:32Z"
+        },
+        "tree": {
+            "sha": "51614283a3293dc01b2f429293916d725a9ec485",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/51614283a3293dc01b2f429293916d725a9ec485"
+        },
+        "message": "fix: Add subject type field to comment schema",
+        "parents": [
+            {
+                "sha": "d28cb9b29d73ba887aec4f070b80aa519f84acce",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/d28cb9b29d73ba887aec4f070b80aa519f84acce",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/d28cb9b29d73ba887aec4f070b80aa519f84acce"
+            }
+        ],
+        "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+        },
+        "event": "committed"
     },
     {
-        "id": 22931545008,
-        "node_id": "CE_lADOQ-jhCs7rPNUjzwAAAAVW05uw",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22931545008",
-        "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
-            "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
-            "type": "User",
-            "user_view_type": "public",
-            "site_admin": false
+        "sha": "4b628b6fc617db6a100640de5d6b7960ccf00a44",
+        "node_id": "C_kwDOQ-jhCtoAKDRiNjI4YjZmYzYxN2RiNmExMDA2NDBkZTVkNmI3OTYwY2NmMDBhNDQ",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/4b628b6fc617db6a100640de5d6b7960ccf00a44",
+        "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/4b628b6fc617db6a100640de5d6b7960ccf00a44",
+        "author": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T22:21:39Z"
         },
-        "event": "closed",
-        "commit_id": null,
-        "commit_url": null,
-        "created_at": "2026-02-19T22:49:45Z",
-        "state_reason": null,
-        "performed_via_github_app": null
+        "committer": {
+            "name": "Nithin Senthil",
+            "email": "nithin020304@gmail.com",
+            "date": "2026-02-26T22:21:39Z"
+        },
+        "tree": {
+            "sha": "1b1602b9ecdefb0853a013a2cb1e016e570b80e8",
+            "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/trees/1b1602b9ecdefb0853a013a2cb1e016e570b80e8"
+        },
+        "message": "fix: Expand returned fields from repo and PR schemas",
+        "parents": [
+            {
+                "sha": "8c6b66f36caa7250a097a0e1b72e3908ba3f1926",
+                "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/git/commits/8c6b66f36caa7250a097a0e1b72e3908ba3f1926",
+                "html_url": "https://github.com/nithinsenthil/CodeReviewManagementTool/commit/8c6b66f36caa7250a097a0e1b72e3908ba3f1926"
+            }
+        ],
+        "verification": {
+            "verified": false,
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified_at": null
+        },
+        "event": "committed"
     },
     {
-        "id": 22931545903,
-        "node_id": "HRDE_lADOQ-jhCs7rPNUjzwAAAAVW058v",
-        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/22931545903",
+        "id": 23118973554,
+        "node_id": "RRE_lADOQ-jhCs7uAuryzwAAAAVh_4py",
+        "url": "https://api.github.com/repos/nithinsenthil/CodeReviewManagementTool/issues/events/23118973554",
         "actor": {
-            "login": "naomitzhao",
-            "id": 116607148,
-            "node_id": "U_kgDOBvNIrA",
-            "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4",
+            "login": "nithinsenthil",
+            "id": 66451044,
+            "node_id": "MDQ6VXNlcjY2NDUxMDQ0",
+            "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4",
             "gravatar_id": "",
-            "url": "https://api.github.com/users/naomitzhao",
-            "html_url": "https://github.com/naomitzhao",
-            "followers_url": "https://api.github.com/users/naomitzhao/followers",
-            "following_url": "https://api.github.com/users/naomitzhao/following{/other_user}",
-            "gists_url": "https://api.github.com/users/naomitzhao/gists{/gist_id}",
-            "starred_url": "https://api.github.com/users/naomitzhao/starred{/owner}{/repo}",
-            "subscriptions_url": "https://api.github.com/users/naomitzhao/subscriptions",
-            "organizations_url": "https://api.github.com/users/naomitzhao/orgs",
-            "repos_url": "https://api.github.com/users/naomitzhao/repos",
-            "events_url": "https://api.github.com/users/naomitzhao/events{/privacy}",
-            "received_events_url": "https://api.github.com/users/naomitzhao/received_events",
+            "url": "https://api.github.com/users/nithinsenthil",
+            "html_url": "https://github.com/nithinsenthil",
+            "followers_url": "https://api.github.com/users/nithinsenthil/followers",
+            "following_url": "https://api.github.com/users/nithinsenthil/following{/other_user}",
+            "gists_url": "https://api.github.com/users/nithinsenthil/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/nithinsenthil/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/nithinsenthil/subscriptions",
+            "organizations_url": "https://api.github.com/users/nithinsenthil/orgs",
+            "repos_url": "https://api.github.com/users/nithinsenthil/repos",
+            "events_url": "https://api.github.com/users/nithinsenthil/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/nithinsenthil/received_events",
             "type": "User",
             "user_view_type": "public",
             "site_admin": false
         },
-        "event": "head_ref_deleted",
+        "event": "review_requested",
         "commit_id": null,
         "commit_url": null,
-        "created_at": "2026-02-19T22:49:48Z",
+        "created_at": "2026-02-26T22:26:54Z",
+        "review_requester": {
+            "login": "nithinsenthil",
+            "id": 66451044,
+            "node_id": "MDQ6VXNlcjY2NDUxMDQ0",
+            "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/nithinsenthil",
+            "html_url": "https://github.com/nithinsenthil",
+            "followers_url": "https://api.github.com/users/nithinsenthil/followers",
+            "following_url": "https://api.github.com/users/nithinsenthil/following{/other_user}",
+            "gists_url": "https://api.github.com/users/nithinsenthil/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/nithinsenthil/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/nithinsenthil/subscriptions",
+            "organizations_url": "https://api.github.com/users/nithinsenthil/orgs",
+            "repos_url": "https://api.github.com/users/nithinsenthil/repos",
+            "events_url": "https://api.github.com/users/nithinsenthil/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/nithinsenthil/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
+        "requested_reviewer": {
+            "login": "doanvalerie",
+            "id": 116031083,
+            "node_id": "U_kgDOBup-aw",
+            "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doanvalerie",
+            "html_url": "https://github.com/doanvalerie",
+            "followers_url": "https://api.github.com/users/doanvalerie/followers",
+            "following_url": "https://api.github.com/users/doanvalerie/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doanvalerie/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doanvalerie/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doanvalerie/subscriptions",
+            "organizations_url": "https://api.github.com/users/doanvalerie/orgs",
+            "repos_url": "https://api.github.com/users/doanvalerie/repos",
+            "events_url": "https://api.github.com/users/doanvalerie/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doanvalerie/received_events",
+            "type": "User",
+            "user_view_type": "public",
+            "site_admin": false
+        },
         "performed_via_github_app": null
     }
 ]
