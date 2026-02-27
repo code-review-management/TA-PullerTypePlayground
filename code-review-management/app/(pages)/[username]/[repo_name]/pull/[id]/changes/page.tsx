@@ -12,7 +12,7 @@ import styles from "./page.module.css";
 export default function Changes() {
   const { username, repo_name, id } = useParams<PullParams>();
   const { draftThreads, setDraftThreads } = useDraftThreads();
-  const { publishedThreads } = usePublishedThreads();
+  const { publishedThreads } = usePublishedThreads(username, repo_name, id);
 
   const {
     data: pull,
