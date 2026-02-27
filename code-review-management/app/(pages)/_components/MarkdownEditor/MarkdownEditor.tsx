@@ -11,13 +11,13 @@ import "./TiptapEditor.css";
 
 /**
  * A Markdown renderer/editor used to display and write comments.
- * 
+ *
  * Docs:
  * 1. https://tiptap.dev/docs/editor/getting-started/install/nextjs
  * 2. https://tiptap.dev/docs/editor/markdown/getting-started/installation
- * 
+ *
  * TODO: Configure GitHub Flavored Markdown
- * 
+ *
  * @param defaultEditable: Whether the editor should be editable on initial render.
  * @param defaultContent: Content to display in the editor on initial render.
  * @param actions: Action buttons to render below the editor content when it is
