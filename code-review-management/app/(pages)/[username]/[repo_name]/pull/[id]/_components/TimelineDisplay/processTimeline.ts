@@ -53,6 +53,20 @@ export const review_states = [
   "dismissed",
 ];
 
+// Events that follow the single link structure "[actor1] {message}".
+const single_events = [
+  "approved",
+  "changes_requested",
+  "commented",
+  "dismissed",
+  "head_ref_deleted",
+  "merged",
+  "ready_for_review",
+  "renamed",
+  "review_dismissed",
+  "reviewed",
+];
+
 /**
  * Events that follow the double link structure "[actor1] {message} [actor2]" when rendered
  * For example: "octocat requested a review from octodog"
@@ -60,9 +74,7 @@ export const review_states = [
 const double_events = ["assigned", "review_requested"];
 
 // Events that do not follow common "single link" or "double link" structures when rendered
-const other_events = ["committed", "closed"];
-
-// Events that are not in double_events or other_events follow the single link structure "[actor1] {message}".
+const other_events = ["committed", "closed", ...review_states];
 
 /**
  * Raw events returned from API response will be parsed into timelineEvents
@@ -72,7 +84,7 @@ export interface timelineEvent {
   event_obj: eventInterface;
   icon_name: string;
   message: string;
-  display_type: "single_link" | "double_link" | "other";
+  display_type: "single_link" | "double_link" | "other" | "hidden";
   event_type: EventType;
   actor1: string | null;
   actor2: string | null;
@@ -169,7 +181,10 @@ function getTimelineEvent(event_obj: eventInterface): timelineEvent {
     if (double_events.includes(event_obj.event)) {
       return "double_link";
     }
-    return "single_link";
+    if (single_events.includes(event_obj.event)) {
+      return "single_link";
+    }
+    return "hidden";
   })();
 
   // TODO: Get correct approval status even when review is stale/dismissed

@@ -20,8 +20,6 @@ export default function TimelineDisplay() {
   const { beforeCloseTimeline, afterCloseTimeline } =
     processTimeline(MOCK_TIMELINE);
 
-  console.log(beforeCloseTimeline, afterCloseTimeline);
-
   return (
     <div className={styles.timeline}>
       {afterCloseTimeline.map((event: timelineEvent) => (
@@ -47,6 +45,10 @@ export default function TimelineDisplay() {
  * @param event Object representing the event from the timeline.
  */
 function TimelineEvent({ event }: { event: timelineEvent }) {
+  if (event.display_type === "hidden") {
+    console.log(`"${event.event_type}" hidden`); // TODO: REMOVE THIS DEBUG PRINT
+    return;
+  }
   if (event.display_type === "other") {
     if (event.event_type === "committed") {
       const abbr_sha = event.event_obj.sha?.slice(0, 7);
