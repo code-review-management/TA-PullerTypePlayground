@@ -6,7 +6,7 @@ import {
   EventType,
   timelineEvent,
   processTimeline,
-  review_states,
+  isReviewState,
 } from "./processTimeline";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,11 +23,11 @@ export default function TimelineDisplay() {
   return (
     <div className={styles.timeline}>
       {afterCloseTimeline.map((event: timelineEvent) => (
-        <TimelineEvent key={event.event_obj.node_id} event={event} />
+        <TimelineEvent key={event.eventObj.node_id} event={event} />
       ))}
       <div className={styles.beforeCloseTimeline}>
         {beforeCloseTimeline.map((event: timelineEvent) => (
-          <TimelineEvent key={event.event_obj.node_id} event={event} />
+          <TimelineEvent key={event.eventObj.node_id} event={event} />
         ))}
         <div className={styles.timelineLineBackground} />
       </div>
@@ -45,17 +45,17 @@ export default function TimelineDisplay() {
  * @param event Object representing the event from the timeline.
  */
 function TimelineEvent({ event }: { event: timelineEvent }) {
-  if (event.display_type === "hidden") {
-    console.log(`"${event.event_type}" hidden`); // TODO: REMOVE THIS DEBUG PRINT
+  if (event.displayType === "hidden") {
+    console.log(`"${event.eventType}" hidden`); // TODO: REMOVE THIS DEBUG PRINT
     return;
   }
-  if (event.display_type === "other") {
-    if (event.event_type === "committed") {
-      const abbr_sha = event.event_obj.sha?.slice(0, 7);
+  if (event.displayType === "other") {
+    if (event.eventType === "committed") {
+      const abbr_sha = event.eventObj.sha?.slice(0, 7);
       return (
         <TimelineEventSmall
-          event_type={event.event_type}
-          icon_name={event.icon_name}
+          eventType={event.eventType}
+          iconName={event.iconName}
         >
           <div className={styles.committedLine}>
             <p className={styles.commitLineText}>
@@ -63,7 +63,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
               <Link className={styles.commitSha} href={""}>
                 #{abbr_sha}
               </Link>{" "}
-              {event.event_obj.message}
+              {event.eventObj.message}
             </p>
             {/** TODO: Replace with user icon component */}
             <div className={styles.tempUserIcon}>
@@ -72,80 +72,72 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
           </div>
         </TimelineEventSmall>
       );
-    } else if (event.event_type === "closed") {
+    } else if (event.eventType === "closed") {
       return <Divider />;
       {
         /** TODO: make custom divider */
       }
     } else {
-      console.log(
-        `"${event.event_type}" as 'other' display type not supported`,
-      ); // TODO: REMOVE THIS DEBUG PRINT
+      console.log(`"${event.eventType}" as 'other' display type not supported`); // TODO: REMOVE THIS DEBUG PRINT
       return;
     }
   }
-  if (review_states.includes(event.event_type)) {
-    if (event.event_obj.body === null) {
+  if (isReviewState(event.eventType)) {
+    if (event.eventObj.body === null) {
       return (
         <TimelineEventSmall
-          event_type={event.event_type}
-          icon_name={event.icon_name}
+          eventType={event.eventType}
+          iconName={event.iconName}
         >
           <p>
-            <UserLink username={event.event_obj.user?.login || ""} />{" "}
+            <UserLink username={event.eventObj.user?.login || ""} />{" "}
             {event.message}
           </p>
         </TimelineEventSmall>
       );
     }
-    const comment_date = new Date(event.event_obj.submitted_at || "") || "";
-    const month = comment_date.toLocaleString("default", { month: "short" });
-    const timeString = comment_date.toLocaleString("en-US", {
+    const commentDate = new Date(event.eventObj.submitted_at || "") || "";
+    const month = commentDate.toLocaleString("default", { month: "short" });
+    const timeString = commentDate.toLocaleString("en-US", {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
     });
 
-    const formatted_date = `${month} ${comment_date.getDay()}, ${comment_date.getFullYear()} at ${timeString}`;
+    const formattedDate = `${month} ${commentDate.getDay()}, ${commentDate.getFullYear()} at ${timeString}`;
 
     return (
       <>
         <TimelineEventSmall
-          event_type={event.event_type}
-          icon_name={event.icon_name}
+          eventType={event.eventType}
+          iconName={event.iconName}
         >
           <p>
-            <UserLink username={event.event_obj.user?.login || ""} />{" "}
+            <UserLink username={event.eventObj.user?.login || ""} />{" "}
             {event.message}
           </p>
         </TimelineEventSmall>
         <PRViewComment
-          username={event.event_obj.user?.login || ""}
-          createdAt={formatted_date}
-          description={event.event_obj.body || ""}
+          username={event.eventObj.user?.login || ""}
+          createdAt={formattedDate}
+          description={event.eventObj.body || ""}
           inTimeline
         />
       </>
     );
   }
-  if (event.display_type === "single_link") {
+  if (event.displayType === "single_link") {
     return (
-      <TimelineEventSmall
-        event_type={event.event_type}
-        icon_name={event.icon_name}
-      >
+      <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
         <p>
           <UserLink username={event.actor1 || ""} /> {event.message}
         </p>
       </TimelineEventSmall>
     );
   }
-  if (event.display_type === "double_link") {
+  if (event.displayType === "double_link") {
     return (
-      <TimelineEventSmall
-        event_type={event.event_type}
-        icon_name={event.icon_name}
-      >
+      <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
         <p>
           <UserLink username={event.actor1 || ""} /> {event.message}{" "}
           <UserLink username={event.actor2 || ""} />
@@ -153,7 +145,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
       </TimelineEventSmall>
     );
   } else {
-    console.log(`"${event.event_type}" not supported`); // TODO: REMOVE THIS DEBUG PRINT
+    console.log(`"${event.eventType}" not supported`); // TODO: REMOVE THIS DEBUG PRINT
     return;
   }
 }
@@ -167,28 +159,28 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
  * @param icon_name: Name of the icon, used to form the Image src displayed
  */
 function TimelineEventSmall({
-  event_type,
+  eventType,
   children,
-  icon_name,
+  iconName,
 }: {
-  event_type: EventType;
+  eventType: EventType;
   children: ReactNode;
-  icon_name: string;
+  iconName: string;
 }) {
-  const large_icon_event_types = ["approved", "changes_requested"];
-  const is_large_icon = large_icon_event_types.includes(event_type);
-  const icon_size = is_large_icon ? 30 : 20;
+  const largeIconEventTypes = ["approved", "changes_requested"];
+  const isLargeIcon = largeIconEventTypes.includes(eventType);
+  const iconSize = isLargeIcon ? 30 : 20;
 
   return (
     <div className={styles.eventSmall}>
       <div
-        className={`${styles.timelineIcon} ${!is_large_icon && styles.timelineIconPadded}`}
+        className={`${styles.timelineIcon} ${!isLargeIcon && styles.timelineIconPadded}`}
       >
         <Image
-          src={`/icons/timeline/${icon_name}.svg`}
-          alt="timeline_commit"
-          height={icon_size}
-          width={icon_size}
+          src={`/icons/timeline/${iconName}.svg`}
+          alt={`${iconName}`}
+          height={iconSize}
+          width={iconSize}
         />
       </div>
       {children}

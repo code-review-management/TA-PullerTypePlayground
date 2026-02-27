@@ -46,15 +46,19 @@ interface eventInterface {
  * Possible states a "review" type event can have
  * Used to check if an event is a review when rendering it in TimelineEvent component.
  */
-export const review_states = [
+const REVIEW_STATES = [
   "approved",
   "commented",
   "changes_requested",
   "dismissed",
 ];
 
+export function isReviewState(state: string) {
+  return REVIEW_STATES.includes(state);
+}
+
 // Events that follow the single link structure "[actor1] {message}".
-const single_events = [
+const SINGLE_EVENTS = [
   "approved",
   "changes_requested",
   "commented",
@@ -71,21 +75,21 @@ const single_events = [
  * Events that follow the double link structure "[actor1] {message} [actor2]" when rendered
  * For example: "octocat requested a review from octodog"
  */
-const double_events = ["assigned", "review_requested"];
+const DOUBLE_EVENTS = ["assigned", "review_requested"];
 
 // Events that do not follow common "single link" or "double link" structures when rendered
-const other_events = ["committed", "closed", ...review_states];
+const OTHER_EVENTS = ["committed", "closed", ...REVIEW_STATES];
 
 /**
  * Raw events returned from API response will be parsed into timelineEvents
  * timelineEvents are then rendered in the timeline display
  */
 export interface timelineEvent {
-  event_obj: eventInterface;
-  icon_name: string;
+  eventObj: eventInterface;
+  iconName: string;
   message: string;
-  display_type: "single_link" | "double_link" | "other" | "hidden";
-  event_type: EventType;
+  displayType: "single_link" | "double_link" | "other" | "hidden";
+  eventType: EventType;
   actor1: string | null;
   actor2: string | null;
 }
@@ -134,54 +138,54 @@ const MESSAGES: Record<EventType, string> = {
 
 /**
  *
- * @param event_obj eventInterface (interfaced response) object
- * @param event_type
+ * @param eventObj eventInterface (interfaced response) object
+ * @param eventType
  * @returns The username of "actor1" for this event, or null.
  */
-function getActor1(event_obj: eventInterface, event_type: EventType) {
-  if (event_type === "review_requested") {
-    return event_obj.review_requester?.login;
+function getActor1(eventObj: eventInterface, eventType: EventType) {
+  if (eventType === "review_requested") {
+    return eventObj.review_requester?.login;
   }
-  if (event_obj.actor) {
-    return event_obj.actor.login;
+  if (eventObj.actor) {
+    return eventObj.actor.login;
   }
   return null;
 }
 
 /**
  *
- * @param event_obj eventInterface (interfaced response) object
- * @param event_type
+ * @param eventObj eventInterface (interfaced response) object
+ * @param eventType
  * @returns The username of "actor2" for this event, or null.
  */
-function getActor2(event_obj: eventInterface, event_type: EventType) {
-  if (event_type === "review_requested") {
-    return event_obj.requested_reviewer?.login;
+function getActor2(eventObj: eventInterface, eventType: EventType) {
+  if (eventType === "review_requested") {
+    return eventObj.requested_reviewer?.login;
   }
-  if (event_type === "assigned") {
-    return event_obj.assignee?.login;
+  if (eventType === "assigned") {
+    return eventObj.assignee?.login;
   }
   return null;
 }
 
 /**
  * Parse eventInterface objects into
- * @param event_obj Interfaced raw data from API response.
+ * @param eventObj Interfaced raw data from API response.
  * @returns A single timelineEvent object.
  */
-function getTimelineEvent(event_obj: eventInterface): timelineEvent {
-  const event_type = ((event_obj.event === "reviewed"
-    ? event_obj.state?.toLowerCase()
-    : event_obj.event) || "err") as EventType;
+function getTimelineEvent(eventObj: eventInterface): timelineEvent {
+  const eventType = ((eventObj.event === "reviewed"
+    ? eventObj.state?.toLowerCase()
+    : eventObj.event) || "err") as EventType;
 
-  const display_type = (() => {
-    if (other_events.includes(event_obj.event)) {
+  const displayType = (() => {
+    if (OTHER_EVENTS.includes(eventObj.event)) {
       return "other";
     }
-    if (double_events.includes(event_obj.event)) {
+    if (DOUBLE_EVENTS.includes(eventObj.event)) {
       return "double_link";
     }
-    if (single_events.includes(event_obj.event)) {
+    if (SINGLE_EVENTS.includes(eventObj.event)) {
       return "single_link";
     }
     return "hidden";
@@ -189,34 +193,32 @@ function getTimelineEvent(event_obj: eventInterface): timelineEvent {
 
   // TODO: Get correct approval status even when review is stale/dismissed
 
-  const icon_name = (() => {
-    if (event_obj.event === "reviewed") {
-      const approval_state = (event_obj.state || "err") as EventType;
-      return ICONS[approval_state];
+  const iconName = (() => {
+    if (eventObj.event === "reviewed") {
+      return ICONS[(eventObj.state || "err") as EventType];
     }
-    return ICONS[event_obj.event as EventType];
+    return ICONS[eventObj.event as EventType];
   })();
 
   const message = (() => {
-    if (event_obj.event === "reviewed") {
-      const approval_state = (event_obj.state || "err") as EventType;
-      return MESSAGES[approval_state];
+    if (eventObj.event === "reviewed") {
+      return MESSAGES[(eventObj.state || "err") as EventType];
     }
-    if (event_obj.event === "renamed") {
-      return `renamed the pull request to ${event_obj.rename?.to || ""}`;
+    if (eventObj.event === "renamed") {
+      return `renamed the pull request to ${eventObj.rename?.to || ""}`;
     }
-    return MESSAGES[event_obj.event as EventType];
+    return MESSAGES[eventObj.event as EventType];
   })();
 
-  const actor1 = getActor1(event_obj, event_type) || null;
-  const actor2 = getActor2(event_obj, event_type) || null;
+  const actor1 = getActor1(eventObj, eventType) || null;
+  const actor2 = getActor2(eventObj, eventType) || null;
 
   return {
-    event_obj,
-    icon_name,
+    eventObj,
+    iconName,
     message,
-    display_type,
-    event_type,
+    displayType,
+    eventType,
     actor1,
     actor2,
   };
@@ -235,9 +237,9 @@ export function processTimeline(timeline: eventInterface[]): {
 } {
   const processedTimeline = timeline
     .toReversed()
-    .map((event_obj) => getTimelineEvent(event_obj));
+    .map((eventObj) => getTimelineEvent(eventObj));
   const closedIdx = processedTimeline.findIndex(
-    (event) => event.event_obj.event === "closed",
+    (event) => event.eventObj.event === "closed",
   );
   if (closedIdx !== -1) {
     return {
