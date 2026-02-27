@@ -5,7 +5,6 @@ import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
-
 import styles from "./MarkdownEditor.module.css";
 import "./TiptapEditor.css";
 
