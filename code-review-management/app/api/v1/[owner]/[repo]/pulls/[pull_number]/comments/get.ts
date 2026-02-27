@@ -14,7 +14,7 @@ import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
 
-export async function get(
+export async function _get(
   req: Request,
   { params }: { params: { owner: string; repo: string; pull_number: number } },
 ) {
