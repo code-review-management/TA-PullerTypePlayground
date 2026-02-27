@@ -2,6 +2,7 @@ import { Status } from "../StatusFlagChip/statusConstants";
 import StatusFlagChip from "../StatusFlagChip/StatusFlagChip";
 import MOCK_PULL from "@/mocks/pull.json";
 import styles from "./StatusSection.module.css";
+import { PullRequest } from "@/types/github.types";
 
 /**
  * Status section of the PR view page where statuses such as "Merge conflict",
@@ -9,19 +10,19 @@ import styles from "./StatusSection.module.css";
  * at a time.
  * If the PR is ready to merge, no other flags should be able to be displayed.
  */
-export default function StatusSection() {
+export default function StatusSection({ pullData }: {pullData: PullRequest}) {
   const statuses: Status[] = [];
 
-  if (MOCK_PULL.mergeable) {
+  if (pullData.mergeable_state === "ready") {
     statuses.push("ready");
   } else {
-    if (MOCK_PULL.hasConflict) {
+    if (pullData.mergeable_state === "dirty") {
       statuses.push("conflict");
     }
-    if (MOCK_PULL.needsReview) {
+    if (pullData.mergeable_state === "blocked") {
       statuses.push("waiting");
     }
-    if (MOCK_PULL.hasCIFailure) {
+    if (pullData.hasCIFailure) {
       statuses.push("failure");
     }
   }

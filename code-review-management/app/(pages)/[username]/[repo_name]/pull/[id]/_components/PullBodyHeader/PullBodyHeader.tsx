@@ -4,6 +4,7 @@ import MOCK_PULL from "@/mocks/pull.json";
 import styles from "./PullBodyHeader.module.css";
 import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
+import { PullRequest } from "@/types/github.types";
 
 // Used for display of the branch names in the pull body header
 // TODO: Move to root layout
@@ -21,7 +22,7 @@ const robotoMono = Roboto_Mono({
  * the last update time,
  * number of commits, and number of files changed, lines added, and lines deleted.
  */
-export default function PullBodyHeader() {
+export default function PullBodyHeader({pullData} : {pullData: PullRequest}) {
   return (
     <div className={`${styles.pullBodyHeader} ${robotoMono.variable}`}>
       <div className={styles.titleLeft}>
@@ -29,23 +30,23 @@ export default function PullBodyHeader() {
           <h2 className={styles.repoName}>{MOCK_PULL.repo_name}</h2>
           <div className={styles.titleAndNum}>
             <h1 className={styles.pullTitle}>
-              {MOCK_PULL.title}{" "}
-              <span className={styles.pullNumber}>#{MOCK_PULL.number}</span>
+              {pullData.title}{" "}
+              <span className={styles.pullNumber}>#{pullData.number}</span>
             </h1>
           </div>
         </div>
         <div className={styles.titleLeftInfo}>
-          <StateChip state={MOCK_PULL.state as State} />
+          <StateChip state={pullData.state as State} />
           <div className={styles.userInfo}>
             <div className={styles.tempUserIcon}>
               <Image src="/mock/octocat.png" alt="@octocat" fill />
             </div>{" "}
             {/** TODO: Replace with user icon component */}
-            <p className={styles.user}>{MOCK_PULL.user}</p>
+            <p className={styles.user}>{pullData.user?.login}</p>
           </div>
           <div className={styles.branchDisplay}>
             <div className={styles.branchChip}>
-              <p className={styles.branchName}>{MOCK_PULL.head_title}</p>
+              <p className={styles.branchName}>{pullData.head.ref}</p>
             </div>
             <Image
               src="/icons/merge_direction.svg"
@@ -54,18 +55,18 @@ export default function PullBodyHeader() {
               alt="Right arrow"
             />
             <div className={styles.branchChip}>
-              <p className={styles.branchName}>{MOCK_PULL.base_title}</p>
+              <p className={styles.branchName}>{pullData.base.ref}</p>
             </div>
           </div>
         </div>
       </div>
       <div className={styles.titleRight}>
-        <p className={styles.updated}>Updated {MOCK_PULL.updated}</p>
+        <p className={styles.updated}>Updated {pullData.updated_at}</p>
         <div className={styles.changesInfo}>
-          <p className={styles.commits}>{MOCK_PULL.commits} commits</p>
-          <p className={styles.files}>{MOCK_PULL.changed_files} files</p>
-          <p className={styles.additions}>+{MOCK_PULL.additions}</p>
-          <p className={styles.deletions}>+{MOCK_PULL.deletions}</p>
+          <p className={styles.commits}>{pullData.commits} commits</p>
+          <p className={styles.files}>{pullData.changed_files} files</p>
+          <p className={styles.additions}>+{pullData.additions}</p>
+          <p className={styles.deletions}>+{pullData.deletions}</p>
         </div>
       </div>
     </div>

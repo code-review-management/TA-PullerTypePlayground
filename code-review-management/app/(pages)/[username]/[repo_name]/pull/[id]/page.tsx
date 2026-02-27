@@ -9,33 +9,43 @@ import Reviewers from "./_components/Reviewers/Reviewers";
 import Assignees from "./_components/Assignees/Assignees";
 import CISection from "./_components/CISection/CISection";
 import PRHeader from "./_components/PRHeader/PRHeader";
+import { useParams } from "next/navigation";
+import { PullParams } from "@/types/routing.types";
+import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 // import { useParams } from 'next/navigation'
 
 // Pull Request View page.
 export default function Pull() {
   // TODO: Use params to fetch PR info
-  // const params = useParams();
-  // const {username, repo_name, id} = params;
+  const params = useParams<PullParams>();
+  const {username, repo_name, id} = params;
+  const {data, isPending, isError} = usePullQuery(username, repo_name, id);
+
+  // TODO: Replace with proper loading/error UI.
+  if (isPending) return <div>Loading pull request...</div>;
+  if (isError) return <div>Failed to load pull request.</div>;
+
+  console.log(data);
 
   return (
     <div className={styles.page}>
       <PRHeader />
       <div className={styles.pageBody}>
         <div className={styles.bodyMain}>
-          <PullBodyHeader />
+          <PullBodyHeader pullData={data} />
           <Divider />
           <PullBodyDescription
-            username={MOCK_PULL.user}
-            createdAt={MOCK_PULL.created_at}
-            description={MOCK_PULL.description}
+            username={data.user?.login}
+            createdAt={data.created_at}
+            description={data.body}
           />
         </div>
         <div className={styles.infoColumn}>
-          <StatusSection />
+          <StatusSection pullData={data} />
           <Divider />
-          <Reviewers />
+          <Reviewers reviewers={data.requested_reviewers} />
           <Divider />
-          <Assignees />
+          <Assignees assignees={data.assignees}/>
           <Divider />
           <CISection />
           <Divider />
