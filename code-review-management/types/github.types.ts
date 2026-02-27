@@ -110,6 +110,9 @@ export const ReactionSchema = z.object({
   eyes: z.number(),
 });
 
+const side = ["LEFT", "RIGHT"] as const;
+const subjectType = ["line", "file"] as const;
+
 export const CommentSchema = z.object({
   pull_request_review_id: z.number(),
   id: z.number(),
@@ -124,11 +127,11 @@ export const CommentSchema = z.object({
   reactions: ReactionSchema,
   start_line: z.number().nullable(),
   original_start_line: z.number().nullable(),
-  start_side: z.string().nullable(),
+  start_side: z.enum(side).nullable(),
   line: z.number().nullable(),
   original_line: z.number().nullable(),
-  side: z.string(),
+  side: z.enum(side),
   in_reply_to_id: z.number().nullish(),
   author_association: z.string(),
-  subject_type: z.string(),
+  subject_type: z.enum(subjectType),
 });
