@@ -1,5 +1,5 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import DraftCommentActions from "../DraftCommentActions/DraftCommentActions";
+import DraftThreadActions from "../DraftThreadActions/DraftThreadActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
@@ -25,7 +25,7 @@ export default function InlineDraftThread({
           username="octocat"
           created={draft.created}
           defaultEditable={true}
-          actions={<DraftCommentActions />}
+          actions={<DraftThreadActions draft={draft} />}
         />
       </div>
     </div>
