@@ -14,7 +14,7 @@
 export async function fetcher(route: string) {
   const response = await fetch(route);
   if (!response.ok) {
-    throw new Error("Network response was not successful.");
+    throw new Error("Network GET response was not successful.");
   }
   return response.json();
 }
