@@ -85,7 +85,8 @@ function TimelineEvent({ event }: { event: eventInterface }) {
       <TimelineEventSmall event_type={event.event}>
         <div className={styles.committedLine}>
           <p className={styles.commitLineText}>
-            <span className={styles.commitSha}>#{abbr_sha}</span>{" "}
+            { /** TODO: Link to commit on GH */ }
+            <Link className={styles.commitSha} href={""}>#{abbr_sha}</Link>{" "}
             {event.message}
           </p>
           {/** TODO: Replace with user icon component */}

@@ -63,6 +63,11 @@
 .commitSha {
   color: var(--text-accent);
   font-weight: 700;
+  text-decoration: none;
+}
+
+.commitSha:hover {
+  text-decoration: underline;
 }
 
 .tempUserIcon {
