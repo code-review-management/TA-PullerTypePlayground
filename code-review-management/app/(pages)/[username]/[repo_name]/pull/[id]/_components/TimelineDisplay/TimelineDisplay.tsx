@@ -51,27 +51,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
   }
   if (event.displayType === "other") {
     if (event.eventType === "committed") {
-      const abbr_sha = event.eventObj.sha?.slice(0, 7);
-      return (
-        <TimelineEventSmall
-          eventType={event.eventType}
-          iconName={event.iconName}
-        >
-          <div className={styles.committedLine}>
-            <p className={styles.commitLineText}>
-              {/** TODO: Link to commit on GH */}
-              <Link className={styles.commitSha} href={""}>
-                #{abbr_sha}
-              </Link>{" "}
-              {event.eventObj.message}
-            </p>
-            {/** TODO: Replace with user icon component */}
-            <div className={styles.tempUserIcon}>
-              <Image src="/mock/octocat.png" alt="@octocat" fill />
-            </div>{" "}
-          </div>
-        </TimelineEventSmall>
-      );
+      return <TimelineCommit event={event} />;
     } else if (event.eventType === "closed") {
       return <Divider />;
       {
@@ -83,48 +63,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
     }
   }
   if (isReviewState(event.eventType)) {
-    if (event.eventObj.body === null) {
-      return (
-        <TimelineEventSmall
-          eventType={event.eventType}
-          iconName={event.iconName}
-        >
-          <p>
-            <UserLink username={event.eventObj.user?.login || ""} />{" "}
-            {event.message}
-          </p>
-        </TimelineEventSmall>
-      );
-    }
-    const commentDate = new Date(event.eventObj.submitted_at || "") || "";
-    const month = commentDate.toLocaleString("default", { month: "short" });
-    const timeString = commentDate.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    const formattedDate = `${month} ${commentDate.getDay()}, ${commentDate.getFullYear()} at ${timeString}`;
-
-    return (
-      <>
-        <TimelineEventSmall
-          eventType={event.eventType}
-          iconName={event.iconName}
-        >
-          <p>
-            <UserLink username={event.eventObj.user?.login || ""} />{" "}
-            {event.message}
-          </p>
-        </TimelineEventSmall>
-        <PRViewComment
-          username={event.eventObj.user?.login || ""}
-          createdAt={formattedDate}
-          description={event.eventObj.body || ""}
-          inTimeline
-        />
-      </>
-    );
+    return <TimelineReview event={event} />;
   }
   if (event.displayType === "single_link") {
     return (
@@ -148,6 +87,94 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
     console.log(`"${event.eventType}" not supported`); // TODO: REMOVE THIS DEBUG PRINT
     return;
   }
+}
+
+/**
+ * Commit event component displayed in timeline.
+ * Displays abbreviated SHA, commit message, and user icon.
+ * TODO: Get username from somewhere to be able to get user icon src.
+ * 
+ * @param event: Object representing the event that is the commit.
+ */
+function TimelineCommit({ event }: { event: timelineEvent }) {
+  const abbr_sha = event.eventObj.sha?.slice(0, 7);
+  return (
+    <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
+      <div className={styles.committedLine}>
+        <p className={styles.commitLineText}>
+          {/** TODO: Link to commit on GH */}
+          <Link className={styles.commitSha} href={""}>
+            #{abbr_sha}
+          </Link>{" "}
+          {event.eventObj.message}
+        </p>
+        {/** TODO: Replace with user icon component */}
+        <div className={styles.tempUserIcon}>
+          <Image src="/mock/octocat.png" alt="@octocat" fill />
+        </div>{" "}
+      </div>
+    </TimelineEventSmall>
+  );
+}
+
+/**
+ * Renders a review event on the timeline.
+ * Note there are two types of reviews that can be rendered on the timeline: review with comment (body)
+ *      and review without comment (body).
+ * @param event: Object representing the event that is the review.
+ */
+function TimelineReview({ event }: { event: timelineEvent }) {
+  // Review without comment (body)
+  if (event.eventObj.body === null) {
+    return (
+      <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
+        <p>
+          <UserLink username={event.eventObj.user?.login || ""} />{" "}
+          {event.message}
+        </p>
+      </TimelineEventSmall>
+    );
+  } 
+  
+  // Review with comment (body)
+  else {
+    return <TimelineReviewWithComment event={event}/>
+  }
+  
+}
+
+/**
+ * Renders a review event that has a comment (body).
+ * Uses the same comment comopnent as the pull body description (`PullBodyDescription`).
+ * @param event: Object representing the event that is the review.
+ */
+function TimelineReviewWithComment({ event } : {event: timelineEvent}) {
+  const commentDate = new Date(event.eventObj.submitted_at || "") || "";
+  const month = commentDate.toLocaleString("default", { month: "short" });
+  const timeString = commentDate.toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const formattedDate = `${month} ${commentDate.getDay()}, ${commentDate.getFullYear()} at ${timeString}`;
+
+  return (
+    <>
+      <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
+        <p>
+          <UserLink username={event.eventObj.user?.login || ""} />{" "}
+          {event.message}
+        </p>
+      </TimelineEventSmall>
+      <PRViewComment
+        username={event.eventObj.user?.login || ""}
+        createdAt={formattedDate}
+        description={event.eventObj.body || ""}
+        inTimeline
+      />
+    </>
+  );
 }
 
 /**
