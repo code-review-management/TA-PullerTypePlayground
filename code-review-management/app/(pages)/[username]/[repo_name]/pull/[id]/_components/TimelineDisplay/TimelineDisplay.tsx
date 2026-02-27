@@ -37,11 +37,7 @@ export default function TimelineDisplay() {
 
 /**
  * Renders an event in the timeline. Content and styling is dynamic based on event type.
- *
- * TODO: Separate different event type components this code is very ugly lol
- * TODO: Use schemas for different event types instead of this YOLOed interface
- * TODO: Get info not provided by timeline endpoint (commit pfps, linked issue, branch name)
- *
+ * TODO: Get info not provided by timeline endpoint (commit pfps, branch name)
  * @param event Object representing the event from the timeline.
  */
 function TimelineEvent({ event }: { event: timelineEvent }) {
@@ -93,6 +89,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
  * Commit event component displayed in timeline.
  * Displays abbreviated SHA, commit message, and user icon.
  * TODO: Get username from somewhere to be able to get user icon src.
+ * TODO: Collapse long commit messages by default and implement interactive expand.
  * 
  * @param event: Object representing the event that is the commit.
  */
