@@ -9,6 +9,9 @@ export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
 
+const side = ["LEFT", "RIGHT"] as const;
+const subjectType = ["line", "file"] as const;
+
 export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
@@ -124,11 +127,11 @@ export const CommentSchema = z.object({
   reactions: ReactionSchema,
   start_line: z.number().nullable(),
   original_start_line: z.number().nullable(),
-  start_side: z.string().nullable(),
+  start_side: z.enum(side).nullable(),
   line: z.number().nullable(),
   original_line: z.number().nullable(),
-  side: z.string(),
+  side: z.enum(side),
   in_reply_to_id: z.number().nullish(),
   author_association: z.string(),
-  subject_type: z.string(),
+  subject_type: z.enum(subjectType),
 });
