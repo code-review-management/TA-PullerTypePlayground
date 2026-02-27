@@ -12,7 +12,10 @@ import styles from "./InlineCommentEntry.module.css";
  * @param defaultEditable: Whether the editor should be editable by default
  *                         (e.g., false for published comments and true for
  *                         draft comments)
- * @param defaultContent: Contents of the comment.
+ * @param defaultContent: Contents of the comment. Can be undefined for newly
+ *                        created drafts.
+ * @param actions: Action buttons to render below the editor content when it is
+ *                 editable (e.g., publish or cancel buttons).
  */
 export default function InlineCommentEntry({
   avatar,

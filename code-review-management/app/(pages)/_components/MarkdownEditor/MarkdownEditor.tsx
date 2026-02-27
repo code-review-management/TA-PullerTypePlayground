@@ -10,11 +10,18 @@ import styles from "./MarkdownEditor.module.css";
 import "./TiptapEditor.css";
 
 /**
+ * A Markdown renderer/editor used to display and write comments.
+ * 
  * Docs:
  * 1. https://tiptap.dev/docs/editor/getting-started/install/nextjs
  * 2. https://tiptap.dev/docs/editor/markdown/getting-started/installation
- *
+ * 
  * TODO: Configure GitHub Flavored Markdown
+ * 
+ * @param defaultEditable: Whether the editor should be editable on initial render.
+ * @param defaultContent: Content to display in the editor on initial render.
+ * @param actions: Action buttons to render below the editor content when it is
+ *                 editable (e.g., publish or cancel buttons).
  */
 export default function MarkdownEditor({
   defaultEditable,
@@ -25,8 +32,8 @@ export default function MarkdownEditor({
   defaultContent?: string;
   actions?: ReactNode;
 }) {
-  const [editorContent, setEditorContent] = useState(defaultContent ?? "");
   const [editable, setEditable] = useState(defaultEditable);
+  const [editorContent, setEditorContent] = useState(defaultContent ?? "");
 
   const editor = useEditor({
     extensions: [StarterKit, Markdown],

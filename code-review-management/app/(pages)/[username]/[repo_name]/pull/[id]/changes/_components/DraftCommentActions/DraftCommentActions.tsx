@@ -3,6 +3,11 @@ import ArrowUpIcon from "@/public/icons/arrow_up.svg";
 import styles from "./DraftCommentActions.module.css";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 
+/**
+ * Renders the action buttons for a draft comment thread. Displays a publish
+ * button that submits the current draft. The button is disabled when the editor
+ * content is empty or contains only whitespace.
+ */
 export default function DraftCommentActions() {
   const { editorContent, setEditable } = useMarkdownEditorContext();
 
