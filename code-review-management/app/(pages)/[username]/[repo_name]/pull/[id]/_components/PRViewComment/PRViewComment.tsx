@@ -11,17 +11,23 @@ export default function PRViewComment({
   username,
   createdAt,
   description,
+  inTimeline,
 }: {
   username: string;
   createdAt: string;
   description: string;
+  inTimeline?: boolean;
 }) {
   return (
     <div className={styles.comment}>
-      <div className={styles.tempUserIcon}>
-        <Image src="/mock/octocat.png" alt="@octocat" fill />
-      </div>{" "}
-      {/** TODO: Replace with user icon component */}
+      <div className={`${inTimeline && styles.tempUserIconBackground}`}>
+        <div className={styles.tempUserIcon}>
+          <Image src="/mock/octocat.png" alt="@octocat" fill />
+        </div>{" "}
+      </div>
+      {/** TODO: Replace with user icon component.
+       * TODO: Fix uncenteredness on timeline
+       */}
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>

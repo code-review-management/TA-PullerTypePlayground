@@ -116,11 +116,23 @@ function TimelineEvent({ event }: { event: eventInterface }) {
         </div>
       );
     }
+
+    const comment_date = new Date(event.submitted_at || "") || "";
+    const month = comment_date.toLocaleString('default', { month: 'short' });
+    const timeString = comment_date.toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    const formatted_date = `${month} ${comment_date.getDay()}, ${comment_date.getFullYear()} at ${timeString}`
+
     return (
       <PRViewComment
         username={event.user?.login || ""}
-        createdAt={event.submitted_at || ""}
+        createdAt={formatted_date}
         description={event.body || ""}
+        inTimeline
       />
     );
   } else if (event.event === "review_dismissed") {
