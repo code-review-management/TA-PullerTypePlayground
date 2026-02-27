@@ -2,7 +2,12 @@ import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
 import MOCK_TIMELINE from "@/mocks/timeline.json";
 import { ReactNode } from "react";
-import { event_types, EventType, ICONS } from "./constants";
+import {
+  APPROVAL_STATE_MESSAGES,
+  event_types,
+  EventType,
+  ICONS,
+} from "./constants";
 import Image from "next/image";
 import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
@@ -42,6 +47,7 @@ interface eventInterface {
   body?: string;
   user?: { login: string };
   submitted_at?: string;
+  state?: string;
 }
 
 function processTimeline(timeline: eventInterface[]): {
@@ -109,31 +115,46 @@ function TimelineEvent({ event }: { event: eventInterface }) {
       </TimelineEventSmall>
     );
   } else if (event.event === "reviewed") {
+    // TODO: Get correct approval status even when review is stale/dismissed
+    const approval_state = event.state || "";
+    const approval_state_message = APPROVAL_STATE_MESSAGES[approval_state];
+
     if (event.body === null) {
       return (
-        <div>
-          reviewed by {event.user?.login}: {event.body}
-        </div>
+        <TimelineEventSmall event_type={approval_state}>
+          <p>
+            <UserLink username={event.user?.login || ""} />{" "}
+            {approval_state_message}
+          </p>
+        </TimelineEventSmall>
       );
     }
 
     const comment_date = new Date(event.submitted_at || "") || "";
-    const month = comment_date.toLocaleString('default', { month: 'short' });
-    const timeString = comment_date.toLocaleString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
+    const month = comment_date.toLocaleString("default", { month: "short" });
+    const timeString = comment_date.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
 
-    const formatted_date = `${month} ${comment_date.getDay()}, ${comment_date.getFullYear()} at ${timeString}`
+    const formatted_date = `${month} ${comment_date.getDay()}, ${comment_date.getFullYear()} at ${timeString}`;
 
     return (
-      <PRViewComment
-        username={event.user?.login || ""}
-        createdAt={formatted_date}
-        description={event.body || ""}
-        inTimeline
-      />
+      <>
+        <TimelineEventSmall event_type={approval_state}>
+          <p>
+            <UserLink username={event.user?.login || ""} />{" "}
+            {approval_state_message}
+          </p>
+        </TimelineEventSmall>
+        <PRViewComment
+          username={event.user?.login || ""}
+          createdAt={formatted_date}
+          description={event.body || ""}
+          inTimeline
+        />
+      </>
     );
   } else if (event.event === "review_dismissed") {
     return (
@@ -219,14 +240,20 @@ function TimelineEventSmall({
   event_type: EventType;
   children: ReactNode;
 }) {
+  const large_icon_event_types = ["approved", "changes_requested"];
+  const is_large_icon = large_icon_event_types.includes(event_type);
+  const icon_size = is_large_icon ? 30 : 20;
+
   return (
     <div className={styles.eventSmall}>
-      <div className={styles.timelineIcon}>
+      <div
+        className={`${styles.timelineIcon} ${!is_large_icon && styles.timelineIconPadded}`}
+      >
         <Image
           src={`/icons/timeline/${ICONS[event_type]}.svg`}
           alt="timeline_commit"
-          height={20}
-          width={20}
+          height={icon_size}
+          width={icon_size}
         />
       </div>
       {children}

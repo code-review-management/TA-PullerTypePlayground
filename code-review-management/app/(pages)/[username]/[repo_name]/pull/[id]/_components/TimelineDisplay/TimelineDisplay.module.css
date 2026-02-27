@@ -13,7 +13,7 @@
 
 .timelineLineBackground {
   position: absolute;
-  margin: 0 0 9.5px 9.5px;
+  margin-left: 14px;
   border-left: 1px solid var(--border-gray-secondary);
   z-index: -1;
   top: 0;
@@ -39,11 +39,16 @@
 }
 
 .timelineIcon {
-  padding: var(--spacer-4) 0;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--background-light);
+}
+
+.timelineIconPadded {
+  padding-top: var(--spacer-4);
+  padding-bottom: var(--spacer-4);
 }
 
 .committedLine {
