@@ -4,14 +4,21 @@ import styles from "./DraftCommentActions.module.css";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 
 export default function DraftCommentActions() {
-  const { getMarkdown, setEditable } = useMarkdownEditorContext();
+  const { editorContent, setEditable } = useMarkdownEditorContext();
 
   const handlePublish = () => {
-    console.log(getMarkdown());
+    console.log(editorContent);
     setEditable(false);
-  }
+  };
+
+  const isDraftBlank = editorContent.trim().length === 0;
+
   return (
-    <button className={styles.publish} onClick={handlePublish}>
+    <button
+      className={`${styles.publish} ${isDraftBlank ? styles.disabled : ""}`}
+      disabled={isDraftBlank}
+      onClick={handlePublish}
+    >
       <Image src={ArrowUpIcon} alt="Arrow up" />
     </button>
   );

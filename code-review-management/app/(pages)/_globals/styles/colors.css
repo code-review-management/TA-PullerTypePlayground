@@ -11,9 +11,8 @@
     /* Semantic colors */
     --color-success: #3ca133;
     --color-failure: #e30202;
-
-    /* Action colors */
-    --action-blue: rgb(30, 132, 222);
+    --color-interactive: #1e84de;
+    --color-disabled: #919191;
     
     /* Tooltip colors */
     --tooltip-gray: #5f5f5f;

@@ -1,7 +1,7 @@
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 
 const MarkdownEditorContext = createContext<{
-  getMarkdown: () => string;
+  editorContent: string;
   setEditable: Dispatch<SetStateAction<boolean>>;
 } | null>(null);
 

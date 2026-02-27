@@ -19,8 +19,8 @@ export default function InlinePublishedThread({ thread }: { thread: MockPublishe
             avatar={comment.user.avatar_url}
             username={comment.user.login}
             created={comment.created_at}
-            editableDefault={false}
-            content={comment.body}
+            defaultEditable={false}
+            defaultContent={comment.body}
           />
         ))}
       </div>

@@ -17,23 +17,27 @@ import "./TiptapEditor.css";
  * TODO: Configure GitHub Flavored Markdown
  */
 export default function MarkdownEditor({
-  editableDefault,
-  content,
+  defaultEditable,
+  defaultContent,
   actions,
 }: {
-  editableDefault: boolean;
-  content?: string;
+  defaultEditable: boolean;
+  defaultContent?: string;
   actions?: ReactNode;
 }) {
-  const [editable, setEditable] = useState(editableDefault);
+  const [editorContent, setEditorContent] = useState(defaultContent ?? "");
+  const [editable, setEditable] = useState(defaultEditable);
 
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
     editable,
-    content,
+    content: editorContent,
     contentType: "markdown",
     immediatelyRender: false,
     autofocus: "end",
+    onUpdate: ({ editor }: { editor: Editor }) => {
+      setEditorContent(editor.getMarkdown());
+    },
   });
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function MarkdownEditor({
   return (
     <MarkdownEditorContext
       value={{
-        getMarkdown: () => editor?.getMarkdown() ?? "",
+        editorContent,
         setEditable,
       }}
     >
