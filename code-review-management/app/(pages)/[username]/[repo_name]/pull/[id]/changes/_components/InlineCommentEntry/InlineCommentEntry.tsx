@@ -1,29 +1,36 @@
+import { ReactNode } from "react";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentEntry.module.css";
 
 /**
  * Used to render published and draft comment entries.
- * 
+ *
  * @param avatar: The link/path to the avatar picture of the comment author.
  * @param username: Username of the comment author.
  * @param created: Date of comment creation.
- * @param body: Contents of the comment.
- * @param editable: Whether the editor should be editable by default (e.g.,
- *                  false for published comments and true for draft comments)
+ * @param defaultEditable: Whether the editor should be editable by default
+ *                         (e.g., false for published comments and true for
+ *                         draft comments)
+ * @param defaultContent: Contents of the comment. Can be empty for newly
+ *                        created drafts.
+ * @param actions: Action buttons to render below the editor content when it is
+ *                 editable (e.g., publish or cancel buttons).
  */
 export default function InlineCommentEntry({
   avatar,
   username,
   created,
-  body,
-  editable,
+  defaultEditable,
+  defaultContent,
+  actions,
 }: {
   avatar: string;
   username: string;
   created: string;
-  body: string;
-  editable: boolean;
+  defaultEditable: boolean;
+  defaultContent?: string;
+  actions?: ReactNode;
 }) {
   return (
     <div className={styles.comment}>
@@ -38,7 +45,11 @@ export default function InlineCommentEntry({
             {new Date(created).toDateString()}
           </span>
         </div>
-        <MarkdownEditor content={body} editable={editable} />
+        <MarkdownEditor
+          defaultEditable={defaultEditable}
+          defaultContent={defaultContent}
+          actions={actions}
+        />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { PullParams } from "@/types/routing.types";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
+import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import styles from "./page.module.css";
 
@@ -28,13 +29,11 @@ export default function Changes() {
   if (isError) return <div>Failed to load changes.</div>;
 
   return (
-    <div className={styles.page}>
-      <h1>{pull.title}</h1>
-      <DiffListView
-        publishedThreads={publishedThreads}
-        draftThreads={draftThreads}
-        setDraftThreads={setDraftThreads}
-      />
-    </div>
+    <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
+      <div className={styles.page}>
+        <h1>{pull.title}</h1>
+        <DiffListView publishedThreads={publishedThreads} />
+      </div>
+    </DraftThreadsContext>
   );
 }

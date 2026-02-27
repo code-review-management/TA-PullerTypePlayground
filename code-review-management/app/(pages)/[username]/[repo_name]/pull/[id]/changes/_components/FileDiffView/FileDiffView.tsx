@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { Roboto_Mono } from "next/font/google";
 import {
@@ -13,7 +13,7 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { DraftThreads } from "../../_hooks/useDraftThreads";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
@@ -43,8 +43,6 @@ export default function FileDiffView({
   viewType,
   hunks,
   publishedThreadsByLine,
-  draftThreads,
-  setDraftThreads,
 }: {
   oldPath: string;
   newPath: string;
@@ -52,10 +50,9 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
-  draftThreads: DraftThreads;
-  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const activePath = getActivePath(diffType, oldPath, newPath);
+  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { activeHighlight, highlightEvents } = useHighlight(
     activePath,
     setDraftThreads,
@@ -99,27 +96,25 @@ export default function FileDiffView({
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
       />
-      <div>
-        {isExpanded && (
-          <Diff
-            viewType={viewType}
-            diffType={diffType}
-            hunks={hunks}
-            tokens={tokens}
-            widgets={widgets}
-            renderGutter={renderGutter}
-            gutterEvents={highlightEvents}
-          >
-            {(hunks) =>
-              hunks.map((hunk) => (
-                <Fragment key={hunk.content}>
-                  <Decoration>{hunk.content}</Decoration>
-                  <Hunk hunk={hunk} />
-                </Fragment>
-              ))
-            }
-          </Diff>
-        )}
+      <div className={!isExpanded ? styles.collapsed : ""}>
+        <Diff
+          viewType={viewType}
+          diffType={diffType}
+          hunks={hunks}
+          tokens={tokens}
+          widgets={widgets}
+          renderGutter={renderGutter}
+          gutterEvents={highlightEvents}
+        >
+          {(hunks) =>
+            hunks.map((hunk) => (
+              <Fragment key={hunk.content}>
+                <Decoration>{hunk.content}</Decoration>
+                <Hunk hunk={hunk} />
+              </Fragment>
+            ))
+          }
+        </Diff>
       </div>
     </div>
   );
