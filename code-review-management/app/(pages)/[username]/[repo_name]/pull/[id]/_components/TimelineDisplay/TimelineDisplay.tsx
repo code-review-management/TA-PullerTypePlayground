@@ -38,6 +38,7 @@ export default function TimelineDisplay() {
 /**
  * Renders an event in the timeline. Content and styling is dynamic based on event type.
  * TODO: Get info not provided by timeline endpoint (commit pfps, branch name)
+ * TODO: Use branch name and get commit SHA correctly for merge and delete events
  * @param event Object representing the event from the timeline.
  */
 function TimelineEvent({ event }: { event: timelineEvent }) {
