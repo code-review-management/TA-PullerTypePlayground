@@ -38,8 +38,8 @@ export function useSubmitDraftThread(
               draft.end,
               draft.side,
             );
-            const updatedThreads = prev;
-            delete updatedThreads[key]
+            const updatedThreads = { ...prev };
+            delete updatedThreads[key];
             return updatedThreads;
           });
         },
