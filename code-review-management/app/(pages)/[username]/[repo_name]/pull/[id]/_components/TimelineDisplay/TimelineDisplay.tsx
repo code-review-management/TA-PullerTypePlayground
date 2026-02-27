@@ -2,7 +2,7 @@ import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
 import MOCK_TIMELINE from "@/mocks/timeline.json";
 import { ReactNode } from "react";
-import { EventType, ICONS } from "./constants";
+import { event_types, EventType, ICONS } from "./constants";
 import Image from "next/image";
 import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
@@ -69,6 +69,10 @@ function processTimeline(timeline: eventInterface[]): {
  * @param event Object representing the event from the timeline.
  */
 function TimelineEvent({ event }: { event: eventInterface }) {
+  if (!event_types.includes(event.event)) {
+    console.log(`"${event.event}" not supported`); // TODO: REMOVE THIS DEBUG PRINT
+    return;
+  }
   if (event.event === "committed") {
     const abbr_sha = event.sha?.slice(0, 7);
     return (
@@ -146,15 +150,6 @@ function TimelineEvent({ event }: { event: eventInterface }) {
         <p>
           <UserLink username={event.actor?.login || ""} /> marked this pull
           request as ready for review
-        </p>
-      </TimelineEventSmall>
-    );
-  } else if (event.event === "connected") {
-    return (
-      <TimelineEventSmall event_type={event.event}>
-        <p>
-          <UserLink username={event.actor?.login || ""} /> connected this pull
-          request to issue....??
         </p>
       </TimelineEventSmall>
     );
