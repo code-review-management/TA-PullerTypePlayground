@@ -5,10 +5,10 @@
 }
 
 .beforeCloseTimeline {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-16);
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-16);
+  position: relative;
 }
 
 .timelineLineBackground {

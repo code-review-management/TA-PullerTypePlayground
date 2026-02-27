@@ -1,22 +1,28 @@
-export const event_types = [
-  "approved",
-  "assigned",
-  "changes_requested",
-  "committed",
-  "closed",
-  "dismissed",
-  "head_ref_deleted",
-  "merged",
-  "ready_for_review",
-  "renamed",
-  "review_dismissed",
-  "review_requested",
-  "reviewed",
-  "err",
-];
+/**
+ * Type for an "event type".
+ * These are possible values for "event" field of objects returned in timeline event API response.
+ */
+export type EventType =
+  | "approved"
+  | "assigned"
+  | "changes_requested"
+  | "commented"
+  | "committed"
+  | "closed"
+  | "dismissed"
+  | "head_ref_deleted"
+  | "merged"
+  | "ready_for_review"
+  | "renamed"
+  | "review_dismissed"
+  | "review_requested"
+  | "reviewed"
+  | "err";
 
-export type EventType = typeof event_types[number];
-
+/**
+ * Interface representing object structure for events in array returned by API response.
+ * Note almost all fields are optional because different event types have different structures.
+ */
 interface eventInterface {
   event: string;
   node_id: string;
@@ -36,12 +42,32 @@ interface eventInterface {
   state?: string;
 }
 
-export const review_states = ["approved", "commented", "changes_requested", "dismissed"];
+/**
+ * Possible states a "review" type event can have
+ * Used to check if an event is a review when rendering it in TimelineEvent component.
+ */
+export const review_states = [
+  "approved",
+  "commented",
+  "changes_requested",
+  "dismissed",
+];
 
-const other_events = ["committed", "closed"];
-
+/**
+ * Events that follow the double link structure "[actor1] {message} [actor2]" when rendered
+ * For example: "octocat requested a review from octodog"
+ */
 const double_events = ["assigned", "review_requested"];
 
+// Events that do not follow common "single link" or "double link" structures when rendered
+const other_events = ["committed", "closed"];
+
+// Events that are not in double_events or other_events follow the single link structure "[actor1] {message}".
+
+/**
+ * Raw events returned from API response will be parsed into timelineEvents
+ * timelineEvents are then rendered in the timeline display
+ */
 export interface timelineEvent {
   event_obj: eventInterface;
   icon_name: string;
@@ -52,6 +78,9 @@ export interface timelineEvent {
   actor2: string | null;
 }
 
+/**
+ * Map event types to icons
+ */
 const ICONS: Record<EventType, string> = {
   approved: "approved",
   assigned: "user",
@@ -60,6 +89,7 @@ const ICONS: Record<EventType, string> = {
   committed: "commit",
   closed: "",
   dismissed: "eye",
+  err: "",
   head_ref_deleted: "branch",
   merged: "merge",
   ready_for_review: "eye",
@@ -69,12 +99,18 @@ const ICONS: Record<EventType, string> = {
   reviewed: "eye",
 };
 
+/**
+ * Map event types to message texts
+ */
 const MESSAGES: Record<EventType, string> = {
   approved: "approved these changes",
   assigned: "assigned this to",
   changes_requested: "requested changes",
+  closed: "",
   commented: "reviewed",
+  committed: "",
   dismissed: "previously reviewed",
+  err: "Error! Could not fetch event message",
   head_ref_deleted: "deleted branch ??",
   merged: "merged commit ??",
   ready_for_review: "marked this pull request as ready for review",
@@ -84,7 +120,13 @@ const MESSAGES: Record<EventType, string> = {
   reviewed: "reviewed",
 };
 
-function getActor1(event_obj: eventInterface, event_type: string) {
+/**
+ *
+ * @param event_obj eventInterface (interfaced response) object
+ * @param event_type
+ * @returns The username of "actor1" for this event, or null.
+ */
+function getActor1(event_obj: eventInterface, event_type: EventType) {
   if (event_type === "review_requested") {
     return event_obj.review_requester?.login;
   }
@@ -94,7 +136,13 @@ function getActor1(event_obj: eventInterface, event_type: string) {
   return null;
 }
 
-function getActor2(event_obj: eventInterface, event_type: string) {
+/**
+ *
+ * @param event_obj eventInterface (interfaced response) object
+ * @param event_type
+ * @returns The username of "actor2" for this event, or null.
+ */
+function getActor2(event_obj: eventInterface, event_type: EventType) {
   if (event_type === "review_requested") {
     return event_obj.requested_reviewer?.login;
   }
@@ -104,8 +152,15 @@ function getActor2(event_obj: eventInterface, event_type: string) {
   return null;
 }
 
+/**
+ * Parse eventInterface objects into
+ * @param event_obj Interfaced raw data from API response.
+ * @returns A single timelineEvent object.
+ */
 function getTimelineEvent(event_obj: eventInterface): timelineEvent {
-  const event_type = (event_obj.event === "reviewed" ? event_obj.state?.toLowerCase() : event_obj.event) || "err";
+  const event_type = ((event_obj.event === "reviewed"
+    ? event_obj.state?.toLowerCase()
+    : event_obj.event) || "err") as EventType;
 
   const display_type = (() => {
     if (other_events.includes(event_obj.event)) {
@@ -121,21 +176,21 @@ function getTimelineEvent(event_obj: eventInterface): timelineEvent {
 
   const icon_name = (() => {
     if (event_obj.event === "reviewed") {
-      const approval_state = event_obj.state || "";
+      const approval_state = (event_obj.state || "err") as EventType;
       return ICONS[approval_state];
     }
-    return ICONS[event_obj.event];
+    return ICONS[event_obj.event as EventType];
   })();
 
   const message = (() => {
     if (event_obj.event === "reviewed") {
-      const approval_state = event_obj.state || "";
+      const approval_state = (event_obj.state || "err") as EventType;
       return MESSAGES[approval_state];
     }
     if (event_obj.event === "renamed") {
-      return `renamed the pull request to ${event_obj.rename?.to || ""}`
+      return `renamed the pull request to ${event_obj.rename?.to || ""}`;
     }
-    return MESSAGES[event_obj.event];
+    return MESSAGES[event_obj.event as EventType];
   })();
 
   const actor1 = getActor1(event_obj, event_type) || null;
@@ -152,6 +207,13 @@ function getTimelineEvent(event_obj: eventInterface): timelineEvent {
   };
 }
 
+/**
+ * Given interfaced raw timeline API, return two arrays of processed "timelineEvent" objects.
+ * @param timeline Raw timeline API data, interfaced.
+ * @returns {beforeCloseTimeline, afterCloseTimeline}
+ *    beforeCloseTimeline: All events before the pull request was closed, if it was closed. Otherwise contains all events.
+ *    afterCloseTimeline: All events including and after the pull request was closed, if it was closed. Otherwise is empty.
+ */
 export function processTimeline(timeline: eventInterface[]): {
   beforeCloseTimeline: timelineEvent[];
   afterCloseTimeline: timelineEvent[];
