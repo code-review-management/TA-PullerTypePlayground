@@ -12,27 +12,34 @@ import styles from "./page.module.css";
 export default function Changes() {
   const { username, repo_name, id } = useParams<PullParams>();
   const { draftThreads, setDraftThreads } = useDraftThreads();
-  const { publishedThreads } = usePublishedThreads(username, repo_name, id);
+  const {
+    publishedThreads,
+    isPending: isPublishedThreadsPending,
+    isError: isPublishedThreadsError,
+  } = usePublishedThreads(username, repo_name, id);
 
   const {
     data: pull,
-    isPending,
-    isError,
+    isPending: isPullPending,
+    isError: isPullError,
   } = usePullQuery(username, repo_name, id);
 
   /**
    * TODO: Replace with proper loading/error UI. Move to affected sections
-   * instead of returning at the page-level. Remove `!publishedThreads` check
-   * once we query from the comments API.
+   * instead of returning at the page-level.
    */
-  if (isPending || !publishedThreads) return <div>Loading changes...</div>;
-  if (isError) return <div>Failed to load changes.</div>;
-
+  if (isPullPending || isPublishedThreadsPending) {
+    return <div>Loading changes...</div>;
+  }
+  if (isPullError || isPublishedThreadsError) {
+    return <div>Failed to load changes.</div>;
+  }
   return (
     <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
       <div className={styles.page}>
         <h1>{pull.title}</h1>
-        <DiffListView publishedThreads={publishedThreads} />
+        {/* Use non-null assertion since threads are defined if not in pending/error state */}
+        <DiffListView publishedThreads={publishedThreads!} />
       </div>
     </DraftThreadsContext>
   );

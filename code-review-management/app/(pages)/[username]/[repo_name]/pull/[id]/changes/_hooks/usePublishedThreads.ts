@@ -46,20 +46,13 @@ export interface PublishedThreadItem {
 }
 
 export function usePublishedThreads(owner: string, repo: string, id: string) {
-  const [publishedThreads, setPublishedThreads] = useState<PublishedThreads>();
-  const { data: comments } = useReviewCommentsQuery(owner, repo, id);
+  const {
+    data: publishedThreads,
+    isPending,
+    isError,
+  } = useReviewCommentsQuery(owner, repo, id, buildCommentRelations);
 
-  useEffect(() => {
-    const processComments = () => {
-      if (comments) {
-        const threads = buildCommentRelations(comments);
-        setPublishedThreads(threads);
-      }
-    }
-    processComments();
-  }, [comments]);
-
-  return { publishedThreads };
+  return { publishedThreads, isPending, isError };
 }
 
 function buildCommentRelations(comments: Comment[]) {
