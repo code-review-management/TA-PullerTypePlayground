@@ -1,0 +1,11 @@
+.tree {
+    /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
+    max-height: 100vh;
+    overflow-y: auto;
+
+    position: sticky;
+    top: 0;
+
+    background-color: red;
+    width: 300px;
+}

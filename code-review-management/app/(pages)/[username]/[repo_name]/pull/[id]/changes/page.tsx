@@ -7,6 +7,7 @@ import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
+import FileTree from "./_components/FileTree/FileTree";
 import styles from "./page.module.css";
 
 export default function Changes() {
@@ -32,7 +33,10 @@ export default function Changes() {
     <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
       <div className={styles.page}>
         <h1>{pull.title}</h1>
-        <DiffListView publishedThreads={publishedThreads} />
+        <div className={styles.changes}>
+          <FileTree />
+          <DiffListView publishedThreads={publishedThreads} />
+        </div>
       </div>
     </DraftThreadsContext>
   );
