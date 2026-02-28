@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ArrowUpIcon from "@/public/icons/arrow_up.svg";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { useParams } from "next/navigation";
-import { RotatingLines } from "react-loader-spinner";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import { useSubmitDraftThread } from "../../_hooks/useSubmitDraftThread";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
@@ -23,21 +23,17 @@ export default function DraftCommentActions({
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { editorContent } = useMarkdownEditorContext();
-  const {
-    handleSubmit,
-    isSubmitPending,
-    isPullsPending,
-  } = useSubmitDraftThread(draft, username, repo_name, id);
+  const { handleSubmit, isSubmitPending, isPullsPending } =
+    useSubmitDraftThread(draft, username, repo_name, id);
 
   const isDraftBlank = editorContent.trim().length === 0;
   const isDisabled = isDraftBlank || isPullsPending;
-
   // TODO: Show toast error message if there is a submit or pulls error.
+
   return (
     <>
       {isSubmitPending ? (
-        // TODO: Use global color.
-        <RotatingLines height={20} width={20} color={"grey"} />
+        <LoadingSpinner />
       ) : (
         <button
           className={`${styles.submit} ${isDisabled ? styles.disabled : ""}`}
