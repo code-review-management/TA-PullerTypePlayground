@@ -1,0 +1,37 @@
+.comment {
+    display: flex;
+    gap: var(--spacer-12);
+}
+
+.avatar {
+    height: 22px;
+    width: 22px;
+    min-width: 22px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-4);
+    width: 100%;
+    min-width: 0;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin: var(--spacer-4) 0;
+    gap: var(--spacer-8);
+}
+
+.username {
+    font-weight: 450;
+}
+
+.date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
