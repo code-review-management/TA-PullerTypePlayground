@@ -3,12 +3,12 @@ import { fetcher } from "../utils/fetcher";
 import { Comment } from "@/types/github.types";
 
 /**
- * Fetches the review comments on the diffs of a GitHub pull request.
+ * Fetches the review comments made on the diffs of a GitHub pull request.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
- * @returns: TanStack query result containing the pull request data.
+ * @returns: TanStack query result containing the list of review comments.
  */
 export function useReviewCommentsQuery(
   owner: string,
