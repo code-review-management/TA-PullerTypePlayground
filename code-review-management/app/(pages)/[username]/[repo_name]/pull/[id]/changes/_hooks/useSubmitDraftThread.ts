@@ -9,7 +9,7 @@ export function useSubmitDraftThread(
   draft: DraftThreadItem,
   owner: string,
   repo: string,
-  id: string,
+  pullNumber: string,
 ) {
   const { setDraftThreads } = useDraftThreadsContext();
   const { editorContent } = useMarkdownEditorContext();
@@ -17,17 +17,19 @@ export function useSubmitDraftThread(
     data: pulls,
     isPending: isPullsPending,
     isError: isPullsError,
-  } = usePullQuery(owner, repo, id);
+  } = usePullQuery(owner, repo, pullNumber);
   const {
     mutate,
     isPending: isSubmitPending,
     isError: isSubmitError,
-  } = useCreateReviewCommentMutation(owner, repo, id);
+  } = useCreateReviewCommentMutation(owner, repo, pullNumber);
 
   const handleSubmit = () => {
-    if (!pulls) return; // TODO: Address this. Pending/error state?
-
+    // On pulls pending, button is already disabled. On pulls error, do not
+    // allow submission. TODO: Display toast error message on pulls error.
+    if (!pulls) return; 
     const side = toGitHubSide(draft.side);
+
     mutate(
       {
         body: editorContent,
@@ -39,6 +41,8 @@ export function useSubmitDraftThread(
         line: draft.end,
       },
       {
+        // Fires after invalidating the TanStack cache for review comments
+        // and refetching them.
         onSuccess: () => {
           setDraftThreads((prev) => {
             const key = getDraftThreadKey(
@@ -46,9 +50,9 @@ export function useSubmitDraftThread(
               draft.end,
               draft.side,
             );
-            const updatedThreads = { ...prev };
-            delete updatedThreads[key];
-            return updatedThreads;
+            const draftThreads = { ...prev };
+            delete draftThreads[key];
+            return draftThreads;
           });
         },
       },

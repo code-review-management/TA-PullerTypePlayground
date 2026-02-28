@@ -28,7 +28,7 @@ export default function DraftCommentActions({
 
   const isDraftBlank = editorContent.trim().length === 0;
   const isDisabled = isDraftBlank || isPullsPending;
-  // TODO: Show toast error message if there is a submit or pulls error.
+  // TODO: Display toast error message on submit or pulls error.
 
   return (
     <>

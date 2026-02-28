@@ -45,12 +45,12 @@ export interface PublishedThreadItem {
   comments: Comment[];
 }
 
-export function usePublishedThreads(owner: string, repo: string, id: string) {
+export function usePublishedThreads(owner: string, repo: string, pullNumber: string) {
   const {
     data: publishedThreads,
     isPending,
     isError,
-  } = useReviewCommentsQuery(owner, repo, id, buildCommentRelations);
+  } = useReviewCommentsQuery(owner, repo, pullNumber, buildCommentRelations);
 
   return { publishedThreads, isPending, isError };
 }
