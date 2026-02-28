@@ -19,7 +19,7 @@ export async function poster(route: string, body: string) {
   });
 
   if (!response.ok) {
-    throw new Error("Network POST response was not successful.");
+    throw new Error("Network POST response was unsuccessful.");
   }
 
   return response.json();
