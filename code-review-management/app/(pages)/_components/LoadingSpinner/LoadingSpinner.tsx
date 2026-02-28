@@ -3,7 +3,7 @@ import { RotatingLines } from "react-loader-spinner";
 /**
  * Renders a loading spinner.
  *
- * @param size: Height and width of the SVG in px units. Defaults to 20px.
+ * @param size: Height and width of the spinner in px units. Defaults to 20px.
  */
 export default function LoadingSpinner({ size = 20 }: { size?: number }) {
   return (
