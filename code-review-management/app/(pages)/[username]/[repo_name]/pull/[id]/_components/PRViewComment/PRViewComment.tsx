@@ -25,9 +25,7 @@ export default function PRViewComment({
           <Image src="/mock/octocat.png" alt="@octocat" fill />
         </div>{" "}
       </div>
-      {/** TODO: Replace with user icon component.
-       * TODO: Fix uncenteredness on timeline
-       */}
+      {/** TODO: Replace with user icon component. */}
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>
