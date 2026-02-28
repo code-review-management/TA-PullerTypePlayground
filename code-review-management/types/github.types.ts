@@ -9,6 +9,9 @@ export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
 
+const side = ["LEFT", "RIGHT"] as const;
+const subjectType = ["line", "file"] as const;
+
 export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
@@ -75,8 +78,8 @@ export const PullRequestSchema = z.object({
   author_association: z.string(),
   assignee: UserSchema.nullable(),
   merged: z.boolean(),
-  mergeable: z.boolean().nullable(),
-  rebaseable: z.boolean().nullable(),
+  mergeable: z.boolean(),
+  rebaseable: z.boolean(),
   mergeable_state: z.string(),
   merged_by: UserSchema.nullable(),
   comments: z.number(),
@@ -109,9 +112,6 @@ export const ReactionSchema = z.object({
   rocket: z.number(),
   eyes: z.number(),
 });
-
-const side = ["LEFT", "RIGHT"] as const;
-const subjectType = ["line", "file"] as const;
 
 export const CommentSchema = z.object({
   pull_request_review_id: z.number(),
