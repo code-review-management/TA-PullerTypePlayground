@@ -6,6 +6,7 @@ import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
+import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
@@ -34,16 +35,18 @@ export default function DiffListView({
       {diffs.map((diff) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         return (
-          <FileDiffView
-            key={diff.oldPath + "-" + diff.newPath}
-            oldPath={diff.oldPath}
-            newPath={diff.newPath}
-            diffType={diff.type}
-            viewType="split"
-            hunks={diff.hunks}
-            // When there are no published threads mapped to a file, pass an empty map.
-            publishedThreadsByLine={publishedThreads.get(activePath) ?? new Map()}
-          />
+          <div key={diff.oldPath + "-" + diff.newPath}>
+            <IconTooltip id={`collapse-expand-tooltip-${diff.oldPath}-${diff.newPath}`} />
+            <FileDiffView
+              oldPath={diff.oldPath}
+              newPath={diff.newPath}
+              diffType={diff.type}
+              viewType="split"
+              hunks={diff.hunks}
+              // When there are no published threads mapped to a file, pass an empty map.
+              publishedThreadsByLine={publishedThreads.get(activePath) ?? new Map()}
+            />
+          </div>
         );
       })}
     </div>
