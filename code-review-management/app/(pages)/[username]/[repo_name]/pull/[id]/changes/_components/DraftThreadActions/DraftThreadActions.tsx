@@ -11,7 +11,8 @@ import styles from "./DraftThreadActions.module.css";
 /**
  * Renders the action buttons for a draft comment thread. Displays a publish
  * button that submits the current draft. The button is disabled when the editor
- * content is empty or contains only whitespace.
+ * content is empty, contains only whitespace, or when the pull request data is
+ * still pending.
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
@@ -22,14 +23,16 @@ export default function DraftCommentActions({
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { editorContent } = useMarkdownEditorContext();
-  const { handleSubmit, isSubmitPending } = useSubmitDraftThread(
-    draft,
-    username,
-    repo_name,
-    id,
-  );
-  const isDraftBlank = editorContent.trim().length === 0;
+  const {
+    handleSubmit,
+    isSubmitPending,
+    isPullsPending,
+  } = useSubmitDraftThread(draft, username, repo_name, id);
 
+  const isDraftBlank = editorContent.trim().length === 0;
+  const isDisabled = isDraftBlank || isPullsPending;
+
+  // TODO: Show toast error message if there is a submit or pulls error.
   return (
     <>
       {isSubmitPending ? (
@@ -37,8 +40,8 @@ export default function DraftCommentActions({
         <RotatingLines height={20} width={20} color={"grey"} />
       ) : (
         <button
-          className={`${styles.submit} ${isDraftBlank ? styles.disabled : ""}`}
-          disabled={isDraftBlank}
+          className={`${styles.submit} ${isDisabled ? styles.disabled : ""}`}
+          disabled={isDisabled}
           onClick={handleSubmit}
         >
           <Image src={ArrowUpIcon} alt="Arrow up" />

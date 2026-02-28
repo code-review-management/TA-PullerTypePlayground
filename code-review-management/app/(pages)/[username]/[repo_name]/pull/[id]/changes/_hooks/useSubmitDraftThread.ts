@@ -13,8 +13,16 @@ export function useSubmitDraftThread(
 ) {
   const { setDraftThreads } = useDraftThreadsContext();
   const { editorContent } = useMarkdownEditorContext();
-  const { data: pulls } = usePullQuery(owner, repo, id);
-  const { mutate, isPending } = useCreateReviewCommentMutation(owner, repo, id);
+  const {
+    data: pulls,
+    isPending: isPullsPending,
+    isError: isPullsError,
+  } = usePullQuery(owner, repo, id);
+  const {
+    mutate,
+    isPending: isSubmitPending,
+    isError: isSubmitError,
+  } = useCreateReviewCommentMutation(owner, repo, id);
 
   const handleSubmit = () => {
     if (!pulls) return; // TODO: Address this. Pending/error state?
@@ -47,5 +55,11 @@ export function useSubmitDraftThread(
     );
   };
 
-  return { handleSubmit, isSubmitPending: isPending };
+  return {
+    handleSubmit,
+    isSubmitPending,
+    isSubmitError,
+    isPullsPending,
+    isPullsError,
+  };
 }
