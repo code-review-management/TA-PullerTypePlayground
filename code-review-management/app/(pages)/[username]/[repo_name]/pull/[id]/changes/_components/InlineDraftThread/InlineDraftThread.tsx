@@ -6,8 +6,8 @@ import styles from "./InlineDraftThread.module.css";
 
 /**
  * Displays a draft thread that is anchored to specific lines in a file diff.
- * Will eventually contain an editor where the user can draft a comment
- * associated with those lines, and begin a new thread upon submission.
+ * Contains an editor where the user can draft a comment associated with those
+ * lines, and begin a new thread upon submission.
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
