@@ -1,6 +1,10 @@
+import { FileDiff } from "@/types/github.types";
+import { buildFileTree } from "../../_utils/filetree-utils";
 import styles from "./FileTree.module.css";
 
-export default function FileTree() {
+export default function FileTree({ files }: { files: FileDiff[] }) {
+  buildFileTree(files);
+
   return (
     <div className={styles.tree}>
       {/* https://stackoverflow.com/a/66389669 */}
