@@ -10,7 +10,7 @@
     min-width: 300px;
     width: 300px;
 
-    padding: var(--spacer-10);
+    padding: var(--spacer-10) var(--spacer-16);
     padding-left: 0;
     border-right: var(--border-thin-width) solid var(--border-gray);
     font-size: 0.875rem;
