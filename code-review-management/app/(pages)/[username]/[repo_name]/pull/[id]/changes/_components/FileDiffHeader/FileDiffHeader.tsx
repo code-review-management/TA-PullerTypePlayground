@@ -25,7 +25,7 @@ export default function FileDiffHeader({
         alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
         className={styles.chevron}
         onClick={() => setIsExpanded((prev) => !prev)}
-        data-tooltip-id={`collapse-expand-tooltip-${oldPath}-${newPath}`}
+        data-tooltip-id={`collapse-expand-diff-${oldPath}-${newPath}`}
         data-tooltip-content={isExpanded ? "Collapse" : "Expand"}
         data-tooltip-place="top"
         data-tooltip-delay-show={100}
