@@ -7,6 +7,7 @@
     --text-primary: #49454f;
     --text-secondary: #79747e;
     --text-tertiary: #938f99;
+    --text-accent: #589ddd;
 
     /* Semantic colors */
     --color-success: #3ca133;
@@ -15,7 +16,7 @@
     --color-disabled: #919191;
     
     /* Tooltip colors */
-    --tooltip-gray: #5f5f5f;
+    --tooltip-gray: #4c4c4c;
 
     /* Icon colors */
     --icon-hover-gray: #efefef;

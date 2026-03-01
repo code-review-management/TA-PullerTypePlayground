@@ -9,6 +9,7 @@ import Reviewers from "./_components/Reviewers/Reviewers";
 import Assignees from "./_components/Assignees/Assignees";
 import CISection from "./_components/CISection/CISection";
 import PRHeader from "./_components/PRHeader/PRHeader";
+import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
 // import { useParams } from 'next/navigation'
 
 // Pull Request View page.
@@ -29,6 +30,7 @@ export default function Pull() {
             createdAt={MOCK_PULL.created_at}
             description={MOCK_PULL.description}
           />
+          <PRViewTimeline />
         </div>
         <div className={styles.infoColumn}>
           <StatusSection />

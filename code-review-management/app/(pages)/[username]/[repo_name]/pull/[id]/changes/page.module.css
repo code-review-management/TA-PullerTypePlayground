@@ -3,5 +3,10 @@
   flex-direction: column;
   min-height: 100vh;
   margin: var(--spacer-24) var(--spacer-48);
-  gap: var(--spacer-24)
+  gap: var(--spacer-24);
+}
+
+.changes {
+  display: flex;
+  gap: var(--spacer-16);
 }

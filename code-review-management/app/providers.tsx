@@ -6,6 +6,7 @@ import { ReactNode } from "react";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      refetchOnWindowFocus: process.env.NODE_ENV === "production",
       retry: process.env.NODE_ENV === "production" ? 3 : 0,
     },
   },
