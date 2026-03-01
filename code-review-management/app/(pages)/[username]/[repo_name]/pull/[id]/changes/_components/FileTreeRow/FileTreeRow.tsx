@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileTreeDividers from "../FileTreeDividers/FileTreeDividers";
+import FileTreeIcon from "../FileTreeIcon/FileTreeIcon";
 import styles from "./FileTreeRow.module.css";
+
+const BASE_PADDING = 8;
+const INDENT_PADDING = 16;
 
 export default function FileTreeRow({
   node,
@@ -10,13 +14,8 @@ export default function FileTreeRow({
   node: FileTreeNode;
   depth?: number;
 }) {
-  const BASE_PADDING = 8;
-  const INDENT_PADDING = 16;
   const [isExpanded, setIsExpanded] = useState(true);
-
-  const onFolderClick = () => {
-    setIsExpanded((prev) => !prev);
-  };
+  const onFolderClick = () => setIsExpanded((prev) => !prev);
 
   return (
     <>
@@ -30,11 +29,11 @@ export default function FileTreeRow({
           indentPadding={INDENT_PADDING}
         />
         <div
-          style={{
-            paddingLeft: depth * INDENT_PADDING + BASE_PADDING,
-          }}
+          className={styles.nodeLabel}
+          style={{ paddingLeft: depth * INDENT_PADDING + BASE_PADDING }}
         >
-          {node.name}
+          <FileTreeIcon node={node} isExpanded={isExpanded} />
+          <span className={styles.filename}>{node.name}</span>
         </div>
       </div>
       {node.type === "directory" &&
