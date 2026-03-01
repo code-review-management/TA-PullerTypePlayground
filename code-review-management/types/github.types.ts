@@ -1,3 +1,4 @@
+import { auth } from "@/lib/auth";
 import * as z from "zod";
 
 export type User = z.infer<typeof UserSchema>;
@@ -30,6 +31,12 @@ export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
   avatar_url: z.string(),
+});
+
+export const UserIdentitySchema = z.object({
+  date: z.string(),
+  email: z.string(),
+  name: z.string(),
 });
 
 export const RepoSchema = z.object({
@@ -151,8 +158,21 @@ export const CommentSchema = z.object({
   original_line: z.number().nullable(),
   side: z.enum(side),
   in_reply_to_id: z.number().nullish(),
-  author_association: z.string(),
+  author_association: z.enum(authorAssociation),
   subject_type: z.enum(subjectType),
+});
+
+export const CommitCommentSchema = z.object({
+  id: z.number(),
+  body: z.string(),
+  path: z.string().nullable(),
+  line: z.number().nullable(),
+  commit_id: z.string(),
+  user: UserSchema,
+  created_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation),
+  reactions: ReactionSchema,
 });
 
 export const ReviewRequestEventSchema = z.object({
@@ -189,9 +209,66 @@ export const CommentEventSchema = z.object({
   body: z.string(),
   user: UserSchema,
   author_association: z.enum(authorAssociation),
+  reactions: ReactionSchema,
+});
+
+export const CommittedEventSchema = z.object({
+  event: z.string(),
+  sha: z.string(),
+  url: z.string(),
+  author: UserIdentitySchema,
+  committer: UserIdentitySchema,
+  message: z.string(),
+});
+
+export const ReviewedEventSchema = z.object({
+  id: z.number(),
+  event: z.string(),
+  user: UserSchema,
+  body: z.string().nullable(),
+  state: z.string(),
+  submitted_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation),
+});
+
+export const LineCommentEventSchema = z.object({
+  event: z.string(),
+  comments: z.array(CommentSchema),
+});
+
+export const CommitCommentEventSchema = z.object({
+  event: z.string(),
+  commit_id: z.number(),
+  comments: z.array(CommitCommentSchema),
+});
+
+export const AssignIssueEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.string(),
+  created_at: z.string(),
+  assignee: UserSchema,
+});
+
+export const StateChangeEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.string(),
+  created_at: z.string(),
+  state_reason: z.string().nullish(),
 });
 
 export const TimelineSchema = z.union([
   ReviewRequestEventSchema,
   ReviewDismissedEventSchema,
+  CommentEventSchema,
+  CommittedEventSchema,
+  ReviewedEventSchema,
+  LineCommentEventSchema,
+  CommitCommentEventSchema,
+  AssignIssueEventSchema,
+  StateChangeEventSchema,
 ]);
