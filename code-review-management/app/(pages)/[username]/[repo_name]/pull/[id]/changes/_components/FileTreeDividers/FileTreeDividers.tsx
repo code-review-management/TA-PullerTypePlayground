@@ -3,7 +3,8 @@ import styles from "./FileTreeDividers.module.css";
 /**
  * Vertical dividers for a file tree row.
  * 
- * @param depth: How many levels deep the row is nested. One divider is rendered per level.
+ * @param depth: How many levels deep the row is nested in the file hierarchy.
+ *               One divider is rendered per level.
  * @param basePadding: Fixed left offset in px.
  * @param indentPadding: Additional left offset in px added per depth level.
  */
