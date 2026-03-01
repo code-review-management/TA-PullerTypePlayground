@@ -2,10 +2,22 @@
     /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
     max-height: 100vh;
     overflow-y: auto;
+    width: 300px;
 
     position: sticky;
     top: 0;
 
-    background-color: red;
-    width: 300px;
+    padding: var(--spacer-8);
+    border: var(--border-thin-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+}
+
+.row {
+    padding: var(--spacer-4) 0;
+    border-radius: var(--border-radius);
+}
+
+.row:hover {
+    cursor: pointer;
+    background-color: var(--background-secondary-light);
 }
