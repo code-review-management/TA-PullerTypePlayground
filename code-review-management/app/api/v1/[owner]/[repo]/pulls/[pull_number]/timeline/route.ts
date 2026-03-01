@@ -1,24 +1,22 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/comments
-
-Method: DELETE
+/api/v1/{owner}/{repo}/pulls/{pull_number}/timeline
 
 *NOT TO BE POLLED*
+
+Polling can be enabled dependent on the status of the PR access tag
 */
 
-import { CommentDeleteRequestSchema } from "@/types/request.types";
+import { FileDiff, FileDiffSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
 
-export async function _delete(
+export async function GET(
   req: Request,
   { params }: { params: { owner: string; repo: string; pull_number: number } },
 ) {
   const { owner, repo, pull_number } = await params;
-  const reqBody = await req.json();
-  const reqArgs = CommentDeleteRequestSchema.safeParse(reqBody);
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -28,23 +26,26 @@ export async function _delete(
   }
 
   // Validate required parameters
-  if (!owner || !repo || !pull_number || !reqArgs.success) {
+  if (!owner || !repo || !pull_number) {
     return Response.json(
-      { error: "Issue with required parameters" },
+      { error: "Missing required parameters" },
       { status: 400 },
     );
   }
 
-  const { comment_id } = reqArgs.data;
-
-  const octokit: Octokit = new Octokit({ auth: token.accessToken });
+  const octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } = await octokit.rest.pulls.deleteReviewComment({
+    const { data: contents } = await octokit.rest.issues.listEventsForTimeline({
       owner: owner,
       repo: repo,
-      comment_id: comment_id,
+      issue_number: pull_number,
     });
+
+    // Filter response
+    // const filteredResponse: FileDiff[] = contents.map((item) =>
+    //   FileDiffSchema.parse(item),
+    // );
 
     return new Response(JSON.stringify(contents, null, 2), {
       status: 200,
