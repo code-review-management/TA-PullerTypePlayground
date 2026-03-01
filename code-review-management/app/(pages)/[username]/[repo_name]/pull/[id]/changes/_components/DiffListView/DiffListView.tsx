@@ -6,7 +6,7 @@ import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
-import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
