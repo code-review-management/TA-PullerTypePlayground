@@ -13,7 +13,7 @@ import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
 
-export async function post(
+export async function _post(
   req: Request,
   { params }: { params: { owner: string; repo: string; pull_number: number } },
 ) {
