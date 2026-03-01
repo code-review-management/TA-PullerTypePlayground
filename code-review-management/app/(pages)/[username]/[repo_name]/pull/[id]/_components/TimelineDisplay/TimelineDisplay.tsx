@@ -9,7 +9,6 @@ import {
   isReviewState,
 } from "./processTimeline";
 import Image from "next/image";
-import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
 
 /**
@@ -101,9 +100,9 @@ function TimelineCommit({ event }: { event: timelineEvent }) {
       <div className={styles.committedLine}>
         <p className={styles.commitLineText}>
           {/** TODO: Link to commit on GH */}
-          <Link className={styles.commitSha} href={""}>
+          <a className={styles.commitSha} href={""}>
             #{abbr_sha}
-          </Link>{" "}
+          </a>{" "}
           {event.eventObj.message}
         </p>
         {/** TODO: Replace with user icon component */}
@@ -214,14 +213,14 @@ function TimelineEventSmall({
 }
 
 /**
- * Creates a Link element that displays a GitHub username and links to that GitHub profile.
+ * Creates a link element that displays a GitHub username and links to that GitHub profile.
  * Styled for PR view timeline usage.
  * @param username: GitHub username of the user this links to.
  */
 function UserLink({ username }: { username: string }) {
   return (
-    <Link href={`https://github.com/${username}`} className={styles.userLink}>
+    <a href={`https://github.com/${username}`} className={styles.userLink}>
       {username}
-    </Link>
+    </a>
   );
 }
