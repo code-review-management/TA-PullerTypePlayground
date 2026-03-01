@@ -3,16 +3,16 @@ import { StaticImageData } from "next/image";
 import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileAddedIcon from "@/public/icons/file_added.svg";
 import FileModifiedIcon from "@/public/icons/file_modified.svg";
-import FileMovedIcon from "@/public/icons/file_moved.svg";
 import FileRemovedIcon from "@/public/icons/file_removed.svg";
+import FileRenamedIcon from "@/public/icons/file_renamed.svg";
 import FolderClosedIcon from "@/public/icons/folder_closed.svg";
 import FolderOpenIcon from "@/public/icons/folder_open.svg";
 
 const FILE_STATUS_ICONS: Record<string, StaticImageData> = {
   added: FileAddedIcon,
   modified: FileModifiedIcon,
-  renamed: FileMovedIcon,
   removed: FileRemovedIcon,
+  renamed: FileRenamedIcon,
 };
 
 export default function FileTreeIcon({
