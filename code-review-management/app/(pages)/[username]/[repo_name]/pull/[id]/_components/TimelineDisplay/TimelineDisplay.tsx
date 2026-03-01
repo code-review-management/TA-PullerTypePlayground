@@ -10,6 +10,7 @@ import {
 } from "./processTimeline";
 import Image from "next/image";
 import PRViewComment from "../PRViewComment/PRViewComment";
+import { formatDate } from "../../_utils/date-utils";
 
 /**
  * Renders the timeline of events.
@@ -90,7 +91,7 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
  * Displays abbreviated SHA, commit message, and user icon.
  * TODO: Get username from somewhere to be able to get user icon src.
  * TODO: Collapse long commit messages by default and implement interactive expand.
- * 
+ *
  * @param event: Object representing the event that is the commit.
  */
 function TimelineCommit({ event }: { event: timelineEvent }) {
@@ -131,13 +132,12 @@ function TimelineReview({ event }: { event: timelineEvent }) {
         </p>
       </TimelineEventSmall>
     );
-  } 
-  
+  }
+
   // Review with comment (body)
   else {
-    return <TimelineReviewWithComment event={event}/>
+    return <TimelineReviewWithComment event={event} />;
   }
-  
 }
 
 /**
@@ -145,16 +145,9 @@ function TimelineReview({ event }: { event: timelineEvent }) {
  * Uses the same comment comopnent as the pull body description (`PullBodyDescription`).
  * @param event: Object representing the event that is the review.
  */
-function TimelineReviewWithComment({ event } : {event: timelineEvent}) {
+function TimelineReviewWithComment({ event }: { event: timelineEvent }) {
   const commentDate = new Date(event.eventObj.submitted_at || "") || "";
-  const month = commentDate.toLocaleString("default", { month: "short" });
-  const timeString = commentDate.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  });
-
-  const formattedDate = `${month} ${commentDate.getDay()}, ${commentDate.getFullYear()} at ${timeString}`;
+  const formattedDate = formatDate(commentDate);
 
   return (
     <>
