@@ -15,6 +15,15 @@ const FILE_STATUS_ICONS: Record<string, StaticImageData> = {
   renamed: FileRenamedIcon,
 };
 
+/**
+ * Renders an icon for a file tree node.
+ * 
+ * Directories show an open or closed folder icon depending on expansion state.
+ * Files show a status icon (added, modified, removed, or renamed).
+ * 
+ * @param node: `FileTreeNode` object representing the node to display an icon for.
+ * @param isExpanded: Whether the node is currently expanded. Only relevant for directories.
+ */
 export default function FileTreeIcon({
   node,
   isExpanded,
