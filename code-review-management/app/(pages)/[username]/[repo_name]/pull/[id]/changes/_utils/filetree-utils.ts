@@ -9,7 +9,7 @@ export type FileTreeNode =
 class PrefixTrieNode {
   children: Map<Segment, PrefixTrieNode>;
   isFile: boolean;
-  fileDiff?: FileDiff; // `FileDiff` objects included if `isFile` is true.
+  fileDiff?: FileDiff; // Always included if `isFile` is true.
 
   constructor() {
     this.children = new Map();
