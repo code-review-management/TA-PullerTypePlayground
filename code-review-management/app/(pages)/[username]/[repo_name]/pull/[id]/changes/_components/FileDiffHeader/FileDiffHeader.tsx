@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction } from "react";
 import { FileData } from "react-diff-view";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
-import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./FileDiffHeader.module.css";
 
 export default function FileDiffHeader({
