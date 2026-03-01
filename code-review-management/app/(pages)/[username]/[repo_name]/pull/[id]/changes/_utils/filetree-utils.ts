@@ -1,6 +1,6 @@
 import { FileDiff } from "@/types/github.types";
 
-type Segment = string;
+type Segment = string; // A single component of a file path between the "/" separators
 
 export type FileTreeNode =
   | { type: "directory"; name: string; children: FileTreeNode[] }
