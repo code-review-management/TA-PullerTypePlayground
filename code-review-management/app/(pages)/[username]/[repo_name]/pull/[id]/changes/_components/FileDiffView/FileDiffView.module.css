@@ -2,7 +2,7 @@
     border: var(--border-thin-width) solid var(--border-gray);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-soft);
-    overflow: hidden;
+    overflow: clip;
 }
 
 .isHighlighting {
