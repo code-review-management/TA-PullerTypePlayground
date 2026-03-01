@@ -6,6 +6,7 @@ Method: DELETE
 *NOT TO BE POLLED*
 */
 
+import { CommentSchema, Comment } from "@/types/github.types";
 import { CommentDeleteRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
