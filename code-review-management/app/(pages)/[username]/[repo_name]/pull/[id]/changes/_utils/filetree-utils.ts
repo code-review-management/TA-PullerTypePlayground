@@ -56,7 +56,7 @@ class PrefixTrie {
 
           if (nextChild.isFile) break;
 
-          collapsedName += nextSegment;
+          collapsedName += "/" + nextSegment;
           node = nextChild;
         }
 
