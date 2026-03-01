@@ -9,6 +9,8 @@ export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
 
+// Timeline sub-types
+
 const issueState = ["open", "closed"] as const;
 const side = ["LEFT", "RIGHT"] as const;
 const subjectType = ["line", "file"] as const;
@@ -152,3 +154,44 @@ export const CommentSchema = z.object({
   author_association: z.string(),
   subject_type: z.enum(subjectType),
 });
+
+export const ReviewRequestEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.string(),
+  created_at: z.string(),
+  review_requester: UserSchema,
+  requested_reviewer: UserSchema,
+});
+
+export const ReviewDismissedEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.string(),
+  created_at: z.string(),
+  dismissed_review: z.object({
+    state: z.string(),
+    review_id: z.number(),
+    dismissal_message: z.string().nullable(),
+    dismissal_commit_id: z.string(),
+  }),
+});
+
+export const CommentEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  body: z.string(),
+  user: UserSchema,
+  author_association: z.enum(authorAssociation),
+});
+
+export const TimelineSchema = z.union([
+  ReviewRequestEventSchema,
+  ReviewDismissedEventSchema,
+]);
