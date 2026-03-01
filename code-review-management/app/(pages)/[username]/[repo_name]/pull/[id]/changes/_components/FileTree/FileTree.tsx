@@ -5,7 +5,7 @@ import FileTreeRow from "../FileTreeRow/FileTreeRow";
 import styles from "./FileTree.module.css";
 
 /**
- * Tree of the pull request files.
+ * Tree of pull request files.
  * 
  * @param files: List of `FileDiff` objects for each of the pull request files.
  */
