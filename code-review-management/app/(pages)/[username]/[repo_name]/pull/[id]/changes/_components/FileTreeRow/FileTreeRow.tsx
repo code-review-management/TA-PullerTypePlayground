@@ -14,15 +14,15 @@ export default function FileTreeRow({
   const INDENT_PADDING = 16;
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const onFolderClick = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
   return (
     <>
       <div
         className={styles.row}
-        onClick={
-          node.type === "directory"
-            ? () => setIsExpanded((prev) => !prev)
-            : undefined
-        }
+        onClick={node.type === "directory" ? onFolderClick : undefined}
       >
         <FileTreeDividers
           depth={depth}
