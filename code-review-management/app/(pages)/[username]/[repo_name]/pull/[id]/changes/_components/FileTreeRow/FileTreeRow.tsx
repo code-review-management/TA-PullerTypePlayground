@@ -7,6 +7,14 @@ import styles from "./FileTreeRow.module.css";
 const BASE_PADDING = 8;
 const INDENT_PADDING = 16;
 
+/**
+ * Renders a single row in the file tree. Represents either a file or a
+ * directory. If the current row is a directory, recursively renders its
+ * children below it.
+ *
+ * @param node: `FileTreeNode` object representing the node to render.
+ * @param depth: How many levels deep the row is nested. Defaults to 0.
+ */
 export default function FileTreeRow({
   node,
   depth = 0,
