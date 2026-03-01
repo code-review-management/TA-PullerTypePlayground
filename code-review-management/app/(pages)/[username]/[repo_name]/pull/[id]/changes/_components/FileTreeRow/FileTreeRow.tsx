@@ -29,7 +29,7 @@ export default function FileTreeRow({
           indentPadding={INDENT_PADDING}
         />
         <div
-          className={styles.nodeLabel}
+          className={styles.label}
           style={{ paddingLeft: depth * INDENT_PADDING + BASE_PADDING }}
         >
           <FileTreeIcon node={node} isExpanded={isExpanded} />
@@ -37,9 +37,10 @@ export default function FileTreeRow({
         </div>
       </div>
       {node.type === "directory" &&
-        isExpanded &&
         node.children.map((child) => (
-          <FileTreeRow key={child.name} node={child} depth={depth + 1} />
+          <div key={child.name} className={!isExpanded ? styles.collapsed : ""}>
+            <FileTreeRow node={child} depth={depth + 1} />
+          </div>
         ))}
     </>
   );
