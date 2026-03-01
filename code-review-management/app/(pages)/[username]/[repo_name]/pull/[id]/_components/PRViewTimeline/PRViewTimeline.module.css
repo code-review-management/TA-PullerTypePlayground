@@ -1,0 +1,5 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-24);
+}
