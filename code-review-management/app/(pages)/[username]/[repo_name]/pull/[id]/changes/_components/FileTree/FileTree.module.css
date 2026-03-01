@@ -5,10 +5,13 @@
 
     position: sticky;
     top: 0;
-    width: 300px; /* TODO: Address width */
+
+    /* TODO: Make file tree resizable. */
+    min-width: 300px;
+    width: 300px;
 
     padding: var(--spacer-10);
     padding-left: 0;
     border-right: var(--border-thin-width) solid var(--border-gray);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
 }
