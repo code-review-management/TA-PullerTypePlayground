@@ -9,7 +9,7 @@
     padding: var(--spacer-10) var(--spacer-12);
     border-bottom: var(--border-thin-width) solid var(--border-gray);
 
-    background-color: var(--background);
+    background-color: var(--background-light);
     font-size: var(--font-size-label);
     font-weight: 450;
 }
