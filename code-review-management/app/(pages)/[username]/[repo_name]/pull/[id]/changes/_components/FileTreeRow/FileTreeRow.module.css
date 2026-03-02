@@ -27,3 +27,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.anchor {
+    text-decoration: none;
+    color: inherit;
+}
