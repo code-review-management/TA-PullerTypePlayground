@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReply from "../InlineDraftReply/InlineDraftReply";
@@ -9,7 +10,13 @@ import styles from "./InlinePublishedThread.module.css";
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
  */
-export default function InlinePublishedThread({ thread }: { thread: PublishedThreadItem }) {
+export default function InlinePublishedThread({
+  thread,
+}: {
+  thread: PublishedThreadItem;
+}) {
+  const [isDraftingReply, setIsDraftingReply] = useState(false);
+
   return (
     <div className={styles.thread}>
       <InlineThreadHeader title={getThreadTitle(thread)} />
@@ -24,7 +31,16 @@ export default function InlinePublishedThread({ thread }: { thread: PublishedThr
             defaultContent={comment.body}
           />
         ))}
-        <InlineDraftReply />
+        {!isDraftingReply ? (
+          <InlineDraftReply setIsDraftingReply={setIsDraftingReply}/>
+        ) : (
+          <InlineCommentEntry
+            avatar={"/mock/octocat.png"}
+            username="octocat"
+            created={new Date().toISOString()}
+            defaultEditable={true}
+          />
+        )}
       </div>
     </div>
   );
@@ -38,7 +54,11 @@ function getThreadTitle(thread: PublishedThreadItem) {
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
 
   // Starting line and side are undefined when it is not a multi-line comment.
-  if (thread.start_side && thread.start_line && thread.start_line !== thread.line) {
+  if (
+    thread.start_side &&
+    thread.start_line &&
+    thread.start_line !== thread.line
+  ) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
     return `Thread on lines ${startRange} to ${endRange}`;
   }
