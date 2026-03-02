@@ -1,5 +1,6 @@
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
+import InlineDraftReply from "../InlineDraftReply/InlineDraftReply";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
@@ -23,6 +24,7 @@ export default function InlinePublishedThread({ thread }: { thread: PublishedThr
             defaultContent={comment.body}
           />
         ))}
+        <InlineDraftReply />
       </div>
     </div>
   );

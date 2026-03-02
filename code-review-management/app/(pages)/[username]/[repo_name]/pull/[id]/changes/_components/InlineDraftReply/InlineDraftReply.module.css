@@ -1,0 +1,19 @@
+.comment {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-12);
+}
+
+.avatar {
+    height: 22px;
+    width: 22px;
+    min-width: 22px;
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.reply {
+    cursor: pointer;
+    color: var(--text-secondary);
+}
