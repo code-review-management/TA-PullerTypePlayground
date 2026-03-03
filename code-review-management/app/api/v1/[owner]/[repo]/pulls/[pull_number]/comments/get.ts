@@ -16,9 +16,9 @@ const secret = process.env.AUTH_SECRET;
 
 export async function _get(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
-  const { owner, repo, pull_number } = await params;
+  const { owner, repo, pull_number } = params;
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -41,7 +41,7 @@ export async function _get(
     const { data: contents } = await octokit.rest.pulls.listReviewComments({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
       sort: "created",
       direction: "asc",
     });

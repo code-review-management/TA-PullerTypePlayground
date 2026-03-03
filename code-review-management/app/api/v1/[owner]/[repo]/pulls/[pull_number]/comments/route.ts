@@ -7,30 +7,42 @@ import { _post } from "./post";
 import { _patch } from "./patch";
 import { _delete } from "./delete";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+  }>;
+};
+
 export async function GET(
   req: Request,
-  content: { params: { owner: string; repo: string; pull_number: number } },
+  context: RouteContext,
 ) {
-  return _get(req, content);
+  const params = await context.params;
+  return _get(req, params );
 }
 
 export async function POST(
   req: Request,
-  content: { params: { owner: string; repo: string; pull_number: number } },
+  context: RouteContext,
 ) {
-  return _post(req, content);
+  const params = await context.params;
+  return _post(req, params);
 }
 
 export async function PATCH(
   req: Request,
-  content: { params: { owner: string; repo: string; pull_number: number } },
+  context: RouteContext,
 ) {
-  return _patch(req, content);
+  const params = await context.params;
+  return _patch(req, params);
 }
 
 export async function DELETE(
   req: Request,
-  content: { params: { owner: string; repo: string; pull_number: number } },
+  context: RouteContext,
 ) {
-  return _delete(req, content);
+  const params = await context.params;
+  return _delete(req, params);
 }

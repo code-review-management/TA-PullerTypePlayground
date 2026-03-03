@@ -15,7 +15,7 @@ const secret = process.env.AUTH_SECRET;
 
 export async function _patch(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
   const { owner, repo, pull_number } = await params;
   const reqBody = await req.json();

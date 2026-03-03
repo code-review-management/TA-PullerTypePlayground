@@ -15,7 +15,7 @@ const secret = process.env.AUTH_SECRET;
 
 export async function _post(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
   const { owner, repo, pull_number } = await params;
   const reqBody = await req.json();
@@ -53,7 +53,7 @@ export async function _post(
     const { data: contents } = await octokit.rest.pulls.createReviewComment({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
       body: body,
       commit_id: commit_id,
       path: path,
