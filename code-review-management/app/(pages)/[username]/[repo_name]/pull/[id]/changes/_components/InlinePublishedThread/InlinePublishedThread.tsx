@@ -35,10 +35,10 @@ export default function InlinePublishedThread({
             defaultContent={comment.body}
           />
         ))}
-        {!isDraftingReply ? (
-          <InlineDraftReplyTrigger thread={thread} />
-        ) : (
+        {isDraftingReply ? (
           <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
+        ) : (
+          <InlineDraftReplyTrigger thread={thread} />
         )}
       </div>
     </div>
