@@ -15,34 +15,22 @@ type RouteContext = {
   }>;
 };
 
-export async function GET(
-  req: Request,
-  context: RouteContext,
-) {
+export async function GET(req: Request, context: RouteContext) {
   const params = await context.params;
-  return _get(req, params );
+  return _get(req, params);
 }
 
-export async function POST(
-  req: Request,
-  context: RouteContext,
-) {
+export async function POST(req: Request, context: RouteContext) {
   const params = await context.params;
   return _post(req, params);
 }
 
-export async function PATCH(
-  req: Request,
-  context: RouteContext,
-) {
+export async function PATCH(req: Request, context: RouteContext) {
   const params = await context.params;
   return _patch(req, params);
 }
 
-export async function DELETE(
-  req: Request,
-  context: RouteContext,
-) {
+export async function DELETE(req: Request, context: RouteContext) {
   const params = await context.params;
   return _delete(req, params);
 }
