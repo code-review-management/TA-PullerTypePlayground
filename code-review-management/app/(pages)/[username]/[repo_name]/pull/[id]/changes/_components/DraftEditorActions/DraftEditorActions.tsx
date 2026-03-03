@@ -19,7 +19,7 @@ export type DraftItem =
  * content is empty, contains only whitespace, or when the pull request data is
  * still pending.
  *
- * @param draft: `DraftItem` object containing data about the draft thread or deply.
+ * @param draft: `DraftItem` object containing data about the draft thread or reply.
  */
 export default function DraftEditorActions({ draft }: { draft: DraftItem }) {
   const { username, repo_name, id } = useParams<PullParams>();
