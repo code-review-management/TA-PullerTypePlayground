@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { readFile } from "@/lib/file-utils";
-import { MockPublishedComment, MockPublishedThread } from "@/mocks/types/comments";
+import { useReviewCommentsQuery } from "@/lib/api/queries/useReviewCommentsQuery";
+import { Comment } from "@/types/github.types";
 
 /*
  * Since the GitHub API returns all pull request comments as a flat array, we
@@ -25,34 +25,37 @@ export type PublishedThreads = Map<FileName, PublishedThreadsByLine>;
 export type PublishedThreadsByLine = Map<LineNumber, PublishedThreadsBySide>;
 
 /**
- * When building the array of 'MockPublishedThread', the threads are ordered
- * by their creation time (again, assuming the data we retrieve from GitHub
- * is sorted this way).
+ * When building the array of 'PublishedThreadItem', the threads are ordered by
+ * their creation time (again, assuming the data we retrieve from GitHub is
+ * sorted this way).
  */
 export interface PublishedThreadsBySide {
-  left: MockPublishedThread[];
-  right: MockPublishedThread[];
+  left: PublishedThreadItem[];
+  right: PublishedThreadItem[];
 }
 
-export function usePublishedThreads() {
-  const [publishedThreads, setPublishedThreads] = useState<PublishedThreads>();
-
-  useEffect(() => {
-    const getPublishedThreads = async () => {
-      // Replace with API request.
-      const response = await readFile("/mocks/comments.json");
-      const comments: MockPublishedComment[] = JSON.parse(response);
-      const threads = buildCommentRelations(comments);
-      setPublishedThreads(threads);
-    };
-
-    getPublishedThreads();
-  }, []);
-
-  return { publishedThreads };
+export interface PublishedThreadItem {
+  id: number;
+  path: string;
+  start_line: number | null;
+  line: number | null;
+  start_side: "LEFT" | "RIGHT" | null;
+  side: "LEFT" | "RIGHT";
+  subject_type: "line" | "file";
+  comments: Comment[];
 }
 
-function buildCommentRelations(comments: MockPublishedComment[]) {
+export function usePublishedThreads(owner: string, repo: string, pullNumber: string) {
+  const {
+    data: publishedThreads,
+    isPending,
+    isError,
+  } = useReviewCommentsQuery(owner, repo, pullNumber, buildCommentRelations);
+
+  return { publishedThreads, isPending, isError };
+}
+
+function buildCommentRelations(comments: Comment[]) {
   const threadsByFile = groupThreadsByFile(comments);
   const publishedThreads: PublishedThreads = new Map();
 
@@ -65,13 +68,13 @@ function buildCommentRelations(comments: MockPublishedComment[]) {
 
 /**
  * This function takes a flat array of comments from the GitHub API and returns
- * Map<FileName, MockPublishedThread[]>: a mapping from the filename to an array
+ * Map<FileName, PublishedThreadItem[]>: a mapping from the filename to an array
  * of comment threads belonging to that file. This array of threads is ordered
  * by their creation time, assuming that the GitHub API returns the data in this
  * sorted order.
  */
-function groupThreadsByFile(comments: MockPublishedComment[]) {
-  const threadsByFile: Map<FileName, MockPublishedThread[]> = new Map();
+function groupThreadsByFile(comments: Comment[]) {
+  const threadsByFile: Map<FileName, PublishedThreadItem[]> = new Map();
 
   for (const comment of comments) {
     if (!threadsByFile.has(comment.path)) {
@@ -115,7 +118,7 @@ function groupThreadsByFile(comments: MockPublishedComment[]) {
   return threadsByFile;
 }
 
-function groupThreadsByLineAndSide(threads: MockPublishedThread[]) {
+function groupThreadsByLineAndSide(threads: PublishedThreadItem[]) {
   const threadsByLine: PublishedThreadsByLine = new Map();
 
   for (const thread of threads) {

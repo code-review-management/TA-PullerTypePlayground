@@ -9,6 +9,21 @@ export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
 
+const issueState = ["open", "closed"] as const;
+const side = ["LEFT", "RIGHT"] as const;
+const subjectType = ["line", "file"] as const;
+const authorAssociation = [
+  "COLLABORATOR",
+  "CONTRIBUTOR",
+  "FIRST_TIMER",
+  "FIRST_TIME_CONTRIBUTOR",
+  "MANNEQUIN",
+  "MEMBER",
+  "NONE",
+  "OWNER",
+] as const;
+const repoVisibility = ["public", "private", "internal"] as const;
+
 export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
@@ -29,19 +44,7 @@ export const RepoSchema = z.object({
   watchers_count: z.number(),
   open_issues_count: z.number(),
   has_pull_requests: z.boolean(),
-  visibility: z.string(),
-});
-
-export const IssueSchema = z.object({
-  url: z.string(),
-  id: z.number(),
-  number: z.number(),
-  state: z.string(),
-  title: z.string(),
-  user: UserSchema,
-  body: z.string(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  visibility: z.enum(repoVisibility),
 });
 
 export const BranchSchema = z.object({
@@ -57,7 +60,7 @@ export const PullRequestSchema = z.object({
   id: z.number(),
   diff_url: z.string(),
   number: z.number(),
-  state: z.string(),
+  state: z.enum(issueState),
   locked: z.boolean(),
   title: z.string(),
   user: UserSchema.nullable(),
@@ -69,14 +72,14 @@ export const PullRequestSchema = z.object({
   merge_commit_sha: z.string().nullable(),
   assignees: z.array(UserSchema).nullable(),
   requested_reviewers: z.array(UserSchema).nullable(),
-  draft: z.boolean(),
   head: BranchSchema,
   base: BranchSchema,
-  author_association: z.string(),
+  author_association: z.enum(authorAssociation),
+  draft: z.boolean(),
   assignee: UserSchema.nullable(),
   merged: z.boolean(),
-  mergeable: z.boolean(),
-  rebaseable: z.boolean(),
+  mergeable: z.boolean().nullable(),
+  rebaseable: z.boolean().nullable(),
   mergeable_state: z.string(),
   merged_by: UserSchema.nullable(),
   comments: z.number(),
@@ -85,6 +88,23 @@ export const PullRequestSchema = z.object({
   additions: z.number(),
   deletions: z.number(),
   changed_files: z.number(),
+});
+
+// Not in use
+export const IssueSchema = z.object({
+  url: z.string(),
+  id: z.number(),
+  number: z.number(),
+  state: z.enum(issueState),
+  title: z.string(),
+  user: UserSchema.nullable(),
+  body: z.string().nullable(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  assignees: z.array(UserSchema).nullable(),
+  locked: z.boolean(),
+  repository: RepoSchema,
+  pull_request: PullRequestSchema,
 });
 
 export const FileDiffSchema = z.object({
@@ -124,11 +144,11 @@ export const CommentSchema = z.object({
   reactions: ReactionSchema,
   start_line: z.number().nullable(),
   original_start_line: z.number().nullable(),
-  start_side: z.string().nullable(),
+  start_side: z.enum(side).nullable(),
   line: z.number().nullable(),
   original_line: z.number().nullable(),
-  side: z.string(),
+  side: z.enum(side),
   in_reply_to_id: z.number().nullish(),
   author_association: z.string(),
-  subject_type: z.string(),
+  subject_type: z.enum(subjectType),
 });

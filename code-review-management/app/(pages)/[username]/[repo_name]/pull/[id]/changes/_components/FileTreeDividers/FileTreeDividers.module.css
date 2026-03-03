@@ -1,0 +1,5 @@
+.divider {
+    position: absolute;
+    height: 100%;
+    border-left: var(--border-normal-width) solid var(--border-gray);
+}

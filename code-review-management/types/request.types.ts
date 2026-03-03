@@ -1,6 +1,8 @@
 import * as z from "zod";
 
 export type CommentCreateRequest = z.infer<typeof CommentCreateRequestSchema>;
+export type CommentPatchRequest = z.infer<typeof CommentPatchRequestSchema>;
+export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
 
 const side = ["LEFT", "RIGHT"] as const;
 
@@ -32,3 +34,12 @@ export const CommentCreateRequestSchema = z
         "Must provide either comment location information OR an in reply to ID.",
     },
   );
+
+export const CommentPatchRequestSchema = z.object({
+  comment_id: z.number(),
+  body: z.string().nonempty(),
+});
+
+export const CommentDeleteRequestSchema = z.object({
+  comment_id: z.number(),
+});

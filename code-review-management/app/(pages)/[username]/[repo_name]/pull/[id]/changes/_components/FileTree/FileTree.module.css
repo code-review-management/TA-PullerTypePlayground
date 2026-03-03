@@ -1,0 +1,17 @@
+.tree {
+    /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
+    max-height: 100vh;
+    overflow-y: auto;
+
+    position: sticky;
+    top: 0;
+
+    /* TODO: Make file tree resizable. */
+    min-width: 300px;
+    width: 300px;
+
+    padding: var(--spacer-10) var(--spacer-16);
+    padding-left: 0;
+    border-right: var(--border-thin-width) solid var(--border-gray);
+    font-size: 0.875rem;
+}

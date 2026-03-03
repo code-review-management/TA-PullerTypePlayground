@@ -1,13 +1,13 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import DraftCommentActions from "../DraftCommentActions/DraftCommentActions";
+import DraftThreadActions from "../DraftThreadActions/DraftThreadActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
 
 /**
  * Displays a draft thread that is anchored to specific lines in a file diff.
- * Will eventually contain an editor where the user can draft a comment
- * associated with those lines, and begin a new thread upon submission.
+ * Contains an editor where the user can draft a comment associated with those
+ * lines, and begin a new thread upon submission.
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
@@ -25,7 +25,7 @@ export default function InlineDraftThread({
           username="octocat"
           created={draft.created}
           defaultEditable={true}
-          actions={<DraftCommentActions />}
+          actions={<DraftThreadActions draft={draft} />}
         />
       </div>
     </div>

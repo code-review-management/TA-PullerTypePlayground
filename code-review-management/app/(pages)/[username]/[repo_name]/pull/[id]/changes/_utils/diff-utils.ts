@@ -28,3 +28,7 @@ export function getLanguage(filename: string) {
     return "txt";
   }
 }
+
+export function toGitHubSide(side: Side) {
+  return side === "old" ? "LEFT" : "RIGHT";
+}

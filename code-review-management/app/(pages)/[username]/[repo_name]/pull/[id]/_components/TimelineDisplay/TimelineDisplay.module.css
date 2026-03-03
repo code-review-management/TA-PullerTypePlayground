@@ -1,0 +1,79 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-16);
+}
+
+.beforeCloseTimeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-16);
+  position: relative;
+}
+
+.timelineLineBackground {
+  position: absolute;
+  margin-left: var(--spacer-12);
+  border-left: 1px solid var(--border-gray-secondary);
+  z-index: -1;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.eventSmall {
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-12);
+  color: var(--text-secondary);
+}
+
+.userLink {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.userLink:hover {
+  text-decoration: underline;
+}
+
+.timelineIcon {
+  width: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-light);
+}
+
+.timelineIconPadded {
+  padding-top: var(--spacer-4);
+  padding-bottom: var(--spacer-4);
+}
+
+.committedLine {
+  display: flex;
+  gap: var(--spacer-12);
+}
+
+.commitLineText {
+  color: var(--text-tertiary);
+}
+
+.commitSha {
+  color: var(--text-accent);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.commitSha:hover {
+  text-decoration: underline;
+}
+
+.tempUserIcon {
+  height: 18px;
+  width: 18px;
+  background-color: var(--state-draft);
+  border-radius: 32px;
+  position: relative;
+}
