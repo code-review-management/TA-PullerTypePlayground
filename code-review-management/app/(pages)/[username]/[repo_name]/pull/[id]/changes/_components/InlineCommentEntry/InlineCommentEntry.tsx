@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { formatDate } from "../../../_utils/date-utils";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./InlineCommentEntry.module.css";
@@ -41,10 +42,7 @@ export default function InlineCommentEntry({
         <div className={styles.header}>
           <span className={styles.username}>{username}</span>
           {created && (
-            <span className={styles.date}>
-              {/* TODO: Change date format. Create utility function to get date text in desirable foramt. */}
-              {new Date(created).toDateString()}
-            </span>
+            <span className={styles.date}>{formatDate(new Date(created))}</span>
           )}
         </div>
         <MarkdownEditor

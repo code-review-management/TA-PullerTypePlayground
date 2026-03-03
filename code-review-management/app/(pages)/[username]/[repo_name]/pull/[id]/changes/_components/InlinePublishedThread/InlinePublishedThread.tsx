@@ -1,7 +1,7 @@
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
-import DraftCommentActions from "../DraftThreadActions/DraftThreadActions";
+import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
@@ -53,7 +53,7 @@ function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
       username="octocat"
       defaultEditable={true}
       actions={
-        <DraftCommentActions
+        <DraftEditorActions
           draft={{
             type: "reply",
             payload: reply,

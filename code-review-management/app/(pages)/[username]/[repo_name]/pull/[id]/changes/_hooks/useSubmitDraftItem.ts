@@ -6,10 +6,10 @@ import { useDraftThreadsContext } from "../_contexts/DraftThreadsContext";
 import { getDraftReplyKey } from "./useDraftReplies";
 import { getDraftThreadKey } from "./useDraftThreads";
 import { toGitHubSide } from "../_utils/diff-utils";
-import { DraftItem } from "../_components/DraftThreadActions/DraftThreadActions";
+import { DraftItem } from "../_components/DraftEditorActions/DraftEditorActions";
 import { PullRequest } from "@/types/github.types";
 
-export function useSubmitDraftThread(
+export function useSubmitDraftItem(
   draft: DraftItem,
   owner: string,
   repo: string,
