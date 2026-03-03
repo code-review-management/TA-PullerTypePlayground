@@ -11,13 +11,17 @@ import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+  }>;
+};
+
 const secret = process.env.AUTH_SECRET;
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string } },
-) {
-  const { owner, repo } = await params;
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo } = await context.params;
   const token = await getToken({ req, secret });
 
   // Validate token
