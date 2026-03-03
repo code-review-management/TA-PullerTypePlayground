@@ -14,12 +14,12 @@ export type DraftItem =
   | { type: "reply"; payload: DraftReplyItem };
 
 /**
- * Renders the action buttons for a draft comment thread. Displays a publish
+ * Renders the action buttons for a draft thread or reply. Displays a publish
  * button that submits the current draft. The button is disabled when the editor
  * content is empty, contains only whitespace, or when the pull request data is
  * still pending.
  *
- * @param draft: `DraftThreadItem` object containing data about the draft thread.
+ * @param draft: `DraftItem` object containing data about the draft thread or deply.
  */
 export default function DraftEditorActions({ draft }: { draft: DraftItem }) {
   const { username, repo_name, id } = useParams<PullParams>();

@@ -4,6 +4,11 @@ import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import Image from "next/image";
 import styles from "./InlineDraftReplyTrigger.module.css";
 
+/**
+ * Displays a button for the user to reply to a published thread.
+ *
+ * @param thread: `PublishedThreadItem` object containing data about the published thread.
+ */
 export default function InlineDraftReplyTrigger({
   thread,
 }: {
