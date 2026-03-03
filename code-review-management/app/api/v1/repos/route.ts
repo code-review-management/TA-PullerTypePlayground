@@ -7,17 +7,16 @@ import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
-const node_env = process.env.NODE_ENV;
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
 
 export async function GET(req: Request) {
-  console.log(node_env)
   const token = await getToken({
-    req,
-    secret,
-    cookieName:
-      node_env === "production"
-        ? "__Secure-authjs.session-token"
-        : "authjs.session-token",
+    req: req,
+    secret: secret,
+    cookieName: cookieKey,
   });
 
   // Validate token
