@@ -6,13 +6,18 @@ import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+  }>;
+};
+
 const secret = process.env.AUTH_SECRET;
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
-) {
-  const { owner, repo, pull_number } = await params;
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo, pull_number } = await context.params;
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -35,7 +40,7 @@ export async function GET(
     const { data: contents } = await octokit.rest.pulls.get({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
     });
 
     // Filter response
