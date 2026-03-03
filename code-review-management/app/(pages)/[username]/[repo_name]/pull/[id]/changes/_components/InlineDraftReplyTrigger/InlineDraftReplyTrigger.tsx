@@ -29,7 +29,7 @@ export default function InlineDraftReplyTrigger({
         {/* TODO: Replace with authenticated user. */}
         <Image src={"/mock/octocat.png"} alt={`@octocat`} fill />
       </div>
-      <button className={styles.reply} onClick={handleCreateDraftReply}>
+      <button className={styles.trigger} onClick={handleCreateDraftReply}>
         Reply
       </button>
     </div>
