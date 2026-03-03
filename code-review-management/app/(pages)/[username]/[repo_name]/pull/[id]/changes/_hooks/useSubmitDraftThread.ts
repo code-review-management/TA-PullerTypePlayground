@@ -1,22 +1,27 @@
 import { useCreateReviewCommentMutation } from "@/lib/api/mutations/useCreateReviewCommentMutation";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
+import { useDraftRepliesContext } from "../_contexts/DraftRepliesContext";
 import { useDraftThreadsContext } from "../_contexts/DraftThreadsContext";
-import { DraftThreadItem, getDraftThreadKey } from "./useDraftThreads";
+import { getDraftReplyKey } from "./useDraftReplies";
+import { getDraftThreadKey } from "./useDraftThreads";
 import { toGitHubSide } from "../_utils/diff-utils";
+import { DraftItem } from "../_components/DraftThreadActions/DraftThreadActions";
+import { PullRequest } from "@/types/github.types";
 
 export function useSubmitDraftThread(
-  draft: DraftThreadItem,
+  draft: DraftItem,
   owner: string,
   repo: string,
   pullNumber: string,
 ) {
+  const { setDraftReplies } = useDraftRepliesContext();
   const { setDraftThreads } = useDraftThreadsContext();
   const { editorContent } = useMarkdownEditorContext();
   const {
-    data: pulls,
-    isPending: isPullsPending,
-    isError: isPullsError,
+    data: pull,
+    isPending: isPullPending,
+    isError: isPullError,
   } = usePullQuery(owner, repo, pullNumber);
   const {
     mutate,
@@ -24,21 +29,20 @@ export function useSubmitDraftThread(
     isError: isSubmitError,
   } = useCreateReviewCommentMutation(owner, repo, pullNumber);
 
-  const handleSubmit = () => {
-    // On pulls pending, button is already disabled. On pulls error, do not
-    // allow submission. TODO: Display toast error message on pulls error.
-    if (!pulls) return; 
-    const side = toGitHubSide(draft.side);
-
+  const submitThread = (
+    draft: Extract<DraftItem, { type: "thread" }>,
+    pull: PullRequest,
+  ) => {
+    const side = toGitHubSide(draft.payload.side);
     mutate(
       {
         body: editorContent,
-        commit_id: pulls.head.sha,
-        path: draft.filename,
+        commit_id: pull.head.sha,
+        path: draft.payload.filename,
         start_side: side,
         side,
-        start_line: draft.start,
-        line: draft.end,
+        start_line: draft.payload.start,
+        line: draft.payload.end,
       },
       {
         // Fires after invalidating the TanStack cache for review comments
@@ -46,9 +50,9 @@ export function useSubmitDraftThread(
         onSuccess: () => {
           setDraftThreads((prev) => {
             const key = getDraftThreadKey(
-              draft.filename,
-              draft.end,
-              draft.side,
+              draft.payload.filename,
+              draft.payload.end,
+              draft.payload.side,
             );
             const draftThreads = { ...prev };
             delete draftThreads[key];
@@ -59,11 +63,49 @@ export function useSubmitDraftThread(
     );
   };
 
+  const submitReply = (
+    draft: Extract<DraftItem, { type: "reply" }>,
+    pull: PullRequest,
+  ) => {
+    mutate(
+      {
+        body: editorContent,
+        commit_id: pull.head.sha,
+        path: draft.payload.filename,
+        in_reply_to: draft.payload.parentId,
+      },
+      {
+        onSuccess: () => {
+          setDraftReplies((prev) => {
+            const key = getDraftReplyKey(
+              draft.payload.filename,
+              draft.payload.parentId,
+            );
+            const draftReplies = { ...prev };
+            delete draftReplies[key];
+            return draftReplies;
+          });
+        },
+      },
+    );
+  };
+
+  const handleSubmit = () => {
+    // On pulls pending, button is already disabled. On pulls error, do not
+    // allow submission. TODO: Display toast error message on pulls error.
+    if (!pull) return;
+    if (draft.type === "thread") {
+      submitThread(draft, pull);
+    } else {
+      submitReply(draft, pull);
+    }
+  };
+
   return {
     handleSubmit,
     isSubmitPending,
     isSubmitError,
-    isPullsPending,
-    isPullsError,
+    isPullPending,
+    isPullError,
   };
 }

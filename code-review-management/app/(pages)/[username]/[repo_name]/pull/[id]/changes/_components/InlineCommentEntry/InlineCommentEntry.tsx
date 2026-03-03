@@ -27,7 +27,7 @@ export default function InlineCommentEntry({
 }: {
   avatar: string;
   username: string;
-  created: string;
+  created?: string;
   defaultEditable: boolean;
   defaultContent?: string;
   actions?: ReactNode;
@@ -40,10 +40,12 @@ export default function InlineCommentEntry({
       <div className={styles.content}>
         <div className={styles.header}>
           <span className={styles.username}>{username}</span>
-          <span className={styles.date}>
-            {/* TODO: Change date format. Create utility function to get date text in desirable foramt. */}
-            {new Date(created).toDateString()}
-          </span>
+          {created && (
+            <span className={styles.date}>
+              {/* TODO: Change date format. Create utility function to get date text in desirable foramt. */}
+              {new Date(created).toDateString()}
+            </span>
+          )}
         </div>
         <MarkdownEditor
           defaultEditable={defaultEditable}

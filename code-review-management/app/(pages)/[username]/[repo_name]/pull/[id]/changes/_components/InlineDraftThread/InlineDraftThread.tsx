@@ -23,9 +23,8 @@ export default function InlineDraftThread({
         <InlineCommentEntry
           avatar={"/mock/octocat.png"}
           username="octocat"
-          created={draft.created}
           defaultEditable={true}
-          actions={<DraftThreadActions draft={draft} />}
+          actions={<DraftThreadActions draft={{ type: "thread", payload: draft }} />}
         />
       </div>
     </div>

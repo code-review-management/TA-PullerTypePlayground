@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
+import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
+import DraftCommentActions from "../DraftThreadActions/DraftThreadActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
-import InlineDraftReply from "../InlineDraftReply/InlineDraftReply";
+import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
@@ -15,7 +17,9 @@ export default function InlinePublishedThread({
 }: {
   thread: PublishedThreadItem;
 }) {
-  const [isDraftingReply, setIsDraftingReply] = useState(false);
+  const { draftReplies } = useDraftRepliesContext();
+  const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
+  const isDraftingReply = draftReplyKey in draftReplies;
 
   return (
     <div className={styles.thread}>
@@ -32,17 +36,31 @@ export default function InlinePublishedThread({
           />
         ))}
         {!isDraftingReply ? (
-          <InlineDraftReply setIsDraftingReply={setIsDraftingReply}/>
+          <InlineDraftReplyTrigger thread={thread} />
         ) : (
-          <InlineCommentEntry
-            avatar={"/mock/octocat.png"}
-            username="octocat"
-            created={new Date().toISOString()}
-            defaultEditable={true}
-          />
+          <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
         )}
       </div>
     </div>
+  );
+}
+
+function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
+  return (
+    <InlineCommentEntry
+      // Replace with authenticated user.
+      avatar={"/mock/octocat.png"}
+      username="octocat"
+      defaultEditable={true}
+      actions={
+        <DraftCommentActions
+          draft={{
+            type: "reply",
+            payload: reply,
+          }}
+        />
+      }
+    />
   );
 }
 
