@@ -36,7 +36,7 @@ interface eventInterface {
   review_requester?: { login: string };
   requested_reviewer?: { login: string };
   assignee?: { login: string };
-  body?: string;
+  body?: string | null;
   user?: { login: string };
   submitted_at?: string;
   state?: string;
