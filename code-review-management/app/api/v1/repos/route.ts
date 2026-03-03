@@ -9,7 +9,14 @@ import { Octokit, RequestError } from "octokit";
 const secret = process.env.AUTH_SECRET;
 
 export async function GET(req: Request) {
-  const token = await getToken({ req, secret });
+  const token = await getToken({
+    req,
+    secret,
+    cookieName:
+      process.env.NODE_ENV === "production"
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token",
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
