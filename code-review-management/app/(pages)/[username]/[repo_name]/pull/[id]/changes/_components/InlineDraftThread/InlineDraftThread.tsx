@@ -1,6 +1,6 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
-import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntrys";
+import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
 
