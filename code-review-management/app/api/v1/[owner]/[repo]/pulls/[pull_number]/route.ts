@@ -15,10 +15,18 @@ type RouteContext = {
 };
 
 const secret = process.env.AUTH_SECRET;
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
 
 export async function GET(req: Request, context: RouteContext) {
   const { owner, repo, pull_number } = await context.params;
-  const token = await getToken({ req, secret });
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookieKey,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
