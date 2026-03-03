@@ -7,7 +7,7 @@ import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import { useSubmitDraftItem } from "../../_hooks/useSubmitDraftItem";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 import { PullParams } from "@/types/routing.types";
-import styles from "./DraftThreadActions.module.css";
+import styles from "./DraftEditorActions.module.css";
 
 export type DraftItem =
   | { type: "thread"; payload: DraftThreadItem }
