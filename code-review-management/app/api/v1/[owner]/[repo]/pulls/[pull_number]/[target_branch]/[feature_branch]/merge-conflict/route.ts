@@ -9,6 +9,7 @@ Polling can be enabled dependent on the status of the PR access tag
 import { getMergeConflict } from "@/lib/merge-conflict-finder/get-merge";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import { AllowanceError } from "@/lib/merge-conflict-finder/validate-token-allowance";
 
 const secret = process.env.AUTH_SECRET;
 
@@ -55,9 +56,14 @@ export async function GET(
         "Content-Type": "application/json",
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
       console.log("Error in merge conflict finder: " + error)
-      return new Response("Server error", { status: 500 });
+
+      if (error instanceof AllowanceError){
+        return new Response("Not enough tokens", { status: 403})
+      } else {
+        return new Response("Server error", { status: 500 });
+      }
   }
 }
 

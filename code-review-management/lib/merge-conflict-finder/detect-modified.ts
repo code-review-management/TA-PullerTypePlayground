@@ -7,6 +7,11 @@ export interface ConflictingFilesResponse{
     files: string[]
 }
 
+export interface CostPredictionData {
+    conflictFileCount: number,
+    totalFileCount: number
+}
+
 export const findConflictingFiles = async (
     owner: string,
     repo: string,
@@ -31,7 +36,7 @@ export const findConflictingFiles = async (
                 owner,
                 repo,
                 base: ancestorSha,
-                head: featureBranch,
+                head: targetBranch,
         });
         const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse.data)
         
@@ -44,7 +49,7 @@ export const findConflictingFiles = async (
             files: overlappingFiles
         }
     } catch (error: any) {
-        console.error("Error executing API calls:", error.response?.data || error.message);
+        console.error("Error executing API calls to find potential conflicts:", error.response?.data || error.message);
         throw error;
     }
 }

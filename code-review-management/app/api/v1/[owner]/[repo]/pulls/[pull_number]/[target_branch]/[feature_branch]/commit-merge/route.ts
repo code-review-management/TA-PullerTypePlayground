@@ -6,21 +6,16 @@
 Polling can be enabled dependent on the status of the PR access tag
 */
 
-import { commitMergeChanges, MergeCommitInputData, MergeCommitContent } from "@/lib/merge-commiter/push-merge";
+import { commitMergeChanges } from "@/lib/merge-commiter/push-merge";
+import { MergeCommitInputDataSchema, MergeCommitContentSchema, MergeCommitPayloadSchema } from "@/lib/merge-conflict-finder/merge-github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
 
 export async function POST(
-  req: Request,
-  { params }: { params: 
-    { mergeCommitData: MergeCommitInputData,
-      mergeContent: MergeCommitContent[]
-    }
- },
+  req: Request
 ) {
-  const { mergeCommitData, mergeContent } = await params;
   const token = await getToken({ req, secret });
 
   // Validate token
@@ -28,6 +23,16 @@ export async function POST(
     console.log("Unauthorized request at ${new Date()}");
     return new Response(null, { status: 401 });
   }
+
+  const body = await req.json();
+  const result = MergeCommitPayloadSchema.safeParse(body);
+
+  if (!result.success) {
+    return Response.json(result.error.format(), { status: 400 });
+  }
+
+  const mergeCommitData = result.data.mergeCommitData;
+  const mergeContent = result.data.mergeContent;
 
   // Validate required parameters
   if (!mergeCommitData || !mergeCommitData.owner || !mergeCommitData.repo

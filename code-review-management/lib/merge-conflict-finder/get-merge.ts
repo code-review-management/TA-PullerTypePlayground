@@ -1,7 +1,8 @@
 import { Octokit } from "octokit"
-import { findConflictingFiles, ConflictingFilesResponse } from "./detect-modified"
+import { findConflictingFiles } from "./detect-modified"
 import { retrieveConflictContents, ConflictFileContent } from "./get-files"
 import { FileMergeOutput, attemptFileMerge } from "./get-merge-diff"
+import { validateUserAllowance, AllowanceError } from "./validate-token-allowance"
 
 export interface MergeOutput{
     targetShaAtMerge: string,
@@ -23,25 +24,35 @@ export interface ConflictInput{
 
 export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput> => {
     try{
-    const mergeCandidates: ConflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
-        conflictInput.repo, 
-        conflictInput.targetBranch,
-        conflictInput.featureBranch, 
-        octokit);
+        const hasEnoughTokens: boolean = await validateUserAllowance(conflictInput.owner,
+            conflictInput.repo, 
+            conflictInput.targetBranch,
+            conflictInput.featureBranch, 
+            octokit);
 
-    const mergeCandidatesContent: ConflictFileContent[] = await retrieveConflictContents(mergeCandidates.files, 
-        mergeCandidates.mergeBaseCommit, 
-        conflictInput.targetBranch, 
-        conflictInput.featureBranch, 
-        conflictInput.owner, 
-        conflictInput.repo, 
-        octokit);
-        
-    const mergedFiles: (MergeFileOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
-    return {
-        targetShaAtMerge: mergeCandidates.targetShaAtMerge,
-        mergedFiles: mergedFiles
-    }
+        if (!hasEnoughTokens){
+            throw new AllowanceError("User doesn't have enough tokens")
+        }
+
+        const conflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
+            conflictInput.repo, 
+            conflictInput.targetBranch,
+            conflictInput.featureBranch, 
+            octokit);
+
+        const mergeCandidatesContent: ConflictFileContent[] = await retrieveConflictContents(conflictingFilesResponse.files, 
+            conflictingFilesResponse.mergeBaseCommit, 
+            conflictInput.targetBranch, 
+            conflictInput.featureBranch, 
+            conflictInput.owner, 
+            conflictInput.repo, 
+            octokit);
+            
+        const mergedFiles: (MergeFileOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
+        return {
+            targetShaAtMerge: conflictingFilesResponse.targetShaAtMerge,
+            mergedFiles: mergedFiles
+        }
     } catch (error){
         console.log("Error in get merge conflict: " + error)
         throw (error)
