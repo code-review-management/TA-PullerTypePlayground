@@ -21,16 +21,6 @@ export async function GET(req: Request) {
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
-    if (token == null) {
-      console.log("No token");
-    }
-    if (token != null && token.accessToken == null) {
-      console.log("No access token");
-    }
-    if (token != null && token.githubId == null) {
-      console.log("No github id");
-    }
-
     console.log("Unauthorized request at ${new Date()}");
     return new Response(null, { status: 401 });
   }
