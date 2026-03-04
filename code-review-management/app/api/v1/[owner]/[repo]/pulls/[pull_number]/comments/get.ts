@@ -8,15 +8,13 @@ Method: GET
 Polling can be enabled dependent on the status of the PR or comment access tag.
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { CommentSchema, Comment } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
-const cookieKey =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-authjs.session-token"
-    : "authjs.session-token";
+const cookie = getCookieName();
 
 export async function _get(
   req: Request,
@@ -26,7 +24,7 @@ export async function _get(
   const token = await getToken({
     req: req,
     secret: secret,
-    cookieName: cookieKey,
+    cookieName: cookie,
   });
 
   // Validate token

@@ -2,6 +2,7 @@
 /api/v1/{owner}/{repo}/pulls/{pull_number}
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
@@ -15,17 +16,14 @@ type RouteContext = {
 };
 
 const secret = process.env.AUTH_SECRET;
-const cookieKey =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-authjs.session-token"
-    : "authjs.session-token";
+const cookie = getCookieName();
 
 export async function GET(req: Request, context: RouteContext) {
   const { owner, repo, pull_number } = await context.params;
   const token = await getToken({
     req: req,
     secret: secret,
-    cookieName: cookieKey,
+    cookieName: cookie,
   });
 
   // Validate token
