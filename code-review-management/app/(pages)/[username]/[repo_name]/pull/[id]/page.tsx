@@ -15,10 +15,9 @@ import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
 
 // Pull Request View page.
 export default function Pull() {
-  // TODO: Use params to fetch PR info
   const params = useParams<PullParams>();
-  const {username, repo_name, id} = params;
-  const {data, isPending, isError} = usePullQuery(username, repo_name, id);
+  const { username, repo_name, id } = params;
+  const { data, isPending, isError } = usePullQuery(username, repo_name, id);
 
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading pull request...</div>;
@@ -37,6 +36,7 @@ export default function Pull() {
             username={data.user?.login || ""}
             createdAt={data.created_at}
             description={data.body || ""}
+            avatarUrl={data.user?.avatar_url || ""}
           />
           <PRViewTimeline />
         </div>
@@ -45,7 +45,7 @@ export default function Pull() {
           <Divider />
           <Reviewers reviewers={data.requested_reviewers || []} />
           <Divider />
-          <Assignees assignees={data.assignees || []}/>
+          <Assignees assignees={data.assignees || []} />
           <Divider />
           <CISection />
           <Divider />

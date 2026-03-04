@@ -1,6 +1,5 @@
 import { Status } from "../StatusFlagChip/statusConstants";
 import StatusFlagChip from "../StatusFlagChip/StatusFlagChip";
-import MOCK_PULL from "@/mocks/pull.json";
 import styles from "./StatusSection.module.css";
 import { PullRequest } from "@/types/github.types";
 
@@ -10,7 +9,7 @@ import { PullRequest } from "@/types/github.types";
  * at a time.
  * If the PR is ready to merge, no other flags should be able to be displayed.
  */
-export default function StatusSection({ pullData }: {pullData: PullRequest}) {
+export default function StatusSection({ pullData }: { pullData: PullRequest }) {
   const statuses: Status[] = [];
 
   if (pullData.mergeable_state === "ready") {
@@ -22,9 +21,7 @@ export default function StatusSection({ pullData }: {pullData: PullRequest}) {
     if (pullData.mergeable_state === "blocked") {
       statuses.push("waiting");
     }
-    if (pullData.hasCIFailure) {
-      statuses.push("failure");
-    }
+    // TODO: Check if CI failure
   }
 
   return (

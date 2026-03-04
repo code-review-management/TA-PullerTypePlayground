@@ -12,27 +12,30 @@ export default function PRViewComment({
   username,
   createdAt,
   description,
+  avatarUrl,
   inTimeline,
 }: {
   username: string;
   createdAt: string;
   description: string;
+  avatarUrl?: string;
   inTimeline?: boolean;
 }) {
   return (
     <div className={styles.comment}>
       <div className={`${inTimeline && styles.userIconBackground}`}>
-        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={25} />
+        <UserIcon
+          avatarUrl={avatarUrl || "/mock/octocat.png"}
+          username={username}
+          size={25}
+        />
       </div>
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>
           <p className={styles.date}>{createdAt}</p>
         </div>
-        <MarkdownEditor
-          defaultEditable={false}
-          defaultContent={description}
-        />
+        <MarkdownEditor defaultEditable={false} defaultContent={description} />
       </div>
     </div>
   );
