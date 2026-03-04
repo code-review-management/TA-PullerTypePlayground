@@ -11,14 +11,26 @@ import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
-const secret = process.env.AUTH_SECRET;
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+  }>;
+};
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string } },
-) {
-  const { owner, repo } = await params;
-  const token = await getToken({ req, secret });
+const secret = process.env.AUTH_SECRET;
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
+
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo } = await context.params;
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookieKey,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {

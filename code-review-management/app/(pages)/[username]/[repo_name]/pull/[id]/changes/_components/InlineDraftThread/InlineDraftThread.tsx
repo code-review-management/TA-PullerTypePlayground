@@ -1,10 +1,13 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
+import DraftThreadActions from "../DraftThreadActions/DraftThreadActions";
+import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
+import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
 
 /**
  * Displays a draft thread that is anchored to specific lines in a file diff.
- * Will eventually contain an editor where the user can draft a comment
- * associated with those lines, and begin a new thread upon submission.
+ * Contains an editor where the user can draft a comment associated with those
+ * lines, and begin a new thread upon submission.
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
@@ -14,9 +17,17 @@ export default function InlineDraftThread({
   draft: DraftThreadItem;
 }) {
   return (
-    <div>
-      <div className={styles.header}>{getDraftHeader(draft)}</div>
-      <div>Created at {draft.created}</div>
+    <div className={styles.thread}>
+      <InlineThreadHeader title={getThreadTitle(draft)} />
+      <div className={styles.comment}>
+        <InlineCommentEntry
+          avatar={"/mock/octocat.png"}
+          username="octocat"
+          created={draft.created}
+          defaultEditable={true}
+          actions={<DraftThreadActions draft={draft} />}
+        />
+      </div>
     </div>
   );
 }
@@ -31,7 +42,7 @@ export default function InlineDraftThread({
  *
  * @param draft: `DraftThreadItem` object containing data about the draft thread.
  */
-function getDraftHeader(draft: DraftThreadItem) {
+function getThreadTitle(draft: DraftThreadItem) {
   const side = draft.side === "new" ? "R" : "L";
   const end = `${side}${draft.end}`;
 

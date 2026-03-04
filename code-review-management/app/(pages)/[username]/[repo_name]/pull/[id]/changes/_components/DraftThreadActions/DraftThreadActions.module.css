@@ -1,0 +1,13 @@
+.submit {
+    display: flex;
+    padding: var(--spacer-2);
+    border: none;
+    border-radius: 32px;
+    background-color: var(--color-interactive);
+    cursor: pointer;
+}
+
+.disabled {
+    background-color: var(--color-disabled);
+    cursor: default;
+}

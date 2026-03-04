@@ -7,13 +7,16 @@
     --text-primary: #49454f;
     --text-secondary: #79747e;
     --text-tertiary: #938f99;
+    --text-accent: #589ddd;
 
     /* Semantic colors */
     --color-success: #3ca133;
     --color-failure: #e30202;
+    --color-interactive: #1e84de;
+    --color-disabled: #919191;
     
     /* Tooltip colors */
-    --tooltip-gray: #5f5f5f;
+    --tooltip-gray: #4c4c4c;
 
     /* Icon colors */
     --icon-hover-gray: #efefef;
@@ -54,4 +57,8 @@
     --status-waiting: rgb(var(--status-waiting-rgb));
     --status-conflict: rgb(var(--status-conflict-rgb));
     --status-failure: rgb(var(--status-failure-rgb));
+
+    --box-shadow-rgba: 150, 136, 136, 0.10;
+    --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));
+    --box-shadow-soft: 0 2px 4px rgba(var(--box-shadow-rgba)); /* Larger blur radius */
 }

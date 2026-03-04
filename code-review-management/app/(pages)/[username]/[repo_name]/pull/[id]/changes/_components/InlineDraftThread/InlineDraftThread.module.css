@@ -1,3 +1,10 @@
-.header {
-    font-weight: 500;
+.thread {
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-soft);
+}
+
+.comment {
+    padding: var(--spacer-12);
 }
