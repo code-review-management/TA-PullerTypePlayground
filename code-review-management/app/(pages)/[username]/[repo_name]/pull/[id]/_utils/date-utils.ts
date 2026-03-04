@@ -38,7 +38,7 @@ export function formatRelativeDate(date: Date) {
     if (timeDifference >= milliseconds) {
       const num_units = Math.round(timeDifference / milliseconds);
       const isPlural = num_units != 1;
-      return `${num_units} ${text}${isPlural && "s"}`;
+      return `${num_units} ${text}${isPlural ? "s" : ""}`;
     }
   }
 
