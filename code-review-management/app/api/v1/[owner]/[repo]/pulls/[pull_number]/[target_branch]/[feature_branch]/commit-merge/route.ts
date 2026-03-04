@@ -6,7 +6,6 @@
 Polling can be enabled dependent on the status of the PR access tag
 */
 
-import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { commitMergeChanges } from "@/lib/merge-commiter/push-merge";
 import { MergeCommitInputDataSchema, MergeCommitContentSchema, MergeCommitPayloadSchema } from "@/lib/merge-conflict-finder/merge-github.types";
 import { getToken } from "next-auth/jwt";
@@ -23,14 +22,17 @@ type RouteContext = {
 };
 
 const secret = process.env.AUTH_SECRET;
-const cookie = getCookieName();
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
 
 export async function POST(req: Request, context: RouteContext) {
   const params = await context.params;
   const token = await getToken({
     req: req,
     secret: secret,
-    cookieName: cookie,
+    cookieName: cookieKey,
   });
 
   // Validate token
