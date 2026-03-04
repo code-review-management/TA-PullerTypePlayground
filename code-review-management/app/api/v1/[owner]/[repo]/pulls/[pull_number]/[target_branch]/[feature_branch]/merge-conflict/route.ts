@@ -20,11 +20,20 @@ type RouteContext = {
     feature_branch: string;
   }>;
 };
+
 const secret = process.env.AUTH_SECRET;
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
 
 export async function GET(req: Request, context: RouteContext) {
   const { owner, repo, target_branch, feature_branch } = await context.params;
-  const token = await getToken({ req, secret });
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookieKey,
+  });
 
   console.log("Received merge conflict request!")
   // Validate token
