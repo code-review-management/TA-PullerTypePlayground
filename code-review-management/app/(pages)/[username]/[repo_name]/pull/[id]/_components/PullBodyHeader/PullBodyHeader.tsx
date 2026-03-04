@@ -23,6 +23,17 @@ export default function PullBodyHeader({
   const formattedRelativeDate = formatRelativeDate(
     new Date(pullData.updated_at),
   );
+
+  const pullState = (() => {
+    if (pullData.draft) {
+      return "draft";
+    }
+    if (pullData.merged) {
+      return "merged";
+    }
+    return pullData.state;
+  })();
+
   return (
     <div className={styles.pullBodyHeader}>
       <div className={styles.titleLeft}>
@@ -36,7 +47,7 @@ export default function PullBodyHeader({
           </div>
         </div>
         <div className={styles.titleLeftInfo}>
-          <StateChip state={pullData.state as State} />
+          <StateChip state={pullState as State} />
           <div className={styles.userInfo}>
             <UserIcon
               avatarUrl={pullData.user?.avatar_url || ""}
