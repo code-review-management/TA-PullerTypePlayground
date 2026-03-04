@@ -1,4 +1,3 @@
-import Image from "next/image";
 import styles from "./PRViewComment.module.css";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
