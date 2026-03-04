@@ -5,6 +5,7 @@ import styles from "./PullBodyHeader.module.css";
 import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
 import { PullRequest } from "@/types/github.types";
+import { formatRelativeDate } from "../../_utils/date-utils";
 
 // Used for display of the branch names in the pull body header
 // TODO: Move to root layout
@@ -23,6 +24,7 @@ const robotoMono = Roboto_Mono({
  * number of commits, and number of files changed, lines added, and lines deleted.
  */
 export default function PullBodyHeader({pullData} : {pullData: PullRequest}) {
+  const formattedRelativeDate = formatRelativeDate(new Date(pullData.updated_at));
   return (
     <div className={`${styles.pullBodyHeader} ${robotoMono.variable}`}>
       <div className={styles.titleLeft}>
@@ -61,7 +63,7 @@ export default function PullBodyHeader({pullData} : {pullData: PullRequest}) {
         </div>
       </div>
       <div className={styles.titleRight}>
-        <p className={styles.updated}>Updated {pullData.updated_at}</p>
+        <p className={styles.updated}>Updated {formattedRelativeDate} ago</p>
         <div className={styles.changesInfo}>
           <p className={styles.commits}>{pullData.commits} commits</p>
           <p className={styles.files}>{pullData.changed_files} files</p>
