@@ -1,5 +1,5 @@
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import DraftThreadActions from "../DraftThreadActions/DraftThreadActions";
+import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
@@ -23,9 +23,8 @@ export default function InlineDraftThread({
         <InlineCommentEntry
           avatar={"/mock/octocat.png"}
           username="octocat"
-          created={draft.created}
           defaultEditable={true}
-          actions={<DraftThreadActions draft={draft} />}
+          actions={<DraftEditorActions draft={{ type: "thread", payload: draft }} />}
         />
       </div>
     </div>

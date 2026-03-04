@@ -1,5 +1,9 @@
+import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
+import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
+import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
+import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
@@ -8,7 +12,15 @@ import styles from "./InlinePublishedThread.module.css";
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
  */
-export default function InlinePublishedThread({ thread }: { thread: PublishedThreadItem }) {
+export default function InlinePublishedThread({
+  thread,
+}: {
+  thread: PublishedThreadItem;
+}) {
+  const { draftReplies } = useDraftRepliesContext();
+  const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
+  const isDraftingReply = draftReplyKey in draftReplies;
+
   return (
     <div className={styles.thread}>
       <InlineThreadHeader title={getThreadTitle(thread)} />
@@ -23,8 +35,32 @@ export default function InlinePublishedThread({ thread }: { thread: PublishedThr
             defaultContent={comment.body}
           />
         ))}
+        {isDraftingReply ? (
+          <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
+        ) : (
+          <InlineDraftReplyTrigger thread={thread} />
+        )}
       </div>
     </div>
+  );
+}
+
+function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
+  return (
+    <InlineCommentEntry
+      // Replace with authenticated user.
+      avatar={"/mock/octocat.png"}
+      username="octocat"
+      defaultEditable={true}
+      actions={
+        <DraftEditorActions
+          draft={{
+            type: "reply",
+            payload: reply,
+          }}
+        />
+      }
+    />
   );
 }
 
@@ -36,7 +72,11 @@ function getThreadTitle(thread: PublishedThreadItem) {
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
 
   // Starting line and side are undefined when it is not a multi-line comment.
-  if (thread.start_side && thread.start_line && thread.start_line !== thread.line) {
+  if (
+    thread.start_side &&
+    thread.start_line &&
+    thread.start_line !== thread.line
+  ) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
     return `Thread on lines ${startRange} to ${endRange}`;
   }
