@@ -1,0 +1,5 @@
+.userIcon {
+  border-radius: 1000px; /* don't use % because we don't know parent container size */
+  display: relative;
+  overflow: hidden;
+}

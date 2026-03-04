@@ -69,11 +69,3 @@
 .commitSha:hover {
   text-decoration: underline;
 }
-
-.tempUserIcon {
-  height: 18px;
-  width: 18px;
-  background-color: var(--state-draft);
-  border-radius: 32px;
-  position: relative;
-}

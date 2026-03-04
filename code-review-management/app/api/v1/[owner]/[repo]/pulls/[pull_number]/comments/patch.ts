@@ -6,21 +6,27 @@ Method: PATCH
 *NOT TO BE POLLED*
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { CommentSchema, Comment } from "@/types/github.types";
 import { CommentPatchRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
+const cookie = getCookieName();
 
 export async function _patch(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
-  const { owner, repo, pull_number } = await params;
+  const { owner, repo, pull_number } = params;
   const reqBody = await req.json();
   const reqArgs = CommentPatchRequestSchema.safeParse(reqBody);
-  const token = await getToken({ req, secret });
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookie,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {

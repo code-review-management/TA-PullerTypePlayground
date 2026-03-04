@@ -8,18 +8,24 @@ Method: GET
 Polling can be enabled dependent on the status of the PR or comment access tag.
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { CommentSchema, Comment } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
+const cookie = getCookieName();
 
 export async function _get(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
-  const { owner, repo, pull_number } = await params;
-  const token = await getToken({ req, secret });
+  const { owner, repo, pull_number } = params;
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookie,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
@@ -41,7 +47,7 @@ export async function _get(
     const { data: contents } = await octokit.rest.pulls.listReviewComments({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
       sort: "created",
       direction: "asc",
     });

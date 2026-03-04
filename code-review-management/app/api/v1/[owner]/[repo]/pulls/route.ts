@@ -7,18 +7,28 @@ Endpoint is for listing all PR's under a repo and cannot be tagged with a last
 access time due to lack of ownership. ALL requests are redirected to GitHub.
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
-const secret = process.env.AUTH_SECRET;
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+  }>;
+};
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string } },
-) {
-  const { owner, repo } = await params;
-  const token = await getToken({ req, secret });
+const secret = process.env.AUTH_SECRET;
+const cookie = getCookieName();
+
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo } = await context.params;
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookie,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {

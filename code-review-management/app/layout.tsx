@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Roboto, Roboto_Mono } from "next/font/google";
 
 import Providers from "./providers";
 
@@ -10,6 +10,11 @@ import "@globals/styles/typography.css";
 
 const roboto = Roboto({
   variable: "--font-roboto",
+  subsets: ["latin"],
+});
+
+const robotoMono = Roboto_Mono({
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 
@@ -26,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={roboto.variable}>{children}</body>
+        <body className={`${roboto.variable} ${robotoMono.variable}`}>{children}</body>
       </Providers>
     </html>
   );

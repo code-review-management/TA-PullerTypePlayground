@@ -1,4 +1,3 @@
-import { Roboto_Mono } from "next/font/google";
 import Image from "next/image";
 import MOCK_PULL from "@/mocks/pull.json";
 import styles from "./PullBodyHeader.module.css";
@@ -6,13 +5,7 @@ import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
 import { PullRequest } from "@/types/github.types";
 import { formatRelativeDate } from "../../_utils/date-utils";
-
-// Used for display of the branch names in the pull body header
-// TODO: Move to root layout
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-});
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 /**
  * Header of the body of the PR page.
@@ -26,7 +19,7 @@ const robotoMono = Roboto_Mono({
 export default function PullBodyHeader({pullData} : {pullData: PullRequest}) {
   const formattedRelativeDate = formatRelativeDate(new Date(pullData.updated_at));
   return (
-    <div className={`${styles.pullBodyHeader} ${robotoMono.variable}`}>
+    <div className={styles.pullBodyHeader}>
       <div className={styles.titleLeft}>
         <div className={styles.titleIdentifierHeaders}>
           <h2 className={styles.repoName}>{MOCK_PULL.repo_name}</h2>
@@ -40,11 +33,12 @@ export default function PullBodyHeader({pullData} : {pullData: PullRequest}) {
         <div className={styles.titleLeftInfo}>
           <StateChip state={pullData.state as State} />
           <div className={styles.userInfo}>
-            <div className={styles.tempUserIcon}>
-              <Image src="/mock/octocat.png" alt="@octocat" fill />
-            </div>{" "}
-            {/** TODO: Replace with user icon component */}
-            <p className={styles.user}>{pullData.user?.login}</p>
+            <UserIcon
+              avatarUrl="/mock/octocat.png"
+              username="octocat"
+              size={32}
+            />
+            <p className={styles.user}>{MOCK_PULL.user}</p>
           </div>
           <div className={styles.branchDisplay}>
             <div className={styles.branchChip}>

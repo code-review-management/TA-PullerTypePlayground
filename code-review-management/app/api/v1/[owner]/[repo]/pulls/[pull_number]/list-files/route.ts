@@ -6,18 +6,29 @@
 Polling can be enabled dependent on the status of the PR access tag
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { FileDiff, FileDiffSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
-const secret = process.env.AUTH_SECRET;
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+  }>;
+};
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
-) {
-  const { owner, repo, pull_number } = await params;
-  const token = await getToken({ req, secret });
+const secret = process.env.AUTH_SECRET;
+const cookie = getCookieName();
+
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo, pull_number } = await context.params;
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookie,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
@@ -39,7 +50,7 @@ export async function GET(
     const { data: contents } = await octokit.rest.pulls.listFiles({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
     });
 
     // Filter response

@@ -1,7 +1,7 @@
 {
     "repo_name": "repository-capstone",
     "title": "Update README.md",
-    "description": "<p>This PR updates the README.md file to include instructions on how to install the repository.<p>",
+    "description": "## Description\n\nThis PR updates the `README.md` file to include instructions on *how* to **install** the repository.\n## How to test\n\nScroll down to the `README.md`...\n\n### Screenshots\n\nNo",
     "number": 10,
     "state": "open",
     "user": "octocat",

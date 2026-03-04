@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./UserLister.module.css";
 import { User } from "@/types/github.types";
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 export type UserListType = "reviewers" | "assignees";
 
@@ -18,7 +19,7 @@ function UserListerRow({
 }) {
   return (
     <div className={styles.userListerRow}>
-      <Image src={imageSrc} alt={`@${username}`} width={25} height={25} />
+      <UserIcon avatarUrl={imageSrc} username="octocat" size={25} />
       <h5 className={styles.username}>{username}</h5>
     </div>
   );
