@@ -19,7 +19,6 @@ export default function PRViewComment({
   description: string;
   inTimeline?: boolean;
 }) {
-  console.log(description);
   return (
     <div className={styles.comment}>
       <div className={`${inTimeline && styles.tempUserIconBackground}`}>
