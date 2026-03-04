@@ -24,27 +24,24 @@ export default function FileTreeRow({
   depth?: number;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const onFolderClick = () => setIsExpanded((prev) => !prev);
+  const nodeLabel = (
+    <NodeLabel
+      node={node}
+      depth={depth}
+      isExpanded={isExpanded}
+      onFolderClick={() => setIsExpanded((prev) => !prev)}
+    />
+  );
 
   return (
     <>
-      <div
-        className={styles.row}
-        onClick={node.type === "directory" ? onFolderClick : undefined}
-      >
-        <FileTreeDividers
-          depth={depth}
-          basePadding={BASE_PADDING}
-          indentPadding={INDENT_PADDING}
-        />
-        <div
-          className={styles.label}
-          style={{ paddingLeft: depth * INDENT_PADDING + BASE_PADDING }}
-        >
-          <FileTreeIcon node={node} isExpanded={isExpanded} />
-          <span className={styles.filename}>{node.name}</span>
-        </div>
-      </div>
+      {node.type === "directory" ? (
+        nodeLabel
+      ) : (
+        <a href={`#file-${node.fileDiff.filename}`} className={styles.anchor}>
+          {nodeLabel}
+        </a>
+      )}
       {node.type === "directory" &&
         node.children.map((child) => (
           <div key={child.name} className={!isExpanded ? styles.collapsed : ""}>
@@ -52,5 +49,37 @@ export default function FileTreeRow({
           </div>
         ))}
     </>
+  );
+}
+
+function NodeLabel({
+  node,
+  depth,
+  isExpanded,
+  onFolderClick,
+}: {
+  node: FileTreeNode;
+  depth: number;
+  isExpanded: boolean;
+  onFolderClick: () => void;
+}) {
+  return (
+    <div
+      className={styles.row}
+      onClick={node.type === "directory" ? onFolderClick : undefined}
+    >
+      <FileTreeDividers
+        depth={depth}
+        basePadding={BASE_PADDING}
+        indentPadding={INDENT_PADDING}
+      />
+      <div
+        className={styles.label}
+        style={{ paddingLeft: depth * INDENT_PADDING + BASE_PADDING }}
+      >
+        <FileTreeIcon node={node} isExpanded={isExpanded} />
+        <span className={styles.filename}>{node.name}</span>
+      </div>
+    </div>
   );
 }

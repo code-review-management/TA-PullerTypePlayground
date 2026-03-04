@@ -88,6 +88,7 @@ export default function FileDiffView({
   return (
     <div
       className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""} ${robotoMono.variable}`}
+      id={`file-${activePath}`}
     >
       <FileDiffHeader
         diffType={diffType}

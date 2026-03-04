@@ -3,9 +3,11 @@
 import { useParams } from "next/navigation";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { PullParams } from "@/types/routing.types";
+import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
+import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import FileTree from "./_components/FileTree/FileTree";
@@ -13,6 +15,7 @@ import styles from "./page.module.css";
 
 export default function Changes() {
   const { username, repo_name, id } = useParams<PullParams>();
+  const { draftReplies, setDraftReplies } = useDraftReplies();
   const { draftThreads, setDraftThreads } = useDraftThreads();
   const {
     publishedThreads,
@@ -43,15 +46,17 @@ export default function Changes() {
     return <div>Failed to load changes.</div>;
   }
   return (
-    <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
-      <div className={styles.page}>
-        <h1>{pull.title}</h1>
-        <div className={styles.changes}>
-          <FileTree files={files} />
-          {/* Use non-null assertion since threads are defined if not in pending/error state */}
-          <DiffListView publishedThreads={publishedThreads!} />
+    <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
+      <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
+        <div className={styles.page}>
+          <h1>{pull.title}</h1>
+          <div className={styles.changes}>
+            <FileTree files={files} />
+            {/* Use non-null assertion since threads are defined if not in pending/error state */}
+            <DiffListView publishedThreads={publishedThreads!} />
+          </div>
         </div>
-      </div>
-    </DraftThreadsContext>
+      </DraftThreadsContext>
+    </DraftRepliesContext>
   );
 }

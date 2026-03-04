@@ -1,5 +1,6 @@
-import Image from "next/image";
 import styles from "./PRViewComment.module.css";
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 /**
  * A minimalist comment component for display on the PR View page.
@@ -20,20 +21,17 @@ export default function PRViewComment({
 }) {
   return (
     <div className={styles.comment}>
-      <div className={`${inTimeline && styles.tempUserIconBackground}`}>
-        <div className={styles.tempUserIcon}>
-          <Image src="/mock/octocat.png" alt="@octocat" fill />
-        </div>{" "}
+      <div className={`${inTimeline && styles.userIconBackground}`}>
+        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={25} />
       </div>
-      {/** TODO: Replace with user icon component. */}
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>
           <p className={styles.date}>{createdAt}</p>
         </div>
-        <div
-          className={styles.description}
-          dangerouslySetInnerHTML={{ __html: description }}
+        <MarkdownEditor
+          defaultEditable={false}
+          defaultContent={description}
         />
       </div>
     </div>

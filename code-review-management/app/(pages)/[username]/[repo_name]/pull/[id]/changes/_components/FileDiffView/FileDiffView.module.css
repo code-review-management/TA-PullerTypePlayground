@@ -5,6 +5,10 @@
     overflow: clip;
 }
 
+.fileDiffView:target {
+    outline: var(--border-thick-width) solid var(--color-interactive);
+}
+
 .isHighlighting {
     user-select: none;
 }
