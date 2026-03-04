@@ -5,97 +5,135 @@
 //  * configureEditor calls renderConflicts to generate widgets, highlighting, and other UI indicators for conflicts.
 //  */
 
-// import { Monaco } from "@monaco-editor/react";
-// import type * as MonacoEditor from "monaco-editor";
-// import { type Dispatch, type SetStateAction } from "react";
-// import { type ConflictBlock } from "./conflictBlock";
-// import getConflictBlocks from "./parseMerge"
-// import renderConflicts from "./renderConflicts"
+import { Monaco } from "@monaco-editor/react";
+import type * as MonacoEditor from "monaco-editor";
+import { ParsedConflict } from "./parseMerge";
+import { SideConflictBlock, renderSideConflicts, insertReverseWidget } from "./renderConflicts";
 
-// export default function configureEditor(
-// 	editor: MonacoEditor.editor.IStandaloneCodeEditor, 
-// 	monaco: Monaco, 
-// 	initValue: string,
-// 	conflictBlocks: Map<number, ConflictBlock>, 
-// 	setConflictBlocks: Dispatch<SetStateAction<Map<number, ConflictBlock>>>, 
-// 	widgets: Map<number, MonacoEditor.editor.IContentWidget>,
-// 	zoneIds: Map<number, string>,
-// ): void {
-// 	editor.setValue(initValue);
-// 	editor.updateOptions({
-// 		fontSize: 12,
-// 	});
-// 	const decorationsCollection: MonacoEditor.editor.IEditorDecorationsCollection = editor.createDecorationsCollection([]);
-// 	const model = editor.getModel();
+// Define base options that all 3 editors will share
+export const sharedEditorOptions: MonacoEditor.editor.IEditorConstructionOptions = {
+    fontSize: 20,             
+    // This is the default VS Code font stack
+    fontFamily: 'Menlo, Monaco, "Courier New", monospace', 
+    fontWeight: "400",         // VS Code's default weight
+    letterSpacing: 0,
+    lineHeight: 1.5,           // Standard VS Code line spacing
+    renderValidationDecorations: "off",
+    };
 
-// 	function processBlock(newLines: string[], blockStart: number): void {
-// 		const newFileValue: string = newLines.join('\n');
-// 		model?.setValue(newFileValue);
-// 		const newConflictBlocks: Map<number, ConflictBlock> = conflictBlocks;
-// 		conflictBlocks.delete(blockStart);
-// 		setConflictBlocks(newConflictBlocks);
-// 		const widget = widgets.get(blockStart);
-// 		const zoneId = zoneIds.get(blockStart);
-// 		if (widget && zoneId) {
-// 			editor.removeContentWidget(widget);
-// 			editor.changeViewZones(accessor => {
-// 				accessor.removeZone(zoneId);
-// 			});
-// 		} else {
-// 			console.error("Couldn't remove widget");
-// 		}
-// 		widgets.delete(blockStart);
-// 	}
+// --- Function 1: Handle Side Panels (Current & Incoming) ---
+export function updateSidePanelsUI(
+    monaco: Monaco,
+    currentEditor: MonacoEditor.editor.IStandaloneCodeEditor,
+    incomingEditor: MonacoEditor.editor.IStandaloneCodeEditor,
+    currentModel: MonacoEditor.editor.ITextModel,
+    incomingModel: MonacoEditor.editor.ITextModel,
+    conflicts: ParsedConflict[],
+    resolvedState: Record<string, { ours?: boolean, theirs?: boolean }>,
+    oldCurrentIds: string[], // NEW: Pass in the old IDs
+    oldIncomingIds: string[], // NEW: Pass in the old IDs
+    currentWidgetsMap: Map<string, MonacoEditor.editor.IContentWidget>,
+    incomingWidgetsMap: Map<string, MonacoEditor.editor.IContentWidget>,
+    currentZonesMap: Map<string, string>,
+    incomingZonesMap: Map<string, string>,
+    onAcceptCurrent: (blockId: string, text: string) => void,
+    onAcceptIncoming: (blockId: string, text: string) => void
+): { newCurrentIds: string[], newIncomingIds: string[] } {
+    // Map Current Blocks
+    const currentBlocks: SideConflictBlock[] = conflicts.map(c => {
+        const lineCount = c.currentText ? c.currentText.split('\n').length : 1;
+        return {
+            id: c.id,
+            start: c.currentStartLine,
+            end: c.currentStartLine + lineCount - 1,
+            text: c.currentText,
+            isResolved: !!resolvedState[c.id]?.ours
+        };
+    });
 
-// 	function acceptCurrentFunc(conflictBlock: ConflictBlock): void {
-// 		const currentValue = model?.getValue();
-// 		if (currentValue) {
-// 			const lines = currentValue.split('\n');
-// 			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-// 				lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
-// 				lines.slice(conflictBlock.end)
-// 			);
-// 			processBlock(newLines, conflictBlock.start);
-// 		} else {
-// 			console.error("Couldn't get current value.");
-// 		}
-// 	}
+    // Map Incoming Blocks
+    const incomingBlocks: SideConflictBlock[] = conflicts.map(c => {
+        const lineCount = c.incomingText ? c.incomingText.split('\n').length : 1;
+        return {
+            id: c.id,
+            start: c.incomingStartLine,
+            end: c.incomingStartLine + lineCount - 1,
+            text: c.incomingText,
+            isResolved: !!resolvedState[c.id]?.theirs
+        };
+    });
 
-// 	function acceptIncomingFunc(conflictBlock: ConflictBlock): void {
-// 		const currentValue = model?.getValue();
-// 		if (currentValue) {
-// 			const lines = currentValue.split('\n');
-// 			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-// 				lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
-// 				lines.slice(conflictBlock.end)
-// 			);
-// 			processBlock(newLines, conflictBlock.start);
-// 		} else {
-// 			console.error("Couldn't get current value.");
-// 		}
-// 	}
+    const newCurrentIds = renderSideConflicts(
+        currentEditor,
+        currentModel,
+        monaco,
+        currentBlocks,
+        "current",
+        oldCurrentIds,
+        currentWidgetsMap,
+        currentZonesMap,
+        (block) => onAcceptCurrent(block.id, block.text)
+    );
 
-// 	function acceptBothFunc(conflictBlock: ConflictBlock): void {
-// 		const currentValue = model?.getValue();
-// 		if (currentValue) {
-// 			const lines = currentValue.split('\n');
-// 			const newLines = lines.slice(0, conflictBlock.start - 1).concat(
-// 				lines.slice(conflictBlock.start, conflictBlock.divider - 1), 
-// 				lines.slice(conflictBlock.divider, conflictBlock.end - 1), 
-// 				lines.slice(conflictBlock.end)
-// 			);
-			
-// 			processBlock(newLines, conflictBlock.start);
-// 		} else {
-// 			console.error("Couldn't get current value.");
-// 		}
-// 	}
+    const newIncomingIds = renderSideConflicts(
+        incomingEditor,
+        incomingModel,
+        monaco,
+        incomingBlocks,
+        "incoming",
+        oldIncomingIds,
+        incomingWidgetsMap,
+        incomingZonesMap,
+        (block) => onAcceptIncoming(block.id, block.text)
+    );
+
+    return { newCurrentIds, newIncomingIds };
+}
+
+
+// --- Function 2: Handle Result Panel (Bottom) ---
+export function updateResultPanelUI(
+    monaco: Monaco,
+    resultEditor: MonacoEditor.editor.IStandaloneCodeEditor,
+    resultModel: MonacoEditor.editor.ITextModel,
+    conflicts: ParsedConflict[],
+    resolvedState: Record<string, { ours?: boolean, theirs?: boolean }>,
+    resultDecorations: Record<string, string[]>,
+    resultWidgetsMap: Map<string, MonacoEditor.editor.IContentWidget>,
+    resultZonesMap: Map<string, string>,
+    onReverseBlock: (blockId: string) => void
+) {
+    // Clear existing bottom widgets
+    resultWidgetsMap.forEach(w => resultEditor.removeContentWidget(w));
+    resultWidgetsMap.clear();
     
-// 	renderConflicts(editor, monaco, conflictBlocks, decorationsCollection, widgets, zoneIds, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
+    // Clear existing view zones
+    resultEditor.changeViewZones(accessor => {
+        resultZonesMap.forEach(z => accessor.removeZone(z));
+        resultZonesMap.clear();
+    });
 
-// 	editor.onDidChangeModelContent(() => {
-// 		const newConflictBlocks = getConflictBlocks(editor.getValue());
-// 		setConflictBlocks(newConflictBlocks);
-// 		renderConflicts(editor, monaco, newConflictBlocks, decorationsCollection, widgets, zoneIds, acceptCurrentFunc, acceptIncomingFunc, acceptBothFunc);
-// 	})
-// }
+    // Draw new widgets based on resolved state
+    conflicts.forEach(c => {
+        const isResolved = resolvedState[c.id]?.ours || resolvedState[c.id]?.theirs;
+        
+        if (isResolved) {
+            const decorationIds = resultDecorations[c.id];
+            if (!decorationIds || decorationIds.length === 0) return;
+
+            const currentRange = resultModel.getDecorationRange(decorationIds[0]);
+            if (!currentRange) return;
+
+            const [widget, zoneId] = insertReverseWidget(
+                resultEditor,
+                monaco,
+                c.id,
+                currentRange.startLineNumber,
+                onReverseBlock
+            );
+
+            resultWidgetsMap.set(c.id, widget);
+            resultZonesMap.set(c.id, zoneId);
+        }
+    });
+}

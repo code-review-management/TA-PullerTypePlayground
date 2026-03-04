@@ -11,7 +11,14 @@ export interface ParsedConflict {
     resultInsertLine: number;
 }
 
-export function parseMerge(mergeContent: string) {
+interface ParsedResult {
+    currentContent: string,
+    incomingContent: string,
+    resultContent: string,
+    conflicts: ParsedConflict[]
+}
+
+export function parseMerge(mergeContent: string) : ParsedResult {
     const lines = mergeContent.split('\n');
     const currentLines: string[] = [];
     const incomingLines: string[] = [];

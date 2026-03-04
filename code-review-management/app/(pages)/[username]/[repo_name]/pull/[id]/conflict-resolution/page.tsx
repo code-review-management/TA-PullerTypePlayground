@@ -20,7 +20,7 @@ export default async function Page() {
         featureBranch: "RTOS_Training_Base"
     });
 
-    const response = await fetch(`https://code-review-management-tool.vercel.app/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_Task_low_pwr/Conflict_Resolution_Our_Solution/merge-conflict`, { 
+    const response = await fetch(`http://localhost:3000/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_Task_low_pwr/Conflict_Resolution_Our_Solution/merge-conflict`, { 
         cache: 'no-store',
         headers: {
             // Reconstruct the cookie string for the backend to read

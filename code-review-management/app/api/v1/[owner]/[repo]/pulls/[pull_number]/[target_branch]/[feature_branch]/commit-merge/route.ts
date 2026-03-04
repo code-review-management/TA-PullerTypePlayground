@@ -1,5 +1,5 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/commit-merge
+/api/v1/{owner}/{repo}/pulls/{pull_number}/{target_branch}/{feature_branch}/commit-merge
 
 *NOT TO BE POLLED*
 
