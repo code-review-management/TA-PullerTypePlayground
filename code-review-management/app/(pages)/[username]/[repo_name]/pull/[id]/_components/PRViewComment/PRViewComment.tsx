@@ -1,6 +1,7 @@
 import styles from "./PRViewComment.module.css";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import { formatDate } from "../../_utils/date-utils";
 
 /**
  * A minimalist comment component for display on the PR View page.
@@ -21,6 +22,7 @@ export default function PRViewComment({
   avatarUrl?: string;
   inTimeline?: boolean;
 }) {
+  const formattedDate = formatDate(new Date(createdAt));
   return (
     <div className={styles.comment}>
       <div className={`${inTimeline && styles.userIconBackground}`}>
@@ -33,7 +35,7 @@ export default function PRViewComment({
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>
-          <p className={styles.date}>{createdAt}</p>
+          <p className={styles.date}>{formattedDate}</p>
         </div>
         <MarkdownEditor defaultEditable={false} defaultContent={description} />
       </div>
