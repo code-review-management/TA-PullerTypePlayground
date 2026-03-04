@@ -11,7 +11,7 @@ export default function UserIcon({
   size: number;
 }) {
   return (
-    <div className={styles.userIcon} style={{height: size, width: size}}>
+    <div className={styles.userIcon} style={{ height: size, width: size }}>
       <Image
         className={styles.iconImage}
         src={avatarUrl}

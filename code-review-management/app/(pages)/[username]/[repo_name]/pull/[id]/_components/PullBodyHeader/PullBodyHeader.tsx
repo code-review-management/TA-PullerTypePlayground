@@ -38,7 +38,11 @@ export default function PullBodyHeader() {
         <div className={styles.titleLeftInfo}>
           <StateChip state={MOCK_PULL.state as State} />
           <div className={styles.userInfo}>
-           <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={32}/>
+            <UserIcon
+              avatarUrl="/mock/octocat.png"
+              username="octocat"
+              size={32}
+            />
             <p className={styles.user}>{MOCK_PULL.user}</p>
           </div>
           <div className={styles.branchDisplay}>

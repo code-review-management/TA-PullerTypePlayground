@@ -22,7 +22,7 @@ export default function PRViewComment({
   return (
     <div className={styles.comment}>
       <div className={`${inTimeline && styles.userIconBackground}`}>
-        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={25}/>
+        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={25} />
       </div>
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
