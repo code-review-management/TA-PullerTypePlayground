@@ -1,4 +1,5 @@
 import styles from "./PRViewComment.module.css";
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 /**
@@ -28,9 +29,9 @@ export default function PRViewComment({
           <h5 className={styles.username}>{username}</h5>
           <p className={styles.date}>{createdAt}</p>
         </div>
-        <div
-          className={styles.description}
-          dangerouslySetInnerHTML={{ __html: description }}
+        <MarkdownEditor
+          defaultEditable={false}
+          defaultContent={description}
         />
       </div>
     </div>
