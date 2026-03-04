@@ -4,6 +4,7 @@ import MOCK_PULL from "@/mocks/pull.json";
 import styles from "./PullBodyHeader.module.css";
 import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 // Used for display of the branch names in the pull body header
 // TODO: Move to root layout
@@ -37,10 +38,11 @@ export default function PullBodyHeader() {
         <div className={styles.titleLeftInfo}>
           <StateChip state={MOCK_PULL.state as State} />
           <div className={styles.userInfo}>
-            <div className={styles.tempUserIcon}>
-              <Image src="/mock/octocat.png" alt="@octocat" fill />
-            </div>{" "}
-            {/** TODO: Replace with user icon component */}
+            <UserIcon
+              avatarUrl="/mock/octocat.png"
+              username="octocat"
+              size={32}
+            />
             <p className={styles.user}>{MOCK_PULL.user}</p>
           </div>
           <div className={styles.branchDisplay}>
