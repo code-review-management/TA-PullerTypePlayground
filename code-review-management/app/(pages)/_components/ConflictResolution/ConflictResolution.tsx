@@ -214,7 +214,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
             }
 
             // 2. Send the POST request
-            const response = await fetch("http://localhost:3000/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_low_pwr/RTOS_Training_Base/commit-merge", {
+            const response = await fetch("/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_low_pwr/RTOS_Training_Base/commit-merge", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
