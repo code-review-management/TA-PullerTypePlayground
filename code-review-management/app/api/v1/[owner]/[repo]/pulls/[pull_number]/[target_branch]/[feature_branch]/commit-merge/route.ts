@@ -11,11 +11,20 @@ import { MergeCommitInputDataSchema, MergeCommitContentSchema, MergeCommitPayloa
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+    target_branch: string;
+    feature_branch: string;
+  }>;
+};
+
 const secret = process.env.AUTH_SECRET;
 
-export async function POST(
-  req: Request
-) {
+export async function POST(req: Request, context: RouteContext) {
+  const params = await context.params;
   const token = await getToken({ req, secret });
 
   // Validate token

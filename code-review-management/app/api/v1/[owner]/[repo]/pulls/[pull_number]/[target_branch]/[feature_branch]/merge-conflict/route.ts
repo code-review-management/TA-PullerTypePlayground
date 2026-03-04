@@ -11,13 +11,19 @@ import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import { AllowanceError } from "@/lib/merge-conflict-finder/validate-token-allowance";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+    target_branch: string;
+    feature_branch: string;
+  }>;
+};
 const secret = process.env.AUTH_SECRET;
 
-export async function GET(
-  req: Request,
-  { params }: { params: { owner: string; repo: string; pull_request: number, target_branch:string, feature_branch: string } },
-) {
-  const { owner, repo, target_branch, feature_branch } = await params;
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo, target_branch, feature_branch } = await context.params;
   const token = await getToken({ req, secret });
 
   console.log("Received merge conflict request!")

@@ -69,6 +69,10 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         
         if (currentRange) {
             // Insert the text at the end of the tracked range (allows combining ours + theirs)
+            if (monaco == null || currentRange == null) {
+                return;
+            }
+
             resultEditor.executeEdits("merge-resolver", [{
                 range: new monaco.Range(currentRange.endLineNumber, 1, currentRange.endLineNumber, 1),
                 text: textToInsert + '\n',
