@@ -23,8 +23,6 @@ export default function Pull() {
   if (isPending) return <div>Loading pull request...</div>;
   if (isError) return <div>Failed to load pull request.</div>;
 
-  console.log(data);
-
   return (
     <div className={styles.page}>
       <PRHeader />
