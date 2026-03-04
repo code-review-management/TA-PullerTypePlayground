@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./PRViewComment.module.css";
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 
 /**
  * A minimalist comment component for display on the PR View page.
@@ -18,6 +19,7 @@ export default function PRViewComment({
   description: string;
   inTimeline?: boolean;
 }) {
+  console.log(description);
   return (
     <div className={styles.comment}>
       <div className={`${inTimeline && styles.tempUserIconBackground}`}>
@@ -31,9 +33,9 @@ export default function PRViewComment({
           <h5 className={styles.username}>{username}</h5>
           <p className={styles.date}>{createdAt}</p>
         </div>
-        <div
-          className={styles.description}
-          dangerouslySetInnerHTML={{ __html: description }}
+        <MarkdownEditor
+          defaultEditable={false}
+          defaultContent={description}
         />
       </div>
     </div>
