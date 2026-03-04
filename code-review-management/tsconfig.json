@@ -21,8 +21,7 @@
     "paths": {
       "@/*": ["./*"],
       "@components/*": ["./app/(pages)/_components/*"],
-      "@globals/*": ["./app/(pages)/_globals/*"],
-      "@lib/*": ["./lib/*"]
+      "@globals/*": ["./app/(pages)/_globals/*"]
     }
   },
   "include": [
