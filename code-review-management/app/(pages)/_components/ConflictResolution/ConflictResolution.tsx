@@ -218,7 +218,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    cookie: conflictResolutionProp.cookieHeader
+                    // cookie: conflictResolutionProp.cookieHeader
                 },
                 body: JSON.stringify({
                     mergeCommitData: inputPayload,
