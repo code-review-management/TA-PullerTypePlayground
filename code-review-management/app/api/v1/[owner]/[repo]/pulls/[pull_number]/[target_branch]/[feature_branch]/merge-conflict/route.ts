@@ -10,6 +10,7 @@ import { getMergeConflict } from "@/lib/merge-conflict-finder/get-merge";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import { AllowanceError } from "@/lib/merge-conflict-finder/validate-token-allowance";
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 
 type RouteContext = {
   params: Promise<{
@@ -22,17 +23,14 @@ type RouteContext = {
 };
 
 const secret = process.env.AUTH_SECRET;
-const cookieKey =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-authjs.session-token"
-    : "authjs.session-token";
+const cookie = getCookieName();
 
 export async function GET(req: Request, context: RouteContext) {
   const { owner, repo, target_branch, feature_branch } = await context.params;
   const token = await getToken({
     req: req,
     secret: secret,
-    cookieName: cookieKey,
+    cookieName: cookie,
   });
 
   console.log("Received merge conflict request!")
