@@ -11,10 +11,12 @@ export default function PullBodyDescription({
   username,
   createdAt,
   description,
+  avatarUrl,
 }: {
   username: string;
   createdAt: string;
   description: string;
+  avatarUrl: string;
 }) {
   return (
     <div className={styles.pullBodyDescription}>
@@ -23,6 +25,7 @@ export default function PullBodyDescription({
         username={username}
         createdAt={createdAt}
         description={description}
+        avatarUrl={avatarUrl}
       />
     </div>
   );

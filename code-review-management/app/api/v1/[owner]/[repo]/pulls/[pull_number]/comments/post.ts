@@ -6,21 +6,27 @@ Method: POST
 *NOT TO BE POLLED*
 */
 
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { CommentSchema, Comment } from "@/types/github.types";
 import { CommentCreateRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
 const secret = process.env.AUTH_SECRET;
+const cookie = getCookieName();
 
 export async function _post(
   req: Request,
-  { params }: { params: { owner: string; repo: string; pull_number: number } },
+  params: { owner: string; repo: string; pull_number: string },
 ) {
-  const { owner, repo, pull_number } = await params;
+  const { owner, repo, pull_number } = params;
   const reqBody = await req.json();
   const reqArgs = CommentCreateRequestSchema.safeParse(reqBody);
-  const token = await getToken({ req, secret });
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookie,
+  });
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
@@ -53,7 +59,7 @@ export async function _post(
     const { data: contents } = await octokit.rest.pulls.createReviewComment({
       owner: owner,
       repo: repo,
-      pull_number: pull_number,
+      pull_number: Number(pull_number),
       body: body,
       commit_id: commit_id,
       path: path,

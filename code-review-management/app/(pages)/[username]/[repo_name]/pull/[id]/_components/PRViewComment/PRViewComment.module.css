@@ -4,17 +4,9 @@
   gap: var(--spacer-8);
 }
 
-.tempUserIconBackground {
+.userIconBackground {
   padding: var(--spacer-4) 0;
   background-color: var(--background-light);
-}
-
-.tempUserIcon {
-  height: 25px;
-  width: 25px;
-  background-color: var(--state-draft);
-  border-radius: 32px;
-  position: relative;
 }
 
 .commentContent {

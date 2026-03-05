@@ -1,5 +1,7 @@
-import Image from "next/image";
 import styles from "./PRViewComment.module.css";
+import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import { formatDate } from "../../_utils/date-utils";
 
 /**
  * A minimalist comment component for display on the PR View page.
@@ -11,30 +13,31 @@ export default function PRViewComment({
   username,
   createdAt,
   description,
+  avatarUrl,
   inTimeline,
 }: {
   username: string;
   createdAt: string;
   description: string;
+  avatarUrl?: string;
   inTimeline?: boolean;
 }) {
+  const formattedDate = formatDate(new Date(createdAt));
   return (
     <div className={styles.comment}>
-      <div className={`${inTimeline && styles.tempUserIconBackground}`}>
-        <div className={styles.tempUserIcon}>
-          <Image src="/mock/octocat.png" alt="@octocat" fill />
-        </div>{" "}
+      <div className={`${inTimeline && styles.userIconBackground}`}>
+        <UserIcon
+          avatarUrl={avatarUrl || "/mock/octocat.png"}
+          username={username}
+          size={25}
+        />
       </div>
-      {/** TODO: Replace with user icon component. */}
       <div className={styles.commentContent}>
         <div className={styles.usernameAndDate}>
           <h5 className={styles.username}>{username}</h5>
-          <p className={styles.date}>{createdAt}</p>
+          <p className={styles.date}>{formattedDate}</p>
         </div>
-        <div
-          className={styles.description}
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+        <MarkdownEditor defaultEditable={false} defaultContent={description} />
       </div>
     </div>
   );

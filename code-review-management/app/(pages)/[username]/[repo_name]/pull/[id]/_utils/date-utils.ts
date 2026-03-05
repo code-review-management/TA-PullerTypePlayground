@@ -15,3 +15,32 @@ export function formatDate(date: Date) {
 
   return `${month} ${date.getDay()}, ${date.getFullYear()} at ${timeString}`;
 }
+
+/**
+ * Formats a Date object into a string indicating how long ago [date] was.
+ * Examples: "2 hours ago", "33 minutes ago", "less than a minute ago", "2 days ago", "2 years ago"
+ * @param date
+ */
+export function formatRelativeDate(date: Date) {
+  const times: { milliseconds: number; text: string }[] = [
+    { milliseconds: 60000, text: "minute" },
+    { milliseconds: 3600000, text: "hour" },
+    { milliseconds: 86400000, text: "day" },
+    { milliseconds: 604800000, text: "week" },
+    { milliseconds: 2628000000, text: "month" },
+    { milliseconds: 31556952000, text: "year" },
+  ];
+
+  const currTime = new Date().getTime();
+  const timeDifference = currTime - date.getTime();
+  for (const timePair of times.reverse()) {
+    const { milliseconds, text } = timePair;
+    if (timeDifference >= milliseconds) {
+      const num_units = Math.round(timeDifference / milliseconds);
+      const isPlural = num_units != 1;
+      return `${num_units} ${text}${isPlural ? "s" : ""}`;
+    }
+  }
+
+  return "less than 1 minute"
+}

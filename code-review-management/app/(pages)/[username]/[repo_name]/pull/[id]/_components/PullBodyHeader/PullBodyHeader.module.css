@@ -45,14 +45,6 @@
   gap: var(--spacer-8);
 }
 
-.tempUserIcon {
-  height: 32px;
-  width: 32px;
-  background-color: var(--state-draft);
-  border-radius: 32px;
-  position: relative;
-}
-
 .user {
   font-weight: 500;
 }

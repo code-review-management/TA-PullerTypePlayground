@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import PRViewComment from "../PRViewComment/PRViewComment";
 import { formatDate } from "../../_utils/date-utils";
+import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 
 /**
  * Renders the timeline of events.
@@ -106,10 +107,7 @@ function TimelineCommit({ event }: { event: timelineEvent }) {
           </a>{" "}
           {event.eventObj.message}
         </p>
-        {/** TODO: Replace with user icon component */}
-        <div className={styles.tempUserIcon}>
-          <Image src="/mock/octocat.png" alt="@octocat" fill />
-        </div>{" "}
+        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18}/>
       </div>
     </TimelineEventSmall>
   );
