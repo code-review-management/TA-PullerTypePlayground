@@ -1,0 +1,85 @@
+/*
+/api/v1/{owner}/{repo}/pulls/{pull_number}/{target_branch}/{feature_branch}/merge-conflict
+
+*NOT TO BE POLLED*
+
+Polling can be enabled dependent on the status of the PR access tag
+*/
+
+import { getMergeConflict } from "@/lib/merge-conflict-finder/get-merge";
+import { getToken } from "next-auth/jwt";
+import { Octokit, RequestError } from "octokit";
+import { AllowanceError } from "@/lib/merge-conflict-finder/validate-token-allowance";
+
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    pull_number: string;
+    target_branch: string;
+    feature_branch: string;
+  }>;
+};
+
+const secret = process.env.AUTH_SECRET;
+const cookieKey =
+  process.env.NODE_ENV === "production"
+    ? "__Secure-authjs.session-token"
+    : "authjs.session-token";
+
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo, target_branch, feature_branch } = await context.params;
+  const token = await getToken({
+    req: req,
+    secret: secret,
+    cookieName: cookieKey,
+  });
+
+  console.log("Received merge conflict request!")
+  // Validate token
+  if (token == null || token.accessToken == null || token.githubId == null) {
+    console.log("Unauthorized request at ${new Date()}");
+    return new Response(null, { status: 401 });
+  }
+
+  // Validate required parameters
+  if (!owner || !repo || !target_branch || ! feature_branch) {
+    console.log("Missing params!")
+    return Response.json(
+      { error: "Missing required parameters" },
+      { status: 406 },
+    );
+  }
+
+  const octokit = new Octokit({ auth: token.accessToken });
+
+  try {
+    const mergeConflictResponse = await getMergeConflict(
+      {
+        owner: owner,
+        repo: repo,
+        targetBranch: target_branch,
+        featureBranch: feature_branch
+      },
+      octokit
+    )
+
+    console.log("Sending back success!")
+    return new Response(JSON.stringify(mergeConflictResponse, null, 2), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error: unknown) {
+      console.log("Error in merge conflict finder: " + error)
+
+      if (error instanceof AllowanceError){
+        return new Response("Not enough tokens", { status: 403})
+      } else {
+        return new Response("Server error", { status: 500 });
+      }
+  }
+}
+
+

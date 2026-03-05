@@ -1,0 +1,127 @@
+.container {
+    min-height: 600px;
+}
+
+.currentStrong {
+    background: #158c3b8e;
+}
+
+.current {
+    background: #158c3b35;
+}
+
+.incoming {
+    background: #1b4f9d35;
+}
+
+.incomingStrong {
+    background: #1b4f9d8e;
+}
+
+.viewZone {
+    padding: 8px;
+}
+
+.conflictWidget {
+    display: flex !important;
+    width: 400px;
+    font-size: 12px;
+    gap: 10px;
+}
+
+.conflictWidgetButton {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.conflictWidgetButton:hover {
+    color: #3346d6;
+}
+
+@media (prefers-color-scheme: dark) {
+    .conflictWidgetButton:hover {
+        color: #949cd1;
+    }
+}
+
+.fileTabBar {
+    display: flex;
+    background-color: #252526; /* VS Code dark tab bar color */
+    overflow-x: auto;
+}
+
+.tabButton {
+    background: transparent;
+    color: #969696;
+    border: none;
+    border-right: 1px solid #1e1e1e;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 13px;
+    outline: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tabButton:hover {
+    background-color: #2d2d2d;
+}
+
+.activeTab {
+    background-color: #1e1e1e; /* Match editor background */
+    color: #ffffff;
+    border-top: 1px solid #007acc; /* Active accent color */
+}
+
+.completeMergeButton {
+    margin-left: auto; /* Pushes the complete button to the far right */
+}
+
+.buttonDivider {
+    cursor: default;
+    user-select: none;
+}
+
+.resolvedHighlight {
+    background-color: rgba(46, 160, 67, 0.2); /* A soft green tint */
+}
+
+/* Update your existing conflictResolution class to include these layout properties */
+.conflictResolution {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.mergeLayout {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.topHalf {
+    display: flex;
+    flex: 1;
+    border-bottom: 2px solid #ccc;
+}
+
+.splitPaneLeft {
+    flex: 1;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+.splitPaneRight,
+.bottomHalf {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.paneHeader {
+    padding: 8px;
+    font-weight: bold;
+    background-color: #f3f3f3;
+}
