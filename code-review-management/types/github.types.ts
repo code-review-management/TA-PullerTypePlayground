@@ -9,6 +9,7 @@ export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
+export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 
 // Timeline sub-types
 
@@ -261,7 +262,7 @@ export const StateChangeEventSchema = z.object({
   state_reason: z.string().nullish(),
 });
 
-export const TimelineSchema = z.union([
+export const TimelineEventSchema = z.union([
   ReviewRequestEventSchema,
   ReviewDismissedEventSchema,
   CommentEventSchema,
