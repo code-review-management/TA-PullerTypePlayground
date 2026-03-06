@@ -7,15 +7,14 @@ Polling can be enabled dependent on the status of the PR access tag
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { ReviewCommentSchema } from "@/types/github.types";
 import {
   TimelineEvent,
   TimelineEventSchema,
   ReviewedEvent,
+  ReviewCommentSchema,
 } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
-import { parse } from "path";
 
 type RouteContext = {
   params: Promise<{
@@ -95,7 +94,7 @@ export async function GET(req: Request, context: RouteContext) {
                   console.log("Review comment error: " + parsedItem.error);
                   return null;
                 }
-                // console.log(item)
+
                 return parsedItem.success ? parsedItem.data : null;
               })
               .filter((element) => element !== null);
