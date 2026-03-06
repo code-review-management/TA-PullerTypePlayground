@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import * as z from "zod";
 
 export type User = z.infer<typeof UserSchema>;
+export type UserIdentity = z.infer<typeof UserIdentitySchema>;
 export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
 export type Branch = z.infer<typeof BranchSchema>;
@@ -9,9 +10,18 @@ export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
+export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 
 // Timeline sub-types
+export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
+export type ReviewDismissedEvent = z.infer<typeof ReviewDismissedEventSchema>;
+export type CommentEvent = z.infer<typeof CommentEventSchema>;
+export type CommittedEvent = z.infer<typeof CommittedEventSchema>;
+export type ReviewedEvent = z.infer<typeof ReviewedEventSchema>;
+export type CommitCommentEvent = z.infer<typeof CommitCommentEventSchema>;
+export type AssignIssueEvent = z.infer<typeof AssignIssueEventSchema>;
+export type StateChangeEvent = z.infer<typeof StateChangeEventSchema>;
 
 const issueState = ["open", "closed"] as const;
 const side = ["LEFT", "RIGHT"] as const;
@@ -27,6 +37,20 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
+const eventType = [
+  "review_requested",
+  "review_request_removed",
+  "review_dismissed",
+  "commented",
+  "comment_deleted",
+  "committed",
+  "reviewed",
+  "assigned",
+  "unassigned",
+  "closed",
+  "merged",
+  "reopened",
+] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -163,6 +187,23 @@ export const CommentSchema = z.object({
   subject_type: z.enum(subjectType),
 });
 
+export const ReviewCommentSchema = z.object({
+  pull_request_review_id: z.number(),
+  id: z.number(),
+  diff_hunk: z.string(),
+  path: z.string(),
+  commit_id: z.string(),
+  original_commit_id: z.string(),
+  user: UserSchema,
+  body: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  reactions: ReactionSchema,
+  in_reply_to_id: z.number().nullish(),
+  author_association: z.enum(authorAssociation),
+  subject_type: z.enum(subjectType).nullish(),
+});
+
 export const CommitCommentSchema = z.object({
   id: z.number(),
   body: z.string(),
@@ -180,7 +221,7 @@ export const ReviewRequestEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.string(),
+  event: z.enum(eventType),
   created_at: z.string(),
   review_requester: UserSchema,
   requested_reviewer: UserSchema,
@@ -190,13 +231,13 @@ export const ReviewDismissedEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.string(),
+  event: z.enum(eventType),
   created_at: z.string(),
   dismissed_review: z.object({
     state: z.string(),
     review_id: z.number(),
     dismissal_message: z.string().nullable(),
-    dismissal_commit_id: z.string(),
+    dismissal_commit_id: z.string().optional(),
   }),
 });
 
@@ -204,7 +245,7 @@ export const CommentEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.string(),
+  event: z.enum(eventType),
   created_at: z.string(),
   updated_at: z.string(),
   body: z.string(),
@@ -214,7 +255,7 @@ export const CommentEventSchema = z.object({
 });
 
 export const CommittedEventSchema = z.object({
-  event: z.string(),
+  event: z.enum(eventType),
   sha: z.string(),
   url: z.string(),
   author: UserIdentitySchema,
@@ -222,24 +263,25 @@ export const CommittedEventSchema = z.object({
   message: z.string(),
 });
 
+export const LineCommentEventSchema = z.object({
+  event: z.enum(eventType),
+  comments: z.array(CommentSchema),
+});
+
 export const ReviewedEventSchema = z.object({
   id: z.number(),
-  event: z.string(),
+  event: z.enum(eventType),
   user: UserSchema,
   body: z.string().nullable(),
   state: z.string(),
   submitted_at: z.string(),
   updated_at: z.string(),
   author_association: z.enum(authorAssociation),
-});
-
-export const LineCommentEventSchema = z.object({
-  event: z.string(),
-  comments: z.array(CommentSchema),
+  comments: z.array(ReviewCommentSchema).optional(),
 });
 
 export const CommitCommentEventSchema = z.object({
-  event: z.string(),
+  event: z.enum(eventType),
   commit_id: z.number(),
   comments: z.array(CommitCommentSchema),
 });
@@ -248,7 +290,7 @@ export const AssignIssueEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.string(),
+  event: z.enum(eventType),
   created_at: z.string(),
   assignee: UserSchema,
 });
@@ -257,19 +299,19 @@ export const StateChangeEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.string(),
+  event: z.enum(eventType),
   created_at: z.string(),
   state_reason: z.string().nullish(),
 });
 
-export const TimelineEventSchema = z.union([
-  ReviewRequestEventSchema,
-  ReviewDismissedEventSchema,
-  CommentEventSchema,
-  CommittedEventSchema,
-  ReviewedEventSchema,
-  LineCommentEventSchema,
-  CommitCommentEventSchema,
-  AssignIssueEventSchema,
-  StateChangeEventSchema,
-]);
+export const TimelineEventSchema = z
+  .union([
+    ReviewRequestEventSchema, // event: review_requested, review_request_removed
+    ReviewDismissedEventSchema, // event: review_dismissed
+    CommentEventSchema, // event: commented, comment_deleted
+    CommittedEventSchema, // event: committed
+    ReviewedEventSchema, // event: reviewed
+    AssignIssueEventSchema, // event: assigned, unassigned
+    StateChangeEventSchema, // event: closed, merged, reopened
+  ])
+  .nullable();
