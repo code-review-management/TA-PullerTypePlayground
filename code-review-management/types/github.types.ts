@@ -8,6 +8,7 @@ export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
+export type PRMerge = z.infer<typeof PRMergeSchema>;
 
 const issueState = ["open", "closed"] as const;
 const side = ["LEFT", "RIGHT"] as const;
@@ -151,4 +152,10 @@ export const CommentSchema = z.object({
   in_reply_to_id: z.number().nullish(),
   author_association: z.string(),
   subject_type: z.enum(subjectType),
+});
+
+export const PRMergeSchema = z.object({
+  sha: z.string(),
+  merged: z.boolean(),
+  message: z.string(),
 });
