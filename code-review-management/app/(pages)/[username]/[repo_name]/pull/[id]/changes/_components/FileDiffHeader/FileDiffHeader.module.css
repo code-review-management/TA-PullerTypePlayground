@@ -1,6 +1,6 @@
 .fileDiffHeader {
     position: sticky;
-    top: 0;
+    top: var(--page-header-height);
     z-index: 10;
 
     display: flex;

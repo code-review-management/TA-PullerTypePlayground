@@ -2,6 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  height: var(--page-header-height);
 
   background-color: var(--background-light);
   padding: var(--spacer-12) var(--spacer-48);
