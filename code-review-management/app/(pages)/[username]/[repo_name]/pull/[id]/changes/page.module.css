@@ -7,5 +7,5 @@
 .changes {
   display: flex;
   gap: var(--spacer-16);
-  margin: 0 var(--spacer-48);
+  margin: var(--spacer-10) var(--spacer-48);
 }

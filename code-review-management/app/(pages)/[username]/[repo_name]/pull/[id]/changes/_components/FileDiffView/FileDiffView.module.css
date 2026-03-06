@@ -3,6 +3,7 @@
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-soft);
     overflow: clip;
+    scroll-margin-top: calc(var(--file-diff-header-height) * 2);
 }
 
 .fileDiffView:target {
