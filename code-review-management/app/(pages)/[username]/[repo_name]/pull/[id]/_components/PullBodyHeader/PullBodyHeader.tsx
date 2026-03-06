@@ -1,10 +1,10 @@
-import Image from "next/image";
 import styles from "./PullBodyHeader.module.css";
 import StateChip from "../StateChip/StateChip";
 import { State } from "../StateChip/stateConstants";
 import { PullRequest } from "@/types/github.types";
 import { formatRelativeDate } from "../../_utils/date-utils";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import BranchDisplay from "../BranchDisplay/BranchDisplay";
 
 /**
  * Header of the body of the PR page.
@@ -56,20 +56,10 @@ export default function PullBodyHeader({
             />
             <p className={styles.user}>{pullData.user?.login}</p>
           </div>
-          <div className={styles.branchDisplay}>
-            <div className={styles.branchChip}>
-              <p className={styles.branchName}>{pullData.head.ref}</p>
-            </div>
-            <Image
-              src="/icons/merge_direction.svg"
-              width={16}
-              height={12}
-              alt="Right arrow"
-            />
-            <div className={styles.branchChip}>
-              <p className={styles.branchName}>{pullData.base.ref}</p>
-            </div>
-          </div>
+          <BranchDisplay
+            headRef={pullData.head.ref}
+            baseRef={pullData.base.ref}
+          />
         </div>
       </div>
       <div className={styles.titleRight}>
