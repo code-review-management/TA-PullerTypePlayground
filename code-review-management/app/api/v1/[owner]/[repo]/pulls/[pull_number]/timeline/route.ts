@@ -7,9 +7,15 @@ Polling can be enabled dependent on the status of the PR access tag
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { TimelineEvent, TimelineEventSchema } from "@/types/github.types";
+import { ReviewCommentSchema } from "@/types/github.types";
+import {
+  TimelineEvent,
+  TimelineEventSchema,
+  ReviewedEvent,
+} from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import { parse } from "path";
 
 type RouteContext = {
   params: Promise<{
@@ -54,17 +60,51 @@ export async function GET(req: Request, context: RouteContext) {
     });
 
     // Filter response
-    const filteredResponse: TimelineEvent[] = contents
-      .map((item) => {
-        // console.log(item)
+    const filteredResponse: TimelineEvent[] = await Promise.all(
+      contents
+        .map(async (item) => {
+          let { data: parsedItem, success: status } =
+            TimelineEventSchema.safeParse(item);
+          if (!status) {
+            console.log("Error parsing\n" + item);
+            return null;
+          }
 
-        let parsedItem = TimelineEventSchema.safeParse(item);
-        if (!parsedItem.success) {
-          console.log("Error parsing\n" + item);
-        }
-        return parsedItem.success ? parsedItem.data : null;
-      })
-      .filter((element) => element !== null);
+          if (
+            parsedItem &&
+            parsedItem.event &&
+            "id" in parsedItem &&
+            parsedItem.event == "reviewed"
+          ) {
+            // Inject review comments into object
+            parsedItem = parsedItem as ReviewedEvent;
+
+            const { data: reviewContents } =
+              await octokit.rest.pulls.listCommentsForReview({
+                owner: owner,
+                repo: repo,
+                pull_number: Number(pull_number),
+                review_id: parsedItem.id,
+              });
+
+            // Filter comments in review
+            parsedItem.comments = reviewContents
+              .map((item) => {
+                const parsedItem = ReviewCommentSchema.safeParse(item);
+                if (!parsedItem.success) {
+                  console.log("Review comment error: " + parsedItem.error);
+                  return null;
+                }
+                // console.log(item)
+                return parsedItem.success ? parsedItem.data : null;
+              })
+              .filter((element) => element !== null);
+          }
+
+          return parsedItem ?? null;
+        })
+        .filter((element) => element !== null),
+    );
 
     return new Response(JSON.stringify(filteredResponse, null, 2), {
       status: 200,
