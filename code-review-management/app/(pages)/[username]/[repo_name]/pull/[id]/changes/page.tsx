@@ -11,6 +11,7 @@ import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import FileTree from "./_components/FileTree/FileTree";
+import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
 
 export default function Changes() {
@@ -49,7 +50,7 @@ export default function Changes() {
     <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
       <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
         <div className={styles.page}>
-          <h1>{pull.title}</h1>
+          <PRChangesHeader />
           <div className={styles.changes}>
             <FileTree files={files} />
             {/* Use non-null assertion since threads are defined if not in pending/error state */}
