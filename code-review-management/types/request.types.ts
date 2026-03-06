@@ -3,7 +3,7 @@ import * as z from "zod";
 export type CommentCreateRequest = z.infer<typeof CommentCreateRequestSchema>;
 export type CommentPatchRequest = z.infer<typeof CommentPatchRequestSchema>;
 export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
-export type MergeRequest = z.infer<typeof MergeRequestSchema>;
+export type PRMergeRequest = z.infer<typeof PRMergeRequestSchema>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
@@ -46,7 +46,7 @@ export const CommentDeleteRequestSchema = z.object({
   comment_id: z.number(),
 });
 
-export const MergeRequestSchema = z.object({
+export const PRMergeRequestSchema = z.object({
   commit_title: z.string(),
   commit_message: z.string(),
   sha: z.string().optional(),
