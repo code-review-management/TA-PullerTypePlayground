@@ -50,7 +50,7 @@ export default function Changes() {
     <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
       <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
         <div className={styles.page}>
-          <PRChangesHeader />
+          <PRChangesHeader pull={pull} />
           <div className={styles.changes}>
             <FileTree files={files} />
             {/* Use non-null assertion since threads are defined if not in pending/error state */}
