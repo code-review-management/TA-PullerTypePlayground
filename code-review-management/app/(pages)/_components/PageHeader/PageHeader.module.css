@@ -1,4 +1,4 @@
-.PRHeader {
+.header {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -7,10 +7,17 @@
   padding: var(--spacer-12) var(--spacer-48);
 
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: var(--spacer-12);
 }
 
 .shadow {
   box-shadow: var(--box-shadow);
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-12);
 }
