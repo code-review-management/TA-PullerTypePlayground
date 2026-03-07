@@ -5,25 +5,18 @@ import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
 import StateChip from "../../../_components/StateChip/StateChip";
 import styles from "./PRChangesHeader.module.css";
+import { getPullState } from "../../../_utils/pull-utils";
 
+/**
+ * Header for PR changes page.
+ */
 export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
   const params = useParams();
   const { username, repo_name, id } = params;
 
-  // Abstract this logic to make it reusable.
-  const pullState = (() => {
-    if (pull.draft) {
-      return "draft";
-    }
-    if (pull.merged) {
-      return "merged";
-    }
-    return pull.state;
-  })();
-
   const leftChildren = (
     <>
-      <StateChip state={pullState} />
+      <StateChip state={getPullState(pull)} />
       <h1 className={styles.pullTitle}>
         {pull.title} <span className={styles.pullNumber}>#{pull.number}</span>
       </h1>
