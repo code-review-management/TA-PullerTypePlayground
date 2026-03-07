@@ -5,7 +5,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
 }
 
 .pullNumber {
@@ -13,6 +12,17 @@
     color: var(--text-tertiary);
 }
 
+.branchDisplay {
+    min-width: 0;
+
+}
+
 .branchDisplay p {
     font-size: 0.75rem;
+}
+
+.branchDisplay * {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
