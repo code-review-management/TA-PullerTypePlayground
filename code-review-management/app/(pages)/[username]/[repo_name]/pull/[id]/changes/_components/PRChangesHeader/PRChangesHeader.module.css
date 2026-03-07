@@ -13,6 +13,6 @@
     color: var(--text-tertiary);
 }
 
-.branchDisplay * {
+.branchDisplay p {
     font-size: 0.75rem;
 }
