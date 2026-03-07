@@ -1,9 +1,18 @@
 .pullTitle {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 500;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 
 .pullNumber {
     font-weight: 400;
     color: var(--text-tertiary);
+}
+
+.branchDisplay * {
+    font-size: 0.75rem;
 }

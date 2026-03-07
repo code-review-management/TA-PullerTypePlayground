@@ -27,7 +27,9 @@ export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
       <h1 className={styles.pullTitle}>
         {pull.title} <span className={styles.pullNumber}>#{pull.number}</span>
       </h1>
-      <BranchDisplay headRef={pull.head.ref} baseRef={pull.base.ref} />
+      <div className={styles.branchDisplay}>
+        <BranchDisplay headRef={pull.head.ref} baseRef={pull.base.ref} />
+      </div>
     </>
   );
 

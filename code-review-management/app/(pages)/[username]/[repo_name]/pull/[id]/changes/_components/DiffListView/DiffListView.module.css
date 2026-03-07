@@ -4,4 +4,5 @@
     gap: var(--spacer-16);
     padding: var(--spacer-10) 0;
     width: 100%;
+    min-width: 0;
 }
