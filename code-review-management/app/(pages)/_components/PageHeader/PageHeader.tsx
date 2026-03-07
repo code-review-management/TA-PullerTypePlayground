@@ -1,6 +1,12 @@
 import { ReactNode, useEffect, useState } from "react";
 import styles from "./PageHeader.module.css";
 
+/**
+ * Sticky header for a page.
+ *
+ * @param leftChildren: Children to display on the left side of the header.
+ * @param rightChildren: Children to display on the right side of the header.
+ */
 export default function PageHeader({
   leftChildren,
   rightChildren,
