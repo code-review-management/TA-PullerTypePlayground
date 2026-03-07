@@ -1,11 +1,11 @@
 import { useParams } from "next/navigation";
 import { PullRequest } from "@/types/github.types";
+import { getPullState } from "../../../_utils/pull-utils";
 import BranchDisplay from "../../../_components/BranchDisplay/BranchDisplay";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
 import StateChip from "../../../_components/StateChip/StateChip";
 import styles from "./PRChangesHeader.module.css";
-import { getPullState } from "../../../_utils/pull-utils";
 
 /**
  * Header for PR changes page.
