@@ -1,10 +1,10 @@
-import Image from "next/image";
 import styles from "./PullBodyHeader.module.css";
 import StateChip from "../StateChip/StateChip";
-import { State } from "../StateChip/stateConstants";
 import { PullRequest } from "@/types/github.types";
 import { formatRelativeDate } from "../../_utils/date-utils";
+import { getPullState } from "../../_utils/pull-utils";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import BranchDisplay from "../BranchDisplay/BranchDisplay";
 
 /**
  * Header of the body of the PR page.
@@ -23,16 +23,7 @@ export default function PullBodyHeader({
   const formattedRelativeDate = formatRelativeDate(
     new Date(pullData.updated_at),
   );
-
-  const pullState = (() => {
-    if (pullData.draft) {
-      return "draft";
-    }
-    if (pullData.merged) {
-      return "merged";
-    }
-    return pullData.state;
-  })();
+  const pullState = getPullState(pullData);
 
   return (
     <div className={styles.pullBodyHeader}>
@@ -47,7 +38,7 @@ export default function PullBodyHeader({
           </div>
         </div>
         <div className={styles.titleLeftInfo}>
-          <StateChip state={pullState as State} />
+          <StateChip state={pullState} />
           <div className={styles.userInfo}>
             <UserIcon
               avatarUrl={pullData.user?.avatar_url || ""}
@@ -56,20 +47,10 @@ export default function PullBodyHeader({
             />
             <p className={styles.user}>{pullData.user?.login}</p>
           </div>
-          <div className={styles.branchDisplay}>
-            <div className={styles.branchChip}>
-              <p className={styles.branchName}>{pullData.head.ref}</p>
-            </div>
-            <Image
-              src="/icons/merge_direction.svg"
-              width={16}
-              height={12}
-              alt="Right arrow"
-            />
-            <div className={styles.branchChip}>
-              <p className={styles.branchName}>{pullData.base.ref}</p>
-            </div>
-          </div>
+          <BranchDisplay
+            headRef={pullData.head.ref}
+            baseRef={pullData.base.ref}
+          />
         </div>
       </div>
       <div className={styles.titleRight}>

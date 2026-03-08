@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  margin: var(--spacer-24) var(--spacer-48);
-  gap: var(--spacer-24);
 }
 
 .changes {
   display: flex;
   gap: var(--spacer-16);
+  flex: 1;
+  margin: 0 var(--spacer-48);
 }
