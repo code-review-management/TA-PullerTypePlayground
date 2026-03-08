@@ -1,0 +1,55 @@
+.popoverContainer {
+    z-index: 1000;
+    margin-top: 20px;
+    padding-right: var(--spacer-48);
+    font-size: 0.875rem;
+}
+
+.popoverContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-12);
+
+    width: 350px;
+    min-height: 200px;
+
+    padding: var(--spacer-12);
+    border: var(--border-normal-width) solid var(--border-gray-secondary);
+    border-radius: 8px;
+
+    background-color: var(--background-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.popoverContent > :first-child {
+    flex: 1;
+}
+
+.buttonEnabled button {
+    outline: 2px solid var(--color-interactive);
+    border-color: transparent;
+}
+
+.reviewTypes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-8);
+}
+
+.reviewTypes label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-8);
+}
+
+.submit {
+    cursor: pointer;
+    align-self: flex-end;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 4px rgba(181, 179, 179, 0.5);
+    font-size: 0.875rem;
+    background-color: var(--color-interactive);
+    color: var(--background-light);
+}

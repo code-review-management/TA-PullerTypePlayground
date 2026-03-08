@@ -26,10 +26,12 @@ export default function MarkdownEditor({
   defaultEditable,
   defaultContent,
   actions,
+  onChange,
 }: {
   defaultEditable: boolean;
   defaultContent?: string;
   actions?: ReactNode;
+  onChange?: (markdown: string) => void;
 }) {
   const [editable, setEditable] = useState(defaultEditable);
   const [editorContent, setEditorContent] = useState(defaultContent ?? "");
@@ -42,7 +44,11 @@ export default function MarkdownEditor({
     immediatelyRender: false,
     autofocus: "end",
     onUpdate: ({ editor }: { editor: Editor }) => {
-      setEditorContent(editor.getMarkdown());
+      const markdown = editor.getMarkdown();
+      setEditorContent(markdown);
+      if (onChange) {
+        onChange(markdown);
+      }
     },
   });
 

@@ -1,6 +1,7 @@
 import { useParams } from "next/navigation";
 import { PullRequest } from "@/types/github.types";
 import { getPullState } from "../../../_utils/pull-utils";
+import AddReviewButton from "../../../_components/AddReviewButton/AddReviewButton";
 import BranchDisplay from "../../../_components/BranchDisplay/BranchDisplay";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
@@ -34,12 +35,7 @@ export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
       >
         View pull request
       </HeaderButton>
-      <HeaderButton
-        href={`/${username}/${repo_name}/pull/${id}/changes`}
-        variant="secondary"
-      >
-        Add review
-      </HeaderButton>
+      <AddReviewButton />
       <HeaderButton>Merge</HeaderButton>
     </>
   );
