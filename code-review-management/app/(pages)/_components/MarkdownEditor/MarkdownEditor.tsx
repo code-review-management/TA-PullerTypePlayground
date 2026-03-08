@@ -52,6 +52,13 @@ export default function MarkdownEditor({
     }
   }, [editor, editable]);
 
+  // Docs: https://github.com/ueberdosis/tiptap/issues/5068#issuecomment-2465958436
+  const handleEditorClick = () => {
+    if (editor && !editor.isFocused) {
+      editor.commands.focus("end");
+    }
+  };
+
   return (
     <MarkdownEditorContext
       value={{
@@ -59,7 +66,10 @@ export default function MarkdownEditor({
         setEditable,
       }}
     >
-      <div className={editable ? styles.editable : ""}>
+      <div
+        className={editable ? styles.editable : ""}
+        onClick={handleEditorClick}
+      >
         <EditorContent editor={editor} />
         {editable && actions && <div className={styles.actions}>{actions}</div>}
       </div>
