@@ -42,6 +42,9 @@ function AddReviewPopover() {
     console.log(formData.get("review-type"));
   };
 
+  const isReviewBodyEmpty = reviewBody.trim().length === 0;
+  const isDisabled = isReviewBodyEmpty && reviewType != "approve";
+
   return (
     <div className={styles.reviewPopoverContent}>
       <MarkdownEditor
@@ -66,7 +69,11 @@ function AddReviewPopover() {
             {label}
           </label>
         ))}
-        <button type="submit" className={styles.submitReviewButton}>
+        <button
+          type="submit"
+          className={`${styles.submit} ${isDisabled ? styles.disabled : ""}`}
+          disabled={isDisabled}
+        >
           Submit review
         </button>
       </form>
