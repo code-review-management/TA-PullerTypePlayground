@@ -35,6 +35,7 @@ export default function MarkdownEditor({
 }) {
   const [editable, setEditable] = useState(defaultEditable);
   const [editorContent, setEditorContent] = useState(defaultContent ?? "");
+  // Used to prevent mismatched transactions when setting autofocus.
   const [editorReady, setEditorReady] = useState(false);
 
   const editor = useEditor({
@@ -57,9 +58,7 @@ export default function MarkdownEditor({
   useEffect(() => {
     if (editor) {
       editor.setEditable(editable);
-      if (editable && editorReady) {
-        editor.commands.focus("end");
-      }
+      if (editable && editorReady) editor.commands.focus("end");
     }
   }, [editor, editable, editorReady]);
 
@@ -79,6 +78,7 @@ export default function MarkdownEditor({
     >
       <div
         className={editable ? styles.editable : ""}
+        // Block auto-focus if the editor is not ready.
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
       >
