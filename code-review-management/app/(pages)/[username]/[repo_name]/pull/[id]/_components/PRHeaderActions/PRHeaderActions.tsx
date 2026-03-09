@@ -1,7 +1,7 @@
 import { useState } from "react";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
-import PRHeaderPopoverButton from "../PRHeaderPopover/PRHeaderPopover";
+import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 
 type PRHeaderPopovers = "review" | "merge";
 
@@ -12,7 +12,7 @@ type PRHeaderPopovers = "review" | "merge";
  * @param viewHref: Where the view button navigates to.
  * @param viewLabel: What the view button displays.
  */
-export default function PRHeaderActionButtons({
+export default function PRHeaderActions({
   viewHref,
   viewLabel,
 }: {

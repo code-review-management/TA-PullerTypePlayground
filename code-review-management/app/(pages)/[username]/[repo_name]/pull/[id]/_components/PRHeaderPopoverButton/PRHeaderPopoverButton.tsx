@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Popover } from "react-tiny-popover";
 import HeaderButton from "@components/HeaderButton/HeaderButton";
-import styles from "./PRHeaderPopover.module.css";
+import styles from "./PRHeaderPopoverButton.module.css";
 
 export default function PRHeaderPopoverButton({
   buttonLabel,

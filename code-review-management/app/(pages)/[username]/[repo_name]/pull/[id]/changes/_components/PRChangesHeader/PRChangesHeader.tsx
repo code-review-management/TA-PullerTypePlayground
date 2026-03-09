@@ -3,7 +3,7 @@ import { PullRequest } from "@/types/github.types";
 import { getPullState } from "../../../_utils/pull-utils";
 import BranchDisplay from "../../../_components/BranchDisplay/BranchDisplay";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
-import PRHeaderActionButtons from "../../../_components/PRHeaderActionButtons/PRHeaderActionButtons";
+import PRHeaderActions from "../../../_components/PRHeaderActions/PRHeaderActions";
 import StateChip from "../../../_components/StateChip/StateChip";
 import styles from "./PRChangesHeader.module.css";
 
@@ -27,7 +27,7 @@ export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
   );
 
   const rightChildren = (
-    <PRHeaderActionButtons
+    <PRHeaderActions
       viewHref={`/${username}/${repo_name}/pull/${id}`}
       viewLabel="View pull request"
     />
