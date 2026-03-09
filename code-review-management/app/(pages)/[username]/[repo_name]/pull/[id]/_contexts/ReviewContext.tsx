@@ -1,4 +1,11 @@
-import { createContext, Dispatch, SetStateAction, useContext } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 /**
  * Docs:
@@ -22,4 +29,19 @@ export const useReviewContext = () => {
   return context;
 };
 
-export default ReviewContext;
+export default function ReviewContextProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const [reviewBody, setReviewBody] = useState("");
+  const [reviewType, setReviewType] = useState<ReviewType>("comment");
+
+  return (
+    <ReviewContext
+      value={{ reviewBody, setReviewBody, reviewType, setReviewType }}
+    >
+      {children}
+    </ReviewContext>
+  );
+}
