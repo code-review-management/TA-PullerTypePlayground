@@ -35,7 +35,6 @@ export default function MarkdownEditor({
 }) {
   const [editable, setEditable] = useState(defaultEditable);
   const [editorContent, setEditorContent] = useState(defaultContent ?? "");
-  const [editorReady, setEditorReady] = useState(false);
 
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
@@ -44,9 +43,6 @@ export default function MarkdownEditor({
     contentType: "markdown",
     immediatelyRender: false,
     autofocus: "end",
-    onCreate: () => {
-      setEditorReady(true);
-    },
     onUpdate: ({ editor }: { editor: Editor }) => {
       const markdown = editor.getMarkdown();
       setEditorContent(markdown);
@@ -76,14 +72,17 @@ export default function MarkdownEditor({
         setEditable,
       }}
     >
-      <div
-        className={editable ? styles.editable : ""}
-        style={{ visibility: editorReady ? "visible" : "hidden" }}
-        onClick={handleEditorClick}
-      >
-        <EditorContent editor={editor} />
-        {editable && actions && <div className={styles.actions}>{actions}</div>}
-      </div>
+      {editor && (
+        <div
+          className={editable ? styles.editable : ""}
+          onClick={handleEditorClick}
+        >
+          <EditorContent editor={editor} />
+          {editable && actions && (
+            <div className={styles.actions}>{actions}</div>
+          )}
+        </div>
+      )}
     </MarkdownEditorContext>
   );
 }

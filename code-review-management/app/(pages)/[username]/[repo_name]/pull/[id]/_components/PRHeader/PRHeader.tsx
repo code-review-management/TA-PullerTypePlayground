@@ -1,4 +1,5 @@
 import { useParams } from "next/navigation";
+import AddReviewButton from "../AddReviewButton/AddReviewButton";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
 
@@ -18,12 +19,7 @@ export default function PRHeader() {
       >
         View files
       </HeaderButton>
-      <HeaderButton
-        href={`/${username}/${repo_name}/pull/${id}/changes`}
-        variant="secondary"
-      >
-        Add review
-      </HeaderButton>
+      <AddReviewButton />
       <HeaderButton>Merge</HeaderButton>
     </>
   );

@@ -61,4 +61,6 @@
     --box-shadow-rgba: 150, 136, 136, 0.10;
     --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));
     --box-shadow-soft: 0 2px 4px rgba(var(--box-shadow-rgba)); /* Larger blur radius */
+    --box-shadow-dark: 0 2px 4px rgba(181, 179, 179, 0.5);
+    --box-shadow-popover: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
