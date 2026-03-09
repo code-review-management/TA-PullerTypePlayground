@@ -35,6 +35,7 @@ export default function MarkdownEditor({
 }) {
   const [editable, setEditable] = useState(defaultEditable);
   const [editorContent, setEditorContent] = useState(defaultContent ?? "");
+  const [editorReady, setEditorReady] = useState(false);
 
   const editor = useEditor({
     extensions: [StarterKit, Markdown],
@@ -43,6 +44,7 @@ export default function MarkdownEditor({
     contentType: "markdown",
     immediatelyRender: false,
     autofocus: "end",
+    onCreate: () => setEditorReady(true),
     onUpdate: ({ editor }: { editor: Editor }) => {
       const markdown = editor.getMarkdown();
       setEditorContent(markdown);
@@ -55,8 +57,11 @@ export default function MarkdownEditor({
   useEffect(() => {
     if (editor) {
       editor.setEditable(editable);
+      if (editable && editorReady) {
+        editor.commands.focus("end");
+      }
     }
-  }, [editor, editable]);
+  }, [editor, editable, editorReady]);
 
   // Docs: https://github.com/ueberdosis/tiptap/issues/5068#issuecomment-2465958436
   const handleEditorClick = () => {
@@ -72,17 +77,14 @@ export default function MarkdownEditor({
         setEditable,
       }}
     >
-      {editor && (
-        <div
-          className={editable ? styles.editable : ""}
-          onClick={handleEditorClick}
-        >
-          <EditorContent editor={editor} />
-          {editable && actions && (
-            <div className={styles.actions}>{actions}</div>
-          )}
-        </div>
-      )}
+      <div
+        className={editable ? styles.editable : ""}
+        style={{ visibility: editorReady ? "visible" : "hidden" }}
+        onClick={handleEditorClick}
+      >
+        <EditorContent editor={editor} />
+        {editable && actions && <div className={styles.actions}>{actions}</div>}
+      </div>
     </MarkdownEditorContext>
   );
 }
