@@ -3,6 +3,15 @@ import { Popover } from "react-tiny-popover";
 import HeaderButton from "@components/HeaderButton/HeaderButton";
 import styles from "./PRHeaderPopoverButton.module.css";
 
+/**
+ * Button used by PR page-level headers that displays a popover when clicked.
+ *
+ * @param buttonLabel: Label to display on the button.
+ * @param buttonVariant: Styling variant for the button.
+ * @param isPopoverOpen: Whether the popover is currently open or not.
+ * @param popoverContent: Content to display for the open popover.
+ * @param onToggle: Function to execute when the popover is toggled between open and closed.
+ */
 export default function PRHeaderPopoverButton({
   buttonLabel,
   buttonVariant,
