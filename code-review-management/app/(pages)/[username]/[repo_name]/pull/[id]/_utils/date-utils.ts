@@ -13,7 +13,7 @@ export function formatDate(date: Date) {
     hour12: true,
   });
 
-  return `${month} ${date.getDay()}, ${date.getFullYear()} at ${timeString}`;
+  return `${month} ${date.getDate()}, ${date.getFullYear()} at ${timeString}`;
 }
 
 /**
