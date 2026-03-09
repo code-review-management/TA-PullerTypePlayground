@@ -11,6 +11,11 @@ const REVIEW_TYPE_INPUTS: { type: ReviewType; label: string }[] = [
   { type: "request-changes", label: "Request changes" },
 ];
 
+// TODO: Author cannot approve or request changes on their own PR.
+// TODO: Disable review button if user does not have permissions.
+// TODO: Close form on submit.
+// TODO: Loading UI on submit.
+// TODO: Toast on error.
 export default function AddReviewButton() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
