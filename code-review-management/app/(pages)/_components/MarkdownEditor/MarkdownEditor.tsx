@@ -79,7 +79,7 @@ export default function MarkdownEditor({
     >
       <div
         className={editable ? styles.editable : ""}
-        // Block auto-focus if the editor is not ready.
+        // Block autofocus if the editor is not ready.
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
       >
