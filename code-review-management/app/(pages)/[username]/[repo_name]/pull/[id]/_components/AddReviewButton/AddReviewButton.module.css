@@ -5,77 +5,7 @@
     font-size: 0.875rem;
 }
 
-.reviewPopoverContent {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-12);
-
-    width: 375px;
-    min-height: 250px;
-    max-height: 350px;
-
-    padding: var(--spacer-12);
-    border: var(--border-normal-width) solid var(--border-gray-secondary);
-    border-radius: 8px;
-
-    background-color: var(--background-light);
-    box-shadow: var(--box-shadow-popover);
-}
-
-.reviewPopoverContent> :first-child {
-    flex: 1;
-    overflow-y: scroll;
-}
-
 .reviewButtonEnabled button {
     outline: var(--border-thick-width) solid var(--color-interactive);
     border-color: transparent;
-}
-
-.reviewTypes {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-4);
-}
-
-.reviewTypes label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: var(--spacer-8);
-    padding: var(--spacer-6);
-    border-radius: var(--border-radius);
-}
-
-.reviewTypes label:hover {
-    background-color: var(--background-secondary-light);
-}
-
-.reviewTypes label:has(input:checked) {
-    background-color: var(--color-interactive-transparent);
-}
-
-.reviewTypes input {
-    cursor: pointer;
-    accent-color: var(--color-interactive);
-}
-
-.submit {
-    cursor: pointer;
-    align-self: flex-end;
-    margin-top: var(--spacer-8);
-    padding: var(--spacer-6) var(--spacer-12);
-
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-button);
-
-    font-size: 0.875rem;
-    background-color: var(--color-interactive);
-    color: var(--background-light);
-}
-
-.disabled {
-    background-color: var(--color-disabled);
-    cursor: default;
 }
