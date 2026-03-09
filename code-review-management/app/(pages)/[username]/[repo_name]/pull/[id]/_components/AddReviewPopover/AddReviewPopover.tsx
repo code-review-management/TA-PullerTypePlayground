@@ -29,9 +29,7 @@ export default function AddReviewPopover() {
       <MarkdownEditor
         defaultEditable={true}
         defaultContent={reviewBody}
-        onChange={(markdown: string) => {
-          setReviewBody(markdown);
-        }}
+        onChange={(markdown: string) => setReviewBody(markdown)}
       />
       <form className={styles.reviewTypes} action={handleSubmit}>
         {REVIEW_TYPE_INPUTS.map(({ type, label }) => (
