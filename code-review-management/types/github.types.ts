@@ -9,6 +9,7 @@ export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
+export type PRMerge = z.infer<typeof PRMergeSchema>;
 export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 
@@ -184,6 +185,12 @@ export const CommentSchema = z.object({
   in_reply_to_id: z.number().nullish(),
   author_association: z.enum(authorAssociation),
   subject_type: z.enum(subjectType),
+});
+
+export const PRMergeSchema = z.object({
+  sha: z.string(),
+  merged: z.boolean(),
+  message: z.string(),
 });
 
 export const ReviewCommentSchema = z.object({
