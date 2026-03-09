@@ -1,7 +1,6 @@
 import { useParams } from "next/navigation";
-import AddReviewButton from "../AddReviewButton/AddReviewButton";
-import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
+import PRHeaderActionButtons from "../PRHeaderActionButtons/PRHeaderActionButtons";
 
 /**
  * Header for PR view page.
@@ -12,16 +11,10 @@ export default function PRHeader() {
   const { username, repo_name, id } = params;
 
   const rightChildren = (
-    <>
-      <HeaderButton
-        href={`/${username}/${repo_name}/pull/${id}/changes`}
-        variant="secondary"
-      >
-        View files
-      </HeaderButton>
-      <AddReviewButton />
-      <HeaderButton>Merge</HeaderButton>
-    </>
+    <PRHeaderActionButtons
+      viewHref={`/${username}/${repo_name}/pull/${id}/changes`}
+      viewLabel="View files"
+    />
   );
 
   return <PageHeader rightChildren={rightChildren} />;

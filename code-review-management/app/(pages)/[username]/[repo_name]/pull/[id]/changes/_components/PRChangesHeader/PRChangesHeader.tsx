@@ -1,10 +1,9 @@
 import { useParams } from "next/navigation";
 import { PullRequest } from "@/types/github.types";
 import { getPullState } from "../../../_utils/pull-utils";
-import AddReviewButton from "../../../_components/AddReviewButton/AddReviewButton";
 import BranchDisplay from "../../../_components/BranchDisplay/BranchDisplay";
-import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PageHeader from "@/app/(pages)/_components/PageHeader/PageHeader";
+import PRHeaderActionButtons from "../../../_components/PRHeaderActionButtons/PRHeaderActionButtons";
 import StateChip from "../../../_components/StateChip/StateChip";
 import styles from "./PRChangesHeader.module.css";
 
@@ -28,16 +27,10 @@ export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
   );
 
   const rightChildren = (
-    <>
-      <HeaderButton
-        href={`/${username}/${repo_name}/pull/${id}`}
-        variant="secondary"
-      >
-        View pull request
-      </HeaderButton>
-      <AddReviewButton />
-      <HeaderButton>Merge</HeaderButton>
-    </>
+    <PRHeaderActionButtons
+      viewHref={`/${username}/${repo_name}/pull/${id}`}
+      viewLabel="View pull request"
+    />
   );
 
   return (
