@@ -68,7 +68,7 @@
 
     border: none;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow-dark);
+    box-shadow: var(--box-shadow-button);
 
     font-size: 0.875rem;
     background-color: var(--color-interactive);
