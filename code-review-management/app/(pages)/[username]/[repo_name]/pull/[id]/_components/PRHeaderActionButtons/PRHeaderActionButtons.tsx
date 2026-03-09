@@ -1,5 +1,9 @@
-import AddReviewButton from "../AddReviewButton/AddReviewButton";
-import HeaderButton from "@components/HeaderButton/HeaderButton";
+import { useState } from "react";
+import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
+import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
+import PRHeaderPopoverButton from "../PRHeaderPopover/PRHeaderPopover";
+
+type PRHeaderPopovers = "review" | "merge";
 
 /**
  * Shared action buttons for the PR overview and PR changes page-headers. The
@@ -15,13 +19,29 @@ export default function PRHeaderActionButtons({
   viewHref: string;
   viewLabel: string;
 }) {
+  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
+  const togglePopover = (popover: PRHeaderPopovers) => {
+    setActivePopover((prev) => (prev === popover ? null : popover));
+  };
+
   return (
     <>
       <HeaderButton href={viewHref} variant="secondary">
         {viewLabel}
       </HeaderButton>
-      <AddReviewButton />
-      <HeaderButton>Merge</HeaderButton>
+      <PRHeaderPopoverButton
+        buttonLabel="Add review"
+        buttonVariant="secondary"
+        isPopoverOpen={activePopover === "review"}
+        popoverContent={<AddReviewPopover />}
+        onToggle={() => togglePopover("review")}
+      />
+      <PRHeaderPopoverButton
+        buttonLabel="Merge"
+        isPopoverOpen={activePopover === "merge"}
+        popoverContent={<div>Temporary merge popover</div>}
+        onToggle={() => togglePopover("merge")}
+      />
     </>
   );
 }

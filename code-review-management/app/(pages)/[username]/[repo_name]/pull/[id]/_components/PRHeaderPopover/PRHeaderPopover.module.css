@@ -1,11 +1,11 @@
-.reviewPopoverContainer {
+.popoverContainer {
     z-index: 1000;
     margin-top: 20px;
     padding-right: var(--spacer-48);
     font-size: 0.875rem;
 }
 
-.reviewButtonEnabled button {
+.popoverButtonEnabled button {
     outline: var(--border-thick-width) solid var(--color-interactive);
     border-color: transparent;
 }
