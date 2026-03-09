@@ -4,7 +4,6 @@ import PRHeaderActionButtons from "../PRHeaderActionButtons/PRHeaderActionButton
 
 /**
  * Header for PR view page.
- * TODO: Add callback as onClick to Merge button.
  */
 export default function PRHeader() {
   const params = useParams();
