@@ -1,5 +1,6 @@
 import { ReviewType, useReviewContext } from "../../_contexts/ReviewContext";
 import MarkdownEditor from "@components/MarkdownEditor/MarkdownEditor";
+import SubmitButton from "@components/SubmitButton/SubmitButton";
 import styles from "./AddReviewPopover.module.css";
 
 const REVIEW_TYPE_INPUTS: { type: ReviewType; label: string }[] = [
@@ -41,18 +42,14 @@ export default function AddReviewPopover() {
               value={type!}
               required
               defaultChecked={reviewType === type}
-              onChange={() => setReviewType(type)} // Check onChange vs. onClick.
+              onChange={() => setReviewType(type)}
             />
             {label}
           </label>
         ))}
-        <button
-          type="submit"
-          className={`${styles.submit} ${isDisabled ? styles.disabled : ""}`}
-          disabled={isDisabled}
-        >
-          Submit review
-        </button>
+        <div className={styles.submitReview}>
+          <SubmitButton label="Submit review" isDisabled={isDisabled} />
+        </div>
       </form>
     </div>
   );
