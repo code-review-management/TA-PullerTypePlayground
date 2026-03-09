@@ -21,6 +21,7 @@ import "./TiptapEditor.css";
  * @param defaultContent: Content to display in the editor on initial render.
  * @param actions: Action buttons to render below the editor content when it is
  *                 editable (e.g., publish or cancel buttons).
+ * @param onChange: Function to execute everytime the editor's content is updated.
  */
 export default function MarkdownEditor({
   defaultEditable,
@@ -43,8 +44,8 @@ export default function MarkdownEditor({
     editable: defaultEditable,
     content: defaultContent,
     contentType: "markdown",
-    immediatelyRender: false,
     autofocus: "end",
+    immediatelyRender: false,
     onCreate: () => setEditorReady(true),
     onUpdate: ({ editor }: { editor: Editor }) => {
       const markdown = editor.getMarkdown();
