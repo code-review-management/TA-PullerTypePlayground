@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
+import PopoverContent from "@/app/(pages)/_components/PopoverContent/PopoverContent";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 
 type PRHeaderPopovers = "review" | "merge";
@@ -39,7 +40,9 @@ export default function PRHeaderActions({
       <PRHeaderPopoverButton
         buttonLabel="Merge"
         isPopoverOpen={activePopover === "merge"}
-        popoverContent={<div>Temporary merge popover</div>}
+        popoverContent={
+          <PopoverContent>Temporary merge popover</PopoverContent>
+        }
         onToggle={() => togglePopover("merge")}
       />
     </>

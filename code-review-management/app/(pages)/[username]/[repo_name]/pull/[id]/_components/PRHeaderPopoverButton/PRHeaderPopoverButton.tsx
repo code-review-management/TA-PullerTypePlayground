@@ -22,6 +22,7 @@ export default function PRHeaderPopoverButton({
       positions={["bottom"]}
       content={popoverContent}
       containerClassName={styles.popoverContainer}
+      onClickOutside={onToggle}
     >
       <div className={isPopoverOpen ? styles.popoverButtonEnabled : ""}>
         <HeaderButton onClick={onToggle} variant={buttonVariant ?? "primary"}>
