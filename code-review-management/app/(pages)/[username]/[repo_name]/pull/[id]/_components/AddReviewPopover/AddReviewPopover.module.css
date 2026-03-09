@@ -26,6 +26,7 @@
     gap: var(--spacer-8);
     padding: var(--spacer-6);
     border-radius: var(--border-radius);
+    font-weight: 450;
 }
 
 .reviewTypes label:hover {
@@ -39,6 +40,12 @@
 .reviewTypes input {
     cursor: pointer;
     accent-color: var(--color-interactive);
+}
+
+.reviewTypeLabelIcon {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
 }
 
 .submitReview {

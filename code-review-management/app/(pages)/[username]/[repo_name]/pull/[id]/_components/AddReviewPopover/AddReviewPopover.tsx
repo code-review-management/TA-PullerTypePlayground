@@ -1,13 +1,21 @@
+import Image, { StaticImageData } from "next/image";
 import { ReviewType, useReviewContext } from "../../_contexts/ReviewContext";
 import MarkdownEditor from "@components/MarkdownEditor/MarkdownEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
 import SubmitButton from "@components/SubmitButton/SubmitButton";
+import ReviewApproveIcon from "@/public/icons/review_approve.svg";
+import ReviewCommentIcon from "@/public/icons/review_comment.svg";
+import ReviewRequestChangesIcon from "@/public/icons/review_request_changes.svg";
 import styles from "./AddReviewPopover.module.css";
 
-const REVIEW_TYPE_INPUTS: { type: ReviewType; label: string }[] = [
-  { type: "comment", label: "Comment" },
-  { type: "approve", label: "Approve" },
-  { type: "request-changes", label: "Request changes" },
+const REVIEW_TYPE_INPUTS: {
+  type: ReviewType;
+  label: string;
+  icon: StaticImageData;
+}[] = [
+  { type: "comment", label: "Comment", icon: ReviewCommentIcon },
+  { type: "approve", label: "Approve", icon: ReviewApproveIcon },
+  { type: "request-changes", label: "Request changes", icon: ReviewRequestChangesIcon },
 ];
 
 /**
@@ -34,7 +42,7 @@ export default function AddReviewPopover() {
           onChange={(markdown: string) => setReviewBody(markdown)}
         />
         <form className={styles.reviewTypes} action={handleSubmit}>
-          {REVIEW_TYPE_INPUTS.map(({ type, label }) => (
+          {REVIEW_TYPE_INPUTS.map(({ type, label, icon }) => (
             <label key={type}>
               <input
                 type="radio"
@@ -44,7 +52,10 @@ export default function AddReviewPopover() {
                 defaultChecked={reviewType === type}
                 onChange={() => setReviewType(type)}
               />
-              {label}
+              <div className={styles.reviewTypeLabelIcon}>
+                {label}
+                <Image src={icon} alt={type!} />
+              </div>
             </label>
           ))}
           <div className={styles.submitReview}>
