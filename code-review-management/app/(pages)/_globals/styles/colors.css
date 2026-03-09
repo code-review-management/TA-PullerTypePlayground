@@ -13,6 +13,7 @@
     --color-success: #3ca133;
     --color-failure: #e30202;
     --color-interactive: #1e84de;
+    --color-interactive-transparent: rgba(216, 237, 255, 0.5);
     --color-disabled: #919191;
     
     /* Tooltip colors */

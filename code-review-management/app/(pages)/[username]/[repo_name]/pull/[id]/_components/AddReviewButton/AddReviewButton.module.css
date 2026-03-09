@@ -10,8 +10,9 @@
     flex-direction: column;
     gap: var(--spacer-12);
 
-    width: 350px;
-    min-height: 200px;
+    width: 375px;
+    min-height: 250px;
+    max-height: 350px;
 
     padding: var(--spacer-12);
     border: var(--border-normal-width) solid var(--border-gray-secondary);
@@ -21,8 +22,9 @@
     box-shadow: var(--box-shadow-popover);
 }
 
-.reviewPopoverContent > :first-child {
+.reviewPopoverContent> :first-child {
     flex: 1;
+    overflow-y: scroll;
 }
 
 .reviewButtonEnabled button {
@@ -33,22 +35,41 @@
 .reviewTypes {
     display: flex;
     flex-direction: column;
-    gap: var(--spacer-8);
+    gap: var(--spacer-4);
 }
 
 .reviewTypes label {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: var(--spacer-8);
+    padding: var(--spacer-6);
+    border-radius: var(--border-radius);
+}
+
+.reviewTypes label:hover {
+    background-color: var(--background-secondary-light);
+}
+
+.reviewTypes label:has(input:checked) {
+    background-color: var(--color-interactive-transparent);
+}
+
+.reviewTypes input {
+    cursor: pointer;
+    accent-color: var(--color-interactive);
 }
 
 .submitReviewButton {
     cursor: pointer;
     align-self: flex-end;
+    margin-top: var(--spacer-8);
+    padding: var(--spacer-6) var(--spacer-12);
+
     border: none;
     border-radius: var(--border-radius);
-    padding: var(--spacer-6) var(--spacer-12);
     box-shadow: var(--box-shadow-dark);
+
     font-size: 0.875rem;
     background-color: var(--color-interactive);
     color: var(--background-light);
