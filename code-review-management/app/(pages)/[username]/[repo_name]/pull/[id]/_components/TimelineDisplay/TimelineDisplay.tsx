@@ -166,6 +166,7 @@ function TimelineReview({ event }: { event: timelineEvent }) {
         username={comment.user?.login || ""}
         createdAt={comment.created_at || ""}
         description={comment.body || ""}
+        avatarUrl={comment.user?.avatar_url}
         inTimeline
       />
     )
