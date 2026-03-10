@@ -11,6 +11,8 @@ import styles from "./PRHeaderPopoverButton.module.css";
  * @param isPopoverOpen: Whether the popover is currently open or not.
  * @param popoverContent: Content to display for the open popover.
  * @param onToggle: Function to execute when the popover is toggled between open and closed.
+ * @param isDisabled: Whether the button is disabled or not.
+ * @param tooltip: Tooltip message shown when hovering over the button.
  */
 export default function PRHeaderPopoverButton({
   buttonLabel,
@@ -18,12 +20,16 @@ export default function PRHeaderPopoverButton({
   isPopoverOpen,
   popoverContent,
   onToggle,
+  isDisabled,
+  tooltip,
 }: {
   buttonLabel: string;
   buttonVariant?: "primary" | "secondary";
   isPopoverOpen: boolean;
   popoverContent: ReactNode;
   onToggle: () => void;
+  isDisabled?: boolean;
+  tooltip?: string;
 }) {
   return (
     <Popover
@@ -33,8 +39,20 @@ export default function PRHeaderPopoverButton({
       containerClassName={styles.popoverContainer}
       onClickOutside={onToggle}
     >
-      <div className={isPopoverOpen ? styles.popoverButtonEnabled : ""}>
-        <HeaderButton onClick={onToggle} variant={buttonVariant ?? "primary"}>
+      <div
+        className={isPopoverOpen ? styles.popoverButtonEnabled : ""}
+        {...(tooltip && {
+          "data-tooltip-id": "page-header",
+          "data-tooltip-content": tooltip,
+          "data-tooltip-place": "bottom-end",
+          "data-tooltip-delay-show": 100,
+        })}
+      >
+        <HeaderButton
+          onClick={onToggle}
+          variant={buttonVariant ?? "primary"}
+          isDisabled={isDisabled}
+        >
           {buttonLabel}
         </HeaderButton>
       </div>

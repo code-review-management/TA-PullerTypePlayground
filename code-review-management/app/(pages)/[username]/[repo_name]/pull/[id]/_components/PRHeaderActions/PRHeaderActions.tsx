@@ -40,7 +40,7 @@ export default function PRHeaderActions({
         popoverContent={<AddReviewPopover />}
         onToggle={() => togglePopover("review")}
       />
-      {!pull.merged && (
+      {!pull.merged && ( // Do not show merge button if PR is already merged.
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
@@ -48,6 +48,11 @@ export default function PRHeaderActions({
             <PopoverContent>Temporary merge popover</PopoverContent>
           }
           onToggle={() => togglePopover("merge")}
+          isDisabled={!pull.mergeable}
+          {...(!pull.mergeable && {
+            // TODO: Replace with more descriptive message.
+            tooltip: "Pull request is not mergable",
+          })}
         />
       )}
     </>
