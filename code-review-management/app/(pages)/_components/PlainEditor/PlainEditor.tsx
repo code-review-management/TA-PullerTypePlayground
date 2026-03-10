@@ -1,13 +1,34 @@
 import sharedStyles from "../EditorContainer/EditorContainer.module.css";
 
 export default function PlainEditor({
+  name,
+  defaultValue,
+  onChange,
   isSingleLine,
 }: {
+  name: string;
+  defaultValue?: string;
+  onChange?: (body: string) => void;
   isSingleLine?: boolean;
 }) {
   if (isSingleLine) {
-    return <input type="text" className={sharedStyles.editable} />;
+    return (
+      <input
+        type="text"
+        name={name}
+        defaultValue={defaultValue}
+        onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+        className={sharedStyles.editable}
+      />
+    );
   } else {
-    return <textarea className={sharedStyles.editable} />;
+    return (
+      <textarea
+        name={name}
+        defaultValue={defaultValue}
+        onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+        className={sharedStyles.editable}
+      />
+    );
   }
 }
