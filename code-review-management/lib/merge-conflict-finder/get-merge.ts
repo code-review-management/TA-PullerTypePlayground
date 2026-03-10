@@ -1,8 +1,15 @@
 import { Octokit } from "octokit"
-import { findConflictingFiles } from "./detect-modified"
+import { findConflictingFiles, AllowanceError } from "./detect-modified"
 import { retrieveConflictContents, ConflictFileContent } from "./get-files"
 import { FileMergeOutput, attemptFileMerge } from "./get-merge-diff"
-import { validateUserAllowance, AllowanceError } from "./validate-token-allowance"
+import { performance } from 'perf_hooks';
+
+const startTimer = () => performance.now();
+const endTimer = (start: number, label: string) => {
+    const duration = (performance.now() - start).toFixed(2);
+    console.log(`[PERF] ${label}: ${duration}ms`);
+    return duration;
+};
 
 export interface MergeOutput{
     targetShaAtMerge: string,
@@ -24,22 +31,19 @@ export interface ConflictInput{
 
 export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Octokit) : Promise<MergeOutput> => {
     try{
-        const hasEnoughTokens: boolean = await validateUserAllowance(conflictInput.owner,
+        const firstStart = startTimer();
+        const { conflictingFilesResponse, allowance } = await findConflictingFiles(conflictInput.owner,
             conflictInput.repo, 
             conflictInput.targetBranch,
             conflictInput.featureBranch, 
             octokit);
-
-        if (!hasEnoughTokens){
+        
+        if (!allowance){
             throw new AllowanceError("User doesn't have enough tokens")
         }
+        endTimer(firstStart, "Modified finder")
 
-        const conflictingFilesResponse = await findConflictingFiles(conflictInput.owner,
-            conflictInput.repo, 
-            conflictInput.targetBranch,
-            conflictInput.featureBranch, 
-            octokit);
-
+        const secondStart = startTimer();
         const mergeCandidatesContent: ConflictFileContent[] = await retrieveConflictContents(conflictingFilesResponse.files, 
             conflictingFilesResponse.mergeBaseCommit, 
             conflictInput.targetBranch, 
@@ -47,8 +51,11 @@ export const getMergeConflict = async (conflictInput: ConflictInput, octokit: Oc
             conflictInput.owner, 
             conflictInput.repo, 
             octokit);
-            
+        endTimer(secondStart, "Content retrieval")
+
+        const thirdStart = startTimer()
         const mergedFiles: (MergeFileOutput)[] = mergeCandidatesContent.map(file => MakeMerge(file))
+        endTimer(thirdStart, "Content parsing")
         return {
             targetShaAtMerge: conflictingFilesResponse.targetShaAtMerge,
             mergedFiles: mergedFiles

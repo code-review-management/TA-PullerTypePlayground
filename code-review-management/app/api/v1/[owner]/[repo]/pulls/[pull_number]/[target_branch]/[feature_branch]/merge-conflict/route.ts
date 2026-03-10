@@ -9,7 +9,7 @@ Polling can be enabled dependent on the status of the PR access tag
 import { getMergeConflict } from "@/lib/merge-conflict-finder/get-merge";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
-import { AllowanceError } from "@/lib/merge-conflict-finder/validate-token-allowance";
+import { AllowanceError } from "@/lib/merge-conflict-finder/detect-modified";
 
 type RouteContext = {
   params: Promise<{

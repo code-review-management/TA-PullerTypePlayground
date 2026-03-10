@@ -1,25 +1,28 @@
 "use client"
 import styles from "./ConflictResolution.module.css"
-import { Editor, useMonaco, } from "@monaco-editor/react";
+import { Editor, useMonaco, loader} from "@monaco-editor/react";
 import * as MonacoEditor from "monaco-editor";
 import { useState, useMemo, useRef, useEffect } from "react";
 import useIsDark from "@components/ConflictResolution/useIsDark"
 import { parseMerge, ParsedConflict } from "@components/ConflictResolution/parseMerge";
 import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions } from "./configureEditor";
 import { ConflictResolutionProp } from "../../[username]/[repo_name]/pull/[id]/conflict-resolution/page";
+import { SyncAnchor, bindInterpolatedScroll, generateAnchors, refreshAnchors } from "./syncedScrolling";
 import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent } from "@/lib/merge-conflict-finder/merge-github.types";
 
-interface FileWorkspaceState {
+export interface FileWorkspaceState {
     currentModel: MonacoEditor.editor.ITextModel;
     incomingModel: MonacoEditor.editor.ITextModel;
     resultModel: MonacoEditor.editor.ITextModel;
     conflicts: ParsedConflict[];
     resultDecorations: Record<string, string[]>;
-    // NEW: Track the side panel highlight IDs per-file
     currentDecorations: string[]; 
     incomingDecorations: string[];
-    viewState?: MonacoEditor.editor.ICodeEditorViewState | null; 
+    viewState?: MonacoEditor.editor.ICodeEditorViewState | null;
+    syncAnchors: SyncAnchor[]
 }
+
+loader.config({ monaco: MonacoEditor });
 
 export default function ConflictResolution({ conflictResolutionProp }: { conflictResolutionProp: ConflictResolutionProp }) {
     const mergeOutput: MergeOutput = conflictResolutionProp.mergeOutput;
@@ -62,46 +65,49 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         });
     };
 
-    // --- 3. Manage Models & Tab Switching ---
     useEffect(() => {
         if (!monaco || !currentEditor || !incomingEditor || !resultEditor || !activeFile) return;
 
         const filename = activeFile.filename;
 
-        // Save scroll/cursor position of the outgoing file
         if (prevFileRef.current && workspaceCache.current[prevFileRef.current]) {
             workspaceCache.current[prevFileRef.current].viewState = resultEditor.saveViewState();
         }
 
-        // If this is the first time opening this file, parse and create models
         if (!workspaceCache.current[filename]) {
             const parsed = parseMerge(activeFile.contents);
             
             const cModel = monaco.editor.createModel(parsed.currentContent, 'javascript');
             const iModel = monaco.editor.createModel(parsed.incomingContent, 'javascript');
             const rModel = monaco.editor.createModel(parsed.resultContent, 'javascript');
-
-            // NEW: Inject directly into the Model!
             const resultDecs: Record<string, string[]> = {};
             
             parsed.conflicts.forEach(c => {
-                // model.deltaDecorations(oldIds, newDecorations) returns an array of string IDs
                 resultDecs[c.id] = rModel.deltaDecorations([], [{
                     range: new monaco.Range(c.resultInsertLine, 1, c.resultInsertLine, 1),
                     options: { stickiness: monaco.editor.TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges }
                 }]);
             });
 
-            // Inside your model creation logic:
+            const initialAnchors = generateAnchors(
+                parsed.conflicts,
+                rModel,
+                resultDecs,
+                cModel.getLineCount(),
+                iModel.getLineCount(),
+                rModel.getLineCount()
+            );
+
             workspaceCache.current[filename] = {
                 currentModel: cModel,
                 incomingModel: iModel,
                 resultModel: rModel,
                 conflicts: parsed.conflicts,
                 resultDecorations: resultDecs,
-                currentDecorations: [], // INITIALIZE HERE
-                incomingDecorations: [], // INITIALIZE HERE
-                viewState: null
+                currentDecorations: [],
+                incomingDecorations: [],
+                viewState: null,
+                syncAnchors: initialAnchors
             };
         }
 
@@ -118,6 +124,26 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         prevFileRef.current = filename;
     }, [activeFile, monaco, currentEditor, incomingEditor, resultEditor]);
 
+    // --- Synced Scrolling ---
+    useEffect(() => {
+        if (!currentEditor || !incomingEditor || !resultEditor || !activeFile) return;
+
+        const cache = workspaceCache.current[activeFile.filename];
+        if (!cache) return;
+
+        const syncState = { isSyncing: false };
+
+        // Pass a getter function `() => cache.syncAnchors` so it always has the latest data
+        const sync1 = bindInterpolatedScroll(currentEditor, incomingEditor, resultEditor, () => cache.syncAnchors, 'currentLine', 'incomingLine', 'resultLine', syncState);
+        const sync2 = bindInterpolatedScroll(incomingEditor, currentEditor, resultEditor, () => cache.syncAnchors, 'incomingLine', 'currentLine', 'resultLine', syncState);
+        const sync3 = bindInterpolatedScroll(resultEditor, currentEditor, incomingEditor, () => cache.syncAnchors, 'resultLine', 'currentLine', 'incomingLine', syncState);
+
+        return () => {
+            sync1.dispose();
+            sync2.dispose();
+            sync3.dispose();
+        };
+    }, [activeFile, currentEditor, incomingEditor, resultEditor]);
 
     // --- Handlers (Referencing the active cache) ---
     const handleTransferBlock = (conflictId: string, side: 'ours' | 'theirs', textToInsert: string) => {
@@ -164,6 +190,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         }
         
         cache.resultDecorations[conflictId] = cache.resultModel.deltaDecorations(decorationIds, deltaDecorations);
+        refreshAnchors(cache);
         setResolvedState((prev: any) => ({ ...prev, [conflictId]: { ...prev[conflictId], [side]: true } }));
     };
 
@@ -187,6 +214,8 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
             range: new monaco.Range(currentRange.startLineNumber, 1, currentRange.startLineNumber, 1),
             options: { stickiness: monaco.editor.TrackedRangeStickiness.AlwaysGrowsWhenTypingAtEdges }
         }]);
+
+        refreshAnchors(cache);
 
         setResolvedState((prev: any) => {
             const newState = { ...prev };
@@ -217,8 +246,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
             const response = await fetch("/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_low_pwr/RTOS_Training_Base/commit-merge", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    cookie: conflictResolutionProp.cookieHeader
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     mergeCommitData: inputPayload,

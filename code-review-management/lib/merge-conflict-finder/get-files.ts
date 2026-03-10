@@ -1,4 +1,3 @@
-import { GitHubContent, GitHubContentSchema } from './merge-github.types';
 import { Octokit } from 'octokit';
 
 export interface ConflictFileContent {
@@ -9,8 +8,8 @@ export interface ConflictFileContent {
 }
 
 /**
- * Main Function: Retrieves the 3-way content for a list of conflicting files.
- * Returns: 3 versions of the file
+ * Main Function: Retrieves the 3-way content for a list of conflicting files via GraphQL.
+ * Batches requests to eliminate N+1 REST API calls.
  */
 export async function retrieveConflictContents(
     fileList: string[], 
@@ -21,56 +20,71 @@ export async function retrieveConflictContents(
     repo: string,
     octokit: Octokit
 ): Promise<ConflictFileContent[]> {
-    const promises = fileList.map(async (fileName) => {
-        const [ancestor, target, feature] = await Promise.all([
-            fetchRawContent(fileName, ancestorSha, owner, repo, octokit),
-            fetchRawContent(fileName, targetSha, owner, repo, octokit),
-            fetchRawContent(fileName, featureSha, owner, repo, octokit)
-        ]);
+    if (fileList.length === 0) return [];
 
-        return {
-            fileName,
-            ancestorContent: ancestor,
-            targetContent: target,
-            featureContent: feature
-        };
+    // Chunk size of 15 files means 45 aliases per query. 
+    // This safely stays well under GitHub's node complexity limits.
+    const FILES_PER_CHUNK = 15;
+    const chunks: string[][] = [];
+    
+    for (let i = 0; i < fileList.length; i += FILES_PER_CHUNK) {
+        chunks.push(fileList.slice(i, i + FILES_PER_CHUNK));
+    }
+
+    // Process all chunks concurrently
+    const chunkPromises = chunks.map(async (chunk) => {
+        // 1. Dynamically build the aliases for all 3 SHAs per file
+        const aliasQueries = chunk.map((fileName, index) => {
+            // Escape quotes just in case the file name contains them
+            const safeName = fileName.replace(/"/g, '\\"');
+            return `
+                ancestor_${index}: object(expression: "${ancestorSha}:${safeName}") {
+                    ... on Blob { text }
+                }
+                target_${index}: object(expression: "${targetSha}:${safeName}") {
+                    ... on Blob { text }
+                }
+                feature_${index}: object(expression: "${featureSha}:${safeName}") {
+                    ... on Blob { text }
+                }
+            `;
+        }).join('\n');
+
+        const query = `
+            query FetchConflictContents($owner: String!, $repo: String!) {
+                repository(owner: $owner, name: $repo) {
+                    ${aliasQueries}
+                }
+            }
+        `;
+
+        try {
+            // 2. Execute the batched query
+            const response: any = await octokit.graphql(query, { owner, repo });
+            const repoData = response.repository;
+            const chunkResults: ConflictFileContent[] = [];
+
+            // 3. Map the aliased responses back to the expected output format
+            chunk.forEach((fileName, index) => {
+                chunkResults.push({
+                    fileName,
+                    // GraphQL returns null if the expression (file) doesn't exist at that SHA
+                    // It also returns null for the 'text' field if the file is binary (like an image)
+                    ancestorContent: repoData[`ancestor_${index}`]?.text ?? null,
+                    targetContent: repoData[`target_${index}`]?.text ?? null,
+                    featureContent: repoData[`feature_${index}`]?.text ?? null,
+                });
+            });
+
+            return chunkResults;
+        } catch (error: any) {
+            console.error("GraphQL Batch Content Fetch Error:", error.message);
+            throw error;
+        }
     });
 
-    return Promise.all(promises);
-}
-
-/**
- * Helper: Fetches a single file's content from a specific commit/ref.
- * Returns null if the file is not found
- */
-async function fetchRawContent(
-    path: string, 
-    ref: string, 
-    owner: string, 
-    repo: string, 
-    octokit: Octokit
-    ): Promise<string | null> {
-    try {
-        const response = await octokit.rest.repos.getContent({
-            owner,
-            repo,
-            path,
-            ref,
-        });
-        const validatedReponse: GitHubContent = GitHubContentSchema.parse(response.data)
-
-        // GitHub API returns content as Base64
-        if (validatedReponse.content && validatedReponse.encoding === 'base64') {
-            return Buffer.from(validatedReponse.content, 'base64').toString('utf-8');
-        }
-
-        return null; 
-    } catch (error: any) {
-        // If file not found (404), it means it was deleted or didn't exist yet.
-        if (error.response?.status === 404) {
-            return null;
-        }
-        console.error(`Error fetching ${path} at ${ref}:`, error.message);
-        throw error;
-    }
+    const allResults = await Promise.all(chunkPromises);
+    
+    // Flatten the array of chunk arrays into a single array
+    return allResults.flat();
 }
