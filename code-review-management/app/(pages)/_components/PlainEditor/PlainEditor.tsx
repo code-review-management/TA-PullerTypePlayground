@@ -1,4 +1,4 @@
-import styles from "./PlainEditor.module.css";
+import styles from "../EditorContainer/EditorContainer.module.css";
 
 export default function PlainEditor({
   isSingleLine,
@@ -6,8 +6,8 @@ export default function PlainEditor({
   isSingleLine?: boolean;
 }) {
   if (isSingleLine) {
-    return <input type="text" className={styles.editor} />;
+    return <input type="text" className={styles.editable} />;
   } else {
-    return <textarea className={styles.editor} />;
+    return <textarea className={styles.editable} />;
   }
 }

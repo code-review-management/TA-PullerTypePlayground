@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PullRequest } from "@/types/github.types";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
+import PlainEditor from "@/app/(pages)/_components/PlainEditor/PlainEditor";
 import PopoverContent from "@/app/(pages)/_components/PopoverContent/PopoverContent";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 
@@ -23,7 +24,9 @@ export default function PRHeaderActions({
   viewLabel: string;
   pull: PullRequest;
 }) {
-  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
+  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(
+    null,
+  );
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
@@ -45,7 +48,9 @@ export default function PRHeaderActions({
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
           popoverContent={
-            <PopoverContent>Temporary merge popover</PopoverContent>
+            <PopoverContent>
+              <PlainEditor />
+            </PopoverContent>
           }
           onToggle={() => togglePopover("merge")}
           // TODO: Also disable if the user does not have appropriate write permissions.

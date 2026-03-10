@@ -1,4 +1,4 @@
-.editor {
+.editable {
     border: var(--border-normal-width) solid;
     border-radius: var(--border-radius);
     padding: var(--spacer-6);
@@ -6,11 +6,11 @@
     color: inherit;
 }
 
-.editor:focus-within {
+.editable:focus-within {
     outline: var(--border-thick-width) solid var(--color-interactive);
     border-color: transparent;
 }
 
-.editor:not(:focus-within) {
+.editable:not(:focus-within) {
     border-color: var(--border-gray);
 }
