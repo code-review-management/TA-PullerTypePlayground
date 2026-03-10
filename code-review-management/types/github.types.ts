@@ -53,10 +53,9 @@ const eventType = [
   "reopened",
 ] as const;
 const reviewState = [
-  "APPROVE",
-  "REQUEST_CHANGES",
-  "COMMENT",
-  "PENDING",
+  "APPROVED",
+  "CHANGES_REQUESTED",
+  "COMMENTED",
 ] as const;
 
 export const UserSchema = z.object({

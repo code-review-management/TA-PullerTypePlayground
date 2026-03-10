@@ -8,12 +8,7 @@ export type CreateReviewRequest = z.infer<typeof CreateReviewRequestSchema>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
-const reviewEvent = [
-  "APPROVE",
-  "REQUEST_CHANGES",
-  "COMMENT",
-  "PENDING",
-] as const;
+const reviewEvent = ["APPROVE", "REQUEST_CHANGES", "COMMENT"] as const;
 
 export const CommentCreateRequestSchema = z
   .object({
@@ -62,7 +57,6 @@ export const PRMergeRequestSchema = z.object({
 
 export const CreateReviewRequestSchema = z
   .object({
-    commit_id: z.string(),
     body: z.string().optional(),
     event: z.enum(reviewEvent),
   })
