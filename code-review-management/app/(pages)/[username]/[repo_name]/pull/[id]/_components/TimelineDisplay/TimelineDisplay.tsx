@@ -157,6 +157,22 @@ function TimelineReview({ event }: { event: timelineEvent }) {
     return;
   }
 
+  console.log(event.eventObj);
+
+  if (event.eventObj.comments.length > 0) {
+    return event.eventObj.comments.map((comment, idx) => 
+      <PRViewComment
+        key={`timeline-review-${event.eventObj.node_id}-${idx}`}
+        username={comment.user?.login || ""}
+        createdAt={comment.created_at || ""}
+        description={comment.body || ""}
+        inTimeline
+      />
+    )
+  }
+
+  // Review with reviews
+
   // Review without comment (body)
   if (event.eventObj.body === null) {
     return (

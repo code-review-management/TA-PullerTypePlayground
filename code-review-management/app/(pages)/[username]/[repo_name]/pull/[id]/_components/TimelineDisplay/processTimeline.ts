@@ -125,7 +125,7 @@ const MESSAGES: Record<EventType, string> = {
   assigned: "assigned this to",
   changes_requested: "requested changes",
   closed: "",
-  commented: "reviewed",
+  commented: "left a review",
   committed: "",
   dismissed: "previously reviewed",
   err: "Error! Could not fetch event message",
