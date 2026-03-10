@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PullRequest } from "@/types/github.types";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import PopoverContent from "@/app/(pages)/_components/PopoverContent/PopoverContent";
@@ -16,9 +17,11 @@ type PRHeaderPopovers = "review" | "merge";
 export default function PRHeaderActions({
   viewHref,
   viewLabel,
+  pull,
 }: {
   viewHref: string;
   viewLabel: string;
+  pull: PullRequest;
 }) {
   const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
   const togglePopover = (popover: PRHeaderPopovers) => {
@@ -37,14 +40,16 @@ export default function PRHeaderActions({
         popoverContent={<AddReviewPopover />}
         onToggle={() => togglePopover("review")}
       />
-      <PRHeaderPopoverButton
-        buttonLabel="Merge"
-        isPopoverOpen={activePopover === "merge"}
-        popoverContent={
-          <PopoverContent>Temporary merge popover</PopoverContent>
-        }
-        onToggle={() => togglePopover("merge")}
-      />
+      {!pull.merged && (
+        <PRHeaderPopoverButton
+          buttonLabel="Merge"
+          isPopoverOpen={activePopover === "merge"}
+          popoverContent={
+            <PopoverContent>Temporary merge popover</PopoverContent>
+          }
+          onToggle={() => togglePopover("merge")}
+        />
+      )}
     </>
   );
 }
