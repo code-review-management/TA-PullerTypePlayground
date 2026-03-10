@@ -1,4 +1,4 @@
-import styles from "../EditorContainer/EditorContainer.module.css";
+import sharedStyles from "../EditorContainer/EditorContainer.module.css";
 
 export default function PlainEditor({
   isSingleLine,
@@ -6,8 +6,8 @@ export default function PlainEditor({
   isSingleLine?: boolean;
 }) {
   if (isSingleLine) {
-    return <input type="text" className={styles.editable} />;
+    return <input type="text" className={sharedStyles.editable} />;
   } else {
-    return <textarea className={styles.editable} />;
+    return <textarea className={sharedStyles.editable} />;
   }
 }

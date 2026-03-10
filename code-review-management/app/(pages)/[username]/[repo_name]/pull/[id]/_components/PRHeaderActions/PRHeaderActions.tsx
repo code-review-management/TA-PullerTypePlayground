@@ -24,9 +24,7 @@ export default function PRHeaderActions({
   viewLabel: string;
   pull: PullRequest;
 }) {
-  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(
-    null,
-  );
+  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
