@@ -14,8 +14,8 @@ import {
  */
 
 const MergeContext = createContext<{
-  method: PRMergeRequest["merge_method"];
-  setMethod: Dispatch<SetStateAction<PRMergeRequest["merge_method"]>>;
+  mergeMethod: PRMergeRequest["merge_method"];
+  setMergeMethod: Dispatch<SetStateAction<PRMergeRequest["merge_method"]>>;
   commitMessage: string;
   setCommitMessage: Dispatch<SetStateAction<string>>;
   commitDescription: string;
@@ -35,15 +35,15 @@ export default function MergeContextProvider({
 }: {
   children: ReactNode;
 }) {
-  const [method, setMethod] = useState<PRMergeRequest["merge_method"]>("merge");
+  const [mergeMethod, setMergeMethod] = useState<PRMergeRequest["merge_method"]>("merge");
   const [commitMessage, setCommitMessage] = useState("");
   const [commitDescription, setCommitDescription] = useState("");
 
   return (
     <MergeContext
       value={{
-        method,
-        setMethod,
+        mergeMethod,
+        setMergeMethod,
         commitMessage,
         setCommitMessage,
         commitDescription,
