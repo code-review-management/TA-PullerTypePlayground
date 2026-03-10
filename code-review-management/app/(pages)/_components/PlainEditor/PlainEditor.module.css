@@ -1,0 +1,16 @@
+.editor {
+    border: var(--border-normal-width) solid;
+    border-radius: var(--border-radius);
+    padding: var(--spacer-6);
+    font-size: inherit;
+    color: inherit;
+}
+
+.editor:focus-within {
+    outline: var(--border-thick-width) solid var(--color-interactive);
+    border-color: transparent;
+}
+
+.editor:not(:focus-within) {
+    border-color: var(--border-gray);
+}
