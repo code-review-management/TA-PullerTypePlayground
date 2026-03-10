@@ -48,6 +48,7 @@ export default function PRHeaderActions({
             <PopoverContent>Temporary merge popover</PopoverContent>
           }
           onToggle={() => togglePopover("merge")}
+          // TODO: Also disable if the user does not have appropriate write permissions.
           isDisabled={!pull.mergeable}
           {...(!pull.mergeable && {
             // TODO: Replace with more descriptive message.
