@@ -28,6 +28,7 @@ export default function PRHeaderActions({
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
+  const showMergeButton = !pull.merged && pull.state !== "closed";
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function PRHeaderActions({
         popoverContent={<AddReviewPopover />}
         onToggle={() => togglePopover("review")}
       />
-      {!pull.merged && ( // Do not show merge button if PR is already merged.
+      {showMergeButton && (
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
