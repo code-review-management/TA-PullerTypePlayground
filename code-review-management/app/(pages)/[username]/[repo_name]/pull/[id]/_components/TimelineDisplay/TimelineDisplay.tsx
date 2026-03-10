@@ -1,6 +1,5 @@
 import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
-import MOCK_TIMELINE from "@/mocks/timeline.json";
 import { ReactNode } from "react";
 import {
   EventType,
@@ -10,26 +9,57 @@ import {
 } from "./processTimeline";
 import Image from "next/image";
 import PRViewComment from "../PRViewComment/PRViewComment";
-import { formatDate } from "../../_utils/date-utils";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
 
 /**
  * Renders the timeline of events.
  */
-export default function TimelineDisplay() {
+export default function TimelineDisplay({
+  username,
+  repoName,
+  id,
+}: {
+  username: string;
+  repoName: string;
+  id: string;
+}) {
+  const { data, isPending, isError } = useTimelineQuery(username, repoName, id);
+
+  // TODO: Replace with proper loading/error UI.
+  if (isPending) return <div>Loading pull request...</div>;
+  if (isError) return <div>Failed to load pull request.</div>;
+
   // TODO: Use real data instead of MOCK_TIMELINE
-  const { beforeCloseTimeline, afterCloseTimeline } =
-    processTimeline(MOCK_TIMELINE);
+  const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(data);
+
+  console.log(beforeCloseTimeline, afterCloseTimeline);
 
   return (
     <div className={styles.timeline}>
-      {afterCloseTimeline.map((event: timelineEvent) => (
-        <TimelineEvent key={event.eventObj.node_id} event={event} />
-      ))}
+      {afterCloseTimeline.map(
+        (event: timelineEvent, idx: number) =>
+          event.eventObj && (
+            <TimelineEventDisplay
+              key={
+                event.eventObj.node_id || `timeline-event-after-close-${idx}`
+              }
+              event={event}
+            />
+          ),
+      )}
       <div className={styles.beforeCloseTimeline}>
-        {beforeCloseTimeline.map((event: timelineEvent) => (
-          <TimelineEvent key={event.eventObj.node_id} event={event} />
-        ))}
+        {beforeCloseTimeline.map(
+          (event: timelineEvent, idx: number) =>
+            event.eventObj && (
+              <TimelineEventDisplay
+                key={
+                  event.eventObj.node_id || `timeline-event-before-close-${idx}`
+                }
+                event={event}
+              />
+            ),
+        )}
         <div className={styles.timelineLineBackground} />
       </div>
     </div>
@@ -42,7 +72,7 @@ export default function TimelineDisplay() {
  * TODO: Use branch name and get commit SHA correctly for merge and delete events
  * @param event Object representing the event from the timeline.
  */
-function TimelineEvent({ event }: { event: timelineEvent }) {
+function TimelineEventDisplay({ event }: { event: timelineEvent }) {
   if (event.displayType === "hidden") {
     console.log(`"${event.eventType}" hidden`); // TODO: REMOVE THIS DEBUG PRINT
     return;
@@ -96,6 +126,9 @@ function TimelineEvent({ event }: { event: timelineEvent }) {
  * @param event: Object representing the event that is the commit.
  */
 function TimelineCommit({ event }: { event: timelineEvent }) {
+  if (!event.eventObj) {
+    return;
+  }
   const abbr_sha = event.eventObj.sha?.slice(0, 7);
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
@@ -107,7 +140,7 @@ function TimelineCommit({ event }: { event: timelineEvent }) {
           </a>{" "}
           {event.eventObj.message}
         </p>
-        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18}/>
+        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
       </div>
     </TimelineEventSmall>
   );
@@ -120,6 +153,10 @@ function TimelineCommit({ event }: { event: timelineEvent }) {
  * @param event: Object representing the event that is the review.
  */
 function TimelineReview({ event }: { event: timelineEvent }) {
+  if (!event.eventObj) {
+    return;
+  }
+
   // Review without comment (body)
   if (event.eventObj.body === null) {
     return (
@@ -144,8 +181,9 @@ function TimelineReview({ event }: { event: timelineEvent }) {
  * @param event: Object representing the event that is the review.
  */
 function TimelineReviewWithComment({ event }: { event: timelineEvent }) {
-  const commentDate = new Date(event.eventObj.submitted_at || "") || "";
-  const formattedDate = formatDate(commentDate);
+  if (!event.eventObj || !event.eventObj.submitted_at) {
+    return;
+  }
 
   return (
     <>
@@ -157,7 +195,7 @@ function TimelineReviewWithComment({ event }: { event: timelineEvent }) {
       </TimelineEventSmall>
       <PRViewComment
         username={event.eventObj.user?.login || ""}
-        createdAt={formattedDate}
+        createdAt={event.eventObj.submitted_at || ""}
         description={event.eventObj.body || ""}
         inTimeline
       />

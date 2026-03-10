@@ -1,3 +1,5 @@
+import { TimelineEvent } from "@/types/github.types";
+
 /**
  * Type for an "event type".
  * These are possible values for "event" field of objects returned in timeline event API response.
@@ -85,7 +87,7 @@ const OTHER_EVENTS = ["committed", "closed", ...REVIEW_STATES];
  * timelineEvents are then rendered in the timeline display
  */
 export interface timelineEvent {
-  eventObj: eventInterface;
+  eventObj: TimelineEvent;
   iconName: string;
   message: string;
   displayType: "single_link" | "double_link" | "other" | "hidden";
@@ -142,7 +144,10 @@ const MESSAGES: Record<EventType, string> = {
  * @param eventType
  * @returns The username of "actor1" for this event, or null.
  */
-function getActor1(eventObj: eventInterface, eventType: EventType) {
+function getActor1(eventObj: TimelineEvent, eventType: EventType) {
+  if (eventType === null || eventObj === null) {
+    return null;
+  }
   if (eventType === "review_requested") {
     return eventObj.review_requester?.login;
   }
@@ -169,11 +174,34 @@ function getActor2(eventObj: eventInterface, eventType: EventType) {
 }
 
 /**
+ * export interface timelineEvent {
+  eventObj: TimelineEvent;
+  iconName: string;
+  message: string;
+  displayType: "single_link" | "double_link" | "other" | "hidden";
+  eventType: EventType;
+  actor1: string | null;
+  actor2: string | null;
+}
+ */
+
+/**
  * Parse eventInterface objects into
  * @param eventObj Interfaced raw data from API response.
  * @returns A single timelineEvent object.
  */
-function getTimelineEvent(eventObj: eventInterface): timelineEvent {
+function getTimelineEvent(eventObj: TimelineEvent): timelineEvent {
+  if (eventObj === null) {
+    return {
+      eventObj,
+      iconName: "",
+      message: "",
+      displayType: "hidden",
+      eventType: "err",
+      actor1: null,
+      actor2: null,
+    };
+  }
   const eventType = ((eventObj.event === "reviewed"
     ? eventObj.state?.toLowerCase()
     : eventObj.event) || "err") as EventType;
@@ -204,9 +232,10 @@ function getTimelineEvent(eventObj: eventInterface): timelineEvent {
     if (eventObj.event === "reviewed") {
       return MESSAGES[(eventObj.state || "err") as EventType];
     }
-    if (eventObj.event === "renamed") {
-      return `renamed the pull request to ${eventObj.rename?.to || ""}`;
-    }
+    // TODO: Add back in "renamed" event when exists on backend
+    // if (eventObj.event === "renamed") {
+    //   return `renamed the pull request to ${eventObj.rename?.to || ""}`;
+    // }
     return MESSAGES[eventObj.event as EventType];
   })();
 
@@ -231,7 +260,7 @@ function getTimelineEvent(eventObj: eventInterface): timelineEvent {
  *    beforeCloseTimeline: All events before the pull request was closed, if it was closed. Otherwise contains all events.
  *    afterCloseTimeline: All events including and after the pull request was closed, if it was closed. Otherwise is empty.
  */
-export function processTimeline(timeline: eventInterface[]): {
+export function processTimeline(timeline: TimelineEvent[]): {
   beforeCloseTimeline: timelineEvent[];
   afterCloseTimeline: timelineEvent[];
 } {
@@ -239,7 +268,7 @@ export function processTimeline(timeline: eventInterface[]): {
     .toReversed()
     .map((eventObj) => getTimelineEvent(eventObj));
   const closedIdx = processedTimeline.findIndex(
-    (event) => event.eventObj.event === "closed",
+    (event) => event.eventObj && event.eventObj.event === "closed",
   );
   if (closedIdx !== -1) {
     return {

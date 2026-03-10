@@ -36,7 +36,7 @@ export default function Pull() {
             description={data.body || ""}
             avatarUrl={data.user?.avatar_url || ""}
           />
-          <PRViewTimeline />
+          <PRViewTimeline username={username} repoName={repo_name} id={id} />
         </div>
         <div className={styles.infoColumn}>
           <StatusSection pullData={data} />
