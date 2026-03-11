@@ -159,9 +159,9 @@ function getActor2(eventObj: TimelineEvent) {
  * @param idx The index of the event in the current render-list
  * @returns
  */
-function getEventKey(eventObj: TimelineEvent, idx: number) {
+function getEventKey(eventObj: TimelineEvent) {
   if (eventObj === null) {
-    return idx.toString();
+    return null;
   }
   if ("id" in eventObj) {
     return `${eventObj.event}-${eventObj.id}`;
@@ -169,7 +169,7 @@ function getEventKey(eventObj: TimelineEvent, idx: number) {
   if ("sha" in eventObj) {
     return `${eventObj.event}-${eventObj.sha}`;
   }
-  return idx.toString();
+  return null
 }
 
 /**
@@ -233,7 +233,7 @@ function getTimelineEvent(
 
   const actor1 = getActor1(eventObj);
   const actor2 = getActor2(eventObj);
-  const eventKey = getEventKey(eventObj, idx);
+  const eventKey = getEventKey(eventObj) || idx.toString();
 
   return {
     eventObj,
