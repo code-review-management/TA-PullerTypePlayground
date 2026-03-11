@@ -37,20 +37,6 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const eventType = [
-  "review_requested",
-  "review_request_removed",
-  "review_dismissed",
-  "commented",
-  "comment_deleted",
-  "committed",
-  "reviewed",
-  "assigned",
-  "unassigned",
-  "closed",
-  "merged",
-  "reopened",
-] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
