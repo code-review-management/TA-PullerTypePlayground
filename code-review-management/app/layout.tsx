@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Roboto_Mono } from "next/font/google";
 
 import Providers from "./providers";
+import ToastMessage from "@components/ToastMessage/ToastMessage";
 
 import "@globals/styles/globals.css";
 import "@globals/styles/colors.css";
@@ -31,7 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={`${roboto.variable} ${robotoMono.variable}`}>{children}</body>
+        <body className={`${roboto.variable} ${robotoMono.variable}`}>
+          {children}
+          <ToastMessage />
+        </body>
       </Providers>
     </html>
   );
