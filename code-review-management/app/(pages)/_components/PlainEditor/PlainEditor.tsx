@@ -18,6 +18,9 @@ export default function PlainEditor({
         name={name}
         defaultValue={defaultValue}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault();
+        }}
         className={styles.editable}
       />
     );
