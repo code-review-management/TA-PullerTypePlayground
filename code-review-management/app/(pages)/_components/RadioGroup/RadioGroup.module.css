@@ -22,6 +22,10 @@
     background-color: var(--color-interactive-transparent);
 }
 
+.radioGroup label:has(input:disabled) {
+    color: var(--text-tertiary);
+}
+
 .radioGroup input {
     cursor: pointer;
     accent-color: var(--color-interactive);

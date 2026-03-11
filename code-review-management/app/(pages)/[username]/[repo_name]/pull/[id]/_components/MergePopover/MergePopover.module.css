@@ -8,6 +8,11 @@
     max-height: 360px;
 }
 
+.form[data-method="rebase"] {
+    min-height: auto;
+    max-height: auto;
+}
+
 .section {
     display: flex;
     flex-direction: column;

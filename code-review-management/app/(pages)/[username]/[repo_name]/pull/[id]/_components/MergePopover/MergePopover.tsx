@@ -37,6 +37,7 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
     MERGE_METHOD_INPUTS.map(({ method, label }) => ({
       value: method,
       label,
+      disabled: method === "rebase" && !pull.rebaseable,
     }));
 
   useEffect(() => {
@@ -49,7 +50,11 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
 
   return (
     <PopoverContent>
-      <form className={styles.form} action={handleSubmit}>
+      <form
+        className={styles.form}
+        data-method={mergeMethod}
+        action={handleSubmit}
+      >
         <div className={styles.section}>
           <p className={styles.title}>Merge method</p>
           <RadioGroup
@@ -60,24 +65,28 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
           />
         </div>
 
-        <label className={styles.section}>
-          <p className={styles.title}>Commit title</p>
-          <PlainEditor
-            name="commit-title"
-            defaultValue={commitTitle ?? ""}
-            onChange={(body) => setCommitTitle(body)}
-            isSingleLine
-          />
-        </label>
+        {mergeMethod !== "rebase" && (
+          <>
+            <label className={styles.section}>
+              <p className={styles.title}>Commit title</p>
+              <PlainEditor
+                name="commit-title"
+                defaultValue={commitTitle ?? ""}
+                onChange={(body) => setCommitTitle(body)}
+                isSingleLine
+              />
+            </label>
 
-        <label className={styles.section}>
-          <p className={styles.title}>Commit description</p>
-          <PlainEditor
-            name="commit-description"
-            defaultValue={commitDescription}
-            onChange={(body) => setCommitDescription(body)}
-          />
-        </label>
+            <label className={styles.section}>
+              <p className={styles.title}>Commit description</p>
+              <PlainEditor
+                name="commit-description"
+                defaultValue={commitDescription}
+                onChange={(body) => setCommitDescription(body)}
+              />
+            </label>
+          </>
+        )}
 
         <div className={styles.submit}>
           <SubmitButton label="Confirm merge" isDisabled={false} />
