@@ -30,10 +30,10 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
     setCommitDescription,
   } = useMergeContext();
 
-  const handleSubmit = (formData: FormData) => {
-    console.log(formData.get("merge-method"));
-    console.log(formData.get("commit-title"));
-    console.log(formData.get("commit-description"));
+  const handleSubmit = () => {
+    console.log(mergeMethod);
+    console.log(commitTitle);
+    console.log(commitDescription);
   };
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
@@ -74,7 +74,7 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
               <p className={styles.title}>Commit title</p>
               <PlainEditor
                 name="commit-title"
-                defaultValue={commitTitle ?? ""}
+                value={commitTitle ?? ""}
                 onChange={(body) => setCommitTitle(body)}
                 isSingleLine
               />
@@ -84,7 +84,7 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
               <p className={styles.title}>Commit description</p>
               <PlainEditor
                 name="commit-description"
-                defaultValue={commitDescription}
+                value={commitDescription}
                 onChange={(body) => setCommitDescription(body)}
               />
             </label>
