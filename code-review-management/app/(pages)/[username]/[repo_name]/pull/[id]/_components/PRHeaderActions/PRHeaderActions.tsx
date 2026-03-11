@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { PullRequest } from "@/types/github.types";
+import { canMerge } from "../../_utils/pull-utils";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
-import PopoverContent from "@/app/(pages)/_components/PopoverContent/PopoverContent";
+import MergePopover from "../MergePopover/MergePopover";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 
 type PRHeaderPopovers = "review" | "merge";
@@ -16,14 +18,18 @@ type PRHeaderPopovers = "review" | "merge";
 export default function PRHeaderActions({
   viewHref,
   viewLabel,
+  pull,
 }: {
   viewHref: string;
   viewLabel: string;
+  pull: PullRequest;
 }) {
   const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
+  const showMergeButton = !pull.merged && pull.state === "open";
+  const isMergeDisabled = !canMerge(pull);
 
   return (
     <>
@@ -37,14 +43,20 @@ export default function PRHeaderActions({
         popoverContent={<AddReviewPopover />}
         onToggle={() => togglePopover("review")}
       />
-      <PRHeaderPopoverButton
-        buttonLabel="Merge"
-        isPopoverOpen={activePopover === "merge"}
-        popoverContent={
-          <PopoverContent>Temporary merge popover</PopoverContent>
-        }
-        onToggle={() => togglePopover("merge")}
-      />
+      {showMergeButton && (
+        <PRHeaderPopoverButton
+          buttonLabel="Merge"
+          isPopoverOpen={activePopover === "merge"}
+          popoverContent={<MergePopover pull={pull} />}
+          onToggle={() => togglePopover("merge")}
+          // TODO: Also disable if the user does not have appropriate write permissions.
+          isDisabled={isMergeDisabled}
+          {...(isMergeDisabled && {
+            // TODO: Replace with more descriptive message.
+            tooltip: "Pull request cannot be merged",
+          })}
+        />
+      )}
     </>
   );
 }

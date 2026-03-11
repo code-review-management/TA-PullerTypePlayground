@@ -6,3 +6,12 @@ export function getPullState(pull: PullRequest): State {
   if (pull.merged) return "merged";
   return pull.state;
 }
+
+export function canMerge(pull: PullRequest) {
+  return (
+    !pull.draft &&
+    pull.state === "open" &&
+    pull.mergeable &&
+    pull.mergeable_state === "clean"
+  );
+}

@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
+import IconTooltip from "../IconTooltip/IconTooltip";
 import styles from "./PageHeader.module.css";
 
 /**
@@ -32,9 +33,12 @@ export default function PageHeader({
   }, []);
 
   return (
-    <div className={`${styles.header} ${isScrolled && styles.shadow}`}>
-      <div className={styles.group}>{leftChildren}</div>
-      <div className={styles.group}>{rightChildren}</div>
-    </div>
+    <>
+      <div className={`${styles.header} ${isScrolled && styles.shadow}`}>
+        <div className={styles.group}>{leftChildren}</div>
+        <div className={styles.group}>{rightChildren}</div>
+      </div>
+      <IconTooltip id="page-header" />
+    </>
   );
 }

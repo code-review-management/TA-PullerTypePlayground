@@ -12,7 +12,7 @@ import {
  * 1. https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
  */
 
-export type ReviewType = "approve" | "comment" | "request-changes" | null;
+export type ReviewType = "approve" | "comment" | "request-changes";
 
 const ReviewContext = createContext<{
   reviewBody: string;

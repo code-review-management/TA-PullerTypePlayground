@@ -25,7 +25,7 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
-      <PRHeader />
+      <PRHeader pull={data} />
       <div className={styles.pageBody}>
         <div className={styles.bodyMain}>
           <PullBodyHeader pullData={data} />
