@@ -25,6 +25,12 @@ export default function MergePopover() {
     setCommitDescription,
   } = useMergeContext();
 
+  const handleSubmit = (formData: FormData) => {
+    console.log(formData.get("merge-method"));
+    console.log(formData.get("commit-message"));
+    console.log(formData.get("commit-description"));
+  };
+
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
     MERGE_METHOD_INPUTS.map(({ method, label }) => ({
       value: method,
@@ -33,7 +39,7 @@ export default function MergePopover() {
 
   return (
     <PopoverContent>
-      <form className={styles.form}>
+      <form className={styles.form} action={handleSubmit}>
         <div className={styles.section}>
           <p className={styles.title}>Merge method</p>
           <RadioGroup
