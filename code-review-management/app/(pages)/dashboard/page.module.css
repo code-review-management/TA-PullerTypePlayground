@@ -1,6 +1,13 @@
 .page {
   display: flex;
   min-height: 100vh;
-  align-items: center;
-  justify-content: center;
+}
+
+.repoSideBar {
+  width: 320px;
+  border-right: 1px solid var(--border-gray-secondary); /* TODO: Border shouldn't span entire height */
+}
+
+.pageBody {
+  flex: 1;
 }
