@@ -26,9 +26,9 @@ export default function AddReviewPopover() {
   const { reviewBody, setReviewBody, reviewType, setReviewType } =
     useReviewContext();
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = () => {
     console.log(reviewBody);
-    console.log(formData.get("review-type"));
+    console.log(reviewType);
   };
 
   const isReviewBodyEmpty = reviewBody.trim().length === 0;
@@ -47,7 +47,13 @@ export default function AddReviewPopover() {
 
   return (
     <PopoverContent>
-      <form className={styles.form} action={handleSubmit}>
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <MarkdownEditor
           defaultEditable={true}
           defaultContent={reviewBody}

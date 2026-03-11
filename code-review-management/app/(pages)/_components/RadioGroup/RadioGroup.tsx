@@ -36,7 +36,7 @@ export default function RadioGroup<T extends string>({
             value={value}
             required
             disabled={disabled}
-            defaultChecked={selected === value}
+            checked={selected === value}
             onChange={() => onChange(value)}
           />
           {label}

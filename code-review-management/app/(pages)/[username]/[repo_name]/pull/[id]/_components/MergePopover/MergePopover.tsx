@@ -56,7 +56,10 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
       <form
         className={styles.form}
         data-method={mergeMethod}
-        action={handleSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
       >
         <div className={styles.section}>
           <p className={styles.title}>Merge method</p>
