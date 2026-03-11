@@ -75,6 +75,7 @@ export const BranchSchema = z.object({
   repo: RepoSchema,
 });
 
+// optional fields are not included in list endpoint
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
@@ -97,17 +98,17 @@ export const PullRequestSchema = z.object({
   author_association: z.enum(authorAssociation),
   draft: z.boolean(),
   assignee: UserSchema.nullable(),
-  merged: z.boolean(),
-  mergeable: z.boolean().nullable(),
-  rebaseable: z.boolean().nullable(),
-  mergeable_state: z.string(),
-  merged_by: UserSchema.nullable(),
-  comments: z.number(),
-  review_comments: z.number(),
-  commits: z.number(),
-  additions: z.number(),
-  deletions: z.number(),
-  changed_files: z.number(),
+  merged: z.boolean().optional(),
+  mergeable: z.boolean().nullable().optional(),
+  rebaseable: z.boolean().nullable().optional(),
+  mergeable_state: z.string().optional(),
+  merged_by: UserSchema.nullable().optional(),
+  comments: z.number().optional(),
+  review_comments: z.number().optional(),
+  commits: z.number().optional(),
+  additions: z.number().optional(),
+  deletions: z.number().optional(),
+  changed_files: z.number().optional(),
 });
 
 // Not in use
