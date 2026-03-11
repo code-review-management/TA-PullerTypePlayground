@@ -16,8 +16,8 @@ import {
 const MergeContext = createContext<{
   mergeMethod: PRMergeRequest["merge_method"];
   setMergeMethod: Dispatch<SetStateAction<PRMergeRequest["merge_method"]>>;
-  commitMessage: string | null;
-  setCommitMessage: Dispatch<SetStateAction<string | null>>;
+  commitTitle: string | null;
+  setCommitTitle: Dispatch<SetStateAction<string | null>>;
   commitDescription: string;
   setCommitDescription: Dispatch<SetStateAction<string>>;
 } | null>(null);
@@ -36,9 +36,9 @@ export default function MergeContextProvider({
   children: ReactNode;
 }) {
   const [mergeMethod, setMergeMethod] = useState<PRMergeRequest["merge_method"]>("merge");
-  // Initialize `commitMessage` with null so the useEffect in `MergePopover`
+  // Initialize `commitTitle` with null so the useEffect in `MergePopover`
   // knows it hasn't been set yet and should initialize it with the PR title.
-  const [commitMessage, setCommitMessage] = useState<string | null>(null);
+  const [commitTitle, setCommitTitle] = useState<string | null>(null);
   const [commitDescription, setCommitDescription] = useState("");
 
   return (
@@ -46,8 +46,8 @@ export default function MergeContextProvider({
       value={{
         mergeMethod,
         setMergeMethod,
-        commitMessage,
-        setCommitMessage,
+        commitTitle,
+        setCommitTitle,
         commitDescription,
         setCommitDescription,
       }}

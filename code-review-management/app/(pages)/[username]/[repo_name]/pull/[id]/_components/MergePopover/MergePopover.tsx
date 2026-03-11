@@ -21,15 +21,15 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
   const {
     mergeMethod,
     setMergeMethod,
-    commitMessage,
-    setCommitMessage,
+    commitTitle,
+    setCommitTitle,
     commitDescription,
     setCommitDescription,
   } = useMergeContext();
 
   const handleSubmit = (formData: FormData) => {
     console.log(formData.get("merge-method"));
-    console.log(formData.get("commit-message"));
+    console.log(formData.get("commit-title"));
     console.log(formData.get("commit-description"));
   };
 
@@ -40,10 +40,12 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
     }));
 
   useEffect(() => {
-    setCommitMessage((prev) =>
-      prev === null ? `(#${pull.number}) ${pull.title}` : prev,
+    setCommitTitle((prev) =>
+      prev === null
+        ? `Merge pull request #${pull.number} from ${pull.base.repo.full_name}`
+        : prev,
     );
-  }, [setCommitMessage, pull.number, pull.title]);
+  }, [setCommitTitle, pull.number, pull.base.repo.full_name]);
 
   return (
     <PopoverContent>
@@ -59,11 +61,11 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
         </div>
 
         <label className={styles.section}>
-          <p className={styles.title}>Commit message</p>
+          <p className={styles.title}>Commit title</p>
           <PlainEditor
-            name="commit-message"
-            defaultValue={commitMessage ?? ""}
-            onChange={(body) => setCommitMessage(body)}
+            name="commit-title"
+            defaultValue={commitTitle ?? ""}
+            onChange={(body) => setCommitTitle(body)}
             isSingleLine
           />
         </label>
