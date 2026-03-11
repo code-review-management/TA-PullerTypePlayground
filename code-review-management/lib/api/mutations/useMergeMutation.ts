@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { poster } from "../utils/poster";
 import { PRMergeRequest } from "@/types/request.types";
+import toast from "react-hot-toast";
 
 /**
  * Merges a GitHub pull request.
@@ -27,6 +28,10 @@ export function useMergeMutation(
       await queryClient.invalidateQueries({
         queryKey: ["pull", owner, repo, pullNumber],
       });
+      toast.success("Pull request successfully merged.");
+    },
+    onError: () => {
+      toast.error("Failed to merge pull request.");
     },
   });
 }
