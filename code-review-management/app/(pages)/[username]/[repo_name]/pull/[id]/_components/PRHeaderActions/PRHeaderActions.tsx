@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PullRequest } from "@/types/github.types";
+import { canMerge } from "../../_utils/pull-utils";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
 import MergePopover from "../MergePopover/MergePopover";
@@ -28,6 +29,7 @@ export default function PRHeaderActions({
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
   const showMergeButton = !pull.merged && pull.state !== "closed";
+  const isMergeDisabled = !canMerge(pull);
 
   return (
     <>
@@ -48,10 +50,10 @@ export default function PRHeaderActions({
           popoverContent={<MergePopover pull={pull} />}
           onToggle={() => togglePopover("merge")}
           // TODO: Also disable if the user does not have appropriate write permissions.
-          isDisabled={!pull.mergeable}
-          {...(!pull.mergeable && {
+          isDisabled={isMergeDisabled}
+          {...(isMergeDisabled && {
             // TODO: Replace with more descriptive message.
-            tooltip: "Pull request is not mergable",
+            tooltip: "Pull request cannot be merged",
           })}
         />
       )}
