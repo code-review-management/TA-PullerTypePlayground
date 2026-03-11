@@ -37,20 +37,6 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const eventType = [
-  "review_requested",
-  "review_request_removed",
-  "review_dismissed",
-  "commented",
-  "comment_deleted",
-  "committed",
-  "reviewed",
-  "assigned",
-  "unassigned",
-  "closed",
-  "merged",
-  "reopened",
-] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -227,7 +213,7 @@ export const ReviewRequestEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.enum(eventType),
+  event: z.enum(["review_requested", "review_request_removed"]),
   created_at: z.string(),
   review_requester: UserSchema,
   requested_reviewer: UserSchema,
@@ -237,7 +223,7 @@ export const ReviewDismissedEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.enum(eventType),
+  event: z.literal("review_dismissed"),
   created_at: z.string(),
   dismissed_review: z.object({
     state: z.string(),
@@ -251,7 +237,7 @@ export const CommentEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.enum(eventType),
+  event: z.enum(["commented", "comment_deleted"]),
   created_at: z.string(),
   updated_at: z.string(),
   body: z.string(),
@@ -261,7 +247,7 @@ export const CommentEventSchema = z.object({
 });
 
 export const CommittedEventSchema = z.object({
-  event: z.enum(eventType),
+  event: z.literal("committed"),
   sha: z.string(),
   url: z.string(),
   author: UserIdentitySchema,
@@ -270,13 +256,13 @@ export const CommittedEventSchema = z.object({
 });
 
 export const LineCommentEventSchema = z.object({
-  event: z.enum(eventType),
+  event: z.literal("commented"),
   comments: z.array(CommentSchema),
 });
 
 export const ReviewedEventSchema = z.object({
   id: z.number(),
-  event: z.enum(eventType),
+  event: z.literal("reviewed"),
   user: UserSchema,
   body: z.string().nullable(),
   state: z.string(),
@@ -287,7 +273,7 @@ export const ReviewedEventSchema = z.object({
 });
 
 export const CommitCommentEventSchema = z.object({
-  event: z.enum(eventType),
+  event: z.literal("commented"),
   commit_id: z.number(),
   comments: z.array(CommitCommentSchema),
 });
@@ -296,7 +282,7 @@ export const AssignIssueEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.enum(eventType),
+  event: z.enum(["assigned", "unassigned"]),
   created_at: z.string(),
   assignee: UserSchema,
 });
@@ -305,7 +291,7 @@ export const StateChangeEventSchema = z.object({
   id: z.number(),
   url: z.string(),
   actor: UserSchema,
-  event: z.enum(eventType),
+  event: z.enum(["closed", "merged", "reopened"]),
   created_at: z.string(),
   state_reason: z.string().nullish(),
 });
