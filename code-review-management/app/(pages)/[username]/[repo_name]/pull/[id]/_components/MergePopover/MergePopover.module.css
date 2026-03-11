@@ -1,0 +1,28 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-12);
+
+    width: 360px;
+    min-height: 360px;
+    max-height: 360px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-8);
+}
+
+.section:has(textarea[name="commit-description"]),
+.section textarea[name="commit-description"] {
+    flex: 1;
+}
+
+.title {
+    font-weight: 500;
+}
+
+.submit {
+    align-self: flex-end;
+}

@@ -2,8 +2,7 @@ import { useState } from "react";
 import { PullRequest } from "@/types/github.types";
 import AddReviewPopover from "../AddReviewPopover/AddReviewPopover";
 import HeaderButton from "@/app/(pages)/_components/HeaderButton/HeaderButton";
-import PlainEditor from "@/app/(pages)/_components/PlainEditor/PlainEditor";
-import PopoverContent from "@/app/(pages)/_components/PopoverContent/PopoverContent";
+import MergePopover from "../MergePopover/MergePopover";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 
 type PRHeaderPopovers = "review" | "merge";
@@ -46,11 +45,7 @@ export default function PRHeaderActions({
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
-          popoverContent={
-            <PopoverContent>
-              <PlainEditor />
-            </PopoverContent>
-          }
+          popoverContent={<MergePopover />}
           onToggle={() => togglePopover("merge")}
           // TODO: Also disable if the user does not have appropriate write permissions.
           isDisabled={!pull.mergeable}
