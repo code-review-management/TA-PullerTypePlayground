@@ -45,7 +45,7 @@ export default function PRHeaderActions({
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
-          popoverContent={<MergePopover />}
+          popoverContent={<MergePopover pull={pull} />}
           onToggle={() => togglePopover("merge")}
           // TODO: Also disable if the user does not have appropriate write permissions.
           isDisabled={!pull.mergeable}

@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useMergeContext } from "../../_contexts/MergeContext";
 import { PRMergeRequest } from "@/types/request.types";
+import { PullRequest } from "@/types/github.types";
 import RadioGroup, { RadioOption } from "@components/RadioGroup/RadioGroup";
 import PlainEditor from "@components/PlainEditor/PlainEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -15,7 +17,7 @@ const MERGE_METHOD_INPUTS: {
   { method: "rebase", label: "Rebase and merge" },
 ];
 
-export default function MergePopover() {
+export default function MergePopover({ pull }: { pull: PullRequest }) {
   const {
     mergeMethod,
     setMergeMethod,
@@ -37,6 +39,12 @@ export default function MergePopover() {
       label,
     }));
 
+  useEffect(() => {
+    setCommitMessage((prev) =>
+      prev === null ? `(#${pull.number}) ${pull.title}` : prev,
+    );
+  }, [setCommitMessage, pull.number, pull.title]);
+
   return (
     <PopoverContent>
       <form className={styles.form} action={handleSubmit}>
@@ -54,7 +62,7 @@ export default function MergePopover() {
           <p className={styles.title}>Commit message</p>
           <PlainEditor
             name="commit-message"
-            defaultValue={commitMessage}
+            defaultValue={commitMessage ?? ""}
             onChange={(body) => setCommitMessage(body)}
             isSingleLine
           />
