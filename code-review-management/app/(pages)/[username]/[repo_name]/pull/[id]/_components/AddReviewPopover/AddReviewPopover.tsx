@@ -47,7 +47,7 @@ export default function AddReviewPopover() {
 
   return (
     <PopoverContent>
-      <form className={styles.addReviewForm} action={handleSubmit}>
+      <form className={styles.form} action={handleSubmit}>
         <MarkdownEditor
           defaultEditable={true}
           defaultContent={reviewBody}
@@ -59,7 +59,7 @@ export default function AddReviewPopover() {
           selected={reviewType}
           onChange={(type) => setReviewType(type)}
         />
-        <div className={styles.submitReview}>
+        <div className={styles.submit}>
           <SubmitButton label="Submit review" isDisabled={isDisabled} />
         </div>
       </form>
