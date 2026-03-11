@@ -19,6 +19,7 @@ export function useMergeMutation(
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ["merge", owner, repo, pullNumber],
     mutationFn: async (mergeRequest: PRMergeRequest) =>
       poster(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/merge`,

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
+import { useMutationState } from "@tanstack/react-query";
 import { useMergeContext } from "../../_contexts/MergeContext";
 import { useSubmitMerge } from "../../_hooks/useSubmitMerge";
 import { PRMergeRequest } from "@/types/request.types";
@@ -26,12 +27,6 @@ const MERGE_METHOD_INPUTS: {
  */
 export default function MergePopover({ pull }: { pull: PullRequest }) {
   const { username, repo_name, id } = useParams<PullParams>();
-  const { handleSubmit, isMergePending } = useSubmitMerge(
-    username,
-    repo_name,
-    id,
-  );
-
   const {
     mergeMethod,
     setMergeMethod,
@@ -40,6 +35,22 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
     commitDescription,
     setCommitDescription,
   } = useMergeContext();
+
+  const { handleSubmit, isMergePending } = useSubmitMerge(
+    username,
+    repo_name,
+    id,
+  );
+
+  const pendingMergeExists =
+    useMutationState({
+      filters: {
+        mutationKey: ["merge", username, repo_name, id],
+        status: "pending",
+      },
+    }).length > 0;
+
+  const showLoadingSpinner = isMergePending || pendingMergeExists;
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
     MERGE_METHOD_INPUTS.map(({ method, label }) => ({
@@ -99,7 +110,7 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
           </>
         )}
         <div className={styles.submit}>
-          {isMergePending ? (
+          {showLoadingSpinner ? (
             <LoadingSpinner />
           ) : (
             <SubmitButton label="Confirm merge" isDisabled={false} />
