@@ -33,7 +33,7 @@ export default function AddReviewPopover() {
 
   const isReviewBodyEmpty = reviewBody.trim().length === 0;
   const isDisabled = isReviewBodyEmpty && reviewType != "approve";
-  const radioOptions: RadioOption<ReviewType>[] = REVIEW_TYPE_INPUTS.map(
+  const reviewRadioOptions: RadioOption<ReviewType>[] = REVIEW_TYPE_INPUTS.map(
     ({ type, label, icon }) => ({
       value: type,
       label: (
@@ -55,7 +55,7 @@ export default function AddReviewPopover() {
         />
         <RadioGroup
           name="review-type"
-          options={radioOptions}
+          options={reviewRadioOptions}
           selected={reviewType}
           onChange={(type) => setReviewType(type)}
         />
