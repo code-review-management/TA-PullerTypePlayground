@@ -1,7 +1,11 @@
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useMergeContext } from "../../_contexts/MergeContext";
+import { useSubmitMerge } from "../../_hooks/useSubmitMerge";
 import { PRMergeRequest } from "@/types/request.types";
 import { PullRequest } from "@/types/github.types";
+import { PullParams } from "@/types/routing.types";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import RadioGroup, { RadioOption } from "@components/RadioGroup/RadioGroup";
 import PlainEditor from "@components/PlainEditor/PlainEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -21,6 +25,13 @@ const MERGE_METHOD_INPUTS: {
  * Popover to merge a pull request.
  */
 export default function MergePopover({ pull }: { pull: PullRequest }) {
+  const { username, repo_name, id } = useParams<PullParams>();
+  const { handleSubmit, isMergePending } = useSubmitMerge(
+    username,
+    repo_name,
+    id,
+  );
+
   const {
     mergeMethod,
     setMergeMethod,
@@ -29,12 +40,6 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
     commitDescription,
     setCommitDescription,
   } = useMergeContext();
-
-  const handleSubmit = () => {
-    console.log(mergeMethod);
-    console.log(commitTitle);
-    console.log(commitDescription);
-  };
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
     MERGE_METHOD_INPUTS.map(({ method, label }) => ({
@@ -93,9 +98,12 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
             </label>
           </>
         )}
-
         <div className={styles.submit}>
-          <SubmitButton label="Confirm merge" isDisabled={false} />
+          {isMergePending ? (
+            <LoadingSpinner />
+          ) : (
+            <SubmitButton label="Confirm merge" isDisabled={false} />
+          )}
         </div>
       </form>
     </PopoverContent>
