@@ -38,29 +38,29 @@ export default function TimelineDisplay({
 
   return (
     <div className={styles.timeline}>
-      {afterCloseTimeline.map(
-        (event: processedTimelineEvent) =>
-          event.eventObj && (
+      {afterCloseTimeline.map((event: processedTimelineEvent) => {
+        if (event.displayType !== "hidden") {
+          return (
             <TimelineEventDisplay
-              key={
-                `after-close-timeline-${event.eventKey}`
-              }
+              key={`after-close-timeline-${event.eventKey}`}
               event={event}
             />
-          ),
-      )}
+          );
+        }
+        return;
+      })}
       <div className={styles.beforeCloseTimeline}>
-        {beforeCloseTimeline.map(
-          (event: processedTimelineEvent) =>
-            event.eventObj && (
+        {beforeCloseTimeline.map((event: processedTimelineEvent) => {
+          if (event.displayType !== "hidden") {
+            return (
               <TimelineEventDisplay
-                key={
-                  `before-close-timeline-${event.eventKey}`
-                }
+                key={`before-close-timeline-${event.eventKey}`}
                 event={event}
               />
-            ),
-        )}
+            );
+          }
+          return;
+        })}
         <div className={styles.timelineLineBackground} />
       </div>
     </div>
@@ -130,7 +130,8 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
   if (!event.eventObj) {
     return;
   }
-  const abbr_sha = "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
+  const abbr_sha =
+    "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
   const message = "message" in event.eventObj ? event.eventObj.message : "";
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
@@ -161,20 +162,22 @@ function TimelineReview({ event }: { event: processedTimelineEvent }) {
 
   console.log(event.eventObj);
 
-  if ("comments" in event.eventObj && event.eventObj.comments && event.eventObj.comments.length > 0) {
-    return event.eventObj.comments.map((comment: ReviewComment) => 
+  if (
+    "comments" in event.eventObj &&
+    event.eventObj.comments &&
+    event.eventObj.comments.length > 0
+  ) {
+    return event.eventObj.comments.map((comment: ReviewComment) => (
       <PRViewComment
-        key={`timeline-review-${comment.id}`}
+        key={`timeline-review-${event.eventKey}-${comment.id}`}
         username={comment.user?.login || ""}
         createdAt={comment.created_at || ""}
         description={comment.body || ""}
         avatarUrl={comment.user?.avatar_url}
         inTimeline
       />
-    )
+    ));
   }
-
-  // Review with reviews
 
   // Review without comment (body)
   if ("body" in event.eventObj && event.eventObj.body === null) {
@@ -199,22 +202,36 @@ function TimelineReview({ event }: { event: processedTimelineEvent }) {
  * Uses the same comment comopnent as the pull body description (`PullBodyDescription`).
  * @param event: Object representing the event that is the review.
  */
-function TimelineReviewWithComment({ event }: { event: processedTimelineEvent }) {
+function TimelineReviewWithComment({
+  event,
+}: {
+  event: processedTimelineEvent;
+}) {
   if (!event.eventObj) {
     return;
   }
 
   return (
     <>
-      <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
+      <TimelineEventSmall
+        eventType={event.eventType}
+        iconName={event.iconName}
+        useLargeIcon={
+          "state" in event.eventObj
+            ? event.eventObj.state === "approved" ||
+              event.eventObj.state === "changes_requested"
+            : false
+        }
+      >
         <p>
-          <UserLink username={event.actor1 || ""} />{" "}
-          {event.message}
+          <UserLink username={event.actor1 || ""} /> {event.message}
         </p>
       </TimelineEventSmall>
       <PRViewComment
         username={event.actor1 || ""}
-        createdAt={"submitted_at" in event.eventObj ? event.eventObj.submitted_at : ""}
+        createdAt={
+          "submitted_at" in event.eventObj ? event.eventObj.submitted_at : ""
+        }
         description={"body" in event.eventObj ? event.eventObj.body || "" : ""}
         inTimeline
       />
@@ -234,10 +251,12 @@ function TimelineEventSmall({
   eventType,
   children,
   iconName,
+  useLargeIcon = false,
 }: {
   eventType: EventType;
   children: ReactNode;
   iconName: string;
+  useLargeIcon?: boolean;
 }) {
   const largeIconEventTypes = ["approved", "changes_requested"];
   const isLargeIcon = largeIconEventTypes.includes(eventType);
@@ -246,7 +265,7 @@ function TimelineEventSmall({
   return (
     <div className={styles.eventSmall}>
       <div
-        className={`${styles.timelineIcon} ${!isLargeIcon && styles.timelineIconPadded}`}
+        className={`${styles.timelineIcon} ${!useLargeIcon && styles.timelineIconPadded}`}
       >
         <Image
           src={`/icons/timeline/${iconName}.svg`}

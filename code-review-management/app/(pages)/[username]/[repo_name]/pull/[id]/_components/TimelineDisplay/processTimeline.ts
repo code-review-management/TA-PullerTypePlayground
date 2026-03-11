@@ -157,7 +157,7 @@ function getActor2(eventObj: TimelineEvent) {
  * Generate the string that is appended to the key of a TimelineEvent rendered with .map()
  * @param eventObj TimelineEvent object
  * @param idx The index of the event in the current render-list
- * @returns 
+ * @returns
  */
 function getEventKey(eventObj: TimelineEvent, idx: number) {
   if (eventObj === null) {
@@ -178,11 +178,14 @@ function getEventKey(eventObj: TimelineEvent, idx: number) {
  * @param idx Index of the event in the timeline
  * @returns A single timelineEvent object.
  */
-function getTimelineEvent(eventObj: TimelineEvent, idx: number): processedTimelineEvent {
+function getTimelineEvent(
+  eventObj: TimelineEvent,
+  idx: number,
+): processedTimelineEvent {
   if (eventObj === null) {
     return {
       eventObj,
-      eventKey: `timeline-event-${idx}`,
+      eventKey: "", // No key needed, this event will not be rendered
       iconName: "",
       message: "",
       displayType: "hidden",
@@ -246,7 +249,7 @@ function getTimelineEvent(eventObj: TimelineEvent, idx: number): processedTimeli
 
 /**
  * Given interfaced raw timeline API, return two arrays of processed processedTimelineEvent objects.
- * @param timeline Raw timeline API data, interfaced.
+ * @param timeline Raw timeline API data
  * @returns {beforeCloseTimeline, afterCloseTimeline}
  *    beforeCloseTimeline: All events before the pull request was closed, if it was closed. Otherwise contains all events.
  *    afterCloseTimeline: All events including and after the pull request was closed, if it was closed. Otherwise is empty.
