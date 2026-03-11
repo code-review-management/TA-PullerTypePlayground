@@ -1,0 +1,32 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { poster } from "../utils/poster";
+import { PRMergeRequest } from "@/types/request.types";
+
+/**
+ * Merges a GitHub pull request.
+ *
+ * @param owner: Owner of the repository.
+ * @param repo: Name of the repository.
+ * @param pullNumber: Pull request number.
+ * @returns: TanStack query result containing the merge result.
+ */
+export function useMergeMutation(
+  owner: string,
+  repo: string,
+  pullNumber: string,
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (mergeRequest: PRMergeRequest) =>
+      poster(
+        `/api/v1/${owner}/${repo}/pulls/${pullNumber}/merge`,
+        JSON.stringify(mergeRequest),
+      ),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["pull", owner, repo, pullNumber],
+      });
+    },
+  });
+}
