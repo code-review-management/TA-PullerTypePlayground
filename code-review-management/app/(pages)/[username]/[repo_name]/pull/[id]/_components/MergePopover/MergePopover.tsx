@@ -17,6 +17,9 @@ const MERGE_METHOD_INPUTS: {
   { method: "rebase", label: "Rebase and merge" },
 ];
 
+/**
+ * Popover to merge a pull request.
+ */
 export default function MergePopover({ pull }: { pull: PullRequest }) {
   const {
     mergeMethod,
