@@ -28,13 +28,10 @@ export default function TimelineDisplay({
   const { data, isPending, isError } = useTimelineQuery(username, repoName, id);
 
   // TODO: Replace with proper loading/error UI.
-  if (isPending) return <div>Loading pull request...</div>;
-  if (isError) return <div>Failed to load pull request.</div>;
+  if (isPending) return <div>Loading timeline...</div>;
+  if (isError) return <div>Failed to load timeline.</div>;
 
-  // TODO: Use real data instead of MOCK_TIMELINE
   const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(data);
-
-  console.log(beforeCloseTimeline, afterCloseTimeline);
 
   return (
     <div className={styles.timeline}>
@@ -160,8 +157,7 @@ function TimelineReview({ event }: { event: processedTimelineEvent }) {
     return;
   }
 
-  console.log(event.eventObj);
-
+  // Review with `comments` array
   if (
     "comments" in event.eventObj &&
     event.eventObj.comments &&
@@ -179,7 +175,7 @@ function TimelineReview({ event }: { event: processedTimelineEvent }) {
     ));
   }
 
-  // Review without comment (body)
+  // Review without comments array or comment body
   if ("body" in event.eventObj && event.eventObj.body === null) {
     return (
       <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
@@ -207,7 +203,7 @@ function TimelineReviewWithComment({
 }: {
   event: processedTimelineEvent;
 }) {
-  if (!event.eventObj) {
+  if (!event.eventObj || !("state" in event.eventObj)) {
     return;
   }
 
@@ -217,10 +213,8 @@ function TimelineReviewWithComment({
         eventType={event.eventType}
         iconName={event.iconName}
         useLargeIcon={
-          "state" in event.eventObj
-            ? event.eventObj.state === "approved" ||
-              event.eventObj.state === "changes_requested"
-            : false
+          event.eventObj.state === "approved" ||
+          event.eventObj.state === "changes_requested"
         }
       >
         <p>
