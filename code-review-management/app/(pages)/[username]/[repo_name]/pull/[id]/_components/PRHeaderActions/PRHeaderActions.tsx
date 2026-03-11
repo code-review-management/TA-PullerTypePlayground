@@ -28,7 +28,7 @@ export default function PRHeaderActions({
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
-  const showMergeButton = !pull.merged && pull.state !== "closed";
+  const showMergeButton = !pull.merged && pull.state === "open";
   const isMergeDisabled = !canMerge(pull);
 
   return (
