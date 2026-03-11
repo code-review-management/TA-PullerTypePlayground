@@ -132,6 +132,9 @@ function getActor1(eventObj: TimelineEvent) {
   if ("actor" in eventObj) {
     return eventObj.actor.login;
   }
+  if ("user" in eventObj) {
+    return eventObj.user.login;
+  }
   return null;
 }
 

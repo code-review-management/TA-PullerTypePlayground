@@ -227,6 +227,9 @@ function TimelineReviewWithComment({
           "submitted_at" in event.eventObj ? event.eventObj.submitted_at : ""
         }
         description={"body" in event.eventObj ? event.eventObj.body || "" : ""}
+        avatarUrl={
+          "user" in event.eventObj ? event.eventObj.user.avatar_url : undefined
+        }
         inTimeline
       />
     </>
