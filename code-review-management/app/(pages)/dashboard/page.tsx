@@ -5,7 +5,9 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
       <div className={styles.repoSideBar} />
-      <DashboardGrid />
+      <div className={styles.pageBody}>
+          <DashboardGrid />
+      </div>
     </div>
   );
 }

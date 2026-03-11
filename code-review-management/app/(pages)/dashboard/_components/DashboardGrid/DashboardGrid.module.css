@@ -2,3 +2,42 @@
     display: flex;
     flex-direction: column;
 }
+
+.gridHeader {
+    display: flex;
+    gap: var(--spacer-32);
+}
+
+.gridHeader > th {
+    font-weight: 400;
+    border: 1px solid blue;
+}
+
+.iconWidth {
+    width: 40px;
+}
+
+.titleWidth {
+    flex: 4;
+}
+
+.assigneesWidth {
+    flex: 1;
+}
+
+.reviewersWidth {
+    flex: 1;
+}
+
+.statusWidth {
+    width: 68px;
+}
+
+.updatedWidth {
+    width: 80px;
+}
+
+.gridRow {
+    display: flex;
+    gap: var(--spacer-32);
+}

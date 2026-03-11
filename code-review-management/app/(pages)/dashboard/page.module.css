@@ -10,4 +10,5 @@
 
 .pageBody {
   flex: 1;
+  padding: var(--spacer-48);
 }
