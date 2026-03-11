@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
-import { PullRequest } from "@/types/github.types";
+import { TimelineEvent } from "@/types/github.types";
 
 /**
  * Fetches the timeline for a GitHub pull request.
@@ -17,7 +17,7 @@ export function useTimelineQuery(
 ) {
   return useQuery({
     queryKey: ["timeline", owner, repo, pullNumber],
-    queryFn: async (): Promise<PullRequest> =>
+    queryFn: async (): Promise<TimelineEvent[]> =>
       fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/timeline`),
   });
 }

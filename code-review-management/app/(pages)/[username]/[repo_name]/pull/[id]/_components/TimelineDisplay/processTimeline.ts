@@ -1,8 +1,9 @@
 import { TimelineEvent } from "@/types/github.types";
 
 /**
- * Type for an "event type".
- * These are possible values for "event" field of objects returned in timeline event API response.
+ * Possible string values for "event" field of objects returned in timeline event API response.
+ * This union includes all event types that are currently supported by the frontend.
+ * TODO: Add more supported event types
  */
 export type EventType =
   | "approved"
@@ -20,29 +21,6 @@ export type EventType =
   | "review_requested"
   | "reviewed"
   | "err";
-
-/**
- * Interface representing object structure for events in array returned by API response.
- * Note almost all fields are optional because different event types have different structures.
- */
-interface eventInterface {
-  event: string;
-  node_id: string;
-  sha?: string;
-  message?: string;
-  actor?: { login: string };
-  rename?: {
-    from: string;
-    to: string;
-  };
-  review_requester?: { login: string };
-  requested_reviewer?: { login: string };
-  assignee?: { login: string };
-  body?: string | null;
-  user?: { login: string };
-  submitted_at?: string;
-  state?: string;
-}
 
 /**
  * Possible states a "review" type event can have
@@ -86,8 +64,9 @@ const OTHER_EVENTS = ["committed", "closed", ...REVIEW_STATES];
  * Raw events returned from API response will be parsed into timelineEvents
  * timelineEvents are then rendered in the timeline display
  */
-export interface timelineEvent {
+export interface processedTimelineEvent {
   eventObj: TimelineEvent;
+  eventKey: string;
   iconName: string;
   message: string;
   displayType: "single_link" | "double_link" | "other" | "hidden";
@@ -140,18 +119,17 @@ const MESSAGES: Record<EventType, string> = {
 
 /**
  *
- * @param eventObj eventInterface (interfaced response) object
- * @param eventType
+ * @param eventObj TimelineEvent object
  * @returns The username of "actor1" for this event, or null.
  */
-function getActor1(eventObj: TimelineEvent, eventType: EventType) {
-  if (eventType === null || eventObj === null) {
+function getActor1(eventObj: TimelineEvent) {
+  if (eventObj === null) {
     return null;
   }
-  if (eventType === "review_requested") {
-    return eventObj.review_requester?.login;
+  if (eventObj.event === "review_requested") {
+    return eventObj.review_requester?.login || eventObj.actor?.login || null;
   }
-  if (eventObj.actor) {
+  if ("actor" in eventObj) {
     return eventObj.actor.login;
   }
   return null;
@@ -159,41 +137,52 @@ function getActor1(eventObj: TimelineEvent, eventType: EventType) {
 
 /**
  *
- * @param eventObj eventInterface (interfaced response) object
- * @param eventType
+ * @param eventObj TimelineEvent object
  * @returns The username of "actor2" for this event, or null.
  */
-function getActor2(eventObj: eventInterface, eventType: EventType) {
-  if (eventType === "review_requested") {
+function getActor2(eventObj: TimelineEvent) {
+  if (eventObj === null) {
+    return null;
+  }
+  if (eventObj.event === "review_requested") {
     return eventObj.requested_reviewer?.login;
   }
-  if (eventType === "assigned") {
+  if (eventObj.event === "assigned") {
     return eventObj.assignee?.login;
   }
   return null;
 }
 
 /**
- * export interface timelineEvent {
-  eventObj: TimelineEvent;
-  iconName: string;
-  message: string;
-  displayType: "single_link" | "double_link" | "other" | "hidden";
-  eventType: EventType;
-  actor1: string | null;
-  actor2: string | null;
-}
+ * Generate the string that is appended to the key of a TimelineEvent rendered with .map()
+ * @param eventObj TimelineEvent object
+ * @param idx The index of the event in the current render-list
+ * @returns 
  */
+function getEventKey(eventObj: TimelineEvent, idx: number) {
+  if (eventObj === null) {
+    return idx.toString();
+  }
+  if ("id" in eventObj) {
+    return `${eventObj.event}-${eventObj.id}`;
+  }
+  if ("sha" in eventObj) {
+    return `${eventObj.event}-${eventObj.sha}`;
+  }
+  return idx.toString();
+}
 
 /**
- * Parse eventInterface objects into
- * @param eventObj Interfaced raw data from API response.
+ * Parse TimelineEvent objects into processedTimelineEvent objects.
+ * @param eventObj TimelineEvent object
+ * @param idx Index of the event in the timeline
  * @returns A single timelineEvent object.
  */
-function getTimelineEvent(eventObj: TimelineEvent): timelineEvent {
+function getTimelineEvent(eventObj: TimelineEvent, idx: number): processedTimelineEvent {
   if (eventObj === null) {
     return {
       eventObj,
+      eventKey: `timeline-event-${idx}`,
       iconName: "",
       message: "",
       displayType: "hidden",
@@ -239,11 +228,13 @@ function getTimelineEvent(eventObj: TimelineEvent): timelineEvent {
     return MESSAGES[eventObj.event as EventType];
   })();
 
-  const actor1 = getActor1(eventObj, eventType) || null;
-  const actor2 = getActor2(eventObj, eventType) || null;
+  const actor1 = getActor1(eventObj);
+  const actor2 = getActor2(eventObj);
+  const eventKey = getEventKey(eventObj, idx);
 
   return {
     eventObj,
+    eventKey,
     iconName,
     message,
     displayType,
@@ -254,19 +245,19 @@ function getTimelineEvent(eventObj: TimelineEvent): timelineEvent {
 }
 
 /**
- * Given interfaced raw timeline API, return two arrays of processed "timelineEvent" objects.
+ * Given interfaced raw timeline API, return two arrays of processed processedTimelineEvent objects.
  * @param timeline Raw timeline API data, interfaced.
  * @returns {beforeCloseTimeline, afterCloseTimeline}
  *    beforeCloseTimeline: All events before the pull request was closed, if it was closed. Otherwise contains all events.
  *    afterCloseTimeline: All events including and after the pull request was closed, if it was closed. Otherwise is empty.
  */
 export function processTimeline(timeline: TimelineEvent[]): {
-  beforeCloseTimeline: timelineEvent[];
-  afterCloseTimeline: timelineEvent[];
+  beforeCloseTimeline: processedTimelineEvent[];
+  afterCloseTimeline: processedTimelineEvent[];
 } {
   const processedTimeline = timeline
     .toReversed()
-    .map((eventObj) => getTimelineEvent(eventObj));
+    .map((eventObj, idx) => getTimelineEvent(eventObj, idx));
   const closedIdx = processedTimeline.findIndex(
     (event) => event.eventObj && event.eventObj.event === "closed",
   );
