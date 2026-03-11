@@ -7,6 +7,14 @@ export interface RadioOption<T extends string> {
   disabled?: boolean;
 }
 
+/**
+ * List of radio buttons in the same group. Used for forms.
+ *
+ * @param name: Name attribute shared by all radio buttons in the group.
+ * @param options: List of `RadioOption` objects to render as radio buttons.
+ * @param selected: Value of the currently selected radio button.
+ * @param onChange: Callback fired when the user selects a different radio button.
+ */
 export default function RadioGroup<T extends string>({
   name,
   options,
