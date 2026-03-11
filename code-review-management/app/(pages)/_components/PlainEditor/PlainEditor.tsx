@@ -1,4 +1,4 @@
-import sharedStyles from "../EditorContainer/EditorContainer.module.css";
+import styles from "./PlainEditor.module.css";
 
 export default function PlainEditor({
   name,
@@ -18,7 +18,7 @@ export default function PlainEditor({
         name={name}
         defaultValue={defaultValue}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-        className={sharedStyles.editable}
+        className={styles.editable}
       />
     );
   } else {
@@ -27,7 +27,7 @@ export default function PlainEditor({
         name={name}
         defaultValue={defaultValue}
         onChange={onChange ? (e) => onChange(e.target.value) : undefined}
-        className={sharedStyles.editable}
+        className={styles.editable}
       />
     );
   }

@@ -5,7 +5,6 @@ import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
-import sharedStyles from "../EditorContainer/EditorContainer.module.css";
 import styles from "./MarkdownEditor.module.css";
 import "./TiptapEditor.css";
 
@@ -79,9 +78,7 @@ export default function MarkdownEditor({
       }}
     >
       <div
-        className={
-          editable ? `${sharedStyles.editable} ${styles.editable}` : ""
-        }
+        className={editable ? styles.editable : ""}
         // Block autofocus if the editor is not ready.
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
