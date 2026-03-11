@@ -37,7 +37,8 @@ export default function MergeContextProvider({
 }) {
   const [mergeMethod, setMergeMethod] = useState<PRMergeRequest["merge_method"]>("merge");
   // Initialize `commitTitle` with null so the useEffect in `MergePopover`
-  // knows it hasn't been set yet and should initialize it with the PR title.
+  // knows it hasn't been set yet and should initialize it with the default
+  // commit title.
   const [commitTitle, setCommitTitle] = useState<string | null>(null);
   const [commitDescription, setCommitDescription] = useState("");
 
