@@ -16,6 +16,7 @@
 
 .section:has(textarea[name="commit-description"]),
 .section textarea[name="commit-description"] {
+    resize: none;
     flex: 1;
 }
 
