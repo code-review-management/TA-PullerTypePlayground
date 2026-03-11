@@ -19,6 +19,6 @@
   color: var(--background-light);
 }
 
-.primary:disabled {
+.headerButton:disabled {
   background-color: var(--color-disabled);
 }
