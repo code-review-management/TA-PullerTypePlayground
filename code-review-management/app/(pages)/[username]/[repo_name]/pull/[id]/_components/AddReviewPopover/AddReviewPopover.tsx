@@ -63,17 +63,25 @@ export default function AddReviewPopover({
 
   const isReviewBodyEmpty = reviewBody.trim().length === 0;
   const isDisabled = isReviewBodyEmpty && reviewType != "APPROVE";
+  const isAuthor = pull.user?.id === session?.user?.id;
+
   const reviewRadioOptions: RadioOption<CreateReviewRequest["event"]>[] =
-    REVIEW_TYPE_INPUTS.map(({ type, label, icon }) => ({
-      value: type,
-      label: (
-        <div className={styles.reviewTypeLabel}>
-          {label}
-          <Image src={icon} alt={type} />
-        </div>
-      ),
-      disabled: type !== "COMMENT" && pull.user?.id !== session?.user?.id,
-    }));
+    REVIEW_TYPE_INPUTS.map(({ type, label, icon }) => {
+      const cannotSelfReview = type !== "COMMENT" && isAuthor;
+      return {
+        value: type,
+        label: (
+          <div className={styles.reviewTypeLabel}>
+            {label}
+            <Image src={icon} alt={type} />
+          </div>
+        ),
+        disabled: cannotSelfReview,
+        ...(cannotSelfReview && {
+          tooltip: `PR author cannot ${label.toLowerCase()}`,
+        }),
+      };
+    });
 
   return (
     <PopoverContent>
