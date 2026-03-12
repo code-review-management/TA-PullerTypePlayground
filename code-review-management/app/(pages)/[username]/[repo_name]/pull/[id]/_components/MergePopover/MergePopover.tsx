@@ -6,7 +6,6 @@ import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
 import { PRMergeRequest } from "@/types/request.types";
 import { PullRequest } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import RadioGroup, { RadioOption } from "@components/RadioGroup/RadioGroup";
 import PlainEditor from "@components/PlainEditor/PlainEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -109,11 +108,11 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
           </>
         )}
         <div className={styles.submit}>
-          {isMergePending ? (
-            <LoadingSpinner />
-          ) : (
-            <SubmitButton label="Confirm merge" isDisabled={false} />
-          )}
+          <SubmitButton
+            label="Confirm merge"
+            isDisabled={false}
+            isLoading={isMergePending}
+          />
         </div>
       </form>
     </PopoverContent>
