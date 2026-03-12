@@ -37,8 +37,9 @@ export default function AddReviewPopover({
   togglePopover: () => void;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
-  const { mutate } = useCreateReviewMutation(username, repo_name, id);
   const { reviewBody, setReviewBody, reviewType, setReviewType } = useReviewContext();
+  const { mutate } = useCreateReviewMutation(username, repo_name, id, setReviewBody, setReviewType);
+
   const { data: session } = useSession();
 
   const handleSubmit = () => {
@@ -48,11 +49,7 @@ export default function AddReviewPopover({
         body: reviewBody,
       },
       {
-        onSuccess: () => {
-          togglePopover();
-          setReviewType("COMMENT"); // Reset review context.
-          setReviewBody("");
-        },
+        onSuccess: () => togglePopover(),
       },
     );
   };
