@@ -24,7 +24,13 @@ const MERGE_METHOD_INPUTS: {
 /**
  * Popover to merge a pull request.
  */
-export default function MergePopover({ pull }: { pull: PullRequest }) {
+export default function MergePopover({
+  pull,
+  togglePopover,
+}: {
+  pull: PullRequest;
+  togglePopover: () => void;
+}) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { mutate } = useMergeMutation(username, repo_name, id);
   const {
@@ -37,11 +43,16 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
   } = useMergeContext();
 
   const handleSubmit = () => {
-    mutate({
-      merge_method: mergeMethod,
-      commit_title: commitTitle ?? "",
-      commit_message: commitDescription,
-    });
+    mutate(
+      {
+        merge_method: mergeMethod,
+        commit_title: commitTitle ?? "",
+        commit_message: commitDescription,
+      },
+      {
+        onSuccess: () => togglePopover(),
+      },
+    );
   };
 
   // If the user confirms merge and immediately closes the popover and reopens
