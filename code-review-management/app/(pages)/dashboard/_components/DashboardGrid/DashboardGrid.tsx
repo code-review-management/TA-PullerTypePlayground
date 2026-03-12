@@ -36,8 +36,8 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
     <tr className={styles.gridRow}>
       <td className={styles.iconWidth}>
         <UserIcon
-          avatarUrl={pull.user.avatar_url}
-          username={pull.user.login}
+          avatarUrl={pull.user?.avatar_url ?? "octocat.png"}
+          username={pull.user?.login ?? "octocat"}
           size={40}
         />
       </td>
@@ -52,10 +52,10 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
         <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
       </td>
       <td className={styles.assigneesWidth}>
-        <UserIconList users={pull.assignees} />
+        <UserIconList users={pull.assignees ?? []} />
       </td>
       <td className={styles.reviewersWidth}>
-        <UserIconList users={pull.requested_reviewers} />
+        <UserIconList users={pull.requested_reviewers ?? []} />
       </td>
       <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
         <StatusIcon state={pullState} />
