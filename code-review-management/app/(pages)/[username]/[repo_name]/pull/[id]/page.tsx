@@ -25,7 +25,7 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
-      <PRHeader />
+      <PRHeader pull={data} />
       <div className={styles.pageBody}>
         <div className={styles.bodyMain}>
           <PullBodyHeader pullData={data} />
@@ -36,7 +36,7 @@ export default function Pull() {
             description={data.body || ""}
             avatarUrl={data.user?.avatar_url || ""}
           />
-          <PRViewTimeline />
+          <PRViewTimeline username={username} repoName={repo_name} id={id} />
         </div>
         <div className={styles.infoColumn}>
           <StatusSection pullData={data} />

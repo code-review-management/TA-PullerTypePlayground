@@ -30,6 +30,7 @@ export default function PRChangesHeader({ pull }: { pull: PullRequest }) {
     <PRHeaderActions
       viewHref={`/${username}/${repo_name}/pull/${id}`}
       viewLabel="View pull request"
+      pull={pull}
     />
   );
 

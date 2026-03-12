@@ -1,5 +1,5 @@
 .popoverContainer {
-    z-index: 1000;
+    z-index: 200;
     margin-top: 20px;
     padding-right: var(--spacer-48);
     font-size: 0.875rem;
