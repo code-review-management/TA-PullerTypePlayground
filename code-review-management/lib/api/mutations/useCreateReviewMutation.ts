@@ -20,10 +20,10 @@ export function useCreateReviewMutation(
 
   return useMutation({
     mutationKey: ["create-review", owner, repo, pullNumber],
-    mutationFn: async (mergeRequest: CreateReviewRequest) =>
+    mutationFn: async (review: CreateReviewRequest) =>
       poster(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/reviews`,
-        JSON.stringify(mergeRequest),
+        JSON.stringify(review),
       ),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -35,7 +35,7 @@ export function useCreateReviewMutation(
       toast.success("Review successfully created.");
     },
     onError: () => {
-      toast.error("Failed to submit review.");
+      toast.error("Failed to create review.");
     },
   });
 }
