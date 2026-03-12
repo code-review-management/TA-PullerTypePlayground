@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useMutationState } from "@tanstack/react-query";
 import { useMergeContext } from "../../_contexts/MergeContext";
 import { useMergeMutation } from "@/lib/api/mutations/useMergeMutation";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
 import { PRMergeRequest } from "@/types/request.types";
 import { PullRequest } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
@@ -47,13 +47,9 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
 
   // If the user confirms merge and immediately closes the popover and reopens
   // it, check if there is already an existing merge mutation occurring.
-  const isMergePending =
-    useMutationState({
-      filters: {
-        mutationKey: ["merge", username, repo_name, id],
-        status: "pending",
-      },
-    }).length > 0;
+  const isMergePending = useMutationInFlight({
+    mutationKey: ["merge", username, repo_name, id],
+  });
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
     MERGE_METHOD_INPUTS.map(({ method, label }) => ({
