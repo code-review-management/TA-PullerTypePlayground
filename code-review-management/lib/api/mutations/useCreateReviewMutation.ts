@@ -35,7 +35,7 @@ export function useCreateReviewMutation(
       toast.success("Review successfully created.");
     },
     onError: () => {
-      toast.error("Failed to create review.");
+      toast.error("Failed to submit review.");
     },
   });
 }
