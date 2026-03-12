@@ -1,5 +1,9 @@
 export type Status = "ready" | "waiting" | "conflict" | "failure";
 
+/**
+ * TODO: Move logic to translate from GH response to Status to this file
+ */
+
 export const ICONS: Record<Status, string> = {
   ready: "merge_ready.svg",
   waiting: "merge_waiting.svg",

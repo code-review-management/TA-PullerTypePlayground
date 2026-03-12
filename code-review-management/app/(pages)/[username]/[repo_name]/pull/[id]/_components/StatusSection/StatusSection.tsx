@@ -1,4 +1,4 @@
-import { Status } from "../../../../../../_utils/statusConstants";
+import { Status } from "@/app/(pages)/_utils/statusConstants";
 import StatusFlagChip from "../StatusFlagChip/StatusFlagChip";
 import styles from "./StatusSection.module.css";
 import { PullRequest } from "@/types/github.types";

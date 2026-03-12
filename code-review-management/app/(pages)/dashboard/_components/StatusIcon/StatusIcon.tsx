@@ -4,7 +4,7 @@ type State =
   | "ready"
   | "waiting"
   | "conflict"
-  | "failed"
+  | "failure"
   | "open"
   | "closed"
   | "merged"
@@ -14,7 +14,7 @@ export const ICONS: Record<State, string> = {
   ready: "status_ready.svg",
   waiting: "status_waiting.svg",
   conflict: "status_conflict.svg",
-  failed: "status_failed.svg",
+  failure: "status_failure.svg",
   open: "status_open.svg",
   closed: "status_closed.svg",
   merged: "status_merged.svg",

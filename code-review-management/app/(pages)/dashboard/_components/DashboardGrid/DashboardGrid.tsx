@@ -1,9 +1,10 @@
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
 import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
-import { User } from "@/types/github.types";
+import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
+import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 
 export default function DashboardGrid() {
   return (
@@ -20,41 +21,48 @@ export default function DashboardGrid() {
       </thead>
       <tbody className={styles.gridBody}>
         {MOCK_PULLS.map((pull) => (
-          <tr key={pull.id} className={styles.gridRow}>
-            <td className={styles.iconWidth}>
-              <UserIcon
-                avatarUrl={pull.user.avatar_url}
-                username={pull.user.login}
-                size={40}
-              />
-            </td>
-            <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
-              <Link
-                className={styles.rowTitleTop}
-                href={`${pull.base.repo.full_name}/pull/${pull.number}`}
-              >
-                <h4 className={styles.titleTitle}>{pull.title}</h4>
-                <span className={styles.titleNumber}>#{pull.number}</span>
-              </Link>
-              <span className={styles.rowTitleBottom}>
-                {pull.head.repo.name}
-              </span>
-            </td>
-            <td className={styles.assigneesWidth}>
-              <UserIconList users={pull.assignees} />
-            </td>
-            <td className={styles.reviewersWidth}>
-              <UserIconList users={pull.requested_reviewers} />
-            </td>
-            <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
-              <StatusIcon state={"open"} />
-              <StatusIcon state={"ready"} />
-            </td>
-            <td className={styles.updatedWidth}></td>
-          </tr>
+          <DashboardGridRow pull={pull} key={pull.id} />
         ))}
       </tbody>
     </table>
+  );
+}
+
+function DashboardGridRow({ pull }: { pull: PullRequest }) {
+  const pullState = getPullState(pull);
+  // TODO: Add a way to get pullStatus (ready, waiting, conflict, failure)
+  
+  return (
+    <tr className={styles.gridRow}>
+      <td className={styles.iconWidth}>
+        <UserIcon
+          avatarUrl={pull.user.avatar_url}
+          username={pull.user.login}
+          size={40}
+        />
+      </td>
+      <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
+        <Link
+          className={styles.rowTitleTop}
+          href={`${pull.base.repo.full_name}/pull/${pull.number}`}
+        >
+          <h4 className={styles.titleTitle}>{pull.title}</h4>
+          <span className={styles.titleNumber}>#{pull.number}</span>
+        </Link>
+        <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
+      </td>
+      <td className={styles.assigneesWidth}>
+        <UserIconList users={pull.assignees} />
+      </td>
+      <td className={styles.reviewersWidth}>
+        <UserIconList users={pull.requested_reviewers} />
+      </td>
+      <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
+        <StatusIcon state={pullState} />
+        {/* <StatusIcon state={pullStatus} /> */} {/** TODO: Add pullStatus icon */}
+      </td>
+      <td className={styles.updatedWidth}></td>
+    </tr>
   );
 }
 
