@@ -25,9 +25,13 @@ export default function PRHeaderActions({
   pull: PullRequest;
 }) {
   const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
+
   const togglePopover = (popover: PRHeaderPopovers) => {
     setActivePopover((prev) => (prev === popover ? null : popover));
   };
+  const toggleReview = () => togglePopover("review");
+  const toggleMerge = () => togglePopover("merge");
+
   const showMergeButton = !pull.merged && pull.state === "open";
   const isMergeDisabled = !canMerge(pull);
 
@@ -40,15 +44,15 @@ export default function PRHeaderActions({
         buttonLabel="Add review"
         buttonVariant="secondary"
         isPopoverOpen={activePopover === "review"}
-        popoverContent={<AddReviewPopover />}
-        onToggle={() => togglePopover("review")}
+        popoverContent={<AddReviewPopover togglePopover={toggleReview} />}
+        onToggle={toggleReview}
       />
       {showMergeButton && (
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
           popoverContent={<MergePopover pull={pull} />}
-          onToggle={() => togglePopover("merge")}
+          onToggle={toggleMerge}
           // TODO: Also disable if the user does not have appropriate write permissions.
           isDisabled={isMergeDisabled}
           {...(isMergeDisabled && {

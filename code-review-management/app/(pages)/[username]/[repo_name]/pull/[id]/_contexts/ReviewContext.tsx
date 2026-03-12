@@ -1,3 +1,4 @@
+import { CreateReviewRequest } from "@/types/request.types";
 import {
   createContext,
   Dispatch,
@@ -12,13 +13,11 @@ import {
  * 1. https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/#without-default-context-value
  */
 
-export type ReviewType = "approve" | "comment" | "request-changes";
-
 const ReviewContext = createContext<{
   reviewBody: string;
   setReviewBody: Dispatch<SetStateAction<string>>;
-  reviewType: ReviewType;
-  setReviewType: Dispatch<SetStateAction<ReviewType>>;
+  reviewType: CreateReviewRequest["event"];
+  setReviewType: Dispatch<SetStateAction<CreateReviewRequest["event"]>>;
 } | null>(null);
 
 export const useReviewContext = () => {
@@ -35,7 +34,7 @@ export default function ReviewContextProvider({
   children: ReactNode;
 }) {
   const [reviewBody, setReviewBody] = useState("");
-  const [reviewType, setReviewType] = useState<ReviewType>("comment");
+  const [reviewType, setReviewType] = useState<CreateReviewRequest["event"]>("COMMENT");
 
   return (
     <ReviewContext
