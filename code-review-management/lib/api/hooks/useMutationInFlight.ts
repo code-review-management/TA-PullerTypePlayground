@@ -8,6 +8,7 @@ import { MutationKey, useMutationState } from "@tanstack/react-query";
  * 1. https://tanstack.com/query/v5/docs/framework/react/reference/useMutationState
  *
  * @param mutationKey: Unique key to identify the mutation.
+ * @return: True if there is a pending mutation, and false otherwise.
  */
 export function useMutationInFlight({
   mutationKey,
