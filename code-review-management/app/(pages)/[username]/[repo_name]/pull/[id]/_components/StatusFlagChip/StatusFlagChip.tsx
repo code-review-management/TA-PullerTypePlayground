@@ -1,6 +1,13 @@
 import Image from "next/image";
 import styles from "./StatusFlagChip.module.css";
-import { Status, COLOR_CLASSES, ICONS, TEXT } from "./statusConstants";
+import { Status, ICONS, TEXT } from "@/app/(pages)/_utils/statusConstants";
+
+export const COLOR_CLASSES: Record<Status, string> = {
+  ready: styles.ready,
+  waiting: styles.waiting,
+  conflict: styles.conflict,
+  failure: styles.failure,
+};
 
 /**
  * Status flag chip indicating a merge conflict, waiting for reviewers, CI failure,

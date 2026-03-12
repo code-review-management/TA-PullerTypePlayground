@@ -3,6 +3,7 @@ import styles from "./DashboardGrid.module.css";
 import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { User } from "@/types/github.types";
 import Link from "next/link";
+import StatusIcon from "../StatusIcon/StatusIcon";
 
 export default function DashboardGrid() {
   return (
@@ -28,7 +29,10 @@ export default function DashboardGrid() {
               />
             </td>
             <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
-              <Link className={styles.rowTitleTop} href={`${pull.base.repo.full_name}/pull/${pull.number}`}>
+              <Link
+                className={styles.rowTitleTop}
+                href={`${pull.base.repo.full_name}/pull/${pull.number}`}
+              >
                 <h4 className={styles.titleTitle}>{pull.title}</h4>
                 <span className={styles.titleNumber}>#{pull.number}</span>
               </Link>
@@ -42,7 +46,10 @@ export default function DashboardGrid() {
             <td className={styles.reviewersWidth}>
               <UserIconList users={pull.requested_reviewers} />
             </td>
-            <td className={styles.statusWidth}></td>
+            <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
+              <StatusIcon state={"open"} />
+              <StatusIcon state={"ready"} />
+            </td>
             <td className={styles.updatedWidth}></td>
           </tr>
         ))}

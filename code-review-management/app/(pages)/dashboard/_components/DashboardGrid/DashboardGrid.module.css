@@ -91,9 +91,14 @@
 }
 
 .userIconList {
-    display: flex;
+  display: flex;
 }
 
 .userIconListItem {
-    margin-left: -8px;
+  margin-left: -8px;
+}
+
+.rowStatus {
+  display: flex;
+  gap: var(--spacer-4);
 }
