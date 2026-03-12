@@ -49,7 +49,6 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
         />
       </td>
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
-        <div className={styles.tester}/>
         <Link
           className={styles.rowTitleTop}
           href={`${pull.base.repo.full_name}/pull/${pull.number}`}
