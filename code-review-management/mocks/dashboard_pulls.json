@@ -103,8 +103,35 @@
     "closed_at": null,
     "merged_at": null,
     "merge_commit_sha": "9c2d4615b23cf09c018e0711201e88115c58dbfd",
-    "assignees": [],
-    "requested_reviewers": [],
+    "assignees": [
+      {
+        "login": "nithinsenthil",
+        "id": 66451044,
+        "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4"
+      }
+    ],
+    "requested_reviewers": [
+      {
+        "login": "nithinsenthil",
+        "id": 66451044,
+        "avatar_url": "https://avatars.githubusercontent.com/u/66451044?v=4"
+      },
+      {
+        "login": "naomitzhao",
+        "id": 116607148,
+        "avatar_url": "https://avatars.githubusercontent.com/u/116607148?v=4"
+      },
+      {
+        "login": "doanvalerie",
+        "id": 116031083,
+        "avatar_url": "https://avatars.githubusercontent.com/u/116031083?v=4"
+      },
+      {
+        "login": "octocat",
+        "id": 8390218,
+        "avatar_url": "/mock/octocat.png"
+      }
+    ],
     "head": {
       "label": "nithinsenthil:RTC_Calendar",
       "ref": "RTC_Calendar",

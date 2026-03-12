@@ -5,16 +5,19 @@ import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
+import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
 export default function DashboardGrid() {
+  // TODO: Use real data instead of MOCK_PULLS
+
   return (
     <table className={styles.dashboardGrid}>
       <thead>
         <tr className={styles.gridHeader}>
           <th className={styles.iconWidth} />
           <th className={styles.titleWidth}>Title</th>
-          <th className={styles.assigneesWidth}>Assignees</th>
-          <th className={styles.reviewersWidth}>Reviewers</th>
+          <th className={styles.reviewerAssigneeWidth}>Assignees</th>
+          <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
           <th className={styles.statusWidth}>Status</th>
           <th className={styles.updatedWidth}>Updated</th>
         </tr>
@@ -30,13 +33,17 @@ export default function DashboardGrid() {
 
 function DashboardGridRow({ pull }: { pull: PullRequest }) {
   const pullState = getPullState(pull);
-  // TODO: Add a way to get pullStatus (ready, waiting, conflict, failure)
-  
+
+  const formattedRelativeDate = formatRelativeDate(
+    new Date(pull.updated_at),
+    true,
+  );
+
   return (
     <tr className={styles.gridRow}>
       <td className={styles.iconWidth}>
         <UserIcon
-          avatarUrl={pull.user?.avatar_url ?? "octocat.png"}
+          avatarUrl={pull.user?.avatar_url ?? "/mock/octocat.png"}
           username={pull.user?.login ?? "octocat"}
           size={40}
         />
@@ -51,30 +58,29 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
         </Link>
         <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
       </td>
-      <td className={styles.assigneesWidth}>
+      <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />
       </td>
-      <td className={styles.reviewersWidth}>
+      <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.requested_reviewers ?? []} />
       </td>
       <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
         <StatusIcon state={pullState} />
-        {/* <StatusIcon state={pullStatus} /> */} {/** TODO: Add pullStatus icon */}
       </td>
-      <td className={styles.updatedWidth}></td>
+      <td className={styles.updatedWidth}>
+        <span className={styles.rowUpdated}>{formattedRelativeDate}</span>
+      </td>
     </tr>
   );
 }
 
 function UserIconList({ users }: { users: User[] }) {
+  const firstThreeUsers = users.slice(0, 3);
+
   return (
     <div className={styles.userIconList}>
-      {users.map((reviewer, idx) => (
-        <div
-          key={reviewer.login}
-          className={styles.userIconListItem}
-          style={{ zIndex: -idx }}
-        >
+      {firstThreeUsers.map((reviewer, idx) => (
+        <div key={reviewer.login} style={{ zIndex: -idx }}>
           <UserIcon
             avatarUrl={reviewer.avatar_url}
             username={reviewer.login}
@@ -82,6 +88,9 @@ function UserIconList({ users }: { users: User[] }) {
           />
         </div>
       ))}
+      {users.length > 3 && (
+        <div className={styles.extraUsers}>+{users.length - 3}</div>
+      )}
     </div>
   );
 }

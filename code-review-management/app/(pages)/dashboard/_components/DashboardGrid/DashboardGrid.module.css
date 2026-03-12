@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacer-8);
+
+  --small-icon-size: 32px;
 }
 
 .gridHeader {
@@ -22,6 +24,11 @@
   text-align: left;
 }
 
+/* Higher specificity than .gridHeader > th to override text-align */
+.gridHeader > .updatedWidth {
+  text-align: right;
+}
+
 .iconWidth {
   width: 40px;
 }
@@ -30,20 +37,31 @@
   flex: 4;
 }
 
-.assigneesWidth {
-  flex: 1;
+/* TODO: Change the number of visible icons for different page sizes */
+.reviewerAssigneeWidth {
+  --num-icons-visible: 4;
+  --user-icons-gap: 8px;
+
+  /* Max possible width UserIconList requires */
+  width: calc(
+    var(--num-icons-visible) * var(--small-icon-size) -
+      (var(--num-icons-visible) - 1) * var(--user-icons-gap)
+  );
 }
 
-.reviewersWidth {
-  flex: 1;
-}
-
+/* TODO: Increase width to accommodate for second status icon */
 .statusWidth {
-  width: 68px;
+  width: 44px;
 }
 
 .updatedWidth {
-  width: 80px;
+  width: 56px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.updatedHeader {
+  text-align: right;
 }
 
 .gridBody {
@@ -91,14 +109,32 @@
 }
 
 .userIconList {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 24px);
+  grid-template-rows: 1fr;
+  grid-auto-columns: 0px;
+  grid-auto-rows: 0px;
 }
 
-.userIconListItem {
-  margin-left: -8px;
+.extraUsers {
+  height: var(--small-icon-size);
+  width: var(--small-icon-size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--small-icon-size);
+  background-color: var(--border-gray);
+  font-size: 0.875rem;
+  z-index: -5;
 }
 
 .rowStatus {
   display: flex;
-  gap: var(--spacer-4);
+  justify-content: center;
+}
+
+.rowUpdated {
+  text-align: right;
 }
