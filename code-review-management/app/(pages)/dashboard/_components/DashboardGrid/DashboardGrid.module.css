@@ -1,43 +1,90 @@
 .dashboardGrid {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
 }
 
 .gridHeader {
-    display: flex;
-    gap: var(--spacer-32);
+  height: 36px;
+  border-radius: 8px 8px 0 0;
+  padding: 0 var(--spacer-32);
+
+  display: flex;
+  gap: var(--spacer-32);
+  align-items: center;
+
+  background-color: var(--background-secondary-light);
 }
 
 .gridHeader > th {
-    font-weight: 400;
-    border: 1px solid blue;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-align: left;
 }
 
 .iconWidth {
-    width: 40px;
+  width: 40px;
 }
 
 .titleWidth {
-    flex: 4;
+  flex: 3;
 }
 
 .assigneesWidth {
-    flex: 1;
+  flex: 1;
 }
 
 .reviewersWidth {
-    flex: 1;
+  flex: 1;
 }
 
 .statusWidth {
-    width: 68px;
+  width: 68px;
 }
 
 .updatedWidth {
-    width: 80px;
+  width: 80px;
+}
+
+.gridBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
 }
 
 .gridRow {
-    display: flex;
-    gap: var(--spacer-32);
+  height: 72px;
+  border-radius: 8px;
+  padding: var(--spacer-32);
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-32);
+
+  border: 1px solid var(--background-secondary-light);
+}
+
+.rowTitle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-4);
+}
+
+.rowTitleTop {
+  display: flex;
+  gap: var(--spacer-4);
+}
+
+.titleTitle {
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.titleNumber {
+  color: var(--text-secondary);
+}
+
+.rowTitleBottom {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
 }
