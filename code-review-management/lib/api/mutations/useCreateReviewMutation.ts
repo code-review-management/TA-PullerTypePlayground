@@ -25,16 +25,13 @@ export function useCreateReviewMutation(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/reviews`,
         JSON.stringify(mergeRequest),
       ),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: ["pull", owner, repo, pullNumber],
-        }),
-        queryClient.invalidateQueries({
-          queryKey: ["timeline", owner, repo, pullNumber],
-        }),
-      ]);
-
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["pull", owner, repo, pullNumber],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["timeline", owner, repo, pullNumber],
+      });
       toast.success("Review successfully created.");
     },
     onError: () => {

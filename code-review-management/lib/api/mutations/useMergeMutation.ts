@@ -25,8 +25,8 @@ export function useMergeMutation(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/merge`,
         JSON.stringify(mergeRequest),
       ),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: ["pull", owner, repo, pullNumber],
       });
       toast.success("Pull request successfully merged.");
