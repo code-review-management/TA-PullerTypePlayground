@@ -12,6 +12,7 @@ export type Comment = z.infer<typeof CommentSchema>;
 export type PRMerge = z.infer<typeof PRMergeSchema>;
 export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
+export type Review = z.infer<typeof ReviewSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -37,6 +38,11 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
+const reviewState = [
+  "APPROVED",
+  "CHANGES_REQUESTED",
+  "COMMENTED",
+] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -195,6 +201,15 @@ export const ReviewCommentSchema = z.object({
   in_reply_to_id: z.number().nullish(),
   author_association: z.enum(authorAssociation),
   subject_type: z.enum(subjectType).nullish(),
+});
+
+export const ReviewSchema = z.object({
+  id: z.number(),
+  user: UserSchema.nullable(),
+  body: z.string(),
+  state: z.enum(reviewState),
+  submitted_at: z.string().optional(),
+  author_association: z.enum(authorAssociation),
 });
 
 export const CommitCommentSchema = z.object({
