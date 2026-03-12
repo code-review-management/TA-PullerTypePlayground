@@ -2,6 +2,7 @@ import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
 import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { User } from "@/types/github.types";
+import Link from "next/link";
 
 export default function DashboardGrid() {
   return (
@@ -27,10 +28,10 @@ export default function DashboardGrid() {
               />
             </td>
             <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
-              <div className={styles.rowTitleTop}>
+              <Link className={styles.rowTitleTop} href={`${pull.base.repo.full_name}/pull/${pull.number}`}>
                 <h4 className={styles.titleTitle}>{pull.title}</h4>
                 <span className={styles.titleNumber}>#{pull.number}</span>
-              </div>
+              </Link>
               <span className={styles.rowTitleBottom}>
                 {pull.head.repo.name}
               </span>
