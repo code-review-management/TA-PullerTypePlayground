@@ -51,11 +51,15 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
   });
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
-    MERGE_METHOD_INPUTS.map(({ method, label }) => ({
-      value: method,
-      label,
-      disabled: method === "rebase" && !pull.rebaseable,
-    }));
+    MERGE_METHOD_INPUTS.map(({ method, label }) => {
+      const cannotRebase = method === "rebase" && !pull.rebaseable;
+      return {
+        value: method,
+        label,
+        disabled: cannotRebase,
+        ...(cannotRebase && { tooltip: "Cannot rebase due to conflicts" }),
+      };
+    });
 
   useEffect(() => {
     setCommitTitle((prev) =>
