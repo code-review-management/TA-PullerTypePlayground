@@ -63,7 +63,7 @@ export default function AddReviewPopover({
 
   const isReviewBodyEmpty = reviewBody.trim().length === 0;
   const isDisabled = isReviewBodyEmpty && reviewType != "APPROVE";
-  const isAuthor = pull.user?.id === session?.user?.id;
+  const isAuthor = pull.user?.id === session?.user?.githubId;
 
   const reviewRadioOptions: RadioOption<CreateReviewRequest["event"]>[] =
     REVIEW_TYPE_INPUTS.map(({ type, label, icon }) => {
