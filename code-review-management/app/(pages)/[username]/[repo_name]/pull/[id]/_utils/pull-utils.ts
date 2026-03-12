@@ -3,7 +3,7 @@ import { State } from "../../../../../_utils/stateConstants";
 
 export function getPullState(pull: PullRequest): State {
   if (pull.draft) return "draft";
-  if (pull.merged) return "merged";
+  if (pull.merged_at !== null) return "merged";
   return pull.state;
 }
 
