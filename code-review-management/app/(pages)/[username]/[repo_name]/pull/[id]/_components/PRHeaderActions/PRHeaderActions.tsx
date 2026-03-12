@@ -44,7 +44,7 @@ export default function PRHeaderActions({
         buttonLabel="Add review"
         buttonVariant="secondary"
         isPopoverOpen={activePopover === "review"}
-        popoverContent={<AddReviewPopover togglePopover={toggleReview} />}
+        popoverContent={<AddReviewPopover pull={pull} togglePopover={toggleReview} />}
         onToggle={toggleReview}
       />
       {showMergeButton && (

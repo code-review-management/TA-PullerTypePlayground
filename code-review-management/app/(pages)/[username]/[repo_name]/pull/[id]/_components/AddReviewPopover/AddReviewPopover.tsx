@@ -1,9 +1,11 @@
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useReviewContext } from "../../_contexts/ReviewContext";
 import { useCreateReviewMutation } from "@/lib/api/mutations/useCreateReviewMutation";
 import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
 import { CreateReviewRequest } from "@/types/request.types";
 import { PullParams } from "@/types/routing.types";
+import { PullRequest } from "@/types/github.types";
 import Image, { StaticImageData } from "next/image";
 import MarkdownEditor from "@components/MarkdownEditor/MarkdownEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -28,14 +30,16 @@ const REVIEW_TYPE_INPUTS: {
  * Popover to add a review to the pull request.
  */
 export default function AddReviewPopover({
+  pull,
   togglePopover,
 }: {
+  pull: PullRequest;
   togglePopover: () => void;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { mutate } = useCreateReviewMutation(username, repo_name, id);
-  const { reviewBody, setReviewBody, reviewType, setReviewType } =
-    useReviewContext();
+  const { reviewBody, setReviewBody, reviewType, setReviewType } = useReviewContext();
+  const { data: session } = useSession();
 
   const handleSubmit = () => {
     mutate(
@@ -68,6 +72,7 @@ export default function AddReviewPopover({
           <Image src={icon} alt={type} />
         </div>
       ),
+      disabled: type !== "COMMENT" && pull.user?.id !== session?.user?.id,
     }));
 
   return (
