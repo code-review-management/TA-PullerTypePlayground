@@ -1,5 +1,5 @@
 import { PullRequest } from "@/types/github.types";
-import { State } from "../../../../../_utils/stateConstants";
+import { State } from "@/app/(pages)/_utils/stateConstants";
 
 export function getPullState(pull: PullRequest): State {
   if (pull.draft) return "draft";
