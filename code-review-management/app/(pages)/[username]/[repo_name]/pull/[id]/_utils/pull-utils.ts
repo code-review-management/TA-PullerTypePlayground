@@ -12,6 +12,6 @@ export function canMerge(pull: PullRequest) {
     !pull.draft &&
     pull.state === "open" &&
     pull.mergeable &&
-    pull.mergeable_state === "clean"
+    (pull.mergeable_state === "clean" || pull.mergeable_state === "unstable")
   );
 }
