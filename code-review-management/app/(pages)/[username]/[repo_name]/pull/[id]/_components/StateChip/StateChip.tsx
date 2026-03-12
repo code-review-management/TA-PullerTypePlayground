@@ -1,6 +1,13 @@
 import Image from "next/image";
 import styles from "./StateChip.module.css";
-import { State, COLOR_CLASSES, ICONS } from "./stateConstants";
+import { State, ICONS } from "@/app/(pages)/_utils/stateConstants";
+
+export const COLOR_CLASSES: Record<State, string> = {
+  open: styles.open,
+  closed: styles.closed,
+  merged: styles.merged,
+  draft: styles.draft,
+};
 
 /**
  * State chip indicating whether a pull request is open, closed, merged, or draft
