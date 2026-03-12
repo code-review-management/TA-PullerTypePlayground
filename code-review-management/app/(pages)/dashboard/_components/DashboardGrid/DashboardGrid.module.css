@@ -27,7 +27,7 @@
 }
 
 .titleWidth {
-  flex: 3;
+  flex: 4;
 }
 
 .assigneesWidth {
@@ -87,4 +87,12 @@
 .rowTitleBottom {
   font-size: 0.875rem;
   color: var(--text-secondary);
+}
+
+.userIconList {
+    display: flex;
+}
+
+.userIconListItem {
+    margin-left: -8px;
 }
