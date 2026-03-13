@@ -37,9 +37,6 @@ export default function InlineCommentEntry({
   return (
     <div className={styles.comment}>
       <UserIcon avatarUrl={avatar} username={username} size={22} />
-      <div className={styles.avatar}>
-        <Image src={avatar} alt={`@${username}`} fill />
-      </div>
       <div className={styles.content}>
         <div className={styles.header}>
           <span className={styles.username}>{username}</span>
