@@ -12,7 +12,7 @@ import { PullRequest } from "@/types/github.types";
 export default function StatusSection({ pullData }: { pullData: PullRequest }) {
   const statuses: Status[] = [];
 
-  if (pullData.mergeable_state === "ready") {
+  if (pullData.mergeable_state === "clean") {
     statuses.push("ready");
   } else {
     if (pullData.mergeable_state === "dirty") {
@@ -21,7 +21,9 @@ export default function StatusSection({ pullData }: { pullData: PullRequest }) {
     if (pullData.mergeable_state === "blocked") {
       statuses.push("waiting");
     }
-    // TODO: Check if CI failure
+    if (pullData.mergeable_state === "unstable") {
+      statuses.push("failure");
+    }
   }
 
   return (
