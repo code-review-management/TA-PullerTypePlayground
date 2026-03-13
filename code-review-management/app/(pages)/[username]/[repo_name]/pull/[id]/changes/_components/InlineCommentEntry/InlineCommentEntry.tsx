@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { formatDate } from "../../../_utils/date-utils";
 import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
+import UserIcon from "@components/UserIcon/UserIcon";
 import styles from "./InlineCommentEntry.module.css";
 
 /**
@@ -35,6 +36,7 @@ export default function InlineCommentEntry({
 }) {
   return (
     <div className={styles.comment}>
+      <UserIcon avatarUrl={avatar} username={username} size={22} />
       <div className={styles.avatar}>
         <Image src={avatar} alt={`@${username}`} fill />
       </div>
