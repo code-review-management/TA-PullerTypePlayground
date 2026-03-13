@@ -440,7 +440,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
                 
                 <div className={styles.completeMergeButton}>
                     <HeaderButton onClick={() => handleMergeClicked()}>
-                        <span className={isMerging ? styles.loadingText : styles.completeMergeButtonText}>{!isMerging ? 'Merge' : 'Merging'}</span>
+                        <span className={isMerging ? styles.loadingText : styles.completeMergeButtonText}>{isMerging ? 'Merging' : 'Merge'}</span>
                     </HeaderButton>
                 </div>
             </div>
