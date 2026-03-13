@@ -37,9 +37,8 @@ export default function AddReviewPopover({
   togglePopover: () => void;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
-  const { reviewBody, setReviewBody, reviewType, setReviewType } = useReviewContext();
-  const { mutate } = useCreateReviewMutation(username, repo_name, id, setReviewBody, setReviewType);
-
+  const { reviewBody, setReviewBody, reviewType, setReviewType, resetKey, resetReview } = useReviewContext();
+  const { mutate } = useCreateReviewMutation(username, repo_name, id, resetReview);
   const { data: session } = useSession();
 
   const handleSubmit = () => {
@@ -90,6 +89,7 @@ export default function AddReviewPopover({
         }}
       >
         <MarkdownEditor
+          key={resetKey}
           defaultEditable={true}
           defaultContent={reviewBody}
           onChange={(markdown: string) => setReviewBody(markdown)}

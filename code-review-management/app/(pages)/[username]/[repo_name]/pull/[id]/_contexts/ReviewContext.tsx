@@ -18,6 +18,8 @@ const ReviewContext = createContext<{
   setReviewBody: Dispatch<SetStateAction<string>>;
   reviewType: CreateReviewRequest["event"];
   setReviewType: Dispatch<SetStateAction<CreateReviewRequest["event"]>>;
+  resetKey: number;
+  resetReview: () => void;
 } | null>(null);
 
 export const useReviewContext = () => {
@@ -35,10 +37,24 @@ export default function ReviewContextProvider({
 }) {
   const [reviewBody, setReviewBody] = useState("");
   const [reviewType, setReviewType] = useState<CreateReviewRequest["event"]>("COMMENT");
+  const [resetKey, setResetKey] = useState(0);
+
+  const resetReview = () => {
+    setReviewBody("");
+    setReviewType("COMMENT");
+    setResetKey((key) => key + 1);
+  };
 
   return (
     <ReviewContext
-      value={{ reviewBody, setReviewBody, reviewType, setReviewType }}
+      value={{
+        reviewBody,
+        setReviewBody,
+        reviewType,
+        setReviewType,
+        resetKey,
+        resetReview,
+      }}
     >
       {children}
     </ReviewContext>
