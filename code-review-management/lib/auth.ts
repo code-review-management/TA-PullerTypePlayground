@@ -17,12 +17,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account && profile) {
         token.accessToken = account.access_token; // GitHub personal access token
         token.githubId = profile.id; // GitHub user ID
-        token.githubLogin = profile.login; // GitHub username
+        token.githubLogin = String(profile.login); // GitHub username
       }
       return token;
     },
     session({ session, token }) {
       session.user.githubId = token.githubId;
+      session.user.githubLogin = token.githubLogin;
       return session;
     },
   },

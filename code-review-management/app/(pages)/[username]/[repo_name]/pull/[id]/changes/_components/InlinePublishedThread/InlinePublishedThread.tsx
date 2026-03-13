@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
@@ -46,11 +47,11 @@ export default function InlinePublishedThread({
 }
 
 function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
+  const { data: session } = useSession();
   return (
     <InlineCommentEntry
-      // Replace with authenticated user.
-      avatar={"/mock/octocat.png"}
-      username="octocat"
+      avatar={session?.user.image ?? "/mock/octocat.png"}
+      username={session?.user.githubLogin ?? ""}
       defaultEditable={true}
       actions={
         <DraftEditorActions
