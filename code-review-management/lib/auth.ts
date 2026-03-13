@@ -4,6 +4,7 @@ import GitHub from "next-auth/providers/github";
 /**
  * Docs:
  * 1. https://authjs.dev/getting-started/authentication/oauth
+ * 2. https://authjs.dev/guides/extending-the-session#with-jwt
  */
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -19,6 +20,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.githubLogin = profile.login; // GitHub username
       }
       return token;
+    },
+    session({ session, token }) {
+      session.user.githubId = token.githubId;
+      return session;
     },
   },
 });
