@@ -5,10 +5,13 @@ import * as MonacoEditor from "monaco-editor";
 import { useState, useMemo, useRef, useEffect } from "react";
 import useIsDark from "@components/ConflictResolution/useIsDark"
 import { parseMerge, ParsedConflict } from "@components/ConflictResolution/parseMerge";
-import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions } from "./configureEditor";
-import { ConflictResolutionProp } from "../../[username]/[repo_name]/pull/[id]/conflict-resolution/page";
+import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions, getMonacoLanguage } from "./configureEditor";
+import { ConflictResolutionProp } from "../../[username]/[repo_name]/pull/[id]/[target_branch]/[feature_branch]/conflict-resolution/page";
 import { SyncAnchor, bindInterpolatedScroll, generateAnchors, refreshAnchors } from "./syncedScrolling";
-import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent } from "@/lib/merge-conflict-finder/merge-github.types";
+import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent, MergeCommitContentSchema } from "@/lib/merge-conflict-finder/merge-github.types";
+import HeaderButton from "@components/HeaderButton/HeaderButton";
+import MergeSuccessPopup from "./WindowPopup/MergeSuccessPopup";
+import UnresolvedFilesPopup from "./WindowPopup/UnresolvedFilesPopup";
 
 export interface FileWorkspaceState {
     currentModel: MonacoEditor.editor.ITextModel;
@@ -24,11 +27,22 @@ export interface FileWorkspaceState {
 
 loader.config({ monaco: MonacoEditor });
 
+
+/**
+ * The 3 window conflict resolution view with the top 2 pages being read only and the bottom is writable and the merge contents.
+ * It initializes 3 instances of Monaco Editor, and uses decorations to block and color items
+ * It uses widgets to interact with the decorations and transfers data between the instances
+ * Editor state (for all 3) is cached per file, uploading the correct cache when files are swapped
+ * @param conflictResolutionProp contains all the info from the parameters or url and the fetch, split into 2 objects:
+ *        branchInfoProp is the parameters including owner, repo, target and feature branch. Used to make API calls
+ *        mergeOutput comes form the server. This is file content that we split to render
+ */
 export default function ConflictResolution({ conflictResolutionProp }: { conflictResolutionProp: ConflictResolutionProp }) {
     const mergeOutput: MergeOutput = conflictResolutionProp.mergeOutput;
     const monaco = useMonaco();
     const { isDark } = useIsDark();
     const themeStr = isDark ? "vs-dark" : "vs-light";
+    const { owner, repo, pullId, targetBranch, featureBranch } = conflictResolutionProp.branchInfoProp
     
     const conflictingFiles = useMemo(() => mergeOutput.mergedFiles.filter(file => file.hasConflict), [mergeOutput]);
     const [activeFile, setActiveFile] = useState<MergeFileOutput | null>(conflictingFiles.length > 0 ? conflictingFiles[0] : null);
@@ -37,6 +51,12 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
     const [currentEditor, setCurrentEditor] = useState<MonacoEditor.editor.IStandaloneCodeEditor | null>(null);
     const [incomingEditor, setIncomingEditor] = useState<MonacoEditor.editor.IStandaloneCodeEditor | null>(null);
     const [resultEditor, setResultEditor] = useState<MonacoEditor.editor.IStandaloneCodeEditor | null>(null);
+
+    //Merge state
+    const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+    const [isMerging, setIsMerging] = useState(false);
+    const [showUnresolvedPopup, setShowUnresolvedPopup] = useState(false);
+    const [unresolvedFilesList, setUnresolvedFilesList] = useState<string[]>([]);
 
     // Model Cache
     const workspaceCache = useRef<Record<string, FileWorkspaceState>>({});
@@ -56,6 +76,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
     const [globalResolvedState, setGlobalResolvedState] = useState<Record<string, Record<string, { ours?: boolean, theirs?: boolean }>>>({});
     const resolvedState = activeFile ? (globalResolvedState[activeFile.filename] || {}) : {};
 
+    //Used to update the file state of each function
     const setResolvedState = (updater: any) => {
         if (!activeFile) return;
         setGlobalResolvedState(prev => {
@@ -65,6 +86,9 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         });
     };
 
+    /**
+     * This effect handles file state caching upon a request
+    */
     useEffect(() => {
         if (!monaco || !currentEditor || !incomingEditor || !resultEditor || !activeFile) return;
 
@@ -77,9 +101,10 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         if (!workspaceCache.current[filename]) {
             const parsed = parseMerge(activeFile.contents);
             
-            const cModel = monaco.editor.createModel(parsed.currentContent, 'javascript');
-            const iModel = monaco.editor.createModel(parsed.incomingContent, 'javascript');
-            const rModel = monaco.editor.createModel(parsed.resultContent, 'javascript');
+            const langType = getMonacoLanguage(filename)
+            const cModel = monaco.editor.createModel(parsed.currentContent, langType);
+            const iModel = monaco.editor.createModel(parsed.incomingContent, langType);
+            const rModel = monaco.editor.createModel(parsed.resultContent, langType);
             const resultDecs: Record<string, string[]> = {};
             
             parsed.conflicts.forEach(c => {
@@ -124,7 +149,9 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         prevFileRef.current = filename;
     }, [activeFile, monaco, currentEditor, incomingEditor, resultEditor]);
 
-    // --- Synced Scrolling ---
+    /**
+     * This triggers when the editor is changed, and calls the functions to interpolate between the scroll locations
+     */
     useEffect(() => {
         if (!currentEditor || !incomingEditor || !resultEditor || !activeFile) return;
 
@@ -145,7 +172,12 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         };
     }, [activeFile, currentEditor, incomingEditor, resultEditor]);
 
-    // --- Handlers (Referencing the active cache) ---
+    /**
+     * This is called when the "Accept ..." is clicked. it gives the resulting block a new decoration of text zone
+     * @param conflictId the id of the decoration block of the change
+     * @param side which side the change comes from
+     * @param textToInsert text of the block
+     */
     const handleTransferBlock = (conflictId: string, side: 'ours' | 'theirs', textToInsert: string) => {
         if (!resultEditor || !monaco || !activeFile) return;
         
@@ -194,6 +226,11 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         setResolvedState((prev: any) => ({ ...prev, [conflictId]: { ...prev[conflictId], [side]: true } }));
     };
 
+    /**
+     * This is called when the "Reverse" is clicked.
+     * It tells monaco to reverse changes in the docoration range
+     * @param conflictId the id of the decoration block to reverse
+     */
     const handleReverseBlock = (conflictId: string) => {
         if (!resultEditor || !monaco || !activeFile) return;
 
@@ -224,7 +261,56 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
         });
     };
 
-    const handleCompleteMerge = async () => {
+    /**
+     * Handles when the mergebutton is clicked
+     * Does a popup if there are untouched blocks
+     */
+    const handleMergeClicked = async () => {
+        if (isMerging) return;
+
+        const filesWithUnresolvedConflicts: string[] = [];
+        for (const file of conflictingFiles) {
+            const filename = file.filename;
+            let fileConflicts: ParsedConflict[] = [];
+
+            // If the user opened the file, grab conflicts from the cache.
+            // If they haven't opened it yet, parse it quickly to find the conflicts.
+            if (workspaceCache.current[filename]) {
+                fileConflicts = workspaceCache.current[filename].conflicts;
+            } else {
+                const parsed = parseMerge(file.contents);
+                fileConflicts = parsed.conflicts;
+            }
+
+            const fileResolvedState = globalResolvedState[filename] || {};
+
+            // Check if any block in this file is missing both 'ours' and 'theirs'
+            const hasUnresolved = fileConflicts.some(conflict => {
+                const blockState = fileResolvedState[conflict.id];
+                return !blockState || (!blockState.ours && !blockState.theirs);
+            });
+
+            if (hasUnresolved) {
+                filesWithUnresolvedConflicts.push(filename);
+            }
+        }
+
+        if (filesWithUnresolvedConflicts.length > 0) {
+            setUnresolvedFilesList(filesWithUnresolvedConflicts);
+            setShowUnresolvedPopup(true);
+            return;
+        } else {
+            mergeResolutionContents()
+        }
+    };
+
+    /**
+     * Gathers relevant info from each model cache, and then it sends the api request to merge
+     * Does pop up on success
+     */
+    const mergeResolutionContents = async () => {
+        if (isMerging) return;
+        setIsMerging(true);
         try {
             const contentPayload: MergeCommitContent[] = mergeOutput.mergedFiles.map(file => {
                 const cachedWorkspace = workspaceCache.current[file.filename];
@@ -235,15 +321,14 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
             });
 
             const inputPayload: MergeCommitInputData = {
-                owner: "nithinsenthil",
-                repo: "IntestiSat",
+                owner: owner,
+                repo: repo,
                 targetMergeSha: mergeOutput.targetShaAtMerge,
-                targetBranch: "RTOS_Task_low_pwr",
-                featureBranch: "Conflict_Resolution_Our_Solution"
+                targetBranch: targetBranch,
+                featureBranch: featureBranch
             }
-
             // 2. Send the POST request
-            const response = await fetch("/api/v1/nithinsenthil/IntestiSat/pulls/4/RTOS_low_pwr/RTOS_Training_Base/commit-merge", {
+            const response = await fetch(`/api/v1/${owner}/${repo}/pulls/${pullId}/${targetBranch}/${featureBranch}/commit-merge`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -258,14 +343,20 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
                 throw new Error(`Server rejected with status: ${response.status}`);
             }
 
-            alert("Merge Success!");
+            setShowSuccessPopup(true)
 
         } catch (error) {
             console.error("Merge submission failed:", error);
             alert("Merge Failed, something went wrong");
+        } finally {
+            setIsMerging(false);
         }
-    };
+    }
 
+    /**
+     * This effect rerenders the editors on change.
+     * It resets each editor then it calls the rerender functions
+     */
     useEffect(() => {
         if (!activeFile || !currentEditor || !incomingEditor || !resultEditor || !monaco) return;
         
@@ -335,7 +426,7 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
     if (!activeFile) return <div className={styles.noConflicts}>No conflicts to resolve.</div>;
 
     return (
-        <div className={styles.conflictResolution}>
+        <div className={styles.conflictResolution} data-theme={isDark ? 'dark' : 'light'}>
             <div className={styles.fileTabBar}>
                 {conflictingFiles.map((file) => (
                     <button
@@ -347,10 +438,42 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
                     </button>
                 ))}
                 
-                <button className={styles.completeMergeButton} 
-                onClick={() => handleCompleteMerge()}
-                >Complete Merge</button>
+                <div className={styles.completeMergeButton}>
+                    <HeaderButton onClick={() => handleMergeClicked()}>
+                        <span className={isMerging ? styles.loadingText : styles.completeMergeButtonText}>{!isMerging ? 'Merge' : 'Merging'}</span>
+                    </HeaderButton>
+                </div>
             </div>
+
+            <UnresolvedFilesPopup 
+                isOpen={showUnresolvedPopup} 
+                onClose={() => setShowUnresolvedPopup(false)} 
+                files={unresolvedFilesList}
+                isDarkMode={isDark}
+                >
+                <HeaderButton 
+                    onClick={() => {
+                        setShowUnresolvedPopup(false)
+                        mergeResolutionContents()
+                        }}
+                    variant="primary"
+                    >
+                        Proceed
+                    </HeaderButton>
+            </UnresolvedFilesPopup>
+
+            <MergeSuccessPopup
+                isOpen={showSuccessPopup} isDark={isDark} 
+                targetBranch={conflictResolutionProp.branchInfoProp.targetBranch}
+                featureBranch={conflictResolutionProp.branchInfoProp.featureBranch}
+                >
+                <HeaderButton
+                    href={`/${owner}/${repo}/pull/${pullId}`}
+                    variant="secondary"
+                    >
+                    Home
+                </HeaderButton>
+            </MergeSuccessPopup>
 
             <div className={styles.mergeLayout}>
                 <div className={styles.topHalf}>

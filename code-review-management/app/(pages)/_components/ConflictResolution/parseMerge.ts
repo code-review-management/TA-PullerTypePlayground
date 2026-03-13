@@ -18,6 +18,12 @@ interface ParsedResult {
     conflicts: ParsedConflict[]
 }
 
+/**
+ * Parses the raw file content into its respective merge conflict blocks
+ * @param mergeContent raw file string, has merge conflict markers
+ * @returns parsed output, which is the incoming/current/base content. It also has a list of conflict blocks, 
+ *  which has the texts and the line numbers conflicts refer to
+ */
 export function parseMerge(mergeContent: string) : ParsedResult {
     const lines = mergeContent.split('\n');
     const currentLines: string[] = [];

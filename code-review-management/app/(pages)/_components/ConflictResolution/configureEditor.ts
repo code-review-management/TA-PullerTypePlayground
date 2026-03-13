@@ -14,14 +14,34 @@ import { SideConflictBlock, renderSideConflicts, insertReverseWidget } from "./r
 export const sharedEditorOptions: MonacoEditor.editor.IEditorConstructionOptions = {
     fontSize: 20,             
     // This is the default VS Code font stack
-    fontFamily: 'Menlo, Monaco, "Courier New", monospace', 
+    fontFamily: 'Consolas, Menlo, Monaco, "Courier New", monospace', 
     fontWeight: "400",         // VS Code's default weight
     letterSpacing: 0,
     lineHeight: 1.5,           // Standard VS Code line spacing
     renderValidationDecorations: "off",
     };
 
-// --- Function 1: Handle Side Panels (Current & Incoming) ---
+/**
+ * Basically, this receives parsed content, and then turns it into the current and incoming editor.
+ * To do this, we convert parsedoutputs into blocks, then pass it to the block renderer.
+ * We do this when text content changes
+ * @param monaco MonacoInstance
+ * @param currentEditor Current Editor instance
+ * @param incomingEditor Incoming Editor instance
+ * @param currentModel Current editor info (like scroll location and such)
+ * @param incomingModel Incoming editor info (like scroll location and such)
+ * @param conflicts Parsed conflicts (we calculate this using strings)
+ * @param resolvedState Record of whether this has been resolved (has a side been accepted)
+ * @param oldCurrentIds Ids used to tag deocorations in current editor for caching
+ * @param oldIncomingIds Ids used to tag decorations in incoming editor for caching
+ * @param currentWidgetsMap Map of widgets that we made for current editor
+ * @param incomingWidgetsMap Map of widgets that we made for incoming editor
+ * @param currentZonesMap Current ids relation to string content
+ * @param incomingZonesMap Incoming ids relation to string content
+ * @param onAcceptCurrent Accept function for current
+ * @param onAcceptIncoming Accept function for incoming
+ * @returns new list of ids to be used for caching
+ */
 export function updateSidePanelsUI(
     monaco: Monaco,
     currentEditor: MonacoEditor.editor.IStandaloneCodeEditor,
@@ -30,8 +50,8 @@ export function updateSidePanelsUI(
     incomingModel: MonacoEditor.editor.ITextModel,
     conflicts: ParsedConflict[],
     resolvedState: Record<string, { ours?: boolean, theirs?: boolean }>,
-    oldCurrentIds: string[], // NEW: Pass in the old IDs
-    oldIncomingIds: string[], // NEW: Pass in the old IDs
+    oldCurrentIds: string[],
+    oldIncomingIds: string[],
     currentWidgetsMap: Map<string, MonacoEditor.editor.IContentWidget>,
     incomingWidgetsMap: Map<string, MonacoEditor.editor.IContentWidget>,
     currentZonesMap: Map<string, string>,
@@ -91,7 +111,19 @@ export function updateSidePanelsUI(
 }
 
 
-// --- Function 2: Handle Result Panel (Bottom) ---
+/**
+ * This will update the result based on the parsed content. Rerendering includes mapping each conflict block,
+ * We give it a decoration with a background, and then we insert a widget and update the zone
+ * @param monaco Monaco Instance
+ * @param resultEditor Result editor instance
+ * @param resultModel Text model of editor (handles text info for caching)
+ * @param conflicts Parsed conflits from input string full or merge conflicts
+ * @param resolvedState Record of what changes were taken
+ * @param resultDecorations Decorations added to the editor
+ * @param resultWidgetsMap Map of wigets we added
+ * @param resultZonesMap Zones of each block
+ * @param onReverseBlock What to do when the widget is clicked (reverse changes)
+ */
 export function updateResultPanelUI(
     monaco: Monaco,
     resultEditor: MonacoEditor.editor.IStandaloneCodeEditor,
@@ -136,4 +168,35 @@ export function updateResultPanelUI(
             resultZonesMap.set(c.id, zoneId);
         }
     });
+}
+
+const languageMap: Record<string, string> = {
+    js: 'javascript',
+    jsx: 'javascript',
+    ts: 'typescript',
+    tsx: 'typescript',
+    html: 'html',
+    css: 'css',
+    json: 'json',
+    
+    cs: 'csharp',
+    c: 'c',
+    h: 'c',
+    cpp: 'cpp',
+    hpp: 'cpp',
+    
+    py: 'python',
+    sh: 'shell',
+    yaml: 'yaml',
+    yml: 'yaml',
+    md: 'markdown',
+};
+
+export function getMonacoLanguage(filename: string): string {
+    if (!filename.includes('.')) {
+        return 'plaintext';
+    }
+
+    const extension = filename.split('.').pop()?.toLowerCase() || '';
+    return languageMap[extension] || 'plaintext';
 }

@@ -12,8 +12,13 @@ export interface SideConflictBlock {
 }
 
 /**
- * Create and add a new conflict widget for a specific side (Current or Incoming).
- * Also creates a new view zone to create line-space for the widget.
+ * This function will handle the renderering of each widget, inserting it above each conflict block
+ * @param block Further parsed block. Refers to a specific conflict block
+ * @param side String used to add to text depending on whether it is the current or incoming side
+ * @param monaco monaco instance
+ * @param editor code editor instance
+ * @param acceptFunc Funciton call to update the result with this new widget
+ * @returns Widgets that are used to accept changes
  */
 function insertSideWidget(
     block: SideConflictBlock, 
@@ -75,8 +80,10 @@ function insertSideWidget(
 }
 
 /**
- * Remove all widgets and view zones from the Monaco editor.
- * (Decorations are now cleared via the Model, not here)
+ * Tells the editor to remove widgets and the blank space they come with
+ * @param editor monaco editor instance
+ * @param widgets widgets to remove
+ * @param zoneIds zones that have the view zone above them
  */
 function clearWidgets(
     editor: MonacoEditor.editor.IStandaloneCodeEditor, 
@@ -94,35 +101,39 @@ function clearWidgets(
 }
 
 /**
- * Render conflicts in ONE of the read-only top Monaco editors.
- * Applies line highlighting, and inserts the widget IF the block hasn't been accepted yet.
- * RETURNS: An array of the new decoration string IDs so the parent can track them.
+ * This function will render the conflict blocks. It seperates them into decoration blocks, and inserts a widget above them.
+ * @param editor monaco editor instance
+ * @param model text model, handles the look and scrolling
+ * @param monaco monaco
+ * @param blocks a collection of actual conflict blocks inside of the editor
+ * @param side string used for widgets, just represents current/incoming
+ * @param oldDecorationIds previous decoration ids, used by monoco to update their decorations
+ * @param widgets collection of widgets rendered on the editor
+ * @param zoneIds collection of zoneIds, corresponding to the different blocks
+ * @param acceptFunc what to do when the widget is clicked (updates the result)
+ * @returns The new deocration ids, which will be reused on rerenders
  */
 export function renderSideConflicts(
     editor: MonacoEditor.editor.IStandaloneCodeEditor, 
-    model: MonacoEditor.editor.ITextModel, // NEW: Takes the model directly
+    model: MonacoEditor.editor.ITextModel,
     monaco: Monaco, 
     blocks: SideConflictBlock[], 
     side: "current" | "incoming",
-    oldDecorationIds: string[], // NEW: Takes old string IDs instead of a collection
+    oldDecorationIds: string[],
     widgets: Map<string, MonacoEditor.editor.IContentWidget>,
     zoneIds: Map<string, string>,
     acceptFunc: (block: SideConflictBlock) => void
-): string[] { // NEW: Returns the new string IDs
-    // 1. Clear old widgets and zones
+): string[] {
     clearWidgets(editor, widgets, zoneIds);
-    
     const newDecorationsList: MonacoEditor.editor.IModelDeltaDecoration[] = [];
 
     for (const block of blocks) {
-        // Only render the Widget/Button if it hasn't been transferred to the bottom yet
         if (!block.isResolved) {
             const [widget, zoneId] = insertSideWidget(block, side, monaco, editor, acceptFunc);
             widgets.set(block.id, widget);
             zoneIds.set(block.id, zoneId);
         }
 
-        // ALWAYS render the background highlighting so the user can see what the conflict was
         if (block.start !== block.end){
             newDecorationsList.push({
                 range: new monaco.Range(block.start, 1, block.end, 1),
@@ -136,10 +147,19 @@ export function renderSideConflicts(
         }
     }
 
-    // 2. Apply to the Model and return the new tracking IDs
     return model.deltaDecorations(oldDecorationIds, newDecorationsList);
 }
 
+/**
+ * Inserts the reverse changes widget in the result editor. 
+ * It makes the widget then returns the widget and id to be inserted
+ * @param editor monaco window instance
+ * @param monaco monaco
+ * @param conflictId Id of the deocration this refers to
+ * @param lineNumber line number the widget correlates to
+ * @param handleReverseFunc reverse function on click
+ * @returns the widget and zone id to be used for insertion
+ */
 export function insertReverseWidget(
     editor: MonacoEditor.editor.IStandaloneCodeEditor,
     monaco: Monaco,

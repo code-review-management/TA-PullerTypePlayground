@@ -8,6 +8,16 @@ export interface SyncAnchor {
     resultLine: number;
 }
 
+/**
+ * Generates anchors which are used to interpolate for synced scrolling
+ * @param conflicts the parsed conflicts, to be used as a fallback and for current/incoming editor
+ * @param resultModel the result model, used because content is written into
+ * @param resultDecorations the result decorations, for the blocks
+ * @param currentMaxLine the total line count for current
+ * @param incomingMaxLine the total line count for incoming
+ * @param resultMaxLine the total line count for result
+ * @returns A list of anchors, which are used as signifiers when sync scrolling (basically a sign saying "block border here")
+ */
 export const generateAnchors = (
     conflicts: ParsedConflict[], 
     resultModel: MonacoEditor.editor.ITextModel,
@@ -45,6 +55,11 @@ export const generateAnchors = (
     return anchors;
 };
 
+/**
+ * This calls generate anchors, but instead uses the cache and extracts the data from that
+ * @param cache editor cache, it has a ton of data about each editor state
+ * @returns returns sync anchors used for scroll interpolation
+ */
 export const refreshAnchors = (cache: FileWorkspaceState) => {
     if (!cache) return;
 
@@ -62,22 +77,35 @@ export const refreshAnchors = (cache: FileWorkspaceState) => {
     );
 };
 
+/**
+ * A function when the scroll changes to look at the current zone and the anchors surrounding it.
+ * It then moves to equalize the anchor to anchor positioning
+ * @param sourceEditor editor that got scrolled on
+ * @param targetEditor1 one editor (doesn't matter which)
+ * @param targetEditor2 other editor
+ * @param getAnchors A function to get the anchors, it is done as a function to get the most up to date one
+ * @param sourceKey Key to be used to signify if this is current/incoming/result
+ * @param target1Key Key to be used to signify if this is current/incoming/result
+ * @param target2Key Key to be used to signify if this is current/incoming/result
+ * @param syncState Buffer value used to make it not an infinite loop of one update triggering another
+ * @returns The actual function to be called when scroll changes
+ */
 export const bindInterpolatedScroll = (
     sourceEditor: MonacoEditor.editor.IStandaloneCodeEditor,
     targetEditor1: MonacoEditor.editor.IStandaloneCodeEditor,
     targetEditor2: MonacoEditor.editor.IStandaloneCodeEditor,
-    getAnchors: () => SyncAnchor[], // Pass as a function so it always gets the latest array
+    getAnchors: () => SyncAnchor[],
     sourceKey: keyof SyncAnchor,
     target1Key: keyof SyncAnchor,
     target2Key: keyof SyncAnchor,
-    syncState: { isSyncing: boolean } // Shared state object
+    syncState: { isSyncing: boolean }
 ) => {
     return sourceEditor.onDidScrollChange((e: MonacoEditor.IScrollEvent) => {
         if (syncState.isSyncing || !e.scrollTopChanged) return;
         syncState.isSyncing = true;
 
         const sourceY = e.scrollTop;
-        const anchors = getAnchors(); // Grab the live anchors dynamically
+        const anchors = getAnchors();
 
         let i = 0;
         let sourceY1 = 0, sourceY2 = 0;
