@@ -13,17 +13,21 @@ import { MouseEventHandler, ReactNode } from "react";
  *               If this is provided (and onClick is not), the button will use <Link> element.
  * @param variant?: Which style variant of the button to use. Either "primary" or "secondary". defaults to primary
  * @param children: Button inner content.
+ * @param isDisabled?: Whether the button is disabled or not. Only relevant when
+ *                     the underlying HTML element is <button>.
  */
 export default function HeaderButton({
   onClick,
   href,
   variant,
   children,
+  isDisabled,
 }: {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   href?: string;
   variant?: "primary" | "secondary";
   children: ReactNode;
+  isDisabled?: boolean;
 }) {
   const specialtyStyle =
     variant === "secondary" ? styles.secondary : styles.primary;
@@ -33,6 +37,7 @@ export default function HeaderButton({
       <button
         onClick={onClick}
         className={`${styles.headerButton} ${specialtyStyle}`}
+        disabled={isDisabled}
       >
         {children}
       </button>

@@ -1,0 +1,26 @@
+.submit {
+    position: relative;
+    cursor: pointer;
+    padding: var(--spacer-6) var(--spacer-12);
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow-button);
+    font-size: 0.875rem;
+    background-color: var(--color-interactive);
+    color: var(--background-light);
+}
+
+.disabled {
+    cursor: default;
+    background-color: var(--color-disabled);
+}
+
+.loading {
+    visibility: hidden;
+}
+
+.spinner {
+    position: absolute;
+    visibility: visible;
+    right: 0;
+}

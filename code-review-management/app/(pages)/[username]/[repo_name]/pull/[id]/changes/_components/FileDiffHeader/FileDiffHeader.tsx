@@ -27,7 +27,7 @@ export default function FileDiffHeader({
         onClick={() => setIsExpanded((prev) => !prev)}
         data-tooltip-id={`collapse-expand-diff-${oldPath}-${newPath}`}
         data-tooltip-content={isExpanded ? "Collapse" : "Expand"}
-        data-tooltip-place="top"
+        data-tooltip-place="bottom"
         data-tooltip-delay-show={100}
       />
       <span className={styles.filename}>

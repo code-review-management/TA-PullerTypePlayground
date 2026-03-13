@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
@@ -16,13 +17,14 @@ export default function InlineDraftThread({
 }: {
   draft: DraftThreadItem;
 }) {
+  const { data: session } = useSession();
   return (
     <div className={styles.thread}>
       <InlineThreadHeader title={getThreadTitle(draft)} />
       <div className={styles.comment}>
         <InlineCommentEntry
-          avatar={"/mock/octocat.png"}
-          username="octocat"
+          avatar={session?.user.image ?? "/mock/octocat.png"}
+          username={session?.user.githubLogin ?? ""}
           defaultEditable={true}
           actions={<DraftEditorActions draft={{ type: "thread", payload: draft }} />}
         />

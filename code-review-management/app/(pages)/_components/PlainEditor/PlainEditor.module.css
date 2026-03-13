@@ -1,0 +1,20 @@
+.editable {
+    border: var(--border-normal-width) solid;
+    border-radius: var(--border-radius);
+    padding: var(--spacer-6);
+    font-size: inherit;
+    color: inherit;
+}
+
+.editable:focus-within {
+    outline: var(--border-thick-width) solid var(--color-interactive);
+    border-color: transparent;
+}
+
+.editable:not(:focus-within) {
+    border-color: var(--border-gray);
+}
+
+input.editable {
+    text-overflow: ellipsis;
+}

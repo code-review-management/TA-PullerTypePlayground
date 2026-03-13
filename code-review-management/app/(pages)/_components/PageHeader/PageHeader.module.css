@@ -1,0 +1,29 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--page-header-height);
+
+  background-color: var(--background-light);
+  padding: var(--spacer-12) var(--spacer-48);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacer-48);
+}
+
+.shadow {
+  box-shadow: var(--box-shadow);
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-12);
+}
+
+/* Allow long text on the LHS of the header to shrink below its width and render ellipsis. */
+.group:first-child {
+  min-width: 0;
+}

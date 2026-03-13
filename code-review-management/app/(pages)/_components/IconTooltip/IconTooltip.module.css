@@ -2,5 +2,5 @@
     font-size: var(--font-size-tooltip);
     background-color: var(--tooltip-gray);
     padding: var(--spacer-4) var(--spacer-8);
-    z-index: 20;
+    z-index: 300;
 }

@@ -1,6 +1,7 @@
 import * as z from "zod";
 
 export type User = z.infer<typeof UserSchema>;
+export type UserIdentity = z.infer<typeof UserIdentitySchema>;
 export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
 export type Branch = z.infer<typeof BranchSchema>;
@@ -8,6 +9,20 @@ export type PullRequest = z.infer<typeof PullRequestSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
+export type PRMerge = z.infer<typeof PRMergeSchema>;
+export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
+export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
+export type Review = z.infer<typeof ReviewSchema>;
+
+// Timeline sub-types
+export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
+export type ReviewDismissedEvent = z.infer<typeof ReviewDismissedEventSchema>;
+export type CommentEvent = z.infer<typeof CommentEventSchema>;
+export type CommittedEvent = z.infer<typeof CommittedEventSchema>;
+export type ReviewedEvent = z.infer<typeof ReviewedEventSchema>;
+export type CommitCommentEvent = z.infer<typeof CommitCommentEventSchema>;
+export type AssignIssueEvent = z.infer<typeof AssignIssueEventSchema>;
+export type StateChangeEvent = z.infer<typeof StateChangeEventSchema>;
 
 const issueState = ["open", "closed"] as const;
 const side = ["LEFT", "RIGHT"] as const;
@@ -23,11 +38,22 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
+const reviewState = [
+  "APPROVED",
+  "CHANGES_REQUESTED",
+  "COMMENTED",
+] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
   avatar_url: z.string(),
+});
+
+export const UserIdentitySchema = z.object({
+  date: z.string(),
+  email: z.string(),
+  name: z.string(),
 });
 
 export const RepoSchema = z.object({
@@ -55,6 +81,7 @@ export const BranchSchema = z.object({
   repo: RepoSchema,
 });
 
+// optional fields are not included in list endpoint
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
@@ -77,17 +104,17 @@ export const PullRequestSchema = z.object({
   author_association: z.enum(authorAssociation),
   draft: z.boolean(),
   assignee: UserSchema.nullable(),
-  merged: z.boolean(),
-  mergeable: z.boolean().nullable(),
-  rebaseable: z.boolean().nullable(),
-  mergeable_state: z.string(),
-  merged_by: UserSchema.nullable(),
-  comments: z.number(),
-  review_comments: z.number(),
-  commits: z.number(),
-  additions: z.number(),
-  deletions: z.number(),
-  changed_files: z.number(),
+  merged: z.boolean().optional(),
+  mergeable: z.boolean().nullable().optional(),
+  rebaseable: z.boolean().nullable().optional(),
+  mergeable_state: z.string().optional(),
+  merged_by: UserSchema.nullable().optional(),
+  comments: z.number().optional(),
+  review_comments: z.number().optional(),
+  commits: z.number().optional(),
+  additions: z.number().optional(),
+  deletions: z.number().optional(),
+  changed_files: z.number().optional(),
 });
 
 // Not in use
@@ -149,6 +176,150 @@ export const CommentSchema = z.object({
   original_line: z.number().nullable(),
   side: z.enum(side),
   in_reply_to_id: z.number().nullish(),
-  author_association: z.string(),
+  author_association: z.enum(authorAssociation),
   subject_type: z.enum(subjectType),
 });
+
+export const PRMergeSchema = z.object({
+  sha: z.string(),
+  merged: z.boolean(),
+  message: z.string(),
+});
+
+export const ReviewCommentSchema = z.object({
+  pull_request_review_id: z.number(),
+  id: z.number(),
+  diff_hunk: z.string(),
+  path: z.string(),
+  commit_id: z.string(),
+  original_commit_id: z.string(),
+  user: UserSchema,
+  body: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  reactions: ReactionSchema,
+  in_reply_to_id: z.number().nullish(),
+  author_association: z.enum(authorAssociation),
+  subject_type: z.enum(subjectType).nullish(),
+});
+
+export const ReviewSchema = z.object({
+  id: z.number(),
+  user: UserSchema.nullable(),
+  body: z.string(),
+  state: z.enum(reviewState),
+  submitted_at: z.string().optional(),
+  author_association: z.enum(authorAssociation),
+});
+
+export const CommitCommentSchema = z.object({
+  id: z.number(),
+  body: z.string(),
+  path: z.string().nullable(),
+  line: z.number().nullable(),
+  commit_id: z.string(),
+  user: UserSchema,
+  created_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation),
+  reactions: ReactionSchema,
+});
+
+export const ReviewRequestEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.enum(["review_requested", "review_request_removed"]),
+  created_at: z.string(),
+  review_requester: UserSchema,
+  requested_reviewer: UserSchema,
+});
+
+export const ReviewDismissedEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.literal("review_dismissed"),
+  created_at: z.string(),
+  dismissed_review: z.object({
+    state: z.string(),
+    review_id: z.number(),
+    dismissal_message: z.string().nullable(),
+    dismissal_commit_id: z.string().optional(),
+  }),
+});
+
+export const CommentEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.enum(["commented", "comment_deleted"]),
+  created_at: z.string(),
+  updated_at: z.string(),
+  body: z.string(),
+  user: UserSchema,
+  author_association: z.enum(authorAssociation),
+  reactions: ReactionSchema,
+});
+
+export const CommittedEventSchema = z.object({
+  event: z.literal("committed"),
+  sha: z.string(),
+  url: z.string(),
+  author: UserIdentitySchema,
+  committer: UserIdentitySchema,
+  message: z.string(),
+});
+
+export const LineCommentEventSchema = z.object({
+  event: z.literal("commented"),
+  comments: z.array(CommentSchema),
+});
+
+export const ReviewedEventSchema = z.object({
+  id: z.number(),
+  event: z.literal("reviewed"),
+  user: UserSchema,
+  body: z.string().nullable(),
+  state: z.string(),
+  submitted_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation),
+  comments: z.array(ReviewCommentSchema).optional(),
+});
+
+export const CommitCommentEventSchema = z.object({
+  event: z.literal("commented"),
+  commit_id: z.number(),
+  comments: z.array(CommitCommentSchema),
+});
+
+export const AssignIssueEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.enum(["assigned", "unassigned"]),
+  created_at: z.string(),
+  assignee: UserSchema,
+});
+
+export const StateChangeEventSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+  actor: UserSchema,
+  event: z.enum(["closed", "merged", "reopened"]),
+  created_at: z.string(),
+  state_reason: z.string().nullish(),
+});
+
+export const TimelineEventSchema = z
+  .union([
+    ReviewRequestEventSchema, // event: review_requested, review_request_removed
+    ReviewDismissedEventSchema, // event: review_dismissed
+    CommentEventSchema, // event: commented, comment_deleted
+    CommittedEventSchema, // event: committed
+    ReviewedEventSchema, // event: reviewed
+    AssignIssueEventSchema, // event: assigned, unassigned
+    StateChangeEventSchema, // event: closed, merged, reopened
+  ])
+  .nullable();

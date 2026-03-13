@@ -1,9 +1,11 @@
 .headerButton {
-  padding: 10px 16px;
-  border-radius: 100px;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
   color: var(--text-primary);
+  white-space: nowrap;
+  font-size: 0.9375rem;
 }
 
 .secondary {
@@ -15,4 +17,8 @@
   background-color: var(--color-success);
   border: none;
   color: var(--background-light);
+}
+
+.headerButton:disabled {
+  background-color: var(--color-disabled);
 }
