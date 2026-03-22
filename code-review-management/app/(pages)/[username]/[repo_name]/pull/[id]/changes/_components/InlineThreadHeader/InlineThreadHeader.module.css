@@ -1,4 +1,7 @@
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: var(--spacer-10) var(--spacer-12);
     border-bottom: var(--border-normal-width) solid var(--border-gray);
     font-weight: 450;
