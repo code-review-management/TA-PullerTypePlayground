@@ -1,5 +1,7 @@
 import { useSession } from "next-auth/react";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
+import { deleteDraftThread } from "../../_utils/comment-utils";
 import CancelButton from "@components/CancelButton/CancelButton";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
@@ -19,11 +21,18 @@ export default function InlineDraftThread({
   draft: DraftThreadItem;
 }) {
   const { data: session } = useSession();
+  const { setDraftThreads } = useDraftThreadsContext();
+
   return (
     <div className={styles.thread}>
       <InlineThreadHeader
         title={getThreadTitle(draft)}
-        actions={<CancelButton />}
+        actions={
+          // TODO: Address highlighted lines.
+          <CancelButton
+            onClick={() => deleteDraftThread(draft, setDraftThreads)}
+          />
+        }
       />
       <div className={styles.comment}>
         <InlineCommentEntry

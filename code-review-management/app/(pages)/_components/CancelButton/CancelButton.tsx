@@ -7,15 +7,18 @@ import styles from "./CancelButton.module.css";
 /**
  * Cancel button that renders an "x" icon.
  *
+ * @param onClick: Function executed on button click.
  * @param tooltipContent: Tooltip message shown when hovering over the button.
  *                        Defaults to "Discard".
  * @param tooltipPlace: Location of the tooltip with respect to the cancel
  *                      button. Defaults to the left-side.
  */
 export default function CancelButton({
+  onClick,
   tooltipContent = "Discard",
   tooltipPlace = "left",
 }: {
+  onClick: () => void;
   tooltipContent?: string;
   tooltipPlace?: PlacesType;
 }) {
@@ -23,6 +26,7 @@ export default function CancelButton({
     <div>
       <button
         className={styles.cancel}
+        onClick={onClick}
         data-tooltip-id="cancel"
         data-tooltip-content={tooltipContent}
         data-tooltip-place={tooltipPlace}
