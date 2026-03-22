@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
+import CancelButton from "@components/CancelButton/CancelButton";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
@@ -20,7 +21,10 @@ export default function InlineDraftThread({
   const { data: session } = useSession();
   return (
     <div className={styles.thread}>
-      <InlineThreadHeader title={getThreadTitle(draft)} />
+      <InlineThreadHeader
+        title={getThreadTitle(draft)}
+        actions={<CancelButton />}
+      />
       <div className={styles.comment}>
         <InlineCommentEntry
           avatar={session?.user.image ?? "/mock/octocat.png"}
