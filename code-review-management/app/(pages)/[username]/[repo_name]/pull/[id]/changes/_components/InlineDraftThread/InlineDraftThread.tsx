@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useClearHighlightContext } from "../../_contexts/ClearHighlightContext";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import { deleteDraftThread } from "../../_utils/comment-utils";
@@ -22,17 +23,23 @@ export default function InlineDraftThread({
 }) {
   const { data: session } = useSession();
   const { setDraftThreads } = useDraftThreadsContext();
+  const { clearHighlight } = useClearHighlightContext();
+
+  const handleCancel = () => {
+    deleteDraftThread(draft, setDraftThreads);
+    // Clear highlight if it is currently associated with the draft to be deleted.
+    clearHighlight({
+      start: draft.start,
+      end: draft.end,
+      side: draft.side,
+    });
+  };
 
   return (
     <div className={styles.thread}>
       <InlineThreadHeader
         title={getThreadTitle(draft)}
-        actions={
-          // TODO: Address highlighted lines.
-          <CancelButton
-            onClick={() => deleteDraftThread(draft, setDraftThreads)}
-          />
-        }
+        actions={<CancelButton onClick={handleCancel} />}
       />
       <div className={styles.comment}>
         <InlineCommentEntry

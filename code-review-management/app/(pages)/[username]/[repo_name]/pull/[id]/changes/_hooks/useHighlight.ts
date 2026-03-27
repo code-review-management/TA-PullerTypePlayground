@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { DiffProps } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 import {
+  clearHighlightIfMatch,
   highlightOnMouseDown,
   highlightOnMouseEnter,
   highlightOnMouseUp,
@@ -12,6 +13,12 @@ export interface ActiveHighlight {
   isHighlighting: boolean;
   start: number | null; // Number of the first line clicked to begin highlight.
   end: number | null; // Number of the last line entered before ending highlight.
+  side: Side | null;
+}
+
+export interface ClearHighlightProps {
+  start: number | null;
+  end: number | null;
   side: Side | null;
 }
 
@@ -69,6 +76,15 @@ export function useHighlight(
     },
   };
 
+  const clearHighlight = ({ start, end, side }: ClearHighlightProps) =>
+    clearHighlightIfMatch(
+      start,
+      end,
+      side,
+      activeHighlightRef,
+      setActiveHighlightSync,
+    );
+
   /**
    * Registers an event listener to stop highlighting when the user's mouse is
    * released. This is registered as a document listener – NOT as a gutter event
@@ -93,5 +109,5 @@ export function useHighlight(
     };
   }, [filename, setDraftThreads]);
 
-  return { activeHighlight, highlightEvents };
+  return { activeHighlight, highlightEvents, clearHighlight };
 }
