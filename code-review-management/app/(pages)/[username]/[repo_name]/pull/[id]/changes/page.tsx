@@ -58,9 +58,9 @@ export default function Changes() {
           <PRChangesHeader pull={pull} />
           <div className={styles.changes}>
             <FileTree fileTree={fileTree} />
-            {/* Use non-null assertion since threads are defined if not in pending/error state */}
             <DiffListView
               flatFileTree={flatFileTree}
+              // Use non-null assertion since threads are defined if not in pending/error state.
               publishedThreads={publishedThreads!}
             />
           </div>
