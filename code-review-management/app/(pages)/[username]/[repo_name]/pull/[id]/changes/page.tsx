@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { PullParams } from "@/types/routing.types";
@@ -7,6 +8,7 @@ import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
+import { buildFileTree } from "./_utils/filetree-utils";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
@@ -36,6 +38,8 @@ export default function Changes() {
     isError: isFilesError,
   } = useListFilesQuery(username, repo_name, id);
 
+  const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
+
   /**
    * TODO: Replace with proper loading/error UI. Move to affected sections
    * instead of returning at the page-level.
@@ -52,7 +56,7 @@ export default function Changes() {
         <div className={styles.page}>
           <PRChangesHeader pull={pull} />
           <div className={styles.changes}>
-            <FileTree files={files} />
+            <FileTree fileTree={fileTree} />
             {/* Use non-null assertion since threads are defined if not in pending/error state */}
             <DiffListView publishedThreads={publishedThreads!} />
           </div>
