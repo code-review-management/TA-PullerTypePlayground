@@ -1,10 +1,12 @@
 import { useSession } from "next-auth/react";
 import { useClearHighlightContext } from "../../_contexts/ClearHighlightContext";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
+import { getCreateReviewCommentMutationKey } from "@/lib/api/mutations/useCreateReviewCommentMutation";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import { deleteDraftThread } from "../../_utils/comment-utils";
 import CancelButton from "@components/CancelButton/CancelButton";
-import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
+import DraftEditorActions, { DraftItem } from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
@@ -35,18 +37,23 @@ export default function InlineDraftThread({
     });
   };
 
+  const draftItem: DraftItem = { type: "thread", payload: draft };
+  const isSubmitPending = useMutationInFlight({
+    mutationKey: getCreateReviewCommentMutationKey(draftItem),
+  });
+
   return (
     <div className={styles.thread}>
       <InlineThreadHeader
         title={getThreadTitle(draft)}
-        actions={<CancelButton onClick={handleCancel} />}
+        actions={!isSubmitPending && <CancelButton onClick={handleCancel} />}
       />
       <div className={styles.comment}>
         <InlineCommentEntry
           avatar={session?.user.image ?? "/mock/octocat.png"}
           username={session?.user.githubLogin ?? ""}
           defaultEditable={true}
-          actions={<DraftEditorActions draft={{ type: "thread", payload: draft }} />}
+          actions={<DraftEditorActions draft={draftItem} />}
         />
       </div>
     </div>

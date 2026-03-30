@@ -27,7 +27,7 @@ export function useSubmitDraftItem(
     mutate,
     isPending: isSubmitPending,
     isError: isSubmitError,
-  } = useCreateReviewCommentMutation(owner, repo, pullNumber);
+  } = useCreateReviewCommentMutation(owner, repo, pullNumber, draft);
 
   const submitThread = (
     draft: Extract<DraftItem, { type: "thread" }>,
