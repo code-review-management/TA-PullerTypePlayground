@@ -9,13 +9,13 @@ import styles from "./CancelButton.module.css";
  *
  * @param onClick: Function executed on button click.
  * @param tooltipContent: Tooltip message shown when hovering over the button.
- *                        Defaults to "Discard".
+ *                        Defaults to "Cancel".
  * @param tooltipPlace: Location of the tooltip with respect to the cancel
  *                      button. Defaults to the left-side.
  */
 export default function CancelButton({
   onClick,
-  tooltipContent = "Discard",
+  tooltipContent = "Cancel",
   tooltipPlace = "left",
 }: {
   onClick: () => void;
