@@ -6,7 +6,7 @@ import styles from "./InlineThreadHeader.module.css";
  * display which lines and side that the thread is anchored to.
  *
  * @param title: Text to display on the header.
- * @param actions: Action components to display on the right-end of the header.
+ * @param actions: Action components to display on the right-side of the header.
  */
 export default function InlineThreadHeader({
   title,
