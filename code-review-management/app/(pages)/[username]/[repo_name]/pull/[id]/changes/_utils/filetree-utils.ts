@@ -85,11 +85,32 @@ class PrefixTrie {
 /**
  * Builds a prefix trie from each file's name, then traverses it to produce a
  * data structure that resembles their file path hierarchy.
- * 
+ *
  * @param fileDiffs: List of `FileDiff` objects for each of the pull request files.
  */
 export function buildFileTree(fileDiffs: FileDiff[]) {
   const trie = new PrefixTrie();
   fileDiffs.forEach((fileDiff) => trie.insert(fileDiff));
   return trie.traverse(trie.root);
+}
+
+/**
+ * Flattens the file tree into an array of `FileDiff`s, which correspond to the
+ * same order of the files in the tree.
+ *
+ * @param fileTree: Array of `FileTreeNode`s representing the file tree data
+ *                  structure.
+ */
+export function flattenFileTree(fileTree: FileTreeNode[]) {
+  const flattened: FileDiff[] = [];
+
+  fileTree.forEach((node) => {
+    if (node.type === "directory") {
+      flattened.push(...flattenFileTree(node.children));
+    } else {
+      flattened.push(node.fileDiff);
+    }
+  });
+
+  return flattened;
 }

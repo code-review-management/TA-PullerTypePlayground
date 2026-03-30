@@ -8,7 +8,7 @@ import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
-import { buildFileTree } from "./_utils/filetree-utils";
+import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
@@ -39,6 +39,7 @@ export default function Changes() {
   } = useListFilesQuery(username, repo_name, id);
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
+  const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);
 
   /**
    * TODO: Replace with proper loading/error UI. Move to affected sections
@@ -58,7 +59,10 @@ export default function Changes() {
           <div className={styles.changes}>
             <FileTree fileTree={fileTree} />
             {/* Use non-null assertion since threads are defined if not in pending/error state */}
-            <DiffListView publishedThreads={publishedThreads!} />
+            <DiffListView
+              flatFileTree={flatFileTree}
+              publishedThreads={publishedThreads!}
+            />
           </div>
         </div>
       </DraftThreadsContext>

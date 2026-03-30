@@ -2,6 +2,7 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
@@ -10,8 +11,10 @@ import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
+  flatFileTree,
   publishedThreads,
 }: {
+  flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
@@ -29,6 +32,8 @@ export default function DiffListView({
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) return <div>Failed to load diffs.</div>;
+
+  console.log(flatFileTree);
 
   return (
     <div className={styles.diffListView}>
