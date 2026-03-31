@@ -29,7 +29,7 @@ export default function DiffListView({
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
     orderParsedDiffs(parsedDiffs, flatFileTree);
-    return parsedDiffs;
+    return parsedDiffs.map((diff, index) => ({ diff, fileMeta: flatFileTree[index] }));
   }, [diffString, flatFileTree]);
 
   // TODO: Replace with proper loading/error UI.
@@ -38,7 +38,7 @@ export default function DiffListView({
 
   return (
     <div className={styles.diffListView}>
-      {diffs.map((diff) => {
+      {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
 
@@ -46,6 +46,7 @@ export default function DiffListView({
           <div key={diffId}>
             <IconTooltip id={`collapse-expand-diff-${diffId}`} />
             <FileDiffView
+              fileMeta={fileMeta}
               oldPath={diff.oldPath}
               newPath={diff.newPath}
               diffType={diff.type}
