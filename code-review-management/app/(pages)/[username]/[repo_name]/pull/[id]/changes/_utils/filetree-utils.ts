@@ -97,7 +97,7 @@ export function buildFileTree(fileDiffs: FileDiff[]) {
 }
 
 /**
- * Flattens a file tree into an array of `FileDiff`s. Preserves the order of the
+ * Flattens a file tree into an array of `FileDiff`s. Preserves the order of
  * files as they appear in the tree.
  *
  * @param fileTree: Array of `FileTreeNode`s to flatten.
@@ -118,8 +118,8 @@ export function flattenFileTree(fileTree: FileTreeNode[]) {
 }
 
 /**
- * Sorts an array of parsed-diffs to match the order of files in the flat file
- * tree.
+ * Sorts an array of diffs parsed by react-diff-view to match the order of files
+ * in the flat file tree.
  *
  * @param diffs: Diffs parsed by react-diff-view.
  * @param flatFileTree: Flattened file tree that defines the ordering.
