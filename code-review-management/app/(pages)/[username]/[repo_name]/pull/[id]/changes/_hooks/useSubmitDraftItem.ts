@@ -38,7 +38,7 @@ export function useSubmitDraftItem(
       {
         body: editorContent,
         commit_id: pull.head.sha,
-        path: draft.payload.filename,
+        path: draft.payload.activePath,
         start_side: side,
         side,
         start_line: draft.payload.start,
