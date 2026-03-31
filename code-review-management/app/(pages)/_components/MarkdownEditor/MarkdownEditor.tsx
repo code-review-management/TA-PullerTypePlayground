@@ -23,6 +23,7 @@ import "./TiptapEditor.css";
  * @param actions: Action buttons to render below the editor content when it is
  *                 editable (e.g., publish or cancel buttons).
  * @param autofocus: A FocusPosition to automatically focus on initial render. Defaults to "end" if not provided.
+ * @param placeholder: Optional placeholder text
  * @param onChange: Function to execute everytime the editor's content is updated.
  */
 export default function MarkdownEditor({
