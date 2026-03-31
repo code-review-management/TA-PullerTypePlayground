@@ -5,6 +5,7 @@ import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import { getPublishedThreadsByLine } from "../../_utils/comment-utils";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
@@ -41,6 +42,12 @@ export default function DiffListView({
       {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
+        const publishedThreadsByLine = getPublishedThreadsByLine(
+          publishedThreads,
+          diff.oldPath,
+          activePath,
+          fileMeta.status,
+        );
 
         return (
           <div key={diffId}>
@@ -52,10 +59,7 @@ export default function DiffListView({
               diffType={diff.type}
               viewType="split"
               hunks={diff.hunks}
-              // When there are no published threads mapped to a file, pass an empty map.
-              publishedThreadsByLine={
-                publishedThreads.get(activePath) ?? new Map()
-              }
+              publishedThreadsByLine={publishedThreadsByLine}
             />
           </div>
         );
