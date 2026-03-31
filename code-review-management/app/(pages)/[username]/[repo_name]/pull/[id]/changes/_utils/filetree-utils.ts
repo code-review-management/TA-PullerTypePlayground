@@ -95,11 +95,11 @@ export function buildFileTree(fileDiffs: FileDiff[]) {
 }
 
 /**
- * Flattens the file tree into an array of `FileDiff`s, which correspond to the
- * same order of the files in the tree.
+ * Flattens a file tree into an array of `FileDiff`s. Preserves the order of the
+ * files as they appear in the tree.
  *
- * @param fileTree: Array of `FileTreeNode`s representing the file tree data
- *                  structure.
+ * @param fileTree: Array of `FileTreeNode`s to flatten.
+ * @returns: Array of `FileDiff`s in the same order as they appear in the tree.
  */
 export function flattenFileTree(fileTree: FileTreeNode[]) {
   const flattened: FileDiff[] = [];
