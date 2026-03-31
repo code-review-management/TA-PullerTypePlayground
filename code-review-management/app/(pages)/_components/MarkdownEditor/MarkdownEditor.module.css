@@ -19,3 +19,17 @@
 .actions {
     align-self: flex-end;
 }
+
+/* 
+    Placeholder styling: https://tiptap.dev/docs/editor/extensions/functionality/placeholder 
+    Global styles within a module: https://stackoverflow.com/questions/39805537/how-to-apply-global-styles-with-css-modules-in-a-react-app/40065474#40065474
+*/
+.tiptap {
+    :global(p.is-editor-empty:first-child)::before {
+        color: var(--text-secondary);
+        content: attr(data-placeholder);
+        height: 0;
+        pointer-events: none;
+    }
+}
+

@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { useEditor, EditorContent, Editor, FocusPosition } from "@tiptap/react";
+import { Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
@@ -29,12 +30,14 @@ export default function MarkdownEditor({
   defaultContent,
   actions,
   autofocus,
+  placeholder,
   onChange,
 }: {
   defaultEditable: boolean;
   defaultContent?: string;
   actions?: ReactNode;
   autofocus?: FocusPosition;
+  placeholder?: string;
   onChange?: (markdown: string) => void;
 }) {
   const [editable, setEditable] = useState(defaultEditable);
@@ -46,7 +49,15 @@ export default function MarkdownEditor({
   const focusLocation = autofocus === undefined ? "end" : autofocus;
 
   const editor = useEditor({
-    extensions: [StarterKit, Markdown],
+    extensions: [
+      StarterKit,
+      Markdown,
+
+      // Docs: https://tiptap.dev/docs/editor/extensions/functionality/placeholder
+      Placeholder.configure({
+        placeholder
+      }),
+    ],
     editable: defaultEditable,
     content: defaultContent,
     contentType: "markdown",
@@ -89,7 +100,7 @@ export default function MarkdownEditor({
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
       >
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} className={styles.tiptap}/>
         {editable && actions && <div className={styles.actions}>{actions}</div>}
       </div>
     </MarkdownEditorContext>
