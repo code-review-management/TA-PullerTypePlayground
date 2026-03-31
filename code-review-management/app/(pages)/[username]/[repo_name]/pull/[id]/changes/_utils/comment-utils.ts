@@ -6,6 +6,7 @@ import {
   getDraftThreadKey,
 } from "../_hooks/useDraftThreads";
 import {
+  PublishedThreadItem,
   PublishedThreads,
   PublishedThreadsByLine,
 } from "../_hooks/usePublishedThreads";
@@ -62,21 +63,28 @@ export function getPublishedThreadsByLine(
 
   if (fileStatus !== "renamed") return activePathThreads;
 
-  activePathThreads.forEach((value, key) =>
-    merged.set(key, { left: [...value.left], right: [...value.right] }),
-  );
+  for (const [line, thread] of activePathThreads) {
+    merged.set(line, { left: [...thread.left], right: [...thread.right] });
+  }
 
-  oldPathThreads.forEach((value, key) => {
-    const existing = merged.get(key);
+  for (const [line, thread] of oldPathThreads) {
+    const existing = merged.get(line);
     if (existing) {
-      existing.left.push(...value.left);
-      existing.right.push(...value.right);
+      existing.left.push(...thread.left);
+      existing.right.push(...thread.right);
     } else {
-      merged.set(key, { left: [...value.left], right: [...value.right] });
+      merged.set(line, { left: [...thread.left], right: [...thread.right] });
     }
-  });
+  }
+
+  const byCreatedDate = (a: PublishedThreadItem, b: PublishedThreadItem) =>
+    new Date(a.comments[0].created_at).getTime() -
+    new Date(b.comments[0].created_at).getTime();
+
+  for (const threads of merged.values()) {
+    threads.left.sort(byCreatedDate);
+    threads.right.sort(byCreatedDate);
+  }
 
   return merged;
-
-  // TODO: sort based on time.
 }
