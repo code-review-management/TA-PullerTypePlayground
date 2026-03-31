@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { FileDiff } from "@/types/github.types";
 import { buildFileTree, FileTreeNode } from "../../_utils/filetree-utils";
-import FileTreeRow from "../FileTreeRow/FileTreeRow";
+import FileTreeRow from "../FileTreeRow/FileTreeRowRenamed";
 import styles from "./FileTree.module.css";
 
 /**
