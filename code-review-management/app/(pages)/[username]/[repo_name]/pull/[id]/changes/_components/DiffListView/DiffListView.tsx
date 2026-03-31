@@ -27,9 +27,9 @@ export default function DiffListView({
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
-    const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
-    orderParsedDiffs(parsedDiffs, flatFileTree);
-    return parsedDiffs;
+    const parsed = parseDiff(diffString, { nearbySequences: "zip" });
+    orderParsedDiffs(parsed, flatFileTree);
+    return parsed;
   }, [diffString, flatFileTree]);
 
   // TODO: Replace with proper loading/error UI.
@@ -52,7 +52,9 @@ export default function DiffListView({
               viewType="split"
               hunks={diff.hunks}
               // When there are no published threads mapped to a file, pass an empty map.
-              publishedThreadsByLine={publishedThreads.get(activePath) ?? new Map()}
+              publishedThreadsByLine={
+                publishedThreads.get(activePath) ?? new Map()
+              }
             />
           </div>
         );
