@@ -27,9 +27,9 @@ export default function DiffListView({
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
-    const parsed = parseDiff(diffString, { nearbySequences: "zip" });
-    orderParsedDiffs(parsed, flatFileTree);
-    return parsed;
+    const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
+    orderParsedDiffs(parsedDiffs, flatFileTree);
+    return parsedDiffs;
   }, [diffString, flatFileTree]);
 
   // TODO: Replace with proper loading/error UI.
