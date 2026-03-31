@@ -3,15 +3,6 @@
     gap: var(--spacer-12);
 }
 
-.avatar {
-    height: 22px;
-    width: 22px;
-    min-width: 22px;
-    border-radius: 32px;
-    position: relative;
-    overflow: hidden;
-}
-
 .content {
     display: flex;
     flex-direction: column;

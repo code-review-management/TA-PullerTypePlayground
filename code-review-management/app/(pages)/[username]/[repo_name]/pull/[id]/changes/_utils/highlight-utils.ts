@@ -147,3 +147,36 @@ export function highlightOnMouseUp(
     };
   });
 }
+
+/**
+ * Clear the highlight if it exists at the given start line, end line, and side
+ * of the diff.
+ *
+ * @param start: Start line of highlight.
+ * @param end: End line of highlight.
+ * @param side: Diff side of highlight.
+ * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
+ */
+export function clearHighlightIfMatch(
+  start: number | null,
+  end: number | null,
+  side: Side | null,
+  activeHighlightRef: RefObject<ActiveHighlight>,
+  setActiveHighlightSync: (data: ActiveHighlight) => void,
+) {
+  const activeHighlight = activeHighlightRef.current;
+
+  if (
+    activeHighlight.start === start &&
+    activeHighlight.end === end &&
+    activeHighlight.side === side
+  ) {
+    setActiveHighlightSync({
+      isHighlighting: false,
+      start: null,
+      end: null,
+      side: null,
+    });
+  }
+}

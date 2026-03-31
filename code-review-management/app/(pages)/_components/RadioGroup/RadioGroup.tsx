@@ -1,10 +1,12 @@
 import { ReactNode } from "react";
+import IconTooltip from "../IconTooltip/IconTooltip";
 import styles from "./RadioGroup.module.css";
 
 export interface RadioOption<T extends string> {
   value: T;
   label: ReactNode;
   disabled?: boolean;
+  tooltip?: string;
 }
 
 /**
@@ -28,8 +30,16 @@ export default function RadioGroup<T extends string>({
 }) {
   return (
     <div className={styles.radioGroup}>
-      {options.map(({ value, label, disabled }) => (
-        <label key={value}>
+      {options.map(({ value, label, disabled, tooltip }) => (
+        <label
+          key={value}
+          {...(tooltip && {
+            "data-tooltip-id": "radio-group",
+            "data-tooltip-content": tooltip,
+            "data-tooltip-place": "bottom-start",
+            "data-tooltip-delay-show": 100,
+          })}
+        >
           <input
             type="radio"
             name={name}
@@ -42,6 +52,7 @@ export default function RadioGroup<T extends string>({
           {label}
         </label>
       ))}
+      <IconTooltip id="radio-group" />
     </div>
   );
 }

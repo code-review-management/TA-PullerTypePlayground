@@ -1,4 +1,5 @@
 .submit {
+    position: relative;
     cursor: pointer;
     padding: var(--spacer-6) var(--spacer-12);
     border: none;
@@ -12,4 +13,14 @@
 .disabled {
     cursor: default;
     background-color: var(--color-disabled);
+}
+
+.loading {
+    visibility: hidden;
+}
+
+.spinner {
+    position: absolute;
+    visibility: visible;
+    right: 0;
 }

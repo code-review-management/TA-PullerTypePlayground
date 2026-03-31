@@ -1,7 +1,8 @@
+import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
-import Image from "next/image";
+import UserIcon from "@components/UserIcon/UserIcon";
 import styles from "./InlineDraftReplyTrigger.module.css";
 
 /**
@@ -14,6 +15,7 @@ export default function InlineDraftReplyTrigger({
 }: {
   thread: PublishedThreadItem;
 }) {
+  const { data: session } = useSession();
   const { setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
 
@@ -30,10 +32,11 @@ export default function InlineDraftReplyTrigger({
 
   return (
     <div className={styles.container}>
-      <div className={styles.avatar}>
-        {/* TODO: Replace with authenticated user. */}
-        <Image src={"/mock/octocat.png"} alt={`@octocat`} fill />
-      </div>
+      <UserIcon
+        avatarUrl={session?.user.image ?? "/mock/octocat.png"}
+        username={session?.user.githubLogin ?? ""}
+        size={22}
+      />
       <button className={styles.trigger} onClick={handleCreateDraftReply}>
         Reply
       </button>
