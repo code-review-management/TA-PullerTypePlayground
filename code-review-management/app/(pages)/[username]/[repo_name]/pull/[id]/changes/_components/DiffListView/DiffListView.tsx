@@ -6,6 +6,7 @@ import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
+import { orderParsedDiffs } from "../../_utils/filetree-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
@@ -26,14 +27,14 @@ export default function DiffListView({
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
-    return parseDiff(diffString, { nearbySequences: "zip" });
-  }, [diffString]);
+    const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
+    orderParsedDiffs(parsedDiffs, flatFileTree);
+    return parsedDiffs;
+  }, [diffString, flatFileTree]);
 
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) return <div>Failed to load diffs.</div>;
-
-  console.log(flatFileTree);
 
   return (
     <div className={styles.diffListView}>

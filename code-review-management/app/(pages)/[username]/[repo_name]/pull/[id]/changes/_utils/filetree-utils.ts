@@ -1,4 +1,6 @@
+import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
+import { getActivePath } from "./diff-utils";
 
 type Segment = string; // A single component of a file path between the "/" separators
 
@@ -113,4 +115,25 @@ export function flattenFileTree(fileTree: FileTreeNode[]) {
   });
 
   return flattened;
+}
+
+/**
+ * Sorts an array of parsed-diffs to match the order of files in the flat file
+ * tree.
+ *
+ * @param diffs: Diffs parsed by react-diff-view.
+ * @param flatFileTree: Flattened file tree that defines the ordering.
+ */
+export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
+  diffs.sort((a, b) => {
+    const pathA = getActivePath(a.type, a.oldPath, a.newPath);
+    const pathB = getActivePath(b.type, b.oldPath, b.newPath);
+
+    const indexA = flatFileTree.findIndex((node) => node.filename === pathA);
+    const indexB = flatFileTree.findIndex((node) => node.filename === pathB);
+
+    // If `a` appears before `b` in `flatFileTree`, return a negative value to
+    // indicate that `a` is less than `b`.
+    return indexA - indexB;
+  });
 }
