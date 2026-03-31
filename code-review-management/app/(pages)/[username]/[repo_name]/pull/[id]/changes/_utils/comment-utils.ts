@@ -5,6 +5,10 @@ import {
   DraftThreads,
   getDraftThreadKey,
 } from "../_hooks/useDraftThreads";
+import {
+  PublishedThreads,
+  PublishedThreadsByLine,
+} from "../_hooks/usePublishedThreads";
 
 /**
  * Deletes the given draft thread from the state.
@@ -42,4 +46,37 @@ export function getDraftThreadFilePath(
   side: Side,
 ) {
   return fileStatus === "renamed" && side === "old" ? oldPath : activePath;
+}
+
+export function getPublishedThreadsByLine(
+  publishedThreads: PublishedThreads,
+  oldPath: string,
+  activePath: string,
+  fileStatus: string,
+) {
+  const activePathThreads: PublishedThreadsByLine =
+    publishedThreads.get(activePath) ?? new Map();
+  const oldPathThreads: PublishedThreadsByLine =
+    publishedThreads.get(oldPath) ?? new Map();
+  const merged: PublishedThreadsByLine = new Map();
+
+  if (fileStatus !== "renamed") return activePathThreads;
+
+  activePathThreads.forEach((value, key) =>
+    merged.set(key, { left: [...value.left], right: [...value.right] }),
+  );
+
+  oldPathThreads.forEach((value, key) => {
+    const existing = merged.get(key);
+    if (existing) {
+      existing.left.push(...value.left);
+      existing.right.push(...value.right);
+    } else {
+      merged.set(key, { left: [...value.left], right: [...value.right] });
+    }
+  });
+
+  return merged;
+
+  // TODO: sort based on time.
 }
