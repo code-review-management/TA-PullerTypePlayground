@@ -5,7 +5,7 @@ import styles from "./FileTree.module.css";
 /**
  * Tree of pull request files.
  *
- * @param fileTree: Array of `FileTreeNode`s representing the file tree data
+ * @param fileTree: Array of `FileTreeNode`s representing an ordered file tree
  *                  structure.
  */
 export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
