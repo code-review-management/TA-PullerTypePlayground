@@ -1,16 +1,14 @@
-import { useMemo } from "react";
-import { FileDiff } from "@/types/github.types";
-import { buildFileTree, FileTreeNode } from "../../_utils/filetree-utils";
+import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileTreeRow from "../FileTreeRow/FileTreeRowRenamed";
 import styles from "./FileTree.module.css";
 
 /**
  * Tree of pull request files.
- * 
- * @param files: List of `FileDiff` objects for each of the pull request files.
+ *
+ * @param fileTree: Array of `FileTreeNode`s representing an ordered file tree
+ *                  structure.
  */
-export default function FileTree({ files }: { files: FileDiff[] }) {
-  const fileTree = useMemo(() => buildFileTree(files), [files]);
+export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
   return (
     <div className={styles.tree}>
       {fileTree.map((node: FileTreeNode) => (

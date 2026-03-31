@@ -1,4 +1,6 @@
+import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
+import { getActivePath } from "./diff-utils";
 
 type Segment = string; // A single component of a file path between the "/" separators
 
@@ -85,11 +87,53 @@ class PrefixTrie {
 /**
  * Builds a prefix trie from each file's name, then traverses it to produce a
  * data structure that resembles their file path hierarchy.
- * 
+ *
  * @param fileDiffs: List of `FileDiff` objects for each of the pull request files.
  */
 export function buildFileTree(fileDiffs: FileDiff[]) {
   const trie = new PrefixTrie();
   fileDiffs.forEach((fileDiff) => trie.insert(fileDiff));
   return trie.traverse(trie.root);
+}
+
+/**
+ * Flattens a file tree into an array of `FileDiff`s. Preserves the order of the
+ * files as they appear in the tree.
+ *
+ * @param fileTree: Array of `FileTreeNode`s to flatten.
+ * @returns: Array of `FileDiff`s in the same order as they appear in the tree.
+ */
+export function flattenFileTree(fileTree: FileTreeNode[]) {
+  const flattened: FileDiff[] = [];
+
+  fileTree.forEach((node) => {
+    if (node.type === "directory") {
+      flattened.push(...flattenFileTree(node.children));
+    } else {
+      flattened.push(node.fileDiff);
+    }
+  });
+
+  return flattened;
+}
+
+/**
+ * Sorts an array of parsed-diffs to match the order of files in the flat file
+ * tree.
+ *
+ * @param diffs: Diffs parsed by react-diff-view.
+ * @param flatFileTree: Flattened file tree that defines the ordering.
+ */
+export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
+  diffs.sort((a, b) => {
+    const pathA = getActivePath(a.type, a.oldPath, a.newPath);
+    const pathB = getActivePath(b.type, b.oldPath, b.newPath);
+
+    const indexA = flatFileTree.findIndex((node) => node.filename === pathA);
+    const indexB = flatFileTree.findIndex((node) => node.filename === pathB);
+
+    // If `a` appears before `b` in `flatFileTree`, return a negative value to
+    // indicate that `a` is less than `b`.
+    return indexA - indexB;
+  });
 }
