@@ -46,6 +46,7 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
           avatarUrl={pull.user?.avatar_url ?? "/mock/octocat.png"}
           username={pull.user?.login ?? "octocat"}
           size={40}
+          showTooltip
         />
       </td>
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
@@ -85,6 +86,7 @@ function UserIconList({ users }: { users: User[] }) {
             avatarUrl={reviewer.avatar_url}
             username={reviewer.login}
             size={32}
+            showTooltip
           />
         </div>
       ))}

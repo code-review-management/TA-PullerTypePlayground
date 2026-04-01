@@ -12,19 +12,23 @@ export default function UserIcon({
   avatarUrl,
   username,
   size,
+  showTooltip,
 }: {
   avatarUrl: string;
   username: string;
   size: number;
+  showTooltip?: boolean;
 }) {
   return (
     <a href={`https://github.com/${username}`}>
       <div
         className={styles.userIcon}
         style={{ height: size, width: size }}
-        data-tooltip-id="user-icon-tooltip"
-        data-tooltip-content={username}
-        data-tooltip-delay-show={100}
+        {...(showTooltip && {
+          "data-tooltip-id": "user-icon-tooltip",
+          "data-tooltip-content": username,
+          "data-tooltip-delay-show": 100,
+        })}
       >
         <Image
           className={styles.iconImage}
