@@ -30,7 +30,11 @@ export default function DiffListView({
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
     orderParsedDiffs(parsedDiffs, flatFileTree);
-    return parsedDiffs.map((diff, index) => ({ diff, fileMeta: flatFileTree[index] }));
+    // Ordered `parsedDiffs` array has 1-1 matching with ordered `flatFileTree` array.
+    return parsedDiffs.map((diff, index) => ({
+      diff,
+      fileMeta: flatFileTree[index],
+    }));
   }, [diffString, flatFileTree]);
 
   // TODO: Replace with proper loading/error UI.
