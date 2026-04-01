@@ -100,13 +100,17 @@ export function highlightOnMouseEnter(
  * the user has stopped highlighting. Generates a new draft thread associated
  * with the highlighted lines.
  *
- * @param filename: File associated with this active highlight state.
+ * @param oldPath: Old path of the file associated with this highlight state.
+ * @param activePath: Active path of the file associated with this highlight state.
+ * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
  * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
  * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
  * @param setDraftThreads: State setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
-  filename: string,
+  oldPath: string,
+  activePath: string,
+  fileStatus: string,
   activeHighlightRef: RefObject<ActiveHighlight>,
   setActiveHighlightSync: (data: ActiveHighlight) => void,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
@@ -124,7 +128,7 @@ export function highlightOnMouseUp(
     activeHighlight.start,
     activeHighlight.end,
   );
-  const draftThreadKey = `${filename}:${maxLine}:${activeHighlight.side}`;
+  const draftThreadKey = `${activePath}:${maxLine}:${activeHighlight.side}`;
 
   /**
    * If there is already a draft associated with the max highlighted line on the
@@ -137,11 +141,12 @@ export function highlightOnMouseUp(
     return {
       ...prev,
       [draftThreadKey]: {
-        filename: filename,
+        oldPath: oldPath,
+        activePath: activePath,
+        fileStatus: fileStatus,
         start: minLine,
         end: maxLine,
         side: activeHighlight.side,
-        created: new Date().toISOString(),
         body: "",
       },
     };

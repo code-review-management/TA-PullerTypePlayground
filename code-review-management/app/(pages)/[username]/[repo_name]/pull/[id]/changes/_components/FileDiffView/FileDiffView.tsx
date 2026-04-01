@@ -17,6 +17,7 @@ import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
+import { FileDiff } from "@/types/github.types";
 import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
@@ -32,6 +33,7 @@ import "./ReactDiffView.css";
  */
 
 export default function FileDiffView({
+  fileMeta,
   oldPath,
   newPath,
   diffType,
@@ -39,6 +41,7 @@ export default function FileDiffView({
   hunks,
   publishedThreadsByLine,
 }: {
+  fileMeta: FileDiff;
   oldPath: string;
   newPath: string;
   diffType: FileData["type"];
@@ -49,7 +52,9 @@ export default function FileDiffView({
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
+    oldPath,
     activePath,
+    fileMeta["status"],
     setDraftThreads,
   );
   const [isExpanded, setIsExpanded] = useState(true);

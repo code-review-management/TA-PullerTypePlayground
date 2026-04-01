@@ -28,12 +28,16 @@ export interface ClearHighlightProps {
  * the gutters. When the user's mouse is released, a new draft thread is
  * generated and associated with those highlighted lines.
  *
- * @param filename: File associated with this active highlight state.
+ * @param oldPath: Old path of the file associated with this highlight state.
+ * @param activePath: Active path of the file associated with this highlight state.
+ * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
  * @param setDraftThreads: State setter for `draftThreads`.
  * @returns: The `activeHighlight` state and associated gutter events for highlighting.
  */
 export function useHighlight(
-  filename: string,
+  oldPath: string,
+  activePath: string,
+  fileStatus: string,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
   const [activeHighlight, _setActiveHighlight] = useState<ActiveHighlight>({
@@ -95,7 +99,9 @@ export function useHighlight(
     const handleMouseUp = () => {
       if (activeHighlightRef.current.isHighlighting) {
         highlightOnMouseUp(
-          filename,
+          oldPath,
+          activePath,
+          fileStatus,
           activeHighlightRef,
           setActiveHighlightSync,
           setDraftThreads,
@@ -107,7 +113,7 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [filename, setDraftThreads]);
+  }, [oldPath, activePath, fileStatus, setDraftThreads]);
 
   return { activeHighlight, highlightEvents, clearHighlight };
 }
