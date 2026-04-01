@@ -7,6 +7,7 @@ import styles from "./UserIcon.module.css";
  * @param username GitHub username of the user this icon is for, used to create alt text
  * @param size Used for height and width of the icon
  * @param showTooltip Optional boolean. When true, UserIcon can display a react-tooltip
+ *                  Note: The component/page of usage must include react-tooltip (i.e. IconTooltip)
  * @returns
  */
 export default function UserIcon({
