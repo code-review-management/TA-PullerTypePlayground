@@ -1,5 +1,5 @@
 import { FileTreeNode } from "../../_utils/filetree-utils";
-import FileTreeRow from "../FileTreeRow/FileTreeRowRenamed";
+import FileTreeRow from "../FileTreeRow/FileTreeRow";
 import styles from "./FileTree.module.css";
 
 /**
