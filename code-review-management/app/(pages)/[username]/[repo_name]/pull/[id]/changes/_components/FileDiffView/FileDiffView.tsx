@@ -41,7 +41,7 @@ export default function FileDiffView({
   hunks,
   publishedThreadsByLine,
 }: {
-  fileMeta: FileDiff;
+  fileMeta?: FileDiff;
   oldPath: string;
   newPath: string;
   diffType: FileData["type"];
@@ -54,7 +54,7 @@ export default function FileDiffView({
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
-    fileMeta["status"],
+    fileMeta?.status ?? "",
     setDraftThreads,
   );
   const [isExpanded, setIsExpanded] = useState(true);

@@ -33,7 +33,7 @@ export default function DiffListView({
     // Ordered `parsedDiffs` array has 1-1 matching with ordered `flatFileTree` array.
     return parsedDiffs.map((diff, index) => ({
       diff,
-      fileMeta: flatFileTree[index],
+      fileMeta: flatFileTree.at(index),
     }));
   }, [diffString, flatFileTree]);
 
@@ -50,7 +50,7 @@ export default function DiffListView({
           publishedThreads,
           diff.oldPath,
           activePath,
-          fileMeta.status,
+          fileMeta?.status ?? "",
         );
 
         return (
