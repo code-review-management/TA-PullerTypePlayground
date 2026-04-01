@@ -9,6 +9,8 @@ import { useState } from "react";
 export default function DiscussionBox() {
   const [discussionBoxContent, setDiscussionBoxContent] = useState("");
 
+  console.log(discussionBoxContent); // TODO: Remove this debug print
+
   return (
     <form className={styles.form}>
       <MarkdownEditor
