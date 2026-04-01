@@ -9,7 +9,3 @@
   font-size: 1rem;
   color: var(--text-primary);
 }
-
-.discussionBox::placeholder {
-  color: var(--text-secondary);
-}

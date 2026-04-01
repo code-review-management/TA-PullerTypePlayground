@@ -9,7 +9,7 @@
 
 .editable:focus-within {
   outline: var(--border-thick-width) solid var(--color-interactive);
-  border-color: transparent;
+  border-color: transparent !important;
 }
 
 .editable:not(:focus-within) {
