@@ -56,7 +56,7 @@ export default function MarkdownEditor({
 
       // Docs: https://tiptap.dev/docs/editor/extensions/functionality/placeholder
       Placeholder.configure({
-        placeholder
+        placeholder,
       }),
     ],
     editable: defaultEditable,
@@ -101,7 +101,7 @@ export default function MarkdownEditor({
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
       >
-        <EditorContent editor={editor} className={styles.tiptap}/>
+        <EditorContent editor={editor} className={styles.tiptap} />
         {editable && actions && <div className={styles.actions}>{actions}</div>}
       </div>
     </MarkdownEditorContext>
