@@ -13,6 +13,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/sign-in",
   },
   callbacks: {
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page.
+      return !!auth;
+    },
     async jwt({ token, account, profile }) {
       if (account && profile) {
         token.accessToken = account.access_token; // GitHub personal access token
