@@ -147,7 +147,6 @@ export function highlightOnMouseUp(
         start: minLine,
         end: maxLine,
         side: activeHighlight.side,
-        created: new Date().toISOString(),
         body: "",
       },
     };
