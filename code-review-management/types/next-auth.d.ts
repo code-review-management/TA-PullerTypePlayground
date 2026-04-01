@@ -8,6 +8,7 @@ import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
+    error?: string;
     user: {
       githubId?: string | null;
       githubLogin: string;
@@ -20,5 +21,6 @@ declare module "next-auth/jwt" {
     accessToken?: string;
     githubId?: string | null;
     githubLogin: string;
+    expiresAt?: number;
   }
 }

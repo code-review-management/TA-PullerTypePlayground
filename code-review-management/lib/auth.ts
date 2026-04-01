@@ -15,17 +15,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     authorized: async ({ auth }) => {
       // Logged in users are authenticated, otherwise redirect to login page.
-      return !!auth;
+      return !!auth && !auth.error;
     },
     async jwt({ token, account, profile }) {
       if (account && profile) {
         token.accessToken = account.access_token; // GitHub personal access token
         token.githubId = profile.id; // GitHub user ID
         token.githubLogin = String(profile.login); // GitHub username
+
+        // Expiry date of GitHub personal access token in ms
+        if (account.expires_at) {
+          token.expiresAt = account.expires_at * 1000;
+        }
       }
       return token;
     },
     session({ session, token }) {
+      // If the GitHub personal access token has expired, set session.error
+      // as a flag that we can check in the authorized callback.
+      if (!token.expiresAt || new Date().getTime() > token.expiresAt) {
+        session.error = "AccessTokenExpiry";
+      }
       session.user.githubId = token.githubId;
       session.user.githubLogin = token.githubLogin;
       return session;
