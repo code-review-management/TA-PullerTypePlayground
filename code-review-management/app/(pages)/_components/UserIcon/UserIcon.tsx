@@ -6,7 +6,7 @@ import styles from "./UserIcon.module.css";
  * @param avatarUrl Image source URL, generally provided by API responses
  * @param username GitHub username of the user this icon is for, used to create alt text
  * @param size Used for height and width of the icon
- * @returns 
+ * @returns
  */
 export default function UserIcon({
   avatarUrl,
@@ -18,14 +18,22 @@ export default function UserIcon({
   size: number;
 }) {
   return (
-    <div className={styles.userIcon} style={{ height: size, width: size }}>
-      <Image
-        className={styles.iconImage}
-        src={avatarUrl}
-        alt={`@${username}`}
-        width={size}
-        height={size}
-      />
-    </div>
+    <a href={`https://github.com/${username}`}>
+      <div
+        className={styles.userIcon}
+        style={{ height: size, width: size }}
+        data-tooltip-id="user-icon-tooltip"
+        data-tooltip-content={username}
+        data-tooltip-delay-show={100}
+      >
+        <Image
+          className={styles.iconImage}
+          src={avatarUrl}
+          alt={`@${username}`}
+          width={size}
+          height={size}
+        />
+      </div>
+    </a>
   );
 }

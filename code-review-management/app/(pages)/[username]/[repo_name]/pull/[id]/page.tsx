@@ -12,6 +12,7 @@ import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
+import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 
 // Pull Request View page.
 export default function Pull() {
@@ -25,6 +26,7 @@ export default function Pull() {
 
   return (
     <div className={styles.page}>
+      <IconTooltip id="user-icon-tooltip" />
       <PRHeader pull={data} />
       <div className={styles.pageBody}>
         <div className={styles.bodyMain}>

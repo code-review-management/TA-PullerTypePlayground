@@ -80,7 +80,7 @@ function UserIconList({ users }: { users: User[] }) {
   return (
     <div className={styles.userIconList}>
       {firstThreeUsers.map((reviewer, idx) => (
-        <div key={reviewer.login} style={{ zIndex: -idx }}>
+        <div key={reviewer.login} style={{ zIndex: 1000 - idx }}>
           <UserIcon
             avatarUrl={reviewer.avatar_url}
             username={reviewer.login}
