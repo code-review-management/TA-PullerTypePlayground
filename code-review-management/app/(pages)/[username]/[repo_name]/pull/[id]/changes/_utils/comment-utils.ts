@@ -35,7 +35,7 @@ export function deleteDraftThread(
  * with the old path whereas the RHS of the diff is associated with the new path.
  *
  * @param oldPath: Old path of the file.
- * @param activePath: Active path of the file (display-value in file diff header).
+ * @param activePath: Active path of the file.
  * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
  * @param side: Side of the diff that the comment is made on.
  * @returns: The correct path to associate with the draft thread.
@@ -49,6 +49,20 @@ export function getDraftThreadFilePath(
   return fileStatus === "renamed" && side === "old" ? oldPath : activePath;
 }
 
+/**
+ * Gets published threads for a file. Most of this logic is for handling renamed
+ * files since GitHub associates the LHS of a renamed file with the old
+ * path, and the RHS with the new path. We handle this case by getting the
+ * published threads for both the old path and the new path and combining it
+ * into one map.
+ *
+ * @param publishedThreads: Published threads for the entire pull request.
+ * @param oldPath: Old path of the file.
+ * @param activePath: Active path of the file.
+ * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
+ * @returns: `PublishedThreadsByLine` object containing all relevant published
+ *            threads for the file.
+ */
 export function getPublishedThreadsByLine(
   publishedThreads: PublishedThreads,
   oldPath: string,
@@ -63,13 +77,18 @@ export function getPublishedThreadsByLine(
 
   if (fileStatus !== "renamed") return activePathThreads;
 
+  // Copy over entries of `activePathThreads` to `merged`.
   for (const [line, thread] of activePathThreads) {
     merged.set(line, { left: [...thread.left], right: [...thread.right] });
   }
 
+  // Copy over entries of `oldPathThreads` to `merged`.
   for (const [line, thread] of oldPathThreads) {
     const existing = merged.get(line);
     if (existing) {
+      // Do not override entries with the same key from `activePathThreads`.
+      // Since these comments are associated with the same line number, push it
+      // into the array. Threads are re-ordered by creation time below.
       existing.left.push(...thread.left);
       existing.right.push(...thread.right);
     } else {
