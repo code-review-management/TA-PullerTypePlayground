@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -75,6 +75,9 @@ export default function FileDiffView({
     () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
     [activePath, hunks, publishedThreadsByLine, draftThreads],
   );
+
+  useEffect(() => console.log("publishedThreadsByLine changed"), [publishedThreadsByLine]);
+  useEffect(() => console.log("draftThreads changed"), [draftThreads]);
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter

@@ -81,6 +81,7 @@ export function getWidgets(
   publishedThreads: PublishedThreadsByLine,
   draftThreads: DraftThreads,
 ) {
+  console.log("getWidgets()", filename);
   const changes = hunks.flatMap((hunk) => hunk.changes);
   const widgets: Record<string, ReactNode> = {};
 
