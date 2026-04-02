@@ -46,8 +46,8 @@ export function getCreateReviewCommentMutationKey(
   const MUTATION_KEY_PREFIX = "create-review-comment";
 
   if (draftItem.type === "thread") {
-    const { filename, start, end, side } = draftItem.payload;
-    return [MUTATION_KEY_PREFIX, filename, start, end, side];
+    const { activePath, start, end, side } = draftItem.payload;
+    return [MUTATION_KEY_PREFIX, activePath, start, end, side];
   } else {
     const { filename, parentId } = draftItem.payload;
     return [MUTATION_KEY_PREFIX, filename, parentId];
