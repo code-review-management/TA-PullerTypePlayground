@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -70,14 +70,19 @@ export default function FileDiffView({
     [activePath, hunks],
   );
 
+  const draftThreadsByLine = draftThreads[activePath];
+
   // Use memoization to avoid re-calculations of widgets while highlighting.
   const widgets = useMemo(
-    () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
-    [activePath, hunks, publishedThreadsByLine, draftThreads],
+    () =>
+      getWidgets(
+        activePath,
+        hunks,
+        publishedThreadsByLine,
+        draftThreadsByLine ?? {},
+      ),
+    [activePath, hunks, publishedThreadsByLine, draftThreadsByLine],
   );
-
-  useEffect(() => console.log("publishedThreadsByLine changed"), [publishedThreadsByLine]);
-  useEffect(() => console.log("draftThreads changed"), [draftThreads]);
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter
