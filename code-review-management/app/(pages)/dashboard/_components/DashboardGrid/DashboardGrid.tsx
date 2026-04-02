@@ -24,7 +24,7 @@ export default function DashboardGrid() {
       </thead>
       <tbody className={styles.gridBody}>
         {MOCK_PULLS.map((pull) => (
-          <DashboardGridRow pull={pull} key={pull.id} />
+          <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
         ))}
       </tbody>
     </table>
