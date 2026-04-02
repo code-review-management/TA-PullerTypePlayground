@@ -1,6 +1,7 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff } from "@/types/github.types";
@@ -20,6 +21,7 @@ export default function DiffListView({
   publishedThreads: PublishedThreads;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
+  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const {
     data: diffString,
     isPending,
@@ -63,6 +65,8 @@ export default function DiffListView({
               viewType="split"
               hunks={diff.hunks}
               publishedThreadsByLine={publishedThreadsByDiff[activePath]}
+              draftThreadsByLine={draftThreads[activePath]}
+              setDraftThreads={setDraftThreads}
             />
           </div>
         );
