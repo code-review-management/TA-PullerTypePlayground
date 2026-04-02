@@ -50,7 +50,7 @@ export default memo(function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
-  draftThreadsByLine: DraftThreadsByLine | undefined;
+  draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const activePath = getActivePath(diffType, oldPath, newPath);
