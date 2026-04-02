@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileTreeDividers from "../FileTreeDividers/FileTreeDividers";
 import FileTreeIcon from "../FileTreeIcon/FileTreeIcon";
@@ -63,10 +63,28 @@ function NodeLabel({
   isExpanded: boolean;
   onFolderClick: () => void;
 }) {
+  const [isOverflow, setIsOverflow] = useState(false);
+  const ref = useRef<HTMLInputElement>(null);
+
+  // Docs: https://www.robinwieruch.de/react-custom-hook-check-if-overflow/#
+  useEffect(() => {
+    const { current } = ref;
+    if (current) {
+      const hasOverflow = current.scrollWidth > current.clientWidth;
+      setIsOverflow(hasOverflow);
+    }
+  }, []); // TODO: Update dependencies once we make the file tree resizable.
+
   return (
     <div
       className={styles.row}
       onClick={node.type === "directory" ? onFolderClick : undefined}
+      {...(isOverflow && {
+        "data-tooltip-id": "file-tree-row-tooltip",
+        "data-tooltip-content": node.name,
+        "data-tooltip-place": "bottom-end",
+        "data-tooltip-delay-show": 100,
+      })}
     >
       <FileTreeDividers
         depth={depth}
@@ -78,7 +96,9 @@ function NodeLabel({
         style={{ paddingLeft: depth * INDENT_PADDING + BASE_PADDING }}
       >
         <FileTreeIcon node={node} isExpanded={isExpanded} />
-        <span className={styles.filename}>{node.name}</span>
+        <span className={styles.filename} ref={ref}>
+          {node.name}
+        </span>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import FileTree from "./_components/FileTree/FileTree";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
 
@@ -55,6 +56,7 @@ export default function Changes() {
     <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
       <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
         <div className={styles.page}>
+          <IconTooltip id="file-tree-row-tooltip" />
           <PRChangesHeader pull={pull} />
           <div className={styles.changes}>
             <FileTree fileTree={fileTree} />
