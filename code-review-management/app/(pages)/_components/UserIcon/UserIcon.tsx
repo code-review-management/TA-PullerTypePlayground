@@ -6,26 +6,40 @@ import styles from "./UserIcon.module.css";
  * @param avatarUrl Image source URL, generally provided by API responses
  * @param username GitHub username of the user this icon is for, used to create alt text
  * @param size Used for height and width of the icon
- * @returns 
+ * @param showTooltip Optional boolean. When true, UserIcon can display a react-tooltip
+ *                  Note: The component/page of usage must include react-tooltip (i.e. IconTooltip)
+ * @returns
  */
 export default function UserIcon({
   avatarUrl,
   username,
   size,
+  showTooltip,
 }: {
   avatarUrl: string;
   username: string;
   size: number;
+  showTooltip?: boolean;
 }) {
   return (
-    <div className={styles.userIcon} style={{ height: size, width: size }}>
-      <Image
-        className={styles.iconImage}
-        src={avatarUrl}
-        alt={`@${username}`}
-        width={size}
-        height={size}
-      />
-    </div>
+    <a href={`https://github.com/${username}`}>
+      <div
+        className={styles.userIcon}
+        style={{ height: size, width: size }}
+        {...(showTooltip && {
+          "data-tooltip-id": "user-icon-tooltip",
+          "data-tooltip-content": username,
+          "data-tooltip-delay-show": 100,
+        })}
+      >
+        <Image
+          className={styles.iconImage}
+          src={avatarUrl}
+          alt={`@${username}`}
+          width={size}
+          height={size}
+        />
+      </div>
+    </a>
   );
 }

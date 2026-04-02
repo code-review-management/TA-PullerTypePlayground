@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
-import { useMutationState } from "@tanstack/react-query";
 import { useMergeContext } from "../../_contexts/MergeContext";
 import { useMergeMutation } from "@/lib/api/mutations/useMergeMutation";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
 import { PRMergeRequest } from "@/types/request.types";
 import { PullRequest } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import RadioGroup, { RadioOption } from "@components/RadioGroup/RadioGroup";
 import PlainEditor from "@components/PlainEditor/PlainEditor";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -25,7 +24,13 @@ const MERGE_METHOD_INPUTS: {
 /**
  * Popover to merge a pull request.
  */
-export default function MergePopover({ pull }: { pull: PullRequest }) {
+export default function MergePopover({
+  pull,
+  togglePopover,
+}: {
+  pull: PullRequest;
+  togglePopover: () => void;
+}) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { mutate } = useMergeMutation(username, repo_name, id);
   const {
@@ -38,29 +43,34 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
   } = useMergeContext();
 
   const handleSubmit = () => {
-    mutate({
-      merge_method: mergeMethod,
-      commit_title: commitTitle ?? "",
-      commit_message: commitDescription,
-    });
+    mutate(
+      {
+        merge_method: mergeMethod,
+        commit_title: commitTitle ?? "",
+        commit_message: commitDescription,
+      },
+      {
+        onSuccess: () => togglePopover(),
+      },
+    );
   };
 
   // If the user confirms merge and immediately closes the popover and reopens
   // it, check if there is already an existing merge mutation occurring.
-  const isMergePending =
-    useMutationState({
-      filters: {
-        mutationKey: ["merge", username, repo_name, id],
-        status: "pending",
-      },
-    }).length > 0;
+  const isMergePending = useMutationInFlight({
+    mutationKey: ["merge", username, repo_name, id],
+  });
 
   const mergeRadioOptions: RadioOption<PRMergeRequest["merge_method"]>[] =
-    MERGE_METHOD_INPUTS.map(({ method, label }) => ({
-      value: method,
-      label,
-      disabled: method === "rebase" && !pull.rebaseable,
-    }));
+    MERGE_METHOD_INPUTS.map(({ method, label }) => {
+      const cannotRebase = method === "rebase" && !pull.rebaseable;
+      return {
+        value: method,
+        label,
+        disabled: cannotRebase,
+        ...(cannotRebase && { tooltip: "Cannot rebase due to conflicts" }),
+      };
+    });
 
   useEffect(() => {
     setCommitTitle((prev) =>
@@ -113,11 +123,11 @@ export default function MergePopover({ pull }: { pull: PullRequest }) {
           </>
         )}
         <div className={styles.submit}>
-          {isMergePending ? (
-            <LoadingSpinner />
-          ) : (
-            <SubmitButton label="Confirm merge" isDisabled={false} />
-          )}
+          <SubmitButton
+            label="Confirm merge"
+            isDisabled={false}
+            isLoading={isMergePending}
+          />
         </div>
       </form>
     </PopoverContent>

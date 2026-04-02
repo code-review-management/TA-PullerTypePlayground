@@ -19,7 +19,7 @@ function UserListerRow({
 }) {
   return (
     <div className={styles.userListerRow}>
-      <UserIcon avatarUrl={imageSrc} username="octocat" size={25} />
+      <UserIcon avatarUrl={imageSrc} username={username} size={25} />
       <h5 className={styles.username}>{username}</h5>
     </div>
   );

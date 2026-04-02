@@ -4,7 +4,10 @@ import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEdi
 import { useDraftRepliesContext } from "../_contexts/DraftRepliesContext";
 import { useDraftThreadsContext } from "../_contexts/DraftThreadsContext";
 import { getDraftReplyKey } from "./useDraftReplies";
-import { getDraftThreadKey } from "./useDraftThreads";
+import {
+  deleteDraftThread,
+  getDraftThreadFilePath,
+} from "../_utils/comment-utils";
 import { toGitHubSide } from "../_utils/diff-utils";
 import { DraftItem } from "../_components/DraftEditorActions/DraftEditorActions";
 import { PullRequest } from "@/types/github.types";
@@ -27,38 +30,30 @@ export function useSubmitDraftItem(
     mutate,
     isPending: isSubmitPending,
     isError: isSubmitError,
-  } = useCreateReviewCommentMutation(owner, repo, pullNumber);
+  } = useCreateReviewCommentMutation(owner, repo, pullNumber, draft);
 
   const submitThread = (
     draft: Extract<DraftItem, { type: "thread" }>,
     pull: PullRequest,
   ) => {
-    const side = toGitHubSide(draft.payload.side);
+    const { oldPath, activePath, fileStatus, start, end, side } = draft.payload;
+    const githubSide = toGitHubSide(side);
+    const path = getDraftThreadFilePath(oldPath, activePath, fileStatus, side);
+
     mutate(
       {
         body: editorContent,
         commit_id: pull.head.sha,
-        path: draft.payload.filename,
-        start_side: side,
-        side,
-        start_line: draft.payload.start,
-        line: draft.payload.end,
+        path,
+        start_side: githubSide,
+        side: githubSide,
+        start_line: start,
+        line: end,
       },
       {
         // Fires after invalidating the TanStack cache for review comments
         // and refetching them.
-        onSuccess: () => {
-          setDraftThreads((prev) => {
-            const key = getDraftThreadKey(
-              draft.payload.filename,
-              draft.payload.end,
-              draft.payload.side,
-            );
-            const draftThreads = { ...prev };
-            delete draftThreads[key];
-            return draftThreads;
-          });
-        },
+        onSuccess: () => deleteDraftThread(draft.payload, setDraftThreads),
       },
     );
   };

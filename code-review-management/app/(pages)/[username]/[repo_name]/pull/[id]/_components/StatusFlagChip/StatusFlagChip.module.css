@@ -4,6 +4,7 @@
   padding: 12px;
   border-radius: 12px;
   font-size: 0.875rem;
+  font-weight: 500;
   color: var(--background-light);
 
   display: flex;

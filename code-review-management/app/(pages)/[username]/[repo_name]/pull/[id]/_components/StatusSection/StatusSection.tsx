@@ -1,4 +1,4 @@
-import { Status } from "../StatusFlagChip/statusConstants";
+import { Status } from "@/app/(pages)/_utils/statusConstants";
 import StatusFlagChip from "../StatusFlagChip/StatusFlagChip";
 import styles from "./StatusSection.module.css";
 import { PullRequest } from "@/types/github.types";
@@ -8,11 +8,13 @@ import { PullRequest } from "@/types/github.types";
  * "Needs review", etc. are displayed with status flag chips. Multiple chips may be displayed
  * at a time.
  * If the PR is ready to merge, no other flags should be able to be displayed.
+ *
+ * TODO: Research if there is a way to source whether there are multiple chips (using more than just mergeable_state)
  */
 export default function StatusSection({ pullData }: { pullData: PullRequest }) {
   const statuses: Status[] = [];
 
-  if (pullData.mergeable_state === "ready") {
+  if (pullData.mergeable_state === "clean") {
     statuses.push("ready");
   } else {
     if (pullData.mergeable_state === "dirty") {
@@ -21,7 +23,9 @@ export default function StatusSection({ pullData }: { pullData: PullRequest }) {
     if (pullData.mergeable_state === "blocked") {
       statuses.push("waiting");
     }
-    // TODO: Check if CI failure
+    if (pullData.mergeable_state === "unstable") {
+      statuses.push("failure");
+    }
   }
 
   return (

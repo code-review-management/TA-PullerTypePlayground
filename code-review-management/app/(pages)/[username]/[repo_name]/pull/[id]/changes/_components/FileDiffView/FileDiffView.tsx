@@ -1,7 +1,6 @@
 import refractor from "refractor";
 import { useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Roboto_Mono } from "next/font/google";
 import {
   Decoration,
   Diff,
@@ -18,6 +17,8 @@ import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
+import { FileDiff } from "@/types/github.types";
+import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -26,17 +27,13 @@ import "prism-color-variables/variables.css";
 import "react-diff-view/style/index.css";
 import "./ReactDiffView.css";
 
-const robotoMono = Roboto_Mono({
-  variable: "--font-roboto-mono",
-  subsets: ["latin"],
-});
-
 /**
  * Docs:
  * 1. https://github.com/otakustay/react-diff-view?tab=readme-ov-file#render-diff-hunks
  */
 
 export default function FileDiffView({
+  fileMeta,
   oldPath,
   newPath,
   diffType,
@@ -44,6 +41,7 @@ export default function FileDiffView({
   hunks,
   publishedThreadsByLine,
 }: {
+  fileMeta?: FileDiff;
   oldPath: string;
   newPath: string;
   diffType: FileData["type"];
@@ -53,8 +51,10 @@ export default function FileDiffView({
 }) {
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const { activeHighlight, highlightEvents } = useHighlight(
+  const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
+    oldPath,
     activePath,
+    fileMeta?.status ?? "",
     setDraftThreads,
   );
   const [isExpanded, setIsExpanded] = useState(true);
@@ -86,37 +86,39 @@ export default function FileDiffView({
   );
 
   return (
-    <div
-      className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""} ${robotoMono.variable}`}
-      id={`file-${activePath}`}
-    >
-      <FileDiffHeader
-        diffType={diffType}
-        oldPath={oldPath}
-        newPath={newPath}
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-      />
-      <div className={!isExpanded ? styles.collapsed : ""}>
-        <Diff
-          viewType={viewType}
+    <ClearHighlightContext value={{ clearHighlight }}>
+      <div
+        className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""}`}
+        id={`file-${activePath}`}
+      >
+        <FileDiffHeader
           diffType={diffType}
-          hunks={hunks}
-          tokens={tokens}
-          widgets={widgets}
-          renderGutter={renderGutter}
-          gutterEvents={highlightEvents}
-        >
-          {(hunks) =>
-            hunks.map((hunk) => (
-              <Fragment key={hunk.content}>
-                <Decoration>{hunk.content}</Decoration>
-                <Hunk hunk={hunk} />
-              </Fragment>
-            ))
-          }
-        </Diff>
+          oldPath={oldPath}
+          newPath={newPath}
+          isExpanded={isExpanded}
+          setIsExpanded={setIsExpanded}
+        />
+        <div className={!isExpanded ? styles.collapsed : ""}>
+          <Diff
+            viewType={viewType}
+            diffType={diffType}
+            hunks={hunks}
+            tokens={tokens}
+            widgets={widgets}
+            renderGutter={renderGutter}
+            gutterEvents={highlightEvents}
+          >
+            {(hunks) =>
+              hunks.map((hunk) => (
+                <Fragment key={hunk.content}>
+                  <Decoration>{hunk.content}</Decoration>
+                  <Hunk hunk={hunk} />
+                </Fragment>
+              ))
+            }
+          </Diff>
+        </div>
       </div>
-    </div>
+    </ClearHighlightContext>
   );
 }

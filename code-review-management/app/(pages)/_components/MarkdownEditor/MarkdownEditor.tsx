@@ -1,7 +1,8 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { useEditor, EditorContent, Editor } from "@tiptap/react";
+import { useEditor, EditorContent, Editor, FocusPosition } from "@tiptap/react";
+import { Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
@@ -21,17 +22,23 @@ import "./TiptapEditor.css";
  * @param defaultContent: Content to display in the editor on initial render.
  * @param actions: Action buttons to render below the editor content when it is
  *                 editable (e.g., publish or cancel buttons).
+ * @param autofocus: A FocusPosition to automatically focus on initial render. Defaults to "end" if not provided.
+ * @param placeholder: Optional placeholder text
  * @param onChange: Function to execute everytime the editor's content is updated.
  */
 export default function MarkdownEditor({
   defaultEditable,
   defaultContent,
   actions,
+  autofocus,
+  placeholder,
   onChange,
 }: {
   defaultEditable: boolean;
   defaultContent?: string;
   actions?: ReactNode;
+  autofocus?: FocusPosition;
+  placeholder?: string;
   onChange?: (markdown: string) => void;
 }) {
   const [editable, setEditable] = useState(defaultEditable);
@@ -39,12 +46,23 @@ export default function MarkdownEditor({
   // Used to prevent mismatched transactions when setting autofocus.
   const [editorReady, setEditorReady] = useState(false);
 
+  // Default to "end" autofocus unless autofocus is explicitly passed in as a param.
+  const focusLocation = autofocus === undefined ? "end" : autofocus;
+
   const editor = useEditor({
-    extensions: [StarterKit, Markdown],
+    extensions: [
+      StarterKit,
+      Markdown,
+
+      // Docs: https://tiptap.dev/docs/editor/extensions/functionality/placeholder
+      Placeholder.configure({
+        placeholder,
+      }),
+    ],
     editable: defaultEditable,
     content: defaultContent,
     contentType: "markdown",
-    autofocus: "end",
+    autofocus: focusLocation,
     immediatelyRender: false,
     onCreate: () => setEditorReady(true),
     onUpdate: ({ editor }: { editor: Editor }) => {
@@ -59,9 +77,9 @@ export default function MarkdownEditor({
   useEffect(() => {
     if (editor) {
       editor.setEditable(editable);
-      if (editable && editorReady) editor.commands.focus("end");
+      if (editable && editorReady) editor.commands.focus(focusLocation);
     }
-  }, [editor, editable, editorReady]);
+  }, [editor, editable, editorReady, focusLocation]);
 
   // Docs: https://github.com/ueberdosis/tiptap/issues/5068#issuecomment-2465958436
   const handleEditorClick = () => {
@@ -83,7 +101,7 @@ export default function MarkdownEditor({
         style={{ visibility: editorReady ? "visible" : "hidden" }}
         onClick={handleEditorClick}
       >
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} className={styles.tiptap} />
         {editable && actions && <div className={styles.actions}>{actions}</div>}
       </div>
     </MarkdownEditorContext>

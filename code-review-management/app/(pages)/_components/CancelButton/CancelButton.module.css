@@ -1,0 +1,6 @@
+.cancel {
+    display: flex;
+    cursor: pointer;
+    border: none;
+    background-color: inherit;
+}

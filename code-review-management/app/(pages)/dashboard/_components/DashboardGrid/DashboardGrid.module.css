@@ -1,0 +1,155 @@
+/* TODO: Better responsiveness solutions */
+
+.dashboardGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+
+  --small-icon-size: 32px;
+}
+
+.gridHeader {
+  height: 36px;
+  border-radius: 8px 8px 0 0;
+  padding: 0 var(--spacer-16);
+
+  display: flex;
+  gap: var(--spacer-32);
+  align-items: center;
+
+  background-color: var(--background-secondary-light);
+}
+
+.gridHeader > th {
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-align: left;
+}
+
+/* Higher specificity than .gridHeader > th to override text-align */
+.gridHeader > .updatedWidth {
+  text-align: right;
+}
+
+.iconWidth {
+  width: 40px;
+}
+
+.titleWidth {
+  flex: 4;
+}
+
+/* TODO: Change the number of visible icons for different page sizes */
+.reviewerAssigneeWidth {
+  --num-icons-visible: 4;
+  --user-icons-gap: 8px;
+
+  /* Max possible width UserIconList requires */
+  width: calc(
+    var(--num-icons-visible) * var(--small-icon-size) -
+      (var(--num-icons-visible) - 1) * var(--user-icons-gap)
+  );
+}
+
+/* TODO: Increase width to accommodate for second status icon */
+.statusWidth {
+  width: 44px;
+}
+
+.updatedWidth {
+  width: 56px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.updatedHeader {
+  text-align: right;
+}
+
+.gridBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+}
+
+.gridRow {
+  height: 72px;
+  border-radius: 8px;
+  padding: var(--spacer-16);
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-32);
+
+  border: 1px solid var(--background-secondary-light);
+}
+
+.rowTitle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-4);
+}
+
+.rowTitleTop {
+  display: flex;
+  gap: var(--spacer-4);
+  text-decoration: none;
+}
+
+.titleTitle {
+  font-weight: 400;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 300px;
+
+  @media screen and (min-width: 1440px) {
+    max-width: 450px;
+  }
+
+  @media screen and (min-width: 1920px) {
+    max-width: 800px;
+  }
+}
+
+.titleNumber {
+  color: var(--text-secondary);
+}
+
+.rowTitleBottom {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.userIconList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 24px);
+  grid-template-rows: 1fr;
+  grid-auto-columns: 0px;
+  grid-auto-rows: 0px;
+}
+
+.extraUsers {
+  height: var(--small-icon-size);
+  width: var(--small-icon-size);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--small-icon-size);
+  background-color: var(--border-gray);
+  font-size: 0.875rem;
+  z-index: -5;
+}
+
+.rowStatus {
+  display: flex;
+  justify-content: center;
+}
+
+.rowUpdated {
+  text-align: right;
+}

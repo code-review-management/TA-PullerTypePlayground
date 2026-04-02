@@ -1,6 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  MutationKey,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { poster } from "../utils/poster";
 import { CommentCreateRequest } from "@/types/request.types";
+// TODO: Refactor to use a shared types file so we don't have to import from a UI component.
+import { DraftItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
 
 /**
  * Creates a new review comment on the diff of a GitHub pull request.
@@ -8,16 +14,19 @@ import { CommentCreateRequest } from "@/types/request.types";
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
+ * @param draftItem: `DraftItem` representing the review comment to create.
  * @returns: TanStack query result containing the newly created comment.
  */
 export function useCreateReviewCommentMutation(
   owner: string,
   repo: string,
   pullNumber: string,
+  draftItem: DraftItem,
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: getCreateReviewCommentMutationKey(draftItem),
     mutationFn: async (comment: CommentCreateRequest) =>
       poster(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/comments`,
@@ -29,4 +38,18 @@ export function useCreateReviewCommentMutation(
       });
     },
   });
+}
+
+export function getCreateReviewCommentMutationKey(
+  draftItem: DraftItem,
+): MutationKey {
+  const MUTATION_KEY_PREFIX = "create-review-comment";
+
+  if (draftItem.type === "thread") {
+    const { activePath, start, end, side } = draftItem.payload;
+    return [MUTATION_KEY_PREFIX, activePath, start, end, side];
+  } else {
+    const { filename, parentId } = draftItem.payload;
+    return [MUTATION_KEY_PREFIX, filename, parentId];
+  }
 }
