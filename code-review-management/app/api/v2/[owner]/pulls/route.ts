@@ -7,14 +7,11 @@ Polling can be enabled dependent on the status of the owner access tag
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import {
-  TimelineEvent,
-  TimelineEventSchema,
-  ReviewedEvent,
-  ReviewCommentSchema,
-} from "@/types/github.types";
+import { PullRequest, PullRequestSchema } from "@/types/github.types";
+import { PullRequestV2 } from "@/types/github.types.wrapper";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import parse from "parse-link-header";
 
 type RouteContext = {
   params: Promise<{
@@ -47,17 +44,47 @@ export async function GET(req: Request, context: RouteContext) {
     );
   }
 
+  // Get query parameters
+  const { searchParams: params } = new URL(req.url);
+  const page = Number(params.get("page"));
+
+  // Validate parameters
+  if (isNaN(page) || page < 1) {
+    return Response.json(
+      { error: "Missing or invalid query parameters" },
+      { status: 400 },
+    );
+  }
+
   const octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } = await octokit.request('GET /search/issues', {
-      q: "is:pr state:open assignee:@me"
-    })
+    const data = await octokit.request("GET /search/issues", {
+      q: "is:pr state:open involves:@me",
+      page: page,
+      per_page: 3,
+    });
 
     // Filter response
-    // const filteredResponse: 
+    const filteredResponse: PullRequest[] = data.data.items.map((item) => {
+      console.log(item)
+      return PullRequestSchema.parse(item)
+    });
 
-    return new Response(JSON.stringify(contents, null, 2), {
+    const linkHeaders = parse(data.headers.link);
+
+    const wrappedResponse: PullRequestV2 = {
+      data: filteredResponse,
+      totalCount: data.data.total_count,
+      ...(linkHeaders && {
+        ...(linkHeaders.prev && { prev: Number(linkHeaders.prev.page) }),
+        ...(linkHeaders.next && { next: Number(linkHeaders.next.page) }),
+        ...(linkHeaders.last && { last: Number(linkHeaders.last.page) }),
+        ...(linkHeaders.first && { first: Number(linkHeaders.first.page) }),
+      }),
+    };
+
+    return new Response(JSON.stringify(wrappedResponse, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
