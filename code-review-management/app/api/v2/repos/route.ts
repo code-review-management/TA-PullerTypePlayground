@@ -44,26 +44,25 @@ export async function GET(req: Request) {
   try {
     const data = await octokit.rest.repos.listForAuthenticatedUser({
       page: page,
-      per_page: 3,
+      per_page: 100,
     });
-
-		const linkHeaders = parse(data.headers.link);
-		if (!linkHeaders) {
-			throw new Error("Invalid link headers");
-		}
 
     // Filter response
     const filteredResponse: Repo[] = data.data.map((item) =>
       RepoSchema.parse(item),
     );
 
-		const wrappedResponse: RepoV2 = {
-			data: filteredResponse,
-			...linkHeaders.prev && {prev: Number(linkHeaders.prev.page)},
-			...linkHeaders.next && {next: Number(linkHeaders.next.page)},
-			...linkHeaders.last && {last: Number(linkHeaders.last.page)},
-			...linkHeaders.first && {first: Number(linkHeaders.first.page)},
-		}
+    const linkHeaders = parse(data.headers.link);
+
+    const wrappedResponse: RepoV2 = {
+      data: filteredResponse,
+      ...(linkHeaders && {
+        ...(linkHeaders.prev && { prev: Number(linkHeaders.prev.page) }),
+        ...(linkHeaders.next && { next: Number(linkHeaders.next.page) }),
+        ...(linkHeaders.last && { last: Number(linkHeaders.last.page) }),
+        ...(linkHeaders.first && { first: Number(linkHeaders.first.page) }),
+      }),
+    };
 
     return new Response(JSON.stringify(wrappedResponse, null, 2), {
       status: 200,
@@ -77,7 +76,7 @@ export async function GET(req: Request) {
       return new Response(error.message, { status: error.status });
     } else {
       // Parsing/other error
-			console.log(error);
+      console.log(error);
       return new Response("Server error", { status: 500 });
     }
   }
