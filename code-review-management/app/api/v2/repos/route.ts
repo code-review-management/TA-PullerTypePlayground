@@ -3,7 +3,7 @@
 */
 
 import { Repo, RepoSchema } from "@/types/github.types";
-import { RepoV2 } from "@/types/github.types.v2";
+import { RepoV2 } from "@/types/github.types.wrapper";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
