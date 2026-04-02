@@ -3,8 +3,10 @@
 */
 
 import { Repo, RepoSchema } from "@/types/github.types";
+import { RepoV2 } from "@/types/github.types.v2";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import parse from "parse-link-header";
 
 const secret = process.env.AUTH_SECRET;
 const cookieKey =
@@ -25,7 +27,7 @@ export async function GET(req: Request) {
     return new Response(null, { status: 401 });
   }
 
-	// Get query parameters
+  // Get query parameters
   const { searchParams: params } = new URL(req.url);
   const page = Number(params.get("page"));
 
@@ -40,18 +42,30 @@ export async function GET(req: Request) {
   const octokit: Octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } =
-      await octokit.rest.repos.listForAuthenticatedUser({
-				page: page,
-				per_page: 3,
-			});
+    const data = await octokit.rest.repos.listForAuthenticatedUser({
+      page: page,
+      per_page: 3,
+    });
+
+		const linkHeaders = parse(data.headers.link);
+		if (!linkHeaders) {
+			throw new Error("Invalid link headers");
+		}
 
     // Filter response
-    const filteredResponse: Repo[] = contents.map((item) =>
+    const filteredResponse: Repo[] = data.data.map((item) =>
       RepoSchema.parse(item),
     );
 
-    return new Response(JSON.stringify(filteredResponse, null, 2), {
+		const wrappedResponse: RepoV2 = {
+			data: filteredResponse,
+			...linkHeaders.prev && {prev: Number(linkHeaders.prev.page)},
+			...linkHeaders.next && {next: Number(linkHeaders.next.page)},
+			...linkHeaders.last && {last: Number(linkHeaders.last.page)},
+			...linkHeaders.first && {first: Number(linkHeaders.first.page)},
+		}
+
+    return new Response(JSON.stringify(wrappedResponse, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -63,6 +77,7 @@ export async function GET(req: Request) {
       return new Response(error.message, { status: error.status });
     } else {
       // Parsing/other error
+			console.log(error);
       return new Response("Server error", { status: 500 });
     }
   }
