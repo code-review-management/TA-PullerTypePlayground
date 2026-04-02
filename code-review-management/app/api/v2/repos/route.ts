@@ -1,5 +1,5 @@
 /*
-/api/v1/repos
+/api/v2/repos
 */
 
 import { Repo, RepoSchema } from "@/types/github.types";
