@@ -24,9 +24,9 @@ export function deleteDraftThread(
   setDraftThreads((prev) => {
     const key = getDraftThreadKey(draft.end, draft.side);
     const draftThreads = { ...prev };
-    const fileThreads = { ...prev[draft.activePath] };
-    delete fileThreads[key];
-    draftThreads[draft.activePath] = fileThreads;
+    const activePathThreads = { ...prev[draft.activePath] };
+    delete activePathThreads[key];
+    draftThreads[draft.activePath] = activePathThreads;
     return draftThreads;
   });
 }
