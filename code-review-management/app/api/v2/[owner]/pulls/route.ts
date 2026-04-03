@@ -1,9 +1,7 @@
 /*
-/api/v1/{owner}/pulls
+/api/v2/{owner}/pulls
 
 *NOT TO BE POLLED*
-
-Polling can be enabled dependent on the status of the owner access tag
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
