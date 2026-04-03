@@ -45,13 +45,12 @@ export async function GET(req: Request) {
     const data = await octokit.request("GET /search/issues", {
       q: "is:pr state:open involves:@me",
       page: page,
-      per_page: 3,
+      per_page: 100,
     });
 
     // Filter response
     const filteredResponse: PullRequest[] = data.data.items.map((item) => {
-      console.log(item)
-      return PullRequestSchema.parse(item)
+      return PullRequestSchema.parse(item);
     });
 
     const linkHeaders = parse(data.headers.link);
