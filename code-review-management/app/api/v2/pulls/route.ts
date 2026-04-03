@@ -1,5 +1,5 @@
 /*
-/api/v2/{owner}/pulls
+/api/v2/pulls
 
 *NOT TO BE POLLED*
 */
@@ -11,17 +11,10 @@ import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
 
-type RouteContext = {
-  params: Promise<{
-    owner: string;
-  }>;
-};
-
 const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
-export async function GET(req: Request, context: RouteContext) {
-  const { owner } = await context.params;
+export async function GET(req: Request) {
   const token = await getToken({
     req: req,
     secret: secret,
@@ -32,14 +25,6 @@ export async function GET(req: Request, context: RouteContext) {
   if (token == null || token.accessToken == null || token.githubId == null) {
     console.log("Unauthorized request at ${new Date()}");
     return new Response(null, { status: 401 });
-  }
-
-  // Validate required parameters
-  if (!owner) {
-    return Response.json(
-      { error: "Missing required parameters" },
-      { status: 400 },
-    );
   }
 
   // Get query parameters
