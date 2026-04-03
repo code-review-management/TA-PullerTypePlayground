@@ -4,21 +4,19 @@
 
 import { Repo, RepoSchema } from "@/types/github.types";
 import { RepoV2 } from "@/types/github.types.v2";
+import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
 
 const secret = process.env.AUTH_SECRET;
-const cookieKey =
-  process.env.NODE_ENV === "production"
-    ? "__Secure-authjs.session-token"
-    : "authjs.session-token";
+const cookie = getCookieName()
 
 export async function GET(req: Request) {
   const token = await getToken({
     req: req,
     secret: secret,
-    cookieName: cookieKey,
+    cookieName: cookie,
   });
 
   // Validate token
