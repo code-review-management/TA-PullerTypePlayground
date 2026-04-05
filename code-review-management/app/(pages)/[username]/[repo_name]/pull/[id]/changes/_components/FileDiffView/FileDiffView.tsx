@@ -18,6 +18,7 @@ import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
 import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
+import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -94,24 +95,28 @@ export default function FileDiffView({
           setIsExpanded={setIsExpanded}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          <Diff
-            viewType={viewType}
-            diffType={diffType}
-            hunks={hunks}
-            tokens={tokens}
-            widgets={widgets}
-            renderGutter={renderGutter}
-            gutterEvents={highlightEvents}
-          >
-            {(hunks) =>
-              hunks.map((hunk) => (
-                <Fragment key={hunk.content}>
-                  <Decoration>{hunk.content}</Decoration>
-                  <Hunk hunk={hunk} />
-                </Fragment>
-              ))
-            }
-          </Diff>
+          {hunks.length > 0 ? (
+            <Diff
+              viewType={viewType}
+              diffType={diffType}
+              hunks={hunks}
+              tokens={tokens}
+              widgets={widgets}
+              renderGutter={renderGutter}
+              gutterEvents={highlightEvents}
+            >
+              {(hunks) =>
+                hunks.map((hunk) => (
+                  <Fragment key={hunk.content}>
+                    <Decoration>{hunk.content}</Decoration>
+                    <Hunk hunk={hunk} />
+                  </Fragment>
+                ))
+              }
+            </Diff>
+          ) : (
+            <EmptyDiff diff={diff} fileMeta={fileMeta} />
+          )}
         </div>
       </div>
     </ClearHighlightContext>
