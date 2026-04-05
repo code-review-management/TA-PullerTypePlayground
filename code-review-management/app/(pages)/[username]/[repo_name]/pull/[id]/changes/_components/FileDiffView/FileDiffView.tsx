@@ -7,7 +7,6 @@ import {
   FileData,
   GutterOptions,
   Hunk,
-  HunkData,
   tokenize,
   ViewType,
 } from "react-diff-view";
@@ -33,23 +32,19 @@ import "./ReactDiffView.css";
  */
 
 export default function FileDiffView({
+  diff,
   fileMeta,
-  oldPath,
-  newPath,
-  diffType,
   viewType,
-  hunks,
   publishedThreadsByLine,
 }: {
+  diff: FileData;
   fileMeta?: FileDiff;
-  oldPath: string;
-  newPath: string;
-  diffType: FileData["type"];
   viewType: ViewType;
-  hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
 }) {
+  const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
+
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,

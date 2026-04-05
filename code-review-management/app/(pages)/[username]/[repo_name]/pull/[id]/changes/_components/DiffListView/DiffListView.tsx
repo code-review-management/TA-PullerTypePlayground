@@ -57,12 +57,9 @@ export default function DiffListView({
           <div key={diffId}>
             <IconTooltip id={`collapse-expand-diff-${diffId}`} />
             <FileDiffView
+              diff={diff}
               fileMeta={fileMeta}
-              oldPath={diff.oldPath}
-              newPath={diff.newPath}
-              diffType={diff.type}
               viewType="split"
-              hunks={diff.hunks}
               publishedThreadsByLine={publishedThreadsByLine}
             />
           </div>
