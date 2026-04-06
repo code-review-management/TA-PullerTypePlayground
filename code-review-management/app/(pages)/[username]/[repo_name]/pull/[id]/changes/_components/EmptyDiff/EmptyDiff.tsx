@@ -17,7 +17,7 @@ export default function EmptyDiff({
 }
 
 function getEmptyDiffMessage(diff: FileData, fileMeta?: FileDiff): string {
-  const messages = [];
+  const messages: string[] = [];
 
   if (diff.isBinary) {
     messages.push("Binary file not shown.");
