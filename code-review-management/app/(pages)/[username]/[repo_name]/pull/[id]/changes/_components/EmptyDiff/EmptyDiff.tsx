@@ -17,8 +17,19 @@ export default function EmptyDiff({
 }
 
 function getEmptyDiffMessage(diff: FileData, fileMeta?: FileDiff): string {
-  if (diff.isBinary) return "Binary file cannot be shown.";
-  if (fileMeta?.status === "renamed" && fileMeta.changes === 0)
-    return "File renamed without changes.";
-  return "File contents cannot be shown.";
+  const messages = [];
+
+  if (diff.isBinary) {
+    messages.push("Binary file not shown.");
+  }
+
+  if (fileMeta?.status === "renamed" && fileMeta.changes === 0) {
+    messages.push("File renamed without changes.");
+  }
+
+  if (messages.length === 0) {
+    messages.push("File contents not shown."); // Default message
+  }
+
+  return messages.join(" ");
 }
