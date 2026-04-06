@@ -15,15 +15,15 @@
 
 .diff-gutter {
     color: var(--diff-gutter-font-color);
-    border-right: var(--border-thin-width) solid var(--border-gray);
+    border-right: var(--border-normal-width) solid var(--border-gray);
 }
 
 .diff-gutter-delete {
-    border-right: var(--border-thin-width) solid var(--diff-gutter-delete-border-color);
+    border-right: var(--border-normal-width) solid var(--diff-gutter-delete-border-color);
 }
 
 .diff-gutter-insert {
-    border-right: var(--border-thin-width) solid var(--diff-gutter-insert-border-color);
+    border-right: var(--border-normal-width) solid var(--diff-gutter-insert-border-color);
 }
 
 .diff-gutter-omit,
@@ -37,7 +37,7 @@
 
 .diff-gutter:has(.diff-gutter-highlighted) {
     background-color: var(--diff-gutter-highlight-bg-color);
-    border-right: var(--border-thin-width) solid var(--diff-gutter-highlight-border-color);
+    border-right: var(--border-normal-width) solid var(--diff-gutter-highlight-border-color);
 }
 
 .diff-gutter:has(.diff-gutter-highlighted) + .diff-code {
@@ -45,7 +45,7 @@
 }
 
 .diff-line .diff-code:nth-child(2) {
-    border-right: var(--border-thin-width) solid var(--border-gray);
+    border-right: var(--border-normal-width) solid var(--border-gray);
 }
 
 .diff-decoration-content {
@@ -55,5 +55,5 @@
 
 /* Docs: https://stackoverflow.com/questions/8720931/can-css-detect-the-number-of-children-an-element-has */
 .diff-widget-content:first-child:nth-last-child(2) {
-    border-right: var(--border-thin-width) solid var(--border-gray);
+    border-right: var(--border-normal-width) solid var(--border-gray);
 }
