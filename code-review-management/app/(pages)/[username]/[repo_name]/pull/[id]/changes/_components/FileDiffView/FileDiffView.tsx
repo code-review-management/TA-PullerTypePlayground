@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useMemo, useState } from "react";
+import { Dispatch, memo, SetStateAction, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -12,7 +12,7 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
+import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
@@ -32,7 +32,7 @@ import "./ReactDiffView.css";
  * 1. https://github.com/otakustay/react-diff-view?tab=readme-ov-file#render-diff-hunks
  */
 
-export default function FileDiffView({
+export default memo(function FileDiffView({
   fileMeta,
   oldPath,
   newPath,
@@ -40,6 +40,8 @@ export default function FileDiffView({
   viewType,
   hunks,
   publishedThreadsByLine,
+  draftThreadsByLine,
+  setDraftThreads,
 }: {
   fileMeta?: FileDiff;
   oldPath: string;
@@ -48,9 +50,10 @@ export default function FileDiffView({
   viewType: ViewType;
   hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
+  draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const activePath = getActivePath(diffType, oldPath, newPath);
-  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
@@ -72,8 +75,14 @@ export default function FileDiffView({
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
   const widgets = useMemo(
-    () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
-    [activePath, hunks, publishedThreadsByLine, draftThreads],
+    () =>
+      getWidgets(
+        activePath,
+        hunks,
+        publishedThreadsByLine,
+        draftThreadsByLine ?? {},
+      ),
+    [activePath, hunks, publishedThreadsByLine, draftThreadsByLine],
   );
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
@@ -121,4 +130,4 @@ export default function FileDiffView({
       </div>
     </ClearHighlightContext>
   );
-}
+});
