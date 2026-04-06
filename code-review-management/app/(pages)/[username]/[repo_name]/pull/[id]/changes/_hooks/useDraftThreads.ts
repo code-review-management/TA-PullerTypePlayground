@@ -3,9 +3,10 @@ import { Side } from "react-diff-view/types/interface";
 
 type Filename = string;
 type LineNumber = number;
-type DraftThreadKey = `${Filename}:${LineNumber}:${Side}`;
+type DraftThreadKey = `${LineNumber}:${Side}`;
 
-export type DraftThreads = Record<DraftThreadKey, DraftThreadItem>;
+export type DraftThreads = Record<Filename, DraftThreadsByLine>;
+export type DraftThreadsByLine = Record<DraftThreadKey, DraftThreadItem>;
 
 export interface DraftThreadItem {
   oldPath: string;
@@ -33,15 +34,13 @@ export function useDraftThreads() {
 /**
  * Gets the key to index into the `draftThreads` state record.
  *
- * @param filename: File containing the draft thread.
  * @param lineNumber: Max line number that the draft thread is anchored to.
  * @param side: Side of the diff that the draft thread is on ("old" or "new").
  * @returns: Key to index into the `draftThreads` state record.
  */
 export function getDraftThreadKey(
-  filename: string,
   lineNumber: number,
   side: Side,
 ): DraftThreadKey {
-  return `${filename}:${lineNumber}:${side}`;
+  return `${lineNumber}:${side}`;
 }
