@@ -2,29 +2,47 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
+import { getBasename } from "../../_utils/comment-utils";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
+type ThreadViewType = "inline" | "panel";
+
 /**
  * Displays a published thread that is anchored to specific lines in a file diff.
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
+ * @param viewType: Where the published thread is rendered.
  */
 export default function InlinePublishedThread({
   thread,
+  viewType,
 }: {
   thread: PublishedThreadItem;
+  viewType: ThreadViewType;
 }) {
   const { draftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
+  const threadHeader = (
+    <InlineThreadHeader title={getThreadTitle(thread, viewType)} />
+  );
 
   return (
-    <div className={styles.thread}>
-      <InlineThreadHeader title={getThreadTitle(thread)} />
+    <div
+      className={styles.thread}
+      {...(viewType === "inline" && { id: `thread-${thread.id}` })}
+    >
+      {viewType === "panel" ? (
+        <a href={`#thread-${thread.id}`} className={styles.panelHeaderAnchor}>
+          {threadHeader}
+        </a>
+      ) : (
+        threadHeader
+      )}
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
           <InlineCommentEntry
@@ -36,10 +54,14 @@ export default function InlinePublishedThread({
             defaultContent={comment.body}
           />
         ))}
-        {isDraftingReply ? (
-          <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
-        ) : (
-          <InlineDraftReplyTrigger thread={thread} />
+        {viewType === "inline" && ( // Reply option currently supported only for inline threads.
+          <>
+            {isDraftingReply ? (
+              <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
+            ) : (
+              <InlineDraftReplyTrigger thread={thread} />
+            )}
+          </>
         )}
       </div>
     </div>
@@ -65,9 +87,13 @@ function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
   );
 }
 
-function getThreadTitle(thread: PublishedThreadItem) {
+function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
+  const basename = getBasename(thread.path);
+
   // Placeholder in case the ending line and side are undefined.
-  if (!thread.line && !thread.side) return "File thread";
+  if (!thread.line && !thread.side) {
+    return viewType === "inline" ? "File thread" : basename;
+  }
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
@@ -79,8 +105,12 @@ function getThreadTitle(thread: PublishedThreadItem) {
     thread.start_line !== thread.line
   ) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
-    return `Thread on lines ${startRange} to ${endRange}`;
+    return viewType === "inline"
+      ? `Thread on lines ${startRange} to ${endRange}`
+      : `${getBasename(thread.path)}: ${startRange} to ${endRange}`;
   }
 
-  return `Thread on line ${endRange}`;
+  return viewType === "inline"
+    ? `Thread on line ${endRange}`
+    : `${getBasename(thread.path)}: ${endRange}`;
 }

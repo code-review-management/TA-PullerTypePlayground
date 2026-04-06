@@ -107,3 +107,13 @@ export function getPublishedThreadsByLine(
 
   return merged;
 }
+
+/**
+ * Gets the basename of a file path. Used for displaying the file basename in
+ * the comment headers on the activity panel.
+ *
+ * @param path: File path.
+ */
+export function getBasename(path: string) {
+  return path.split("/").at(-1) ?? path;
+}

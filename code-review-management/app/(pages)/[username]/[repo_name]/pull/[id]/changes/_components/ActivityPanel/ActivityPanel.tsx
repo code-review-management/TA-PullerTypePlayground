@@ -24,7 +24,7 @@ export default function ActivityPanel({
         {allThreads.map((thread) => {
           return (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
-              <InlinePublishedThread thread={thread} />
+              <InlinePublishedThread thread={thread} viewType="panel" />
             </div>
           );
         })}
