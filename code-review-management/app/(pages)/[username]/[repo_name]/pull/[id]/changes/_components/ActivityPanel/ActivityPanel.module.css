@@ -1,0 +1,20 @@
+.panel {
+    max-height: 100vh;
+    overflow-y: auto;
+
+    position: sticky;
+    top: 0;
+
+    /* TODO: Make activity panel resizable. */
+    min-width: 350px;
+    width: 350px;
+
+    padding: var(--spacer-10) var(--spacer-16);
+    border-left: var(--border-thin-width) solid var(--border-gray);
+    font-size: var(--font-size-diff-code);
+
+}
+
+.thread:not(:last-child) {
+    margin-bottom: var(--spacer-16);
+}
