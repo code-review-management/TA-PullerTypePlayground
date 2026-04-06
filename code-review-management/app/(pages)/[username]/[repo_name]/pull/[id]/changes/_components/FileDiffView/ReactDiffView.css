@@ -44,8 +44,8 @@
     background-color: var(--diff-code-highlight-bg-color);
 }
 
-.diff-line .diff-code:nth-child(2) {
-    border-right: var(--border-normal-width) solid var(--border-gray);
+.diff-line :nth-child(2 of .diff-gutter) {
+    border-left: var(--border-normal-width) solid var(--border-gray);
 }
 
 .diff-decoration-content {
