@@ -77,9 +77,10 @@ export default function Changes() {
                 />
               </div>
             </div>
-            {isActivityPanelOpen && (
-              <ActivityPanel publishedThreads={publishedThreads!} />
-            )}
+            <ActivityPanel
+              publishedThreads={publishedThreads!}
+              isOpen={isActivityPanelOpen}
+            />
           </div>
         </div>
       </DraftThreadsContext>

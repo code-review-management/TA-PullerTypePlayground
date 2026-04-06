@@ -1,16 +1,24 @@
-.panel {
+.panelWrapper {
     max-height: 100vh;
     overflow-y: auto;
 
+    /* TODO: Make activity panel resizable. */
+    width: 350px;
     position: sticky;
     top: 0;
 
-    /* TODO: Make activity panel resizable. */
-    min-width: 350px;
-    width: 350px;
-
     border-left: var(--border-normal-width) solid var(--border-gray);
     font-size: var(--font-size-diff-code);
+    transition: width 0.3s ease-in;
+}
+
+.panelWrapperClosed {
+    border-left: none;
+    width: 0;
+}
+
+.panel {
+    width: 350px;
 }
 
 .tabs {
