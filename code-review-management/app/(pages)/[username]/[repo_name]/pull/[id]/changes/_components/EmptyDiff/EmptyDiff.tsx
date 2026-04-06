@@ -2,6 +2,12 @@ import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
 import styles from "./EmptyDiff.module.css";
 
+/**
+ * Empty file diff with message explaining why.
+ *
+ * @param diff: Diff parsed by react-diff-view.
+ * @param fileMeta: File information from GitHub API.
+ */
 export default function EmptyDiff({
   diff,
   fileMeta,
@@ -17,6 +23,7 @@ export default function EmptyDiff({
 }
 
 function getEmptyDiffMessage(diff: FileData, fileMeta?: FileDiff): string {
+  // Array to display multiple applicable messages.
   const messages: string[] = [];
 
   if (diff.isBinary) {
@@ -27,8 +34,9 @@ function getEmptyDiffMessage(diff: FileData, fileMeta?: FileDiff): string {
     messages.push("File renamed without changes.");
   }
 
+  // Default message.
   if (messages.length === 0) {
-    messages.push("File contents not shown."); // Default message
+    messages.push("File contents not shown.");
   }
 
   return messages.join(" ");
