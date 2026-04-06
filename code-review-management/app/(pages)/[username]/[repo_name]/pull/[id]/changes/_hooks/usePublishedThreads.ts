@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useReviewCommentsQuery } from "@/lib/api/queries/useReviewCommentsQuery";
 import { Comment } from "@/types/github.types";
 

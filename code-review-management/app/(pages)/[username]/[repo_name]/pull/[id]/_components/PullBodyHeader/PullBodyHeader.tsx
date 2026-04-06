@@ -42,7 +42,7 @@ export default function PullBodyHeader({
           <div className={styles.userInfo}>
             <UserIcon
               avatarUrl={pullData.user?.avatar_url || ""}
-              username="octocat"
+              username={pullData.user?.login || ""}
               size={32}
             />
             <p className={styles.user}>{pullData.user?.login}</p>

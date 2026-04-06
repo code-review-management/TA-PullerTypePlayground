@@ -1,7 +1,9 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
@@ -19,6 +21,7 @@ export default function DiffListView({
   publishedThreads: PublishedThreads;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
+  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const {
     data: diffString,
     isPending,
@@ -29,8 +32,17 @@ export default function DiffListView({
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
     orderParsedDiffs(parsedDiffs, flatFileTree);
-    return parsedDiffs;
+    // Ordered `parsedDiffs` array has 1-1 matching with ordered `flatFileTree` array.
+    return parsedDiffs.map((diff, index) => ({
+      diff,
+      fileMeta: flatFileTree.at(index),
+    }));
   }, [diffString, flatFileTree]);
+
+  const publishedThreadsByDiff = usePublishedThreadsByDiff(
+    publishedThreads,
+    diffs,
+  );
 
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading diffs...</div>;
@@ -38,7 +50,7 @@ export default function DiffListView({
 
   return (
     <div className={styles.diffListView}>
-      {diffs.map((diff) => {
+      {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
 
@@ -46,15 +58,15 @@ export default function DiffListView({
           <div key={diffId}>
             <IconTooltip id={`collapse-expand-diff-${diffId}`} />
             <FileDiffView
+              fileMeta={fileMeta}
               oldPath={diff.oldPath}
               newPath={diff.newPath}
               diffType={diff.type}
               viewType="split"
               hunks={diff.hunks}
-              // When there are no published threads mapped to a file, pass an empty map.
-              publishedThreadsByLine={
-                publishedThreads.get(activePath) ?? new Map()
-              }
+              publishedThreadsByLine={publishedThreadsByDiff[activePath]}
+              draftThreadsByLine={draftThreads[activePath]}
+              setDraftThreads={setDraftThreads}
             />
           </div>
         );

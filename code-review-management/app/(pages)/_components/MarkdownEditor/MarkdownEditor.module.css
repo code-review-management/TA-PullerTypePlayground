@@ -1,21 +1,40 @@
 .editable {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-4);
-    border: var(--border-normal-width) solid;
-    border-radius: var(--border-radius);
-    padding: var(--spacer-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-4);
+  border: var(--border-normal-width) solid;
+  border-radius: var(--border-radius);
+  padding: var(--spacer-6);
 }
 
 .editable:focus-within {
-    outline: var(--border-thick-width) solid var(--color-interactive);
-    border-color: transparent;
+  outline: var(--border-thick-width) solid var(--color-interactive);
+  border-color: transparent !important;
 }
 
 .editable:not(:focus-within) {
-    border-color: var(--border-gray);
+  border-color: var(--border-gray);
 }
 
 .actions {
-    align-self: flex-end;
+  align-self: flex-end;
+}
+
+/* 
+    Placeholder styling: 
+        https://tiptap.dev/docs/editor/extensions/functionality/placeholder 
+    Access global class within a module: 
+        https://stackoverflow.com/questions/39805537/how-to-apply-global-styles-with-css-modules-in-a-react-app/40065474#40065474
+*/
+.tiptap :global(p.is-editor-empty:first-child)::before {
+  color: var(--text-secondary);
+  content: attr(data-placeholder);
+  height: 0;
+  pointer-events: none;
+}
+
+/* Hide Placeholder when focused */
+.editable:focus-within:first-child
+  :global(p.is-editor-empty:first-child)::before {
+  display: none;
 }

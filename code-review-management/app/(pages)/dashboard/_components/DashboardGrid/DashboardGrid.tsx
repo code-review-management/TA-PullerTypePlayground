@@ -24,7 +24,7 @@ export default function DashboardGrid() {
       </thead>
       <tbody className={styles.gridBody}>
         {MOCK_PULLS.map((pull) => (
-          <DashboardGridRow pull={pull} key={pull.id} />
+          <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
         ))}
       </tbody>
     </table>
@@ -46,6 +46,7 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
           avatarUrl={pull.user?.avatar_url ?? "/mock/octocat.png"}
           username={pull.user?.login ?? "octocat"}
           size={40}
+          showTooltip
         />
       </td>
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
@@ -80,11 +81,12 @@ function UserIconList({ users }: { users: User[] }) {
   return (
     <div className={styles.userIconList}>
       {firstThreeUsers.map((reviewer, idx) => (
-        <div key={reviewer.login} style={{ zIndex: -idx }}>
+        <div key={reviewer.login} style={{ zIndex: 1000 - idx }}>
           <UserIcon
             avatarUrl={reviewer.avatar_url}
             username={reviewer.login}
             size={32}
+            showTooltip
           />
         </div>
       ))}
