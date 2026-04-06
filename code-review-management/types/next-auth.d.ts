@@ -8,7 +8,7 @@ import NextAuth, { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
-    error?: string;
+    error?: "AccessTokenExpired";
     user: {
       githubId?: string | null;
       githubLogin: string;
