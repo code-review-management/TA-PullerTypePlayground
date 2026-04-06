@@ -22,9 +22,11 @@ export function deleteDraftThread(
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
   setDraftThreads((prev) => {
-    const key = getDraftThreadKey(draft.activePath, draft.end, draft.side);
+    const key = getDraftThreadKey(draft.end, draft.side);
     const draftThreads = { ...prev };
-    delete draftThreads[key];
+    const activePathThreads = { ...prev[draft.activePath] };
+    delete activePathThreads[key];
+    draftThreads[draft.activePath] = activePathThreads;
     return draftThreads;
   });
 }

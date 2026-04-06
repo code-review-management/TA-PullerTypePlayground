@@ -1,11 +1,12 @@
 import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
-import { getPublishedThreadsByLine } from "../../_utils/comment-utils";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
 import FileDiffView from "../FileDiffView/FileDiffView";
@@ -20,6 +21,7 @@ export default function DiffListView({
   publishedThreads: PublishedThreads;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
+  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const {
     data: diffString,
     isPending,
@@ -37,6 +39,11 @@ export default function DiffListView({
     }));
   }, [diffString, flatFileTree]);
 
+  const publishedThreadsByDiff = usePublishedThreadsByDiff(
+    publishedThreads,
+    diffs,
+  );
+
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) return <div>Failed to load diffs.</div>;
@@ -46,12 +53,6 @@ export default function DiffListView({
       {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
-        const publishedThreadsByLine = getPublishedThreadsByLine(
-          publishedThreads,
-          diff.oldPath,
-          activePath,
-          fileMeta?.status ?? "",
-        );
 
         return (
           <div key={diffId}>
@@ -63,7 +64,9 @@ export default function DiffListView({
               diffType={diff.type}
               viewType="split"
               hunks={diff.hunks}
-              publishedThreadsByLine={publishedThreadsByLine}
+              publishedThreadsByLine={publishedThreadsByDiff[activePath]}
+              draftThreadsByLine={draftThreads[activePath]}
+              setDraftThreads={setDraftThreads}
             />
           </div>
         );
