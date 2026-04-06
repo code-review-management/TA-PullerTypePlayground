@@ -9,6 +9,7 @@ import { ReactNode, useEffect } from "react";
  *
  * Docs:
  * 1. https://authjs.dev/guides/refresh-token-rotation#error-handling
+ * Followed this technique in the Auth.js docs.
  */
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
   const { data: session } = useSession();
