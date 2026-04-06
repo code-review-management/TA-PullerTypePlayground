@@ -16,13 +16,19 @@ export default function ActivityPanel({
 
   return (
     <div className={styles.panel}>
-      {allThreads.map((thread) => {
-        return (
-          <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
-            <InlinePublishedThread thread={thread} />
-          </div>
-        );
-      })}
+      <div className={styles.tabs}>
+        <div className={styles.tab}>Comments</div>
+        <div className={styles.tab}>Timeline</div>
+      </div>
+      <div className={styles.threads}>
+        {allThreads.map((thread) => {
+          return (
+            <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
+              <InlinePublishedThread thread={thread} />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
