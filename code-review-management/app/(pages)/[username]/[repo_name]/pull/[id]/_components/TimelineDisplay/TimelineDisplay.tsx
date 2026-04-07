@@ -20,7 +20,7 @@ import PRViewComment from "../PRViewComment/PRViewComment";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
 import { ReviewComment } from "@/types/github.types";
-import { useIsOverflow } from "../../changes/_hooks/useIsOverflow";
+import { useOverflows } from "../../changes/_hooks/useOverflows";
 
 /**
  * Renders the timeline of events.
@@ -131,7 +131,7 @@ function ExpandableCommitText({
   abbr_sha: string;
   message: string;
 }) {
-  const isOverflow = useIsOverflow(abbr_sha);
+  const isOverflow = useOverflows(abbr_sha);
   const [overflows, setOverflows] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
