@@ -28,3 +28,7 @@
 .filename {
     padding-bottom: var(--spacer-2);
 }
+
+.collapsed {
+    border-bottom: none;
+}
