@@ -1,14 +1,6 @@
 import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
-import {
-  ReactElement,
-  ReactNode,
-  RefObject,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, useState } from "react";
 import {
   EventType,
   processedTimelineEvent,
