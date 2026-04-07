@@ -19,4 +19,4 @@ export const PullRequestSchemaV2 = z.object({
   first: z.number().optional(),
   last: z.number().optional(),
   totalCount: z.number(),
-})
+});
