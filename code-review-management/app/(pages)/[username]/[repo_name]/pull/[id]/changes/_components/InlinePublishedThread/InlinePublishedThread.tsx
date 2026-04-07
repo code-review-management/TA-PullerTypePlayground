@@ -27,22 +27,16 @@ export default function InlinePublishedThread({
   const { draftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
-  const threadHeader = (
-    <InlineThreadHeader title={getThreadTitle(thread, viewType)} />
-  );
 
   return (
     <div
       className={styles.thread}
       {...(viewType === "inline" && { id: `thread-${thread.id}` })}
     >
-      {viewType === "panel" ? (
-        <a href={`#thread-${thread.id}`} className={styles.panelHeaderAnchor}>
-          {threadHeader}
-        </a>
-      ) : (
-        threadHeader
-      )}
+      <InlineThreadHeader
+        title={getThreadTitle(thread, viewType)}
+        {...(viewType === "panel" && { anchorHref: `#thread-${thread.id}` })}
+      />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
           <InlineCommentEntry

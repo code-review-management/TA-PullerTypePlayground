@@ -11,11 +11,6 @@
     border-color: transparent;
 }
 
-.panelHeaderAnchor {
-    text-decoration: none;
-    color: inherit;
-}
-
 .comments {
     display: flex;
     flex-direction: column;
