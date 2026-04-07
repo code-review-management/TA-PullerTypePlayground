@@ -140,7 +140,7 @@ function ExpandableCommitText({
   }
 
   return (
-    <div className={styles.commitLine}>
+    <div className={styles.expandableCommitText}>
       <a className={styles.commitSha} href={""}>
         #{abbr_sha}
       </a>{" "}
@@ -191,7 +191,7 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
 
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
-      <div className={styles.committedLine}>
+      <div className={styles.timelineCommit}>
         {/** TODO: Link to commit on GH */}
         <ExpandableCommitText abbr_sha={abbr_sha} message={message} />
         <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
