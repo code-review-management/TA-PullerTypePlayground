@@ -32,7 +32,7 @@ export default function PRChangesHeader({
         {pull.title} <span className={styles.pullNumber}>#{pull.number}</span>
       </h1>
       <div className={styles.branchDisplay}>
-        <BranchDisplay headRef={pull.head.ref} baseRef={pull.base.ref} />
+        <BranchDisplay headRef={pull.head?.ref ?? ""} baseRef={pull.base?.ref ?? ""} />
       </div>
     </>
   );

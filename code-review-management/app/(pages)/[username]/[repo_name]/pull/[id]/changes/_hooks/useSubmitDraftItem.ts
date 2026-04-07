@@ -43,7 +43,7 @@ export function useSubmitDraftItem(
     mutate(
       {
         body: editorContent,
-        commit_id: pull.head.sha,
+        commit_id: pull.head?.sha ?? "",
         path,
         start_side: githubSide,
         side: githubSide,
@@ -65,7 +65,7 @@ export function useSubmitDraftItem(
     mutate(
       {
         body: editorContent,
-        commit_id: pull.head.sha,
+        commit_id: pull.head?.sha ?? "",
         path: draft.payload.filename,
         in_reply_to: draft.payload.parentId,
       },
