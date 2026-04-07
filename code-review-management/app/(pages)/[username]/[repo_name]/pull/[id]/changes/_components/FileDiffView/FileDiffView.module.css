@@ -8,6 +8,7 @@
 
 .fileDiffView:target {
     outline: var(--border-thick-width) solid var(--color-interactive);
+    border-color: transparent;
 }
 
 .isHighlighting {
