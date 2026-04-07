@@ -140,17 +140,25 @@ function ExpandableCommitText({
   }
 
   return (
-    <div
-      id={`commit-${abbr_sha}-message`}
-      className={styles.commitLine}
-      style={{
-        ...(!isExpanded && { height: "1.25rem" }),
-      }}
-    >
+    <div className={styles.commitLine}>
       <a className={styles.commitSha} href={""}>
         #{abbr_sha}
       </a>{" "}
-      <p className={styles.commitMessage}>{message}</p>
+      <p
+        className={styles.commitMessage}
+        id={`commit-${abbr_sha}-message`}
+        style={{
+          ...(!isExpanded
+            ? {
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }
+            : {}),
+        }}
+      >
+        {message}
+      </p>
       {overflows ? (
         <button
           className={styles.expandButton}
@@ -184,8 +192,8 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
       <div className={styles.committedLine}>
-          {/** TODO: Link to commit on GH */}
-          <ExpandableCommitText abbr_sha={abbr_sha} message={message} />
+        {/** TODO: Link to commit on GH */}
+        <ExpandableCommitText abbr_sha={abbr_sha} message={message} />
         <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
       </div>
     </TimelineEventSmall>

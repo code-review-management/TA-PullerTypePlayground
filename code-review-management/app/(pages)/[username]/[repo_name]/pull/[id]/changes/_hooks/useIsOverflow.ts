@@ -10,7 +10,7 @@ export const useIsOverflow = (abbr_sha: string) => {
     }
 
     const trigger = () => {
-      const hasOverflow = current.scrollHeight > current.clientHeight;
+      const hasOverflow = current.offsetWidth < current.scrollWidth ;
 
       setIsOverflow(hasOverflow);
     };
