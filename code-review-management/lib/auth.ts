@@ -16,7 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     authorized: async ({ auth }) => {
       // Logged in users without a session error are authenticated, otherwise
       // redirect to login page.
-      return !!auth && !auth.error;
+      return auth != null && auth.error == null;
     },
     async jwt({ token, account, profile }) {
       if (account && profile) {
