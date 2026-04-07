@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     session({ session, token }) {
       // If the GitHub personal access token has expired, set session.error
-      // as a flag that we can check in the authorized callback.
+      // as a flag that we can check in the client-side and authorized callback.
       if (!token.expiresAt || new Date().getTime() > token.expiresAt) {
         session.error = "AccessTokenExpired";
       }
