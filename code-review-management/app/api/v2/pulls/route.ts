@@ -30,6 +30,9 @@ export async function GET(req: Request) {
   // Get query parameters
   const { searchParams: params } = new URL(req.url);
   const page = Number(params.get("page"));
+  const open = params.get("open");
+  const draft = params.get("draft");
+  const merged = params.get("merged");
 
   // Validate parameters
   if (isNaN(page) || page < 1) {
@@ -42,10 +45,18 @@ export async function GET(req: Request) {
   const octokit = new Octokit({ auth: token.accessToken });
 
   try {
+    let query = "is:pr involves:@me ";
+    query +=
+      open != null ? (open == "true" ? "state:open " : "state:closed ") : "";
+    query +=
+      draft != null ? (draft == "true" ? "draft:true " : "draft:false ") : "";
+    query +=
+      merged != null ? (merged == "true" ? "is:merged " : "is:unmerged ") : "";
+
     const data = await octokit.request("GET /search/issues", {
-      q: "is:pr state:open involves:@me",
+      q: query,
       page: page,
-      per_page: 100,
+      per_page: 5,
     });
 
     // Filter response
