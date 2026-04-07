@@ -1,5 +1,5 @@
 import refractor from "refractor";
-import { useMemo, useState } from "react";
+import { Dispatch, memo, SetStateAction, useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -7,18 +7,18 @@ import {
   FileData,
   GutterOptions,
   Hunk,
-  HunkData,
   tokenize,
   ViewType,
 } from "react-diff-view";
 
-import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
+import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
 import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
+import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
@@ -32,25 +32,23 @@ import "./ReactDiffView.css";
  * 1. https://github.com/otakustay/react-diff-view?tab=readme-ov-file#render-diff-hunks
  */
 
-export default function FileDiffView({
+export default memo(function FileDiffView({
+  diff,
   fileMeta,
-  oldPath,
-  newPath,
-  diffType,
   viewType,
-  hunks,
   publishedThreadsByLine,
+  draftThreadsByLine,
+  setDraftThreads,
 }: {
+  diff: FileData;
   fileMeta?: FileDiff;
-  oldPath: string;
-  newPath: string;
-  diffType: FileData["type"];
   viewType: ViewType;
-  hunks: HunkData[];
   publishedThreadsByLine: PublishedThreadsByLine;
+  draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
+  const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
-  const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
@@ -72,8 +70,14 @@ export default function FileDiffView({
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
   const widgets = useMemo(
-    () => getWidgets(activePath, hunks, publishedThreadsByLine, draftThreads),
-    [activePath, hunks, publishedThreadsByLine, draftThreads],
+    () =>
+      getWidgets(
+        activePath,
+        hunks,
+        publishedThreadsByLine,
+        draftThreadsByLine ?? {},
+      ),
+    [activePath, hunks, publishedThreadsByLine, draftThreadsByLine],
   );
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
@@ -99,26 +103,30 @@ export default function FileDiffView({
           setIsExpanded={setIsExpanded}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          <Diff
-            viewType={viewType}
-            diffType={diffType}
-            hunks={hunks}
-            tokens={tokens}
-            widgets={widgets}
-            renderGutter={renderGutter}
-            gutterEvents={highlightEvents}
-          >
-            {(hunks) =>
-              hunks.map((hunk) => (
-                <Fragment key={hunk.content}>
-                  <Decoration>{hunk.content}</Decoration>
-                  <Hunk hunk={hunk} />
-                </Fragment>
-              ))
-            }
-          </Diff>
+          {hunks.length > 0 ? (
+            <Diff
+              viewType={viewType}
+              diffType={diffType}
+              hunks={hunks}
+              tokens={tokens}
+              widgets={widgets}
+              renderGutter={renderGutter}
+              gutterEvents={highlightEvents}
+            >
+              {(hunks) =>
+                hunks.map((hunk) => (
+                  <Fragment key={hunk.content}>
+                    <Decoration>{hunk.content}</Decoration>
+                    <Hunk hunk={hunk} />
+                  </Fragment>
+                ))
+              }
+            </Diff>
+          ) : (
+            <EmptyDiff diff={diff} fileMeta={fileMeta} />
+          )}
         </div>
       </div>
     </ClearHighlightContext>
   );
-}
+});
