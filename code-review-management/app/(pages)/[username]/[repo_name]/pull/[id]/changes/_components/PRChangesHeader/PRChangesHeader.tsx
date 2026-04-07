@@ -44,11 +44,13 @@ export default function PRChangesHeader({
         viewLabel="View pull request"
         pull={pull}
       />
-      <HeaderButton variant="secondary" onClick={toggleActivityPanel}>
-        <span className={styles.activity}>
-          <Image src={CommentDiscussionIcon} alt="Activity" />
-        </span>
-      </HeaderButton>
+      <div className={isActivityPanelOpen ? styles.activityButtonEnabled : ""}>
+        <HeaderButton variant="secondary" onClick={toggleActivityPanel}>
+          <span className={styles.activityIcon}>
+            <Image src={CommentDiscussionIcon} alt="Comment discussion" />
+          </span>
+        </HeaderButton>
+      </div>
     </>
   );
 

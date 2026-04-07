@@ -30,6 +30,11 @@
     text-overflow: ellipsis;
 }
 
-.activity {
+.activityButtonEnabled button {
+    outline: var(--border-thick-width) solid var(--color-interactive);
+    border-color: transparent;
+}
+
+.activityIcon {
     display: flex;
 }
