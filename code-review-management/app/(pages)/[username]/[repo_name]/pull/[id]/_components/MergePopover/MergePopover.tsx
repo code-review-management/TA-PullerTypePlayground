@@ -74,11 +74,11 @@ export default function MergePopover({
 
   useEffect(() => {
     setCommitTitle((prev) =>
-      prev === null
+      prev === null && pull.base
         ? `Merge pull request #${pull.number} from ${pull.base.repo.full_name}`
         : prev,
     );
-  }, [setCommitTitle, pull.number, pull.base.repo.full_name]);
+  }, [setCommitTitle, pull.number, pull.base?.repo.full_name]);
 
   return (
     <PopoverContent>
