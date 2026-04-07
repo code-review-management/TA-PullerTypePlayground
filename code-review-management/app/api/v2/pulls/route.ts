@@ -56,7 +56,7 @@ export async function GET(req: Request) {
     const data = await octokit.request("GET /search/issues", {
       q: query,
       page: page,
-      per_page: 5,
+      per_page: 100,
     });
 
     // Filter response
