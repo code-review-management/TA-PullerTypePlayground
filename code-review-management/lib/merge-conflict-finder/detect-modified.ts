@@ -36,12 +36,21 @@ export const findConflictingFiles = async (
     octokit: Octokit
 ): Promise<ConflictingFilesResponseAndAllowance>  => {
     try {
-        const featureResponse = await octokit.rest.repos.compareCommits({
+        const [featureResponse, targetResponse] = await Promise.all([
+            octokit.rest.repos.compareCommits({
                 owner,
                 repo,
                 base: targetBranch,
                 head: featureBranch,
-        });
+            }),
+            octokit.rest.repos.compareCommits({
+                owner,
+                repo,
+                base: featureBranch,
+                head: targetBranch,
+            })
+        ]);
+
         const rateLimit = {
             limit: Number(featureResponse.headers['x-ratelimit-limit']),
             remaining: Number(featureResponse.headers['x-ratelimit-remaining']),
@@ -52,36 +61,32 @@ export const findConflictingFiles = async (
             data: featureResponse.data,
             rateLimit: rateLimit
         });
-        const validatedFeatureReponse: CompareResponse = featureAndRateData.data
+        const validatedFeatureReponse: CompareResponse = featureAndRateData.data;
+
+        const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse.data);
 
         const ancestorSha: string = validatedFeatureReponse.merge_base_commit.sha;
-        const targetSha: string = validatedFeatureReponse.base_commit.sha;
-        const featureFiles: string[] = validatedFeatureReponse.files.map(f => f.filename);
-
-        const targetResponse = await octokit.rest.repos.compareCommits({
-                owner,
-                repo,
-                base: ancestorSha,
-                head: targetBranch,
-        });
-        const validatedTargetReponse: CompareResponse = CompareResponseSchema.parse(targetResponse.data)
+        const targetSha: string = validatedFeatureReponse.base_commit.sha; 
         
-        const targetFiles = validatedTargetReponse.files.map(f => f.filename);
+        const featureFiles: string[] = validatedFeatureReponse.files.map(f => f.filename);
+        const targetFiles: string[] = validatedTargetReponse.files.map(f => f.filename);
+        
         const overlappingFiles = featureFiles.filter(file => targetFiles.includes(file));
 
-        const { limit, remaining, reset} = featureAndRateData.rateLimit;
-        const conflictFileCount: number = overlappingFiles.length
+        const { limit, remaining, reset } = featureAndRateData.rateLimit;
+        const conflictFileCount: number = overlappingFiles.length;
+        
         const apiCallCost: number = calculateTokenCost(conflictFileCount, validatedFeatureReponse);
-        const minutesRemaining: number = getMinutesUntilReset(reset)
+        const minutesRemaining: number = getMinutesUntilReset(reset);
 
-        let allowance = true
-        if (minutesRemaining === 0){
+        let allowance = true;
+        if (minutesRemaining === 0) {
             allowance = true;
-        } else if (remaining < API_REDUNDENCY){
+        } else if (remaining < API_REDUNDENCY) {
             allowance = false;
-        } else{
-            console.log("Cost: ", apiCallCost, " | remaining: ", remaining, " | token per minute: ", minutesRemaining * API_TOKENS_PER_MINUTE)
-            allowance = API_REDUNDENCY < remaining - (minutesRemaining * API_TOKENS_PER_MINUTE) - apiCallCost
+        } else {
+            console.log("Cost: ", apiCallCost, " | remaining: ", remaining, " | token per minute: ", minutesRemaining * API_TOKENS_PER_MINUTE);
+            allowance = API_REDUNDENCY < remaining - (minutesRemaining * API_TOKENS_PER_MINUTE) - apiCallCost;
         }
 
         return  {
