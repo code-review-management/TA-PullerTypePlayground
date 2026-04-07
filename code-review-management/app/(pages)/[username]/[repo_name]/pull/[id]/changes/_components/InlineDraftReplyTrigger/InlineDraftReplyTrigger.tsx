@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
+import InlineGeminiSuggestionButton from "../InlineGeminiSuggestionButton/InlineGeminiSuggestionButton";
 import UserIcon from "@components/UserIcon/UserIcon";
 import styles from "./InlineDraftReplyTrigger.module.css";
 
@@ -40,6 +41,7 @@ export default function InlineDraftReplyTrigger({
       <button className={styles.trigger} onClick={handleCreateDraftReply}>
         Reply
       </button>
+      <InlineGeminiSuggestionButton thread={thread}/>
     </div>
   );
 }

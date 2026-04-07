@@ -15,7 +15,11 @@
     --color-interactive: #1e84de;
     --color-interactive-transparent: #d8edff80;
     --color-disabled: #919191;
-    
+
+    /* AI Colors*/
+    --ai-color-purple: #36013F;
+    --ai-text-white: #FFFFFF;
+
     /* Tooltip colors */
     --tooltip-gray: #4c4c4c;
 
