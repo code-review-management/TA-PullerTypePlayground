@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { formatDate } from "../../../_utils/date-utils";
-import Image from "next/image";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@components/UserIcon/UserIcon";
 import styles from "./InlineCommentEntry.module.css";
