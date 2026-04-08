@@ -64,6 +64,8 @@ export function usePublishedThreads(
     buildCommentRelations,
   );
 
+  // Fetch all paginated published threads.
+  // Docs: https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries
   useEffect(() => {
     if (hasNextPage && !isFetching) {
       fetchNextPage();

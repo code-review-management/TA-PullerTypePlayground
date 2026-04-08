@@ -30,8 +30,12 @@ export function usePaginatedReviewCommentsQuery(
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
+    // Use `useCallback` to avoid running this `select` function on every render.
+    // Docs: https://tanstack.com/query/v5/docs/framework/react/guides/render-optimizations#memoization
     select: useCallback(
       (data: InfiniteData<CommentV2, number>) => {
+        // To reformat data, pass all pages of comments to
+        // `buildCommentRelations` declared in `usePublishedThreads` hook.
         return select(data.pages.flatMap((page) => page.data));
       },
       [select],
