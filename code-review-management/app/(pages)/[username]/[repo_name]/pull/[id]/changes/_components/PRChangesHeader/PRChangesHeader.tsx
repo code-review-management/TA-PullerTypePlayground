@@ -50,7 +50,7 @@ export default function PRChangesHeader({
       <div className={isActivityPanelOpen ? styles.activityButtonEnabled : ""}>
         <HeaderButton variant="secondary" onClick={toggleActivityPanel}>
           <span className={styles.activityIcon}>
-            <Image src={CommentDiscussionIcon} alt="Comment discussion" />
+            <Image src={CommentDiscussionIcon} alt="Comment activity" />
           </span>
         </HeaderButton>
       </div>
