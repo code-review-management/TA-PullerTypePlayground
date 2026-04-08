@@ -29,17 +29,15 @@ export default function ActivityPanel({
     >
       <div className={styles.panel}>
         <div className={styles.header}>
-          <div className={styles.tabs}>
-            {TABS.map((tab) => (
-              <div
-                key={tab}
-                className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ""}`}
-                onClick={() => setActiveTab(tab)}
-              >
-                {tab}
-              </div>
-            ))}
-          </div>
+          {TABS.map((tab) => (
+            <div
+              key={tab}
+              className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ""}`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </div>
+          ))}
           <div className={styles.close}>
             <CancelButton
               onClick={() => togglePanel()}

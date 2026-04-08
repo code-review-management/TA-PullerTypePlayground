@@ -30,6 +30,7 @@
 
 .header {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     gap: var(--spacer-16);
 
@@ -42,11 +43,6 @@
     padding-bottom: 0;
     background-color: var(--background-light);
     font-size: 0.9375rem;
-}
-
-.tabs {
-    display: flex;
-    flex: 1;
 }
 
 .tab {
@@ -69,7 +65,7 @@
 }
 
 .close {
-    margin-top: var(--spacer-2);
+    margin-top: var(--spacer-4);
 }
 
 .threads {
