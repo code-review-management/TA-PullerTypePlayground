@@ -1,7 +1,9 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { fetcher } from "../utils/fetcher";
 import { Comment } from "@/types/github.types";
 import { CommentV2 } from "@/types/github.types.wrapper";
+import { PublishedThreads } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
+import { useCallback } from "react";
 
 /**
  * Fetches the review comments made on the diffs of a GitHub pull request.
@@ -18,7 +20,7 @@ export function usePaginatedReviewCommentsQuery(
   owner: string,
   repo: string,
   pullNumber: string,
-  select?: (comments: Comment[]) => void,
+  select: (comments: Comment[]) => PublishedThreads,
 ) {
   return useInfiniteQuery({
     queryKey: ["review-comments", owner, repo, pullNumber],
@@ -28,5 +30,11 @@ export function usePaginatedReviewCommentsQuery(
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
+    select: useCallback(
+      (data: InfiniteData<CommentV2, number>) => {
+        return select(data.pages.flatMap((page) => page.data));
+      },
+      [select],
+    ),
   });
 }
