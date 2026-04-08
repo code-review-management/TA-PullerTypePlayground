@@ -43,6 +43,7 @@ export default function ActivityPanel({
             <CancelButton
               onClick={() => togglePanel()}
               tooltipContent="Close panel"
+              size={13}
             />
           </div>
         </div>
