@@ -101,10 +101,10 @@ function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
     return viewType === "inline"
       ? `Thread on lines ${startRange} to ${endRange}`
-      : `${getBasename(thread.path)}: ${startRange} to ${endRange}`;
+      : `${basename}: ${startRange} to ${endRange}`;
   }
 
   return viewType === "inline"
     ? `Thread on line ${endRange}`
-    : `${getBasename(thread.path)}: ${endRange}`;
+    : `${basename}: ${endRange}`;
 }
