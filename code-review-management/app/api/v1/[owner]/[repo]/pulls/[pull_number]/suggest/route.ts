@@ -8,6 +8,7 @@ type RouteContext = {
   params: Promise<{
     owner: string;
     repo: string;
+    pull_number: number;
   }>;
 };
 
@@ -15,7 +16,7 @@ const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
 export async function POST(req: Request, context: RouteContext) {
-  const { owner, repo } = await context.params;
+  const { owner, repo, pull_number } = await context.params;
   const reqBody = await req.json();
   const reqArgs = ThreadSuggestionRequestSchema.safeParse(reqBody);
   const token = await getToken({
@@ -48,9 +49,9 @@ export async function POST(req: Request, context: RouteContext) {
   
   try {
     const octokit = new Octokit({ auth: token.accessToken });
-    const response = await generateSuggestion(octokit, reqArgs.data, owner, repo);
+    const response = await generateSuggestion(octokit, reqArgs.data, owner, repo, pull_number);
 
-    return new Response(JSON.stringify(response, null, 2), {
+    return new Response("", {
       status: 200
     });
   } catch (error) {

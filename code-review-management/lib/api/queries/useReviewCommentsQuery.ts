@@ -15,12 +15,12 @@ export function useReviewCommentsQuery<TData = Comment[]>(
   owner: string,
   repo: string,
   pullNumber: string,
-  select?: (comments: Comment[], owner: string, repo: string) => TData,
+  select?: (comments: Comment[], owner: string, repo: string, pullNumber: string) => TData,
 ) {
   return useQuery({
     queryKey: ["review-comments", owner, repo, pullNumber],
     queryFn: async (): Promise<Comment[]> =>
       fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/comments`),
-    select: select ? (data: Comment[]) => select(data, owner, repo) : undefined,
+    select: select ? (data: Comment[]) => select(data, owner, repo, pullNumber) : undefined,
   });
 }

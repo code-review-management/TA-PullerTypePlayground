@@ -1,6 +1,3 @@
-import { useSession } from "next-auth/react";
-import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
-import { getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { ThreadSuggestionRequest } from "@/types/request.types";
 import styles from "./InlineGeminiSuggestionButton.module.css";
@@ -10,9 +7,6 @@ export default function InlineGeminiSuggestionButton({
 }: {
   thread: PublishedThreadItem;
 }) {
-  const { data: session } = useSession();
-  const { setDraftReplies } = useDraftRepliesContext();
-  const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
 
   const handleCallGeminiSuggestion = () => {
     if (thread.start_line === null){
@@ -28,7 +22,7 @@ export default function InlineGeminiSuggestionButton({
       comments: thread.comments,
     }
 
-    fetch(`/api/v1/${thread.owner}/${thread.repo}/pulls/suggest`, {
+    fetch(`/api/v1/${thread.owner}/${thread.repo}/pulls/${thread.pull_number}/suggest`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

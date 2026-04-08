@@ -22,7 +22,7 @@ export function getSystemPrompt() : string {
             maxExclusiveLine: Number
         },
         additionBlock: {
-            insersionCode: string,
+            insertionCode: string,
         }
     }
     `
@@ -46,9 +46,6 @@ export function getUserPrompt(fileContext: FileContext, comments: Comment[], lin
   return `
     File Content:
     ${numberedContent}
-
-    File Diff:
-    ${fileContext.diff}
 
     Comment Line:
     ${line}

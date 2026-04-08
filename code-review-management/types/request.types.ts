@@ -7,6 +7,8 @@ export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
 export type PRMergeRequest = z.infer<typeof PRMergeRequestSchema>;
 export type CreateReviewRequest = z.infer<typeof CreateReviewRequestSchema>;
 export type ThreadSuggestionRequest = z.infer<typeof ThreadSuggestionRequestSchema>;
+export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
+
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
@@ -81,4 +83,18 @@ export const ThreadSuggestionRequestSchema = z.object({
   line: z.number(),
   sha: z.string(),
   comments: z.array(CommentSchema),
+});
+
+const DeleteRangeSchema = z.object({
+  minInclusiveLine: z.number(),
+  maxExclusiveLine: z.number(),
+});
+
+const AdditionBlockSchema = z.object({
+  insertionCode: z.string(),
+});
+
+export const CodeEditResponseSchema = z.object({
+  deleteRange: DeleteRangeSchema,
+  additionBlock: AdditionBlockSchema,
 });

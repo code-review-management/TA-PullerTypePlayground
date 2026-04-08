@@ -1,8 +1,8 @@
 import { Octokit } from "octokit";
 
 export interface FileContext {
-  diff: string | null;
-  content: string | null;
+//   diff: string | null;
+  content: string;
 }
 
 /**
@@ -20,23 +20,22 @@ export async function getFileDiffAndContent(
     filePath: string,
     sha: string
 ): Promise<FileContext> {
-    let diff: string | null = null;
-    let content: string | null = null;
-
+    // let diff: string | null = null;
+    let content: string = "";
     try {
-    const { data: commitData } = await octokit.rest.repos.getCommit({
-        owner,
-        repo,
-        ref: sha,
-    });
+    // const { data: commitData } = await octokit.rest.repos.getCommit({
+    //     owner,
+    //     repo,
+    //     ref: sha,
+    // });
 
-    const fileInCommit = commitData.files?.find((f) => f.filename === filePath);
+    // const fileInCommit = commitData.files?.find((f) => f.filename === filePath);
     
-    if (fileInCommit) {
-        diff = fileInCommit.patch || null;
-    } else {
-        console.warn(`File ${filePath} was not modified in commit ${sha}`);
-    }
+    // if (fileInCommit) {
+    //     diff = fileInCommit.patch || null;
+    // } else {
+    //     console.warn(`File ${filePath} was not modified in commit ${sha}`);
+    // }
 
     const { data: contentData } = await octokit.rest.repos.getContent({
         owner,
@@ -49,7 +48,7 @@ export async function getFileDiffAndContent(
         content = Buffer.from(contentData.content, "base64").toString("utf-8");
     }
 
-    return { diff, content };
+    return { content };
 
   } catch (error) {
     console.error(`Error fetching data for ${filePath} at ${sha}:`, error);
