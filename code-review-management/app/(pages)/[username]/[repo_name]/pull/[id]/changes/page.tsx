@@ -24,6 +24,7 @@ export default function Changes() {
     publishedThreads,
     isPending: isPublishedThreadsPending,
     isError: isPublishedThreadsError,
+    hasNextPage: hasNextPublishedThreadsPage,
   } = usePublishedThreads(username, repo_name, id);
 
   const {
@@ -45,7 +46,12 @@ export default function Changes() {
    * TODO: Replace with proper loading/error UI. Move to affected sections
    * instead of returning at the page-level.
    */
-  if (isPullPending || isFilesPending || isPublishedThreadsPending) {
+  if (
+    isPullPending ||
+    isFilesPending ||
+    isPublishedThreadsPending ||
+    hasNextPublishedThreadsPage
+  ) {
     return <div>Loading changes...</div>;
   }
   if (isPullError || isFilesError || isPublishedThreadsError) {

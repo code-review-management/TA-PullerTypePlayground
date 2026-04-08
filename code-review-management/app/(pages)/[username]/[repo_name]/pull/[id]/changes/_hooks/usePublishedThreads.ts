@@ -1,4 +1,5 @@
-import { useReviewCommentsQuery } from "@/lib/api/queries/useReviewCommentsQuery";
+import { useEffect } from "react";
+import { usePaginatedReviewCommentsQuery } from "@/lib/api/queries/usePaginatedReviewCommentsQuery";
 import { Comment } from "@/types/github.types";
 
 /*
@@ -44,14 +45,37 @@ export interface PublishedThreadItem {
   comments: Comment[];
 }
 
-export function usePublishedThreads(owner: string, repo: string, pullNumber: string) {
+export function usePublishedThreads(
+  owner: string,
+  repo: string,
+  pullNumber: string,
+) {
   const {
     data: publishedThreads,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
     isPending,
     isError,
-  } = useReviewCommentsQuery(owner, repo, pullNumber, buildCommentRelations);
+  } = usePaginatedReviewCommentsQuery(
+    owner,
+    repo,
+    pullNumber,
+    buildCommentRelations,
+  );
 
-  return { publishedThreads, isPending, isError };
+  useEffect(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetching, fetchNextPage]);
+
+  return {
+    publishedThreads,
+    hasNextPage,
+    isPending,
+    isError,
+  };
 }
 
 function buildCommentRelations(comments: Comment[]) {
@@ -93,14 +117,16 @@ function groupThreadsByFile(comments: Comment[]) {
     if (comment.in_reply_to_id) {
       // Use the non-null assertion since it's guaranteed that 'path' is a key
       // in 'threadsByFile' since we set it above if it does not already exist.
-      const parent = threadsByFile.get(comment.path)!.find((thread) => thread.id === comment.in_reply_to_id);
+      const parent = threadsByFile
+        .get(comment.path)!
+        .find((thread) => thread.id === comment.in_reply_to_id);
       parent?.comments.push(comment);
     } else {
-    /**
-     * If the comment's 'inReplyTo' field is NOT populated, then it is the
-     * PARENT for a thread. We push this comment as a NEW thread belonging to
-     * its corresponding file.
-     */
+      /**
+       * If the comment's 'inReplyTo' field is NOT populated, then it is the
+       * PARENT for a thread. We push this comment as a NEW thread belonging to
+       * its corresponding file.
+       */
       threadsByFile.get(comment.path)!.push({
         id: comment.id,
         path: comment.path,
