@@ -2,7 +2,8 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
-import { getBasename } from "../../_utils/comment-utils";
+import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
+import CancelButton from "@components/CancelButton/CancelButton";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
@@ -24,9 +25,13 @@ export default function InlinePublishedThread({
   thread: PublishedThreadItem;
   viewType: ThreadViewType;
 }) {
-  const { draftReplies } = useDraftRepliesContext();
+  const { draftReplies, setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
+
+  const handleCancelReply = () => {
+    deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
+  };
 
   return (
     <div
@@ -51,7 +56,10 @@ export default function InlinePublishedThread({
         {viewType === "inline" && ( // Reply option currently supported only for inline threads.
           <>
             {isDraftingReply ? (
-              <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
+              <InlineDraftReplyEntry
+                reply={draftReplies[draftReplyKey]}
+                handleCancel={handleCancelReply}
+              />
             ) : (
               <InlineDraftReplyTrigger thread={thread} />
             )}
@@ -62,14 +70,20 @@ export default function InlinePublishedThread({
   );
 }
 
-function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
+function InlineDraftReplyEntry({
+  reply,
+  handleCancel,
+}: {
+  reply: DraftReplyItem;
+  handleCancel: () => void;
+}) {
   const { data: session } = useSession();
   return (
     <InlineCommentEntry
       avatar={session?.user.image ?? "/mock/octocat.png"}
       username={session?.user.githubLogin ?? ""}
       defaultEditable={true}
-      actions={
+      editorActions={
         <DraftEditorActions
           draft={{
             type: "reply",
@@ -77,6 +91,7 @@ function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
           }}
         />
       }
+      headerActions={<CancelButton onClick={handleCancel} />}
     />
   );
 }

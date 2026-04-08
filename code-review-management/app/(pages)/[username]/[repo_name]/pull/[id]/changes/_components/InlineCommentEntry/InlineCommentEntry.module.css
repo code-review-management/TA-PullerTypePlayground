@@ -13,8 +13,14 @@
 
 .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     margin: var(--spacer-4) 0;
+    gap: var(--spacer-8);
+}
+
+.metadata {
+    display: flex;
     gap: var(--spacer-8);
 }
 

@@ -24,29 +24,36 @@ export default function InlineCommentEntry({
   created,
   defaultEditable,
   defaultContent,
-  actions,
+  editorActions,
+  headerActions,
 }: {
   avatar: string;
   username: string;
   created?: string;
   defaultEditable: boolean;
   defaultContent?: string;
-  actions?: ReactNode;
+  editorActions?: ReactNode;
+  headerActions?: ReactNode;
 }) {
   return (
     <div className={styles.comment}>
       <UserIcon avatarUrl={avatar} username={username} size={22} />
       <div className={styles.content}>
         <div className={styles.header}>
-          <span className={styles.username}>{username}</span>
-          {created && (
-            <span className={styles.date}>{formatDate(new Date(created))}</span>
-          )}
+          <div className={styles.metadata}>
+            <span className={styles.username}>{username}</span>
+            {created && (
+              <span className={styles.date}>
+                {formatDate(new Date(created))}
+              </span>
+            )}
+          </div>
+          {headerActions}
         </div>
         <MarkdownEditor
           defaultEditable={defaultEditable}
           defaultContent={defaultContent}
-          actions={actions}
+          actions={editorActions}
         />
       </div>
     </div>

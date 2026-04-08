@@ -53,7 +53,7 @@ export default function InlineDraftThread({
           avatar={session?.user.image ?? "/mock/octocat.png"}
           username={session?.user.githubLogin ?? ""}
           defaultEditable={true}
-          actions={<DraftEditorActions draft={draftItem} />}
+          editorActions={<DraftEditorActions draft={draftItem} />}
         />
       </div>
     </div>
