@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { Side } from "react-diff-view/types/interface";
 import {
+  DraftReplies,
+  DraftReplyItem,
+  getDraftReplyKey,
+} from "../_hooks/useDraftReplies";
+import {
   DraftThreadItem,
   DraftThreads,
   getDraftThreadKey,
@@ -28,6 +33,24 @@ export function deleteDraftThread(
     delete activePathThreads[key];
     draftThreads[draft.activePath] = activePathThreads;
     return draftThreads;
+  });
+}
+
+/**
+ * Deletes the given draft reply from the state.
+ *
+ * @param reply: `DraftReplyItem` representing the reply to delete.
+ * @param setDraftReplies: Draft reply state setter.
+ */
+export function deleteDraftReply(
+  reply: DraftReplyItem,
+  setDraftReplies: Dispatch<SetStateAction<DraftReplies>>,
+) {
+  setDraftReplies((prev) => {
+    const key = getDraftReplyKey(reply.filename, reply.parentId);
+    const draftReplies = { ...prev };
+    delete draftReplies[key];
+    return draftReplies;
   });
 }
 
