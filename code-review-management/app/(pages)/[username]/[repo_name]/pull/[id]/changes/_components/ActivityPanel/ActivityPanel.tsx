@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import Image from "next/image";
-import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import CancelButton from "@components/CancelButton/CancelButton";
+import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
+import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import styles from "./ActivityPanel.module.css";
 
 // Docs: https://stackoverflow.com/a/62900613
@@ -48,7 +49,7 @@ export default function ActivityPanel({
         {allThreads.length === 0 ? (
           <div className={styles.emptyCommentsMessage}>
             <Image
-              src="/icons/comment_discussion.svg"
+              src={CommentDiscussionIcon}
               alt="Comment discussion"
               height={24}
               width={24}
@@ -57,16 +58,14 @@ export default function ActivityPanel({
           </div>
         ) : (
           <div className={styles.threads}>
-            {allThreads.map((thread) => {
-              return (
-                <div
-                  key={`${thread.path}-${thread.id}`}
-                  className={styles.thread}
-                >
-                  <InlinePublishedThread thread={thread} viewType="panel" />
-                </div>
-              );
-            })}
+            {allThreads.map((thread) => (
+              <div
+                key={`${thread.path}-${thread.id}`}
+                className={styles.thread}
+              >
+                <InlinePublishedThread thread={thread} viewType="panel" />
+              </div>
+            ))}
           </div>
         )}
       </div>
