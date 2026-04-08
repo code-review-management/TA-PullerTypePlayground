@@ -59,7 +59,7 @@
     border-bottom: var(--border-thick-width) solid transparent;
 
     cursor: pointer;
-    color: var(--color-disabled);
+    color: var(--text-secondary);
     font-weight: 450;
 }
 
