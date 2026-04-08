@@ -79,7 +79,11 @@ function ThreadList({
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => (
-        <InlinePublishedThread key={publishedThread.id} thread={publishedThread} />
+        <InlinePublishedThread
+          key={publishedThread.id}
+          thread={publishedThread}
+          viewType="inline"
+        />
       ))}
       {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>

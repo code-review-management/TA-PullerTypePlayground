@@ -19,7 +19,9 @@ export default function FileDiffHeader({
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div className={styles.fileDiffHeader}>
+    <div
+      className={`${styles.fileDiffHeader} ${!isExpanded ? styles.collapsed : ""}`}
+    >
       <Image
         src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
         alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
