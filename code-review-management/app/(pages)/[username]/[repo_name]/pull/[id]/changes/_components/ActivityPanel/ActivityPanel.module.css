@@ -10,9 +10,9 @@
     top: 0;
     /* TODO: Make activity panel resizable. */
     width: 350px;
+    border-left: var(--border-normal-width) solid var(--border-gray);
 
     background-color: var(--background-light);
-    border-left: var(--border-normal-width) solid var(--border-gray);
     font-size: var(--font-size-diff-code);
     transition: width 0.3s ease-in;
 }
@@ -29,32 +29,48 @@
     width: 350px;
 }
 
-.tabs {
+.header {
     display: flex;
     justify-content: space-between;
+    gap: var(--spacer-16);
 
     position: sticky;
     top: 0;
     z-index: 10;
 
     border-bottom: var(--border-normal-width) solid var(--border-gray);
+    padding: var(--spacer-12) var(--spacer-16);
+    padding-bottom: 0;
     background-color: var(--background-light);
     font-size: 0.9375rem;
 }
 
-.tab:not(:last-child) {
-    border-right: var(--border-normal-width) solid var(--border-gray);
+.tabs {
+    display: flex;
+    flex: 1;
 }
 
 .tab {
-    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
+    flex: 1;
 
-    padding: var(--spacer-10) var(--spacer-16);
-    font-weight: 450;
+    padding-bottom: var(--spacer-10);
+    border-bottom: var(--border-thick-width) solid transparent;
+
     cursor: pointer;
+    color: var(--color-disabled);
+    font-weight: 450;
+}
+
+.activeTab {
+    color: var(--color-interactive);
+    border-color: var(--color-interactive);
+    font-weight: 500;
+}
+
+.close {
+    margin-top: var(--spacer-2);
 }
 
 .threads {

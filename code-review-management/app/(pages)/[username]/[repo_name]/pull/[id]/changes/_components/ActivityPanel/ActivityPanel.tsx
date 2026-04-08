@@ -1,15 +1,24 @@
+import { useState } from "react";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import Image from "next/image";
 import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
+import CancelButton from "@components/CancelButton/CancelButton";
 import styles from "./ActivityPanel.module.css";
+
+// Docs: https://stackoverflow.com/a/62900613
+const TABS = ["Comments", "Timeline"] as const;
+export type ActivityPanelTabs = (typeof TABS)[number];
 
 export default function ActivityPanel({
   publishedThreads,
   isOpen,
+  togglePanel,
 }: {
   publishedThreads: PublishedThreads;
   isOpen: boolean;
+  togglePanel: () => void;
 }) {
+  const [activeTab, setActiveTab] = useState<ActivityPanelTabs>("Comments");
   const allThreads = [...publishedThreads.values()]
     .flatMap((byLine) => [...byLine.values()])
     .flatMap(({ left, right }) => [...left.values(), ...right.values()]);
@@ -19,9 +28,24 @@ export default function ActivityPanel({
       className={`${styles.panelWrapper} ${!isOpen ? styles.panelWrapperClosed : ""}`}
     >
       <div className={styles.panel}>
-        <div className={styles.tabs}>
-          <div className={styles.tab}>Comments</div>
-          <div className={styles.tab}>Timeline</div>
+        <div className={styles.header}>
+          <div className={styles.tabs}>
+            {TABS.map((tab) => (
+              <div
+                key={tab}
+                className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ""}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </div>
+            ))}
+          </div>
+          <div className={styles.close}>
+            <CancelButton
+              onClick={() => togglePanel()}
+              tooltipContent="Close panel"
+            />
+          </div>
         </div>
         {allThreads.length === 0 ? (
           <div className={styles.emptyCommentsMessage}>

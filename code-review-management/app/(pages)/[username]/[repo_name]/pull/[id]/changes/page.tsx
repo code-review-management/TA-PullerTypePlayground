@@ -80,6 +80,7 @@ export default function Changes() {
             <ActivityPanel
               publishedThreads={publishedThreads!}
               isOpen={isActivityPanelOpen}
+              togglePanel={toggleActivityPanel}
             />
           </div>
         </div>
