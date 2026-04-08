@@ -51,7 +51,7 @@ export default function ActivityPanel({
           <div className={styles.emptyCommentsMessage}>
             <Image
               src={CommentDiscussionIcon}
-              alt="Comment discussion"
+              alt="Comment activity"
               height={24}
               width={24}
             />
