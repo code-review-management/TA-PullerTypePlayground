@@ -16,8 +16,9 @@ import styles from "./InlineCommentEntry.module.css";
  * @param defaultContent: Contents of the comment. Can be empty for newly
  *                        created drafts.
  * @param editorActions: Action buttons to render below the editor content when
- *                       it is editable (e.g., publish or cancel buttons).
- * @param headerActions: Action buttons to render on the header of a comment.
+ *                       it is editable (e.g., publish buttons).
+ * @param headerActions: Action buttons to render on the right-side of a
+ *                       comment header.
  */
 export default function InlineCommentEntry({
   avatar,
