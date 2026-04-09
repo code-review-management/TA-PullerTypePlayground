@@ -177,9 +177,13 @@ function ExpandableCommitText({
  * @param event: Object representing the event that is the commit.
  */
 function TimelineCommit({ event }: { event: processedTimelineEvent }) {
+  if (!event.eventObj) {
+    return;
+  }
+  
   const abbr_sha =
-    "sha" in event.eventObj! ? event.eventObj.sha?.slice(0, 7) : "";
-  const message = "message" in event.eventObj! ? event.eventObj.message : "";
+    "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
+  const message = "message" in event.eventObj ? event.eventObj.message : "";
 
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
