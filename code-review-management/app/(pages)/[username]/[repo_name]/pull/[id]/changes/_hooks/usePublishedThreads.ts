@@ -1,5 +1,5 @@
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import { usePaginatedReviewCommentsQuery } from "@/lib/api/queries/usePaginatedReviewCommentsQuery";
+import { useReviewCommentsQuery } from "@/lib/api/queries/useReviewCommentsQuery";
 import { Comment } from "@/types/github.types";
 
 /*
@@ -57,12 +57,7 @@ export function usePublishedThreads(
     isFetching,
     isPending,
     isError,
-  } = usePaginatedReviewCommentsQuery(
-    owner,
-    repo,
-    pullNumber,
-    buildCommentRelations,
-  );
+  } = useReviewCommentsQuery(owner, repo, pullNumber, buildCommentRelations);
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
   return {
