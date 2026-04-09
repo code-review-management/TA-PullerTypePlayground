@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "@/lib/api/utils/fetcher";
-import { FileDiff } from "@/types/github.types";
+import { useCallback } from "react";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import { fetcher } from "../utils/fetcher";
+import { FileDiffV2 } from "@/types/github.types.wrapper";
 
 /**
- * Fetches the files changed in a GitHub pull request.
+ * Fetches the files changed in a GitHub pull request. Supports pagination.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
@@ -15,9 +16,16 @@ export function useListFilesQuery(
   repo: string,
   pullNumber: string,
 ) {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["list-files", owner, repo, pullNumber],
-    queryFn: async (): Promise<FileDiff[]> =>
-      fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/list-files`),
+    queryFn: async ({ pageParam }): Promise<FileDiffV2> =>
+      fetcher(
+        `/api/v2/${owner}/${repo}/pulls/${pullNumber}/list-files?page=${pageParam}`,
+      ),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.next,
+    select: useCallback((data: InfiniteData<FileDiffV2, number>) => {
+      return data.pages.flatMap((page) => page.data);
+    }, []),
   });
 }
