@@ -52,12 +52,12 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
         <Link
           className={styles.rowTitleTop}
-          href={`${pull.base.repo.full_name}/pull/${pull.number}`}
+          href={`${pull.base?.repo.full_name}/pull/${pull.number}`}
         >
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
         </Link>
-        <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
+        <span className={styles.rowTitleBottom}>{pull.head?.repo.name}</span>
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />

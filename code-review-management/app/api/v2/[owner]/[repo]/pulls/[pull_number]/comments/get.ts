@@ -1,18 +1,24 @@
 /*
-/api/v2/repos
+/api/v2/{owner}/{repo}/pulls/{pull_number}/comments
+
+Method: GET
 */
 
-import { Repo, RepoSchema } from "@/types/github.types";
-import { RepoV2 } from "@/types/github.types.wrapper";
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
+import { CommentSchema, Comment } from "@/types/github.types";
+import { CommentV2 } from "@/types/github.types.wrapper";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
 
 const secret = process.env.AUTH_SECRET;
-const cookie = getCookieName()
+const cookie = getCookieName();
 
-export async function GET(req: Request) {
+export async function _get(
+  req: Request,
+  params: { owner: string; repo: string; pull_number: string },
+) {
+  const { owner, repo, pull_number } = params;
   const token = await getToken({
     req: req,
     secret: secret,
@@ -21,15 +27,15 @@ export async function GET(req: Request) {
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
-    console.log("Unauthorized request at ${new Date()}");
+    console.log(`Unauthorized request at ${new Date()}`);
     return new Response(null, { status: 401 });
   }
 
   // Get query parameters
-  const { searchParams: params } = new URL(req.url);
-  const page = Number(params.get("page"));
+  const { searchParams: qParams } = new URL(req.url);
+  const page = Number(qParams.get("page"));
 
-  // Validate parameters
+  // Validate query parameters
   if (isNaN(page) || page < 1) {
     return Response.json(
       { error: "Missing or invalid query parameters" },
@@ -37,22 +43,35 @@ export async function GET(req: Request) {
     );
   }
 
+  // Validate required parameters
+  if (!owner || !repo || !pull_number) {
+    return Response.json(
+      { error: "Missing required parameters" },
+      { status: 400 },
+    );
+  }
+
   const octokit: Octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const data = await octokit.rest.repos.listForAuthenticatedUser({
+    const data = await octokit.rest.pulls.listReviewComments({
+      owner: owner,
+      repo: repo,
+      pull_number: Number(pull_number),
+      sort: "created",
+      direction: "asc",
       page: page,
       per_page: 100,
     });
 
     // Filter response
-    const filteredResponse: Repo[] = data.data.map((item) =>
-      RepoSchema.parse(item),
+    const filteredResponse: Comment[] = data.data.map((item) =>
+      CommentSchema.parse(item),
     );
 
     const linkHeaders = parse(data.headers.link);
 
-    const wrappedResponse: RepoV2 = {
+    const wrappedResponse: CommentV2 = {
       data: filteredResponse,
       ...(linkHeaders && {
         ...(linkHeaders.prev && { prev: Number(linkHeaders.prev.page) }),
