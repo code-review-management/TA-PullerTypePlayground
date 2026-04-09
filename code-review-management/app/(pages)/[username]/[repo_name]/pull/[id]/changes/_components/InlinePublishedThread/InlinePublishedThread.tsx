@@ -3,8 +3,12 @@ import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
+import { getCreateReviewCommentMutationKey } from "@/lib/api/mutations/useCreateReviewCommentMutation";
 import CancelButton from "@components/CancelButton/CancelButton";
-import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
+import DraftEditorActions, {
+  DraftItem,
+} from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
@@ -78,21 +82,21 @@ function InlineDraftReplyEntry({
   handleCancel: () => void;
 }) {
   const { data: session } = useSession();
+  const draftItem: DraftItem = { type: "reply", payload: reply };
+  const isSubmitPending = useMutationInFlight({
+    mutationKey: getCreateReviewCommentMutationKey(draftItem),
+  });
+
   return (
     <InlineCommentEntry
       avatar={session?.user.image ?? "/mock/octocat.png"}
       username={session?.user.githubLogin ?? ""}
       defaultEditable={true}
-      editorActions={
-        <DraftEditorActions
-          draft={{
-            type: "reply",
-            payload: reply,
-          }}
-        />
-      }
+      editorActions={<DraftEditorActions draft={draftItem} />}
       headerActions={
-        <CancelButton onClick={handleCancel} tooltipContent="Cancel reply" />
+        !isSubmitPending && (
+          <CancelButton onClick={handleCancel} tooltipContent="Cancel reply" />
+        )
       }
     />
   );
