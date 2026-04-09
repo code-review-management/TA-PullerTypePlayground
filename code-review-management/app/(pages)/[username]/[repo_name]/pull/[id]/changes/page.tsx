@@ -26,7 +26,6 @@ export default function Changes() {
     publishedThreads,
     isPending: isPublishedThreadsPending,
     isError: isPublishedThreadsError,
-    hasNextPage: hasNextPublishedThreadsPage,
   } = usePublishedThreads(username, repo_name, id);
 
   const {

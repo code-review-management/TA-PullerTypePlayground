@@ -62,7 +62,6 @@ export function usePublishedThreads(
 
   return {
     publishedThreads,
-    hasNextPage,
     isPending,
     isError,
   };
