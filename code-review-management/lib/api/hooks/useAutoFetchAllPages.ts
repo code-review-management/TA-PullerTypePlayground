@@ -7,9 +7,9 @@ import { useEffect } from "react";
  * Docs:
  * 1. https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries
  *
- * @param hasNextPage: `hasNextPage` field from `useInfiniteQuery` Tanstack hook.
- * @param isFetching: `isFetching` field from `useInfiniteQuery` Tanstack hook.
- * @param fetchNextPage: `fetchNextPage` field from `useInfiniteQuery` Tanstack hook.
+ * @param hasNextPage: `hasNextPage` field from `useInfiniteQuery` TanStack hook.
+ * @param isFetching: `isFetching` field from `useInfiniteQuery` TanStack hook.
+ * @param fetchNextPage: `fetchNextPage` field from `useInfiniteQuery` TanStack hook.
  */
 export function useAutoFetchAllPages(
   hasNextPage: boolean,
