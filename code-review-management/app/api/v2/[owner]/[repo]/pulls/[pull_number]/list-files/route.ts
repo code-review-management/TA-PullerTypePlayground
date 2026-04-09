@@ -64,7 +64,7 @@ export async function GET(req: Request, context: RouteContext) {
       repo: repo,
       pull_number: Number(pull_number),
       page: page,
-      per_page: 3,
+      per_page: 100,
     });
 
     // Filter response
