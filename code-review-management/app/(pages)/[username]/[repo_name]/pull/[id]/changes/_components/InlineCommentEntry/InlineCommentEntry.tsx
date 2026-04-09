@@ -17,7 +17,7 @@ import styles from "./InlineCommentEntry.module.css";
  *                        created drafts.
  * @param editorActions: Action buttons to render below the editor content when
  *                       it is editable (e.g., publish buttons).
- * @param headerActions: Action buttons to render on the right-side of a
+ * @param headerActions: Action buttons to render on the right-side of the
  *                       comment header.
  */
 export default function InlineCommentEntry({
