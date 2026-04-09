@@ -9,7 +9,7 @@ import { FileDiffV2 } from "@/types/github.types.wrapper";
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
- * @returns: TanStack query result containing the paginated list of files changed.
+ * @returns: TanStack query result containing the files changed.
  */
 export function useListFilesQuery(
   owner: string,

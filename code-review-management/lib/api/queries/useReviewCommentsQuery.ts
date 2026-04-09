@@ -1,9 +1,8 @@
+import { useCallback } from "react";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { fetcher } from "../utils/fetcher";
 import { Comment } from "@/types/github.types";
 import { CommentV2 } from "@/types/github.types.wrapper";
-import { PublishedThreads } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
-import { useCallback } from "react";
 
 /**
  * Fetches the review comments made on the diffs of a GitHub pull request.
@@ -13,14 +12,13 @@ import { useCallback } from "react";
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
  * @param select: Function that transforms the data returned.
- * @returns: TanStack query result containing the paginated list of review
- *           comments.
+ * @returns: TanStack query result containing the list of review comments.
  */
-export function useReviewCommentsQuery(
+export function useReviewCommentsQuery<T>(
   owner: string,
   repo: string,
   pullNumber: string,
-  select: (comments: Comment[]) => PublishedThreads,
+  select: (comments: Comment[]) => T,
 ) {
   return useInfiniteQuery({
     queryKey: ["review-comments", owner, repo, pullNumber],
