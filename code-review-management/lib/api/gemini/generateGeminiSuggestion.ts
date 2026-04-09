@@ -36,11 +36,11 @@ export async function callGeminiToGenerateSuggestion(systemPrompt: string, userP
         console.log("Calling model!");
         // console.log("System prompt: \n" + systemPrompt);
         // console.log("User prompt: " + userPrompt);
-        // const result = await model.generateContent(userPrompt);
-        // const responseText = result.response.text();
+        const result = await model.generateContent(userPrompt);
+        const responseText = result.response.text();
         // console.log("----Gemini response----");
         // console.log(responseText);
-        return parseGeminiJsonResponse(cachedResult);
+        return parseGeminiJsonResponse(responseText);
     } catch (error){
         console.log("Error when calling gemini: " + error);
         throw error;

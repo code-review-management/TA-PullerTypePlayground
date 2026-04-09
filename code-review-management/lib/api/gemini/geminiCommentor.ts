@@ -10,7 +10,7 @@ export async function commentGeminiSuggestion(
     fileContext: string,
     thread: ThreadSuggestionRequest
 ) {
-    const header: string = "<Gemini Suggestion> (AI can make mistakes)";
+    const header: string = "Gemini Suggestion (AI can make mistakes)";
     
     const fileLines: string[] = fileContext.split('\n');
     const { deleteRange, additionBlock } = suggestion;
