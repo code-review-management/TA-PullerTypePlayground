@@ -6,10 +6,9 @@ import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
+import { PullRequestV2 } from "@/types/github.types.wrapper";
 
-export default function DashboardGrid() {
-  // TODO: Use real data instead of MOCK_PULLS
-
+export default function DashboardGrid({pulls}: {pulls: PullRequestV2}) {
   return (
     <table className={styles.dashboardGrid}>
       <thead>
@@ -23,7 +22,7 @@ export default function DashboardGrid() {
         </tr>
       </thead>
       <tbody className={styles.gridBody}>
-        {MOCK_PULLS.map((pull) => (
+        {pulls.map((pull) => (
           <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
         ))}
       </tbody>

@@ -15,7 +15,8 @@ import { PullRequestV2 } from "@/types/github.types.wrapper";
  * @param pullNumber: Pull request number.
  * @returns: TanStack query result containing the pull request data.
  */
-export function usePullsQuery() {
+export function usePullsQuery(queryType: "open" | "draft" | "merged" = "open") {
+
   return useInfiniteQuery({
     queryKey: ["pulls"],
     queryFn: ({ pageParam }): Promise<PullRequestV2> =>
