@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { PullParams } from "@/types/routing.types";
@@ -9,6 +9,7 @@ import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
+import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
@@ -42,6 +43,9 @@ export default function Changes() {
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
   const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);
 
+  const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(false);
+  const toggleActivityPanel = () => setIsActivityPanelOpen((prev) => !prev);
+
   /**
    * TODO: Replace with proper loading/error UI. Move to affected sections
    * instead of returning at the page-level.
@@ -61,13 +65,28 @@ export default function Changes() {
     <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
       <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
         <div className={styles.page}>
-          <PRChangesHeader pull={pull} />
-          <div className={styles.changes}>
-            <FileTree fileTree={fileTree} />
-            <DiffListView
-              flatFileTree={flatFileTree}
-              // Use non-null assertion since threads are defined if not in pending/error state.
+          <div className={styles.pageBody}>
+            <div className={styles.bodyMain}>
+              <PRChangesHeader
+                pull={pull}
+                isActivityPanelOpen={isActivityPanelOpen}
+                toggleActivityPanel={toggleActivityPanel}
+              />
+              <div
+                className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
+              >
+                <FileTree fileTree={fileTree} />
+                <DiffListView
+                  flatFileTree={flatFileTree}
+                  // Use non-null assertion since threads are defined if not in pending/error state.
+                  publishedThreads={publishedThreads!}
+                />
+              </div>
+            </div>
+            <ActivityPanel
               publishedThreads={publishedThreads!}
+              isOpen={isActivityPanelOpen}
+              togglePanel={toggleActivityPanel}
             />
           </div>
         </div>
