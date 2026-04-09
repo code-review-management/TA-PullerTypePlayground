@@ -124,12 +124,7 @@ function ExpandableCommitText({
   message: string;
 }) {
   const isOverflow = useOverflows(abbr_sha);
-  const [overflows, setOverflows] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
-  if (isOverflow && !overflows) {
-    setOverflows(true);
-  }
 
   return (
     <div className={styles.expandableCommitText}>
@@ -151,7 +146,7 @@ function ExpandableCommitText({
       >
         {message}
       </p>
-      {overflows ? (
+      {isOverflow && (
         <button
           className={styles.expandButton}
           onClick={() => setIsExpanded((prev) => !prev)}
@@ -163,7 +158,7 @@ function ExpandableCommitText({
             height={10}
           />
         </button>
-      ) : null}
+      )}
     </div>
   );
 }
@@ -180,7 +175,7 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
   if (!event.eventObj) {
     return;
   }
-  
+
   const abbr_sha =
     "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
   const message = "message" in event.eventObj ? event.eventObj.message : "";
