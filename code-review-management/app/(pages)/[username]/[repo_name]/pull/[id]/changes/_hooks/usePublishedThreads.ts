@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import { usePaginatedReviewCommentsQuery } from "@/lib/api/queries/usePaginatedReviewCommentsQuery";
 import { Comment } from "@/types/github.types";
 
@@ -63,14 +63,7 @@ export function usePublishedThreads(
     pullNumber,
     buildCommentRelations,
   );
-
-  // Fetch all paginated published threads.
-  // Docs: https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries
-  useEffect(() => {
-    if (hasNextPage && !isFetching) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
   return {
     publishedThreads,
