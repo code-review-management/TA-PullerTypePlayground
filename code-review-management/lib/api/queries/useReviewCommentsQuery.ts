@@ -23,7 +23,7 @@ export function useReviewCommentsQuery(
   select: (comments: Comment[]) => PublishedThreads,
 ) {
   return useInfiniteQuery({
-    queryKey: ["paginated-review-comments", owner, repo, pullNumber],
+    queryKey: ["review-comments", owner, repo, pullNumber],
     queryFn: async ({ pageParam }): Promise<CommentV2> =>
       fetcher(
         `/api/v2/${owner}/${repo}/pulls/${pullNumber}/comments?page=${pageParam}`,

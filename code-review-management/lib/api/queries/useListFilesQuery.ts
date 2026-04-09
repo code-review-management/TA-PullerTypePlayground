@@ -17,7 +17,7 @@ export function useListFilesQuery(
   pullNumber: string,
 ) {
   return useInfiniteQuery({
-    queryKey: ["paginated-file-diffs", owner, repo, pullNumber],
+    queryKey: ["list-files", owner, repo, pullNumber],
     queryFn: async ({ pageParam }): Promise<FileDiffV2> =>
       fetcher(
         `/api/v2/${owner}/${repo}/pulls/${pullNumber}/list-files?page=${pageParam}`,
