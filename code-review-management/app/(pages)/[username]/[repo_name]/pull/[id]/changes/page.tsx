@@ -55,12 +55,7 @@ export default function Changes() {
    * TODO: Replace with proper loading/error UI. Move to affected sections
    * instead of returning at the page-level.
    */
-  if (
-    isPullPending ||
-    isFilesPending ||
-    isPublishedThreadsPending ||
-    hasNextPublishedThreadsPage
-  ) {
+  if (isPullPending || isFilesPending || isPublishedThreadsPending) {
     return <div>Loading changes...</div>;
   }
   if (isPullError || isFilesError || isPublishedThreadsError) {
