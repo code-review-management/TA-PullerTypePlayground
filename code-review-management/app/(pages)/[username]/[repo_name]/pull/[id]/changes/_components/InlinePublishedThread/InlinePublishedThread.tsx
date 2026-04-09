@@ -91,7 +91,9 @@ function InlineDraftReplyEntry({
           }}
         />
       }
-      headerActions={<CancelButton onClick={handleCancel} />}
+      headerActions={
+        <CancelButton onClick={handleCancel} tooltipContent="Cancel reply" />
+      }
     />
   );
 }

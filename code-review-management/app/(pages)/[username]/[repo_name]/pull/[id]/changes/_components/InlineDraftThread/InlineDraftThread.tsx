@@ -46,7 +46,14 @@ export default function InlineDraftThread({
     <div className={styles.thread}>
       <InlineThreadHeader
         title={getThreadTitle(draft)}
-        actions={!isSubmitPending && <CancelButton onClick={handleCancel} />}
+        actions={
+          !isSubmitPending && (
+            <CancelButton
+              onClick={handleCancel}
+              tooltipContent="Cancel draft"
+            />
+          )
+        }
       />
       <div className={styles.comment}>
         <InlineCommentEntry
