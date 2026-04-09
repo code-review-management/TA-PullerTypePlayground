@@ -8,6 +8,7 @@ import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { usePublishedThreads } from "./_hooks/usePublishedThreads";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
 import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
@@ -36,9 +37,13 @@ export default function Changes() {
 
   const {
     data: files,
+    hasNextPage: hasNextFilesPage,
+    fetchNextPage: fetchNextFilesPage,
+    isFetching: isFilesFetching,
     isPending: isFilesPending,
     isError: isFilesError,
   } = useListFilesQuery(username, repo_name, id);
+  useAutoFetchAllPages(hasNextFilesPage, isFilesFetching, fetchNextFilesPage);
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
   const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);

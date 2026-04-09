@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
 /**
- * Automatically fetches all paginated pages for a `useInfiniteQuery` hook.
+ * Automatically fetches all paginated pages when `useInfiniteQuery` hook is
+ * used.
  *
  * Docs:
  * 1. https://tanstack.com/query/latest/docs/framework/react/guides/infinite-queries
