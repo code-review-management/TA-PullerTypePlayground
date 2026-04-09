@@ -9,7 +9,7 @@
     gap: var(--spacer-8);
 
     padding: var(--spacer-10) var(--spacer-12);
-    border-bottom: var(--border-thin-width) solid var(--border-gray);
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
 
     background-color: var(--background-light);
     font-size: var(--font-size-label);
@@ -27,4 +27,8 @@
 
 .filename {
     padding-bottom: var(--spacer-2);
+}
+
+.collapsed {
+    border-bottom: none;
 }

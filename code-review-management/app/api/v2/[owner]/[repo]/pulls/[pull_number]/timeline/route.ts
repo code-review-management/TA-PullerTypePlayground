@@ -74,7 +74,7 @@ export async function GET(req: Request, context: RouteContext) {
     const filteredResponse: TimelineEvent[] = await Promise.all(
       data.data
         .map(async (item) => {
-          let { data: parsedItem, success: status } =
+          const { data: parsedItem, success: status } =
             TimelineEventSchema.safeParse(item);
           if (!status) {
             console.log("Error parsing\n" + item);
@@ -88,18 +88,18 @@ export async function GET(req: Request, context: RouteContext) {
             parsedItem.event == "reviewed"
           ) {
             // Inject review comments into object
-            parsedItem = parsedItem as ReviewedEvent;
+            const eventItem = parsedItem as ReviewedEvent;
 
             const { data: reviewContents } =
               await octokit.rest.pulls.listCommentsForReview({
                 owner: owner,
                 repo: repo,
                 pull_number: Number(pull_number),
-                review_id: parsedItem.id,
+                review_id: eventItem.id,
               });
 
             // Filter comments in review
-            parsedItem.comments = reviewContents
+            eventItem.comments = reviewContents
               .map((item) => {
                 const parsedItem = ReviewCommentSchema.safeParse(item);
                 if (!parsedItem.success) {
@@ -110,6 +110,8 @@ export async function GET(req: Request, context: RouteContext) {
                 return parsedItem.success ? parsedItem.data : null;
               })
               .filter((element) => element !== null);
+
+							return eventItem ?? null;
           }
 
           return parsedItem ?? null;
