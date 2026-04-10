@@ -22,6 +22,11 @@ export default function Dashboard() {
     }
   }, [appliedSearchString, hasNextPage, isFetching, fetchNextPage]);
 
+  const clearSearch = () => {
+    setSearchString("");
+    setAppliedSearchString("");
+  };
+
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
@@ -44,14 +49,27 @@ export default function Dashboard() {
               className={styles.searchPullTitle}
               placeholder="Search pull requests"
             ></input>
-            <button className={styles.searchButton} type="submit">
-              <Image
-                src="/icons/search.svg"
-                alt="Search"
-                height={24}
-                width={24}
-              />
-            </button>
+            <div className={styles.searchButtons}>
+              {(searchString || appliedSearchString) && (
+                <button type="button" onClick={clearSearch}>
+                  <Image
+                    src="/icons/cancel_search.svg"
+                    alt="Cancel search"
+                    height={24}
+                    width={24}
+                  />
+                </button>
+              )}
+              <div className={styles.searchButtonsDivider} />
+              <button type="submit">
+                <Image
+                  src="/icons/search.svg"
+                  alt="Search"
+                  height={24}
+                  width={24}
+                />
+              </button>
+            </div>
           </form>
           <DashboardGrid pulls={pulls} searchString={appliedSearchString} />
           {hasNextPage &&

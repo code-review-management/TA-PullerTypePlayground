@@ -29,13 +29,24 @@
   border: 1px solid var(--border-gray-secondary);
 }
 
-.searchButton {
-  border: none;
-  background: none;
+.searchButtons {
   position: absolute;
   right: 10px;
-  top: 6px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-4);
+}
+
+.searchButtons button {
+  border: none;
+  background: none;
   cursor: pointer;
+}
+
+.searchButtonsDivider {
+  height: 20px;
+  border-left: 1px solid var(--border-gray-secondary);
 }
 
 .loadingSpinnerWrapper {
