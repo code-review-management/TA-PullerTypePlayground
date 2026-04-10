@@ -59,7 +59,7 @@ function ChangeCount({
   additions: number;
   deletions: number;
 }) {
-  if (additions < 1 || deletions < 1) return null;
+  if (additions < 1 && deletions < 1) return null;
 
   return (
     <div className={styles.lineNumbers}>
