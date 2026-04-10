@@ -25,10 +25,20 @@
     background-color: var(--icon-hover-gray);
 }
 
-.filename {
-    padding-bottom: var(--spacer-2);
+.collapsed {
+    border-color: transparent;
 }
 
-.collapsed {
-    border-bottom: none;
+.lineNumbers {
+    display: flex;
+    gap: var(--spacer-6);
+    font-size: var(--font-size-diff-code);
+}
+
+.additions {
+    color: var(--color-success);
+}
+
+.deletions {
+    color: var(--color-failure);
 }

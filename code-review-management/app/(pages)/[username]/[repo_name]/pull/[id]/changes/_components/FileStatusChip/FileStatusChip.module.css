@@ -1,0 +1,26 @@
+.fileStatusChip {
+    padding: var(--spacer-2) var(--spacer-8);
+    border-radius: var(--spacer-12);
+    font-size: 0.6875rem;
+    font-weight: 500;
+}
+
+.added {
+    color: var(--status-added);
+    background-color: rgba(var(--status-added-rgb), 0.1);
+}
+
+.modified {
+    color: var(--status-modified);
+    background-color: rgba(var(--status-modified-rgb), 0.1);
+}
+
+.removed {
+    color: var(--status-removed);
+    background-color: rgba(var(--status-removed-rgb), 0.1);
+}
+
+.renamed {
+    color: var(--status-renamed);
+    background-color: rgba(var(--status-waiting-rgb), 0.1);
+}
