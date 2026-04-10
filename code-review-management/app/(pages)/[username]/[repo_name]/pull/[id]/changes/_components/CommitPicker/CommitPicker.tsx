@@ -11,14 +11,13 @@ export default function CommitPicker() {
           Commits <span className={styles.count}>{MOCK_COMMITS.length}</span>
         </p>
         <div>
+          <label className={styles.option}>
+            <CommitPickerRadio />
+            <span className={styles.message}>Show all changes</span>
+          </label>
           {MOCK_COMMITS.map((commit) => (
             <label key={commit.sha} className={styles.option}>
-              <input
-                type="radio"
-                name="commit"
-                required
-                className={styles.radio}
-              />
+              <CommitPickerRadio />
               <span className={styles.info}>
                 <span className={styles.message}>{commit.commit.message}</span>
                 <span className={styles.meta}>
@@ -33,4 +32,8 @@ export default function CommitPicker() {
       </div>
     </PopoverContent>
   );
+}
+
+function CommitPickerRadio() {
+  return <input type="radio" name="commit" required className={styles.radio} />;
 }
