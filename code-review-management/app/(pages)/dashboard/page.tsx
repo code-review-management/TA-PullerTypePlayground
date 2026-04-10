@@ -4,7 +4,7 @@ import IconTooltip from "../_components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
@@ -12,6 +12,13 @@ export default function Dashboard() {
   const [searchString, setSearchString] = useState("");
 
   const pulls = data?.pages.flatMap((page) => page.data);
+
+  // Auto fetch all remaining pulls if a search string is applied
+  useEffect(() => {
+    if (searchString.length !== 0 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [searchString, hasNextPage, isFetching, fetchNextPage]);
 
   return (
     <div className={styles.page}>
@@ -21,12 +28,11 @@ export default function Dashboard() {
         <LoadingSpinner />
       ) : (
         <div className={styles.pageBody}>
-          <input value={searchString} onChange={(e) => setSearchString(e.target.value)}></input>
-          <DashboardGrid
-            pulls={pulls}
-            hasNextPage={hasNextPage}
-            fetchNextPage={fetchNextPage}
-          />
+          <input
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+          ></input>
+          <DashboardGrid pulls={pulls} searchString={searchString} />
           {hasNextPage &&
             (isFetching ? (
               <div className={styles.loadingSpinnerWrapper}>

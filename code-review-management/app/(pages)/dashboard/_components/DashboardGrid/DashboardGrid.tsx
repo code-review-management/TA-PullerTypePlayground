@@ -6,7 +6,15 @@ import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid({ pulls }: { pulls: PullRequest[] }) {
+export default function DashboardGrid({
+  pulls,
+  searchString,
+}: {
+  pulls: PullRequest[];
+  searchString: string;
+}) {
+  const filteredPulls = pulls.filter((pull) => pull.title.toLowerCase().includes(searchString.toLowerCase()));
+  
   return (
     <div>
       <table className={styles.dashboardGrid}>
@@ -21,8 +29,8 @@ export default function DashboardGrid({ pulls }: { pulls: PullRequest[] }) {
           </tr>
         </thead>
         <tbody className={styles.gridBody}>
-          {pulls.map((pull) => (
-            <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
+          {filteredPulls.map((pull) => (
+            <DashboardGridRow pull={pull} key={pull.id} />
           ))}
         </tbody>
       </table>
