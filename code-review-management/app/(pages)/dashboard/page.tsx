@@ -5,20 +5,22 @@ import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     usePullsQuery();
   const [searchString, setSearchString] = useState("");
+  const [appliedSearchString, setAppliedSearchString] = useState("");
 
   const pulls = data?.pages.flatMap((page) => page.data);
 
   // Auto fetch all remaining pulls if a search string is applied
   useEffect(() => {
-    if (searchString.length !== 0 && hasNextPage && !isFetching) {
+    if (appliedSearchString.length !== 0 && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [searchString, hasNextPage, isFetching, fetchNextPage]);
+  }, [appliedSearchString, hasNextPage, isFetching, fetchNextPage]);
 
   return (
     <div className={styles.page}>
@@ -28,11 +30,30 @@ export default function Dashboard() {
         <LoadingSpinner />
       ) : (
         <div className={styles.pageBody}>
-          <input
-            value={searchString}
-            onChange={(e) => setSearchString(e.target.value)}
-          ></input>
-          <DashboardGrid pulls={pulls} searchString={searchString} />
+          <form
+            action="#"
+            className={styles.searchPullTitleWrapper}
+            onSubmit={(e) => {
+              e.preventDefault();
+              setAppliedSearchString(searchString);
+            }}
+          >
+            <input
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
+              className={styles.searchPullTitle}
+              placeholder="Search pull requests"
+            ></input>
+            <button className={styles.searchButton} type="submit">
+              <Image
+                src="/icons/search.svg"
+                alt="Search"
+                height={24}
+                width={24}
+              />
+            </button>
+          </form>
+          <DashboardGrid pulls={pulls} searchString={appliedSearchString} />
           {hasNextPage &&
             (isFetching ? (
               <div className={styles.loadingSpinnerWrapper}>

@@ -17,6 +17,27 @@
   gap: var(--spacer-8);
 }
 
+.searchPullTitleWrapper {
+  position: relative;
+  display: flex;
+}
+
+.searchPullTitle {
+  flex: 1;
+  padding: 10px 20px;
+  border-radius: 32px;
+  border: 1px solid var(--border-gray-secondary);
+}
+
+.searchButton {
+  border: none;
+  background: none;
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  cursor: pointer;
+}
+
 .loadingSpinnerWrapper {
   display: flex;
   justify-content: center;
