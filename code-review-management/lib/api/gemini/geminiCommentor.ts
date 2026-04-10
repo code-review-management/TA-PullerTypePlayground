@@ -20,8 +20,10 @@ export async function commentGeminiSuggestion(
         deletionBlock += fileLines[i] + '\n';
     }
 
+    const relativeDiff = deleteRange.minInclusiveLine - thread.line;
+    const tag = `<!--[Gemini Suggestion#HLTP][${relativeDiff}]-->`;
     const { insertionCode } = additionBlock;
-    const body = convertIntoMarkdownSuggestion(header, deletionBlock, insertionCode);
+    const body = convertIntoMarkdownSuggestion(header, tag, deletionBlock, insertionCode);
 
     try {
         const response = await octokit.rest.pulls.createReplyForReviewComment({
@@ -38,7 +40,7 @@ export async function commentGeminiSuggestion(
   }
 }
 
-function convertIntoMarkdownSuggestion(header: string, deletionBlock: string, insertionBlock: string): string {
+function convertIntoMarkdownSuggestion(header: string, tag: string, deletionBlock: string, insertionBlock: string): string {
 
   const formatDiffLines = (text: string, prefix: string): string => {
     return text
@@ -53,9 +55,12 @@ function convertIntoMarkdownSuggestion(header: string, deletionBlock: string, in
 
 
   return `### ${header}
-
+${tag}
 \`\`\`diff
+<!--Gemini-Tag [Code To Be Deleted]-->
 ${formattedDeletions}
+<!--Gemini-Tag [Code To Be Inserted]-->
 ${formattedInsertions}
+<!--Gemini-Tag [Diff End] -->
 \`\`\``;
 }
