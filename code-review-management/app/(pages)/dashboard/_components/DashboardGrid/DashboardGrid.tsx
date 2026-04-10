@@ -1,32 +1,32 @@
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
-import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
-import { PullRequestV2 } from "@/types/github.types.wrapper";
 
-export default function DashboardGrid({pulls}: {pulls: PullRequestV2}) {
+export default function DashboardGrid({ pulls }: { pulls: PullRequest[] }) {
   return (
-    <table className={styles.dashboardGrid}>
-      <thead>
-        <tr className={styles.gridHeader}>
-          <th className={styles.iconWidth} />
-          <th className={styles.titleWidth}>Title</th>
-          <th className={styles.reviewerAssigneeWidth}>Assignees</th>
-          <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
-          <th className={styles.statusWidth}>Status</th>
-          <th className={styles.updatedWidth}>Updated</th>
-        </tr>
-      </thead>
-      <tbody className={styles.gridBody}>
-        {pulls.map((pull) => (
-          <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <table className={styles.dashboardGrid}>
+        <thead>
+          <tr className={styles.gridHeader}>
+            <th className={styles.iconWidth} />
+            <th className={styles.titleWidth}>Title</th>
+            <th className={styles.reviewerAssigneeWidth}>Assignees</th>
+            <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
+            <th className={styles.statusWidth}>Status</th>
+            <th className={styles.updatedWidth}>Updated</th>
+          </tr>
+        </thead>
+        <tbody className={styles.gridBody}>
+          {pulls.map((pull) => (
+            <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

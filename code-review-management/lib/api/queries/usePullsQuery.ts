@@ -1,4 +1,5 @@
 import {
+  InfiniteData,
   keepPreviousData,
   useInfiniteQuery,
   useQuery,
@@ -6,6 +7,8 @@ import {
 import { fetcher } from "@/lib/api/utils/fetcher";
 // import { PullRequest } from "@/types/github.types";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
+import { useCallback } from "react";
+import { PullRequest } from "@/types/github.types";
 
 /**
  * Fetches a GitHub pull request.
@@ -15,11 +18,12 @@ import { PullRequestV2 } from "@/types/github.types.wrapper";
  * @param pullNumber: Pull request number.
  * @returns: TanStack query result containing the pull request data.
  */
-export function usePullsQuery(queryType: "open" | "draft" | "merged" = "open") {
-
+export function usePullsQuery<T>(
+  queryType?: "open" | "draft" | "merged",
+) {
   return useInfiniteQuery({
     queryKey: ["pulls"],
-    queryFn: ({ pageParam }): Promise<PullRequestV2> =>
+    queryFn: async ({ pageParam }): Promise<PullRequestV2> =>
       fetcher(`/api/v2/pulls?page=${pageParam}`),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,

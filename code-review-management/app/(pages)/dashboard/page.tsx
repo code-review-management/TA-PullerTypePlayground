@@ -4,38 +4,44 @@ import IconTooltip from "../_components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
-import { PullRequestV2 } from "@/types/github.types.wrapper";
-import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Dashboard() {
-  const {
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
-    hasPreviousPage,
-    ...result
-  } = usePullsQuery();
-
-  const { data, isPending, isError } = result;
-
-  useEffect(() => {
-    console.log('hi')
-    if (hasNextPage) {
-      console.log("fetch")
-      fetchNextPage();
-    }
-  }, [fetchNextPage, hasNextPage, result])
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    usePullsQuery();
+  const [searchString, setSearchString] = useState("");
 
   const pulls = data?.pages.flatMap((page) => page.data);
-  console.log(data, pulls);
 
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
       <div className={styles.repoSideBar} />
-      <div className={styles.pageBody}>
-        {isPending ? <LoadingSpinner /> : <DashboardGrid pulls={pulls} />}
-      </div>
+      {isPending ? (
+        <LoadingSpinner />
+      ) : (
+        <div className={styles.pageBody}>
+          <input value={searchString} onChange={(e) => setSearchString(e.target.value)}></input>
+          <DashboardGrid
+            pulls={pulls}
+            hasNextPage={hasNextPage}
+            fetchNextPage={fetchNextPage}
+          />
+          {hasNextPage &&
+            (isFetching ? (
+              <div className={styles.loadingSpinnerWrapper}>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <button
+                onClick={() => fetchNextPage()}
+                className={styles.moreButton}
+              >
+                Load more
+              </button>
+            ))}
+        </div>
+      )}
     </div>
   );
 }
