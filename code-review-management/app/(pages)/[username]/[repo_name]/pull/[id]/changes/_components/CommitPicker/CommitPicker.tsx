@@ -2,6 +2,7 @@ import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
 import { formatDate } from "../../../_utils/date-utils";
 import MOCK_COMMITS from "@/mocks/commits.json";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
+import SubmitButton from "@components/SubmitButton/SubmitButton";
 import styles from "./CommitPicker.module.css";
 
 const ALL_CHANGES = "all-changes";
@@ -45,6 +46,9 @@ export default function CommitPicker() {
               </CommitOption>
             </Fragment>
           ))}
+        </div>
+        <div className={styles.submit}>
+          <SubmitButton label="View commit" isDisabled={false} />
         </div>
       </div>
     </PopoverContent>

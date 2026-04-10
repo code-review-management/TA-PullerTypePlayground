@@ -1,10 +1,8 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacer-8);
     max-width: 400px;
-    max-height: 425px;
-    overflow-y: scroll;
+    max-height: 450px;
 }
 
 .title {
@@ -12,6 +10,8 @@
     align-items: center;
     gap: var(--spacer-4);
     font-weight: 600;
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
+    padding-bottom: var(--spacer-10);
 }
 
 .count {
@@ -22,13 +22,20 @@
     font-size: 0.75rem;
 }
 
+.list {
+    overflow-y: auto;
+}
+
 .option {
     cursor: pointer;
     display: flex;
     align-items: flex-start;
     gap: var(--spacer-8);
-    border-top: var(--border-normal-width) solid var(--border-gray);
     padding: var(--spacer-8);
+}
+
+.option:not(:last-child) {
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
 }
 
 .option.checked {
@@ -71,4 +78,14 @@
     padding: 0 var(--spacer-4);
     background-color: var(--background-secondary-light);
     font-family: var(--font-roboto-mono);
+}
+
+.submit {
+    display: flex;
+    border-top: var(--border-normal-width) solid var(--border-gray);
+    padding-top: var(--spacer-12);
+}
+
+.submit button {
+    margin-left: auto;
 }
