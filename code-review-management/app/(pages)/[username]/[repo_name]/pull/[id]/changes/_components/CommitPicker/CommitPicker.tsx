@@ -16,7 +16,7 @@ export default function CommitPicker() {
         <p className={styles.title}>
           Commits <span className={styles.count}>{MOCK_COMMITS.length}</span>
         </p>
-        <div>
+        <div className={styles.list}>
           <CommitOption
             value={ALL_CHANGES}
             checked={selected === ALL_CHANGES}
