@@ -31,6 +31,14 @@
     padding: var(--spacer-8);
 }
 
+.option.checked {
+    background-color: var(--color-interactive-transparent);
+}
+
+.option.checked .radio {
+    accent-color: var(--color-interactive);
+}
+
 .radio {
     cursor: pointer;
     margin-top: var(--spacer-1);

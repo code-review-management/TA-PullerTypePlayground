@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
 import { formatDate } from "../../../_utils/date-utils";
 import MOCK_COMMITS from "@/mocks/commits.json";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -16,30 +16,34 @@ export default function CommitPicker() {
           Commits <span className={styles.count}>{MOCK_COMMITS.length}</span>
         </p>
         <div>
-          <label className={styles.option}>
-            <CommitRadio
-              value={ALL_CHANGES}
-              checked={selected === ALL_CHANGES}
-              onChange={setSelected}
-            />
+          <CommitOption
+            value={ALL_CHANGES}
+            checked={selected === ALL_CHANGES}
+            onChange={setSelected}
+          >
             <span className={styles.message}>Show all changes</span>
-          </label>
+          </CommitOption>
           {MOCK_COMMITS.map((commit) => (
-            <label key={commit.sha} className={styles.option}>
-              <CommitRadio
+            <Fragment key={commit.sha}>
+              <CommitOption
                 value={commit.sha}
                 checked={selected === commit.sha}
                 onChange={setSelected}
-              />
-              <span className={styles.info}>
-                <span className={styles.message}>{commit.commit.message}</span>
-                <span className={styles.meta}>
-                  <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
-                  <span>{commit.commit.author.name}</span>
-                  <span>{formatDate(new Date(commit.commit.author.date))}</span>
+              >
+                <span className={styles.info}>
+                  <span className={styles.message}>
+                    {commit.commit.message}
+                  </span>
+                  <span className={styles.meta}>
+                    <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
+                    <span>{commit.commit.author.name}</span>
+                    <span>
+                      {formatDate(new Date(commit.commit.author.date))}
+                    </span>
+                  </span>
                 </span>
-              </span>
-            </label>
+              </CommitOption>
+            </Fragment>
           ))}
         </div>
       </div>
@@ -47,24 +51,29 @@ export default function CommitPicker() {
   );
 }
 
-function CommitRadio({
+function CommitOption({
   value,
   checked,
   onChange,
+  children,
 }: {
   value: string;
   checked: boolean;
   onChange: Dispatch<SetStateAction<string>>;
+  children: ReactNode;
 }) {
   return (
-    <input
-      type="radio"
-      name="commit"
-      value={value}
-      required
-      checked={checked}
-      onChange={() => onChange(value)}
-      className={styles.radio}
-    />
+    <label className={`${styles.option} ${checked ? styles.checked : ""}`}>
+      <input
+        type="radio"
+        name="commit"
+        value={value}
+        required
+        checked={checked}
+        onChange={() => onChange(value)}
+        className={styles.radio}
+      />
+      {children}
+    </label>
   );
 }
