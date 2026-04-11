@@ -1,10 +1,17 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { useEditor, EditorContent, Editor, FocusPosition } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  Editor,
+  FocusPosition,
+  ReactNodeViewRenderer,
+} from "@tiptap/react";
 import { Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
 import { common, createLowlight } from "lowlight";
+import CodeBlockComponent from "../CodeBlockComponent/CodeBlockComponent";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
@@ -57,7 +64,11 @@ export default function MarkdownEditor({
     extensions: [
       StarterKit,
       Markdown,
-      CodeBlockLowlight.configure({ lowlight }),
+      CodeBlockLowlight.extend({
+        addNodeView() {
+          return ReactNodeViewRenderer(CodeBlockComponent);
+        },
+      }).configure({ lowlight }),
       // Docs: https://tiptap.dev/docs/editor/extensions/functionality/placeholder
       Placeholder.configure({
         placeholder,

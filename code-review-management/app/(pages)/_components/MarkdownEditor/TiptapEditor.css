@@ -15,3 +15,13 @@
     margin-top: .75rem;
     margin-bottom: .75rem;
 }
+
+.hljs-addition {
+    background-color: var(--diff-code-insert-bg-color);
+    color: var(--color-success);
+}
+
+.hljs-deletion {
+    background-color: var(--diff-code-delete-bg-color);
+    color: var(--color-failure);
+}

@@ -1,0 +1,31 @@
+.wrapper {
+    position: relative;
+    border-radius: var(--spacer-8);
+    background-color: #fafafa;
+    border: var(--border-normal-width) solid var(--border-gray);
+    padding: var(--spacer-10);
+    font-size: 0.75rem;
+}
+
+.wrapper * {
+    font-family: var(--font-roboto-mono);
+}
+
+.actions {
+    position: absolute;
+    top: var(--spacer-4);
+    right: var(--spacer-4);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.wrapper:hover .actions {
+    opacity: 1;
+}
+
+.copy {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: var(--spacer-4);
+}
