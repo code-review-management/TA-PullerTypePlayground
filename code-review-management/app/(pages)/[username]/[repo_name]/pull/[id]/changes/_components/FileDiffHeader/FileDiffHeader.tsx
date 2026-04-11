@@ -36,8 +36,10 @@ export default function FileDiffHeader({
         data-tooltip-place="bottom"
         data-tooltip-delay-show={100}
       />
-      <span className={styles.filename}>
-        {diffType === "delete" ? oldPath : newPath}
+      <span className={styles.filenameWrapper}>
+        <span className={styles.filename}>
+          {diffType === "delete" ? oldPath : newPath}
+        </span>
       </span>
       {fileMeta && (
         <>

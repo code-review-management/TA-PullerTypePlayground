@@ -29,14 +29,19 @@
     border-color: transparent;
 }
 
-/* Docs: https://stackoverflow.com/questions/9793473/how-to-have-a-text-overflow-ellipsis-at-the-beginning-of-a-left-to-right-element */
-.filename {
+/* Docs: https://stackoverflow.com/a/71864029 */
+.filenameWrapper {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     direction: rtl;
     text-align: left;
-    max-width: 900px;
+    max-width: 950px;
+}
+
+.filename {
+    unicode-bidi: bidi-override;
+    direction: ltr;
 }
 
 .lineNumbers {

@@ -7,7 +7,7 @@
 
 .added {
     color: var(--file-status-added);
-    background-color: rgba(var(--status-added-rgb), 0.1);
+    background-color: rgba(var(--file-status-added-rgb), 0.1);
 }
 
 .modified {
