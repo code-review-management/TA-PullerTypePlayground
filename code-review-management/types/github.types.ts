@@ -86,6 +86,8 @@ export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
   diff_url: z.string().optional(),
+  repo_url: z.string().optional(),
+  repo_name: z.string().optional(),
   number: z.number(),
   state: z.enum(issueState),
   locked: z.boolean(),
