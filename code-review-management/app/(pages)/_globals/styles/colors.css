@@ -59,15 +59,15 @@
     --status-conflict: rgb(var(--status-conflict-rgb));
     --status-failure: rgb(var(--status-failure-rgb));
 
-    --status-added-rgb: 63, 184, 63;
-    --status-modified-rgb: 255, 165, 0;
-    --status-removed-rgb: 239, 79, 79;
-    --status-renamed-rgb: 63, 170, 224;
+    --file-status-added-rgb: 63, 184, 63;
+    --file-status-modified-rgb: 255, 165, 0;
+    --file-status-removed-rgb: 239, 79, 79;
+    --file-status-renamed-rgb: 63, 170, 224;
 
-    --status-added: rgb(var(--status-added-rgb));
-    --status-modified: rgb(var(--status-modified-rgb));
-    --status-removed: rgb(var(--status-removed-rgb));
-    --status-renamed: rgb(var(--status-renamed-rgb));
+    --file-status-added: rgb(var(--file-status-added-rgb));
+    --file-status-modified: rgb(var(--file-status-modified-rgb));
+    --file-status-removed: rgb(var(--file-status-removed-rgb));
+    --file-status-renamed: rgb(var(--file-status-renamed-rgb));
 
     --box-shadow-rgba: 150, 136, 136, 0.10;
     --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));

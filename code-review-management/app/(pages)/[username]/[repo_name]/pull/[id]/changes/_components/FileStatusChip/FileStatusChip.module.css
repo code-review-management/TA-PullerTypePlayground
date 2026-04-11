@@ -6,21 +6,21 @@
 }
 
 .added {
-    color: var(--status-added);
+    color: var(--file-status-added);
     background-color: rgba(var(--status-added-rgb), 0.1);
 }
 
 .modified {
-    color: var(--status-modified);
-    background-color: rgba(var(--status-modified-rgb), 0.1);
+    color: var(--file-status-modified);
+    background-color: rgba(var(--file-status-modified-rgb), 0.1);
 }
 
 .removed {
-    color: var(--status-removed);
-    background-color: rgba(var(--status-removed-rgb), 0.1);
+    color: var(--file-status-removed);
+    background-color: rgba(var(--file-status-removed-rgb), 0.1);
 }
 
 .renamed {
-    color: var(--status-renamed);
-    background-color: rgba(var(--status-waiting-rgb), 0.1);
+    color: var(--file-status-renamed);
+    background-color: rgba(var(--file-status-renamed-rgb), 0.1);
 }
