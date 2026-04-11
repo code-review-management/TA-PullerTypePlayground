@@ -7,9 +7,8 @@ const COLOR_CLASSES: Record<string, string> = {
   renamed: styles.renamed,
 };
 
-// TODO: Handle other types of status
 export default function FileStatusChip({ status }: { status: string }) {
-  const colorClass = COLOR_CLASSES[status];
+  const colorClass = COLOR_CLASSES[status] ?? styles.fallback;
 
   return (
     <div className={`${styles.fileStatusChip} ${colorClass}`}>

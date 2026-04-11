@@ -24,3 +24,8 @@
     color: var(--file-status-renamed);
     background-color: rgba(var(--file-status-renamed-rgb), 0.1);
 }
+
+.fallback {
+    color: var(--file-status-fallback);
+    background-color: rgba(var(--file-status-fallback-rgb), 0.1);
+}
