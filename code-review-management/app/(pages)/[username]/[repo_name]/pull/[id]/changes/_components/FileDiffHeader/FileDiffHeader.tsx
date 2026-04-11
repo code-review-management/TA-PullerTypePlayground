@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
@@ -39,20 +39,20 @@ export default function FileDiffHeader({
       {diffType === "rename" ? (
         <>
           <TruncatedPath path={oldPath} />
-          <span className={styles.arrow}>&rarr;</span>
+          <p className={styles.arrow}>&rarr;</p>
           <TruncatedPath path={newPath} />
         </>
       ) : (
         <TruncatedPath path={diffType === "delete" ? oldPath : newPath} />
       )}
       {fileMeta && (
-        <>
+        <div className={styles.meta}>
           <ChangeCount
             additions={fileMeta.additions}
             deletions={fileMeta.deletions}
           />
           <FileStatusChip status={fileMeta.status} />
-        </>
+        </div>
       )}
     </div>
   );
@@ -76,9 +76,24 @@ function ChangeCount({
 }
 
 function TruncatedPath({ path }: { path: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(path);
+    setCopied(true);
+  };
+
   return (
-    <span className={styles.path}>
+    <p
+      className={styles.path}
+      onClick={handleCopy}
+      data-tooltip-id={`tooltip-copy-${path}`}
+      data-tooltip-content={copied ? "Copied" : "Copy"}
+      data-tooltip-place="bottom"
+      data-tooltip-delay-show={100}
+      onMouseLeave={() => setTimeout(() => setCopied(false), 200)}
+    >
       <span className={styles.pathText}>{path}</span>
-    </span>
+    </p>
   );
 }

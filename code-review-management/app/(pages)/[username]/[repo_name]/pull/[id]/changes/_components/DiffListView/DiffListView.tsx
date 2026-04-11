@@ -57,6 +57,8 @@ export default function DiffListView({
         return (
           <div key={diffId}>
             <IconTooltip id={`collapse-expand-diff-${diffId}`} />
+            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
+            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
             <FileDiffView
               diff={diff}
               fileMeta={fileMeta}
