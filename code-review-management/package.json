@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.21",
+    "@tiptap/extension-code-block-lowlight": "^3.22.3",
     "@tiptap/extensions": "^3.22.0",
     "@tiptap/markdown": "^3.20.0",
     "@tiptap/pm": "^3.20.0",
     "@tiptap/react": "^3.20.0",
     "@tiptap/starter-kit": "^3.20.0",
+    "lowlight": "^3.3.0",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
     "octokit": "^5.0.5",
