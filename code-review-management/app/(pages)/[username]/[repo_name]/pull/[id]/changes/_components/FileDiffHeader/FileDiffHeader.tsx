@@ -36,7 +36,7 @@ export default function FileDiffHeader({
         data-tooltip-place="bottom"
         data-tooltip-delay-show={100}
       />
-      {diffType === "rename" ? (
+      {fileMeta?.status === "renamed" ? (
         <>
           <TruncatedPath path={oldPath} />
           <p>&rarr;</p>
