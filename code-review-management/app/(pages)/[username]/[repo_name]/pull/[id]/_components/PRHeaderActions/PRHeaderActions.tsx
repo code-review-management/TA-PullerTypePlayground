@@ -17,6 +17,8 @@ type PRHeaderPopovers = "review" | "merge" | "commit";
  *
  * @param viewHref: Where the view button navigates to.
  * @param viewLabel: What the view button displays.
+ * @param pull: Pull request data.
+ * @param showCommitPicker: Whether the commit picker button should be displayed or not.
  */
 export default function PRHeaderActions({
   viewHref,
