@@ -39,7 +39,7 @@ export default function FileDiffHeader({
       {diffType === "rename" ? (
         <>
           <TruncatedPath path={oldPath} />
-          <p className={styles.arrow}>&rarr;</p>
+          <p>&rarr;</p>
           <TruncatedPath path={newPath} />
         </>
       ) : (
