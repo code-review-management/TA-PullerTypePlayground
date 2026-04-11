@@ -1,7 +1,7 @@
 .fileStatusChip {
     padding: var(--spacer-2) var(--spacer-8);
     border-radius: var(--spacer-12);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     font-weight: 500;
 }
 
