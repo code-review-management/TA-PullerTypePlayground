@@ -60,10 +60,10 @@
     --status-failure: rgb(var(--status-failure-rgb));
 
     --file-status-added-rgb: 63, 184, 63;
-    --file-status-modified-rgb: 255, 165, 0;
+    --file-status-modified-rgb: 128, 128, 128;
     --file-status-removed-rgb: 239, 79, 79;
     --file-status-renamed-rgb: 63, 170, 224;
-    --file-status-fallback-rgb: 128, 128, 128;
+    --file-status-fallback-rgb: 255, 165, 0;
 
     --file-status-added: rgb(var(--file-status-added-rgb));
     --file-status-modified: rgb(var(--file-status-modified-rgb));
