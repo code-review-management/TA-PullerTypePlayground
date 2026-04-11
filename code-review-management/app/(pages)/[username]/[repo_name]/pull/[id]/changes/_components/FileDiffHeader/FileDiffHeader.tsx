@@ -36,11 +36,15 @@ export default function FileDiffHeader({
         data-tooltip-place="bottom"
         data-tooltip-delay-show={100}
       />
-      <span className={styles.filenameWrapper}>
-        <span className={styles.filename}>
-          {diffType === "delete" ? oldPath : newPath}
-        </span>
-      </span>
+      {diffType === "rename" ? (
+        <>
+          <TruncatedPath path={oldPath} />
+          <span className={styles.arrow}>&rarr;</span>
+          <TruncatedPath path={newPath} />
+        </>
+      ) : (
+        <TruncatedPath path={diffType === "delete" ? oldPath : newPath} />
+      )}
       {fileMeta && (
         <>
           <ChangeCount
@@ -68,5 +72,13 @@ function ChangeCount({
       {deletions > 0 && <p className={styles.deletions}>-{deletions}</p>}
       {additions > 0 && <p className={styles.additions}>+{additions}</p>}
     </div>
+  );
+}
+
+function TruncatedPath({ path }: { path: string }) {
+  return (
+    <span className={styles.path}>
+      <span className={styles.pathText}>{path}</span>
+    </span>
   );
 }

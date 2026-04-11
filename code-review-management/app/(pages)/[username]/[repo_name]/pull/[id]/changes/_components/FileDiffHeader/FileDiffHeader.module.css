@@ -30,7 +30,7 @@
 }
 
 /* Docs: https://stackoverflow.com/a/71864029 */
-.filenameWrapper {
+.path {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -39,7 +39,7 @@
     max-width: 950px;
 }
 
-.filename {
+.pathText {
     unicode-bidi: bidi-override;
     direction: ltr;
 }
