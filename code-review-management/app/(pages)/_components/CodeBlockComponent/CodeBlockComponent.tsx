@@ -22,7 +22,8 @@ export default function CodeBlockComponent({ node }: { node: Node }) {
       .join("\n");
   };
 
-  const handleCopy = async () => {
+  const handleCopyNew = async () => {
+    // Example of copying only the new lines.
     await navigator.clipboard.writeText(getLines("new"));
     setCopiedNew(true);
     setTimeout(() => setCopiedNew(false), 2000);
@@ -30,15 +31,17 @@ export default function CodeBlockComponent({ node }: { node: Node }) {
 
   return (
     <NodeViewWrapper>
+      {/* Render the code-block for any ``` tag. */}
       <div className={styles.wrapper}>
         <pre>
           <code>
             <NodeViewContent />
           </code>
         </pre>
+        {/* Example of adding a copy button if the code-block has specifically a ```diff tag. */}
         {isDiff && (
           <div className={styles.actions}>
-            <button onClick={handleCopy} className={styles.copy}>
+            <button onClick={handleCopyNew} className={styles.copy}>
               {copiedNew ? (
                 <Image
                   src={CheckIcon}
