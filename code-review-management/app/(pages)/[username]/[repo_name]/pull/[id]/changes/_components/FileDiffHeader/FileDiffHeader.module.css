@@ -41,20 +41,21 @@
     padding: var(--spacer-2) var(--spacer-4);
 }
 
-.pathText {
-    unicode-bidi: bidi-override;
-    direction: ltr;
-}
-
 .path:hover {
     cursor: pointer;
     background-color: var(--background-secondary-light);
 }
 
+.pathText {
+    unicode-bidi: bidi-override;
+    direction: ltr;
+}
+
 .lineNumbers {
     display: flex;
+    align-items: center;
     gap: var(--spacer-6);
-    font-size: var(--font-size-diff-code);
+    font-size: 0.8125rem;
 }
 
 .additions {
