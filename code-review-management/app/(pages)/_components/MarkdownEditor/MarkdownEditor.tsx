@@ -4,10 +4,14 @@ import { ReactNode, useEffect, useState } from "react";
 import { useEditor, EditorContent, Editor, FocusPosition } from "@tiptap/react";
 import { Placeholder } from "@tiptap/extensions";
 import { Markdown } from "@tiptap/markdown";
+import { common, createLowlight } from "lowlight";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import StarterKit from "@tiptap/starter-kit";
 import MarkdownEditorContext from "./MarkdownEditorContext";
 import styles from "./MarkdownEditor.module.css";
 import "./TiptapEditor.css";
+
+const lowlight = createLowlight(common);
 
 /**
  * A Markdown renderer/editor used to display and write comments.
@@ -53,7 +57,7 @@ export default function MarkdownEditor({
     extensions: [
       StarterKit,
       Markdown,
-
+      CodeBlockLowlight.configure({ lowlight }),
       // Docs: https://tiptap.dev/docs/editor/extensions/functionality/placeholder
       Placeholder.configure({
         placeholder,
