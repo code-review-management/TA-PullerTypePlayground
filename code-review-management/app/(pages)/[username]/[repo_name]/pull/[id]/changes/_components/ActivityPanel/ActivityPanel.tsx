@@ -52,7 +52,7 @@ export default function ActivityPanel({
           {activeTab === "Comments" ? (
             <CommentsTab publishedThreads={publishedThreads} />
           ) : (
-            <div className={styles.timeline}>
+            <div className={styles.timeline} data-view="activity-panel">
               <TimelineDisplay
                 username={username}
                 repoName={repo_name}
