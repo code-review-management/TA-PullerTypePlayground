@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { formatDate } from "../../../_utils/date-utils";
 import MOCK_COMMITS from "@/mocks/commits.json";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -30,26 +30,21 @@ export default function CommitPicker() {
             <span className={styles.message}>Show all changes</span>
           </CommitOption>
           {MOCK_COMMITS.map((commit) => (
-            <Fragment key={commit.sha}>
-              <CommitOption
-                value={commit.sha}
-                checked={selected === commit.sha}
-                onChange={setSelected}
-              >
-                <span className={styles.info}>
-                  <span className={styles.message}>
-                    {commit.commit.message}
-                  </span>
-                  <span className={styles.meta}>
-                    <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
-                    <span>{commit.commit.author.name}</span>
-                    <span>
-                      {formatDate(new Date(commit.commit.author.date))}
-                    </span>
-                  </span>
+            <CommitOption
+              key={commit.sha}
+              value={commit.sha}
+              checked={selected === commit.sha}
+              onChange={setSelected}
+            >
+              <span className={styles.info}>
+                <span className={styles.message}>{commit.commit.message}</span>
+                <span className={styles.meta}>
+                  <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
+                  <span>{commit.commit.author.name}</span>
+                  <span>{formatDate(new Date(commit.commit.author.date))}</span>
                 </span>
-              </CommitOption>
-            </Fragment>
+              </span>
+            </CommitOption>
           ))}
         </div>
         <div className={styles.submit}>
