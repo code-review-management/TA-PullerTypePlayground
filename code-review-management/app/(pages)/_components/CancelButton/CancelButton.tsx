@@ -37,7 +37,7 @@ export default function CancelButton({
       >
         <Image src={CancelIcon} alt="Cancel" height={size} width={size} />
       </button>
-      <IconTooltip id="cancel" />
+      <IconTooltip id="cancel" positionStrategy="fixed" />
     </div>
   );
 }
