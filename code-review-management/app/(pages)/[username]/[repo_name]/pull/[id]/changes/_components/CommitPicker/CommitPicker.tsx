@@ -12,7 +12,12 @@ export default function CommitPicker() {
 
   return (
     <PopoverContent>
-      <div className={styles.container}>
+      <form
+        className={styles.container}
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <p className={styles.title}>
           Commits <span className={styles.count}>{MOCK_COMMITS.length}</span>
         </p>
@@ -50,7 +55,7 @@ export default function CommitPicker() {
         <div className={styles.submit}>
           <SubmitButton label="View commit" isDisabled={false} />
         </div>
-      </div>
+      </form>
     </PopoverContent>
   );
 }
