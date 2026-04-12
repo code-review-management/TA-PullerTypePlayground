@@ -53,7 +53,7 @@ export default function CommitPicker() {
           ))}
         </div>
         <div className={styles.submit}>
-          <SubmitButton label="View commit" isDisabled={false} />
+          <SubmitButton label="View changes" isDisabled={false} />
         </div>
       </form>
     </PopoverContent>
