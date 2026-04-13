@@ -21,7 +21,12 @@ import { Comment } from "@/types/github.types";
 type FileName = string;
 type LineNumber = number;
 
-export type PublishedThreads = Map<FileName, PublishedThreadsByLine>;
+export type PublishedThreadsGroup = {
+  lineThreads: PublishedThreadsByLine;
+  fileThreads: PublishedThreadItem[];
+};
+
+export type PublishedThreads = Map<FileName, PublishedThreadsGroup>;
 export type PublishedThreadsByLine = Map<LineNumber, PublishedThreadsBySide>;
 
 /**
@@ -72,7 +77,10 @@ function buildCommentRelations(comments: Comment[]) {
   const publishedThreads: PublishedThreads = new Map();
 
   for (const [filename, threads] of threadsByFile) {
-    publishedThreads.set(filename, groupThreadsByLineAndSide(threads));
+    publishedThreads.set(filename, {
+      lineThreads: groupThreadsByLineAndSide(threads),
+      fileThreads: threads.filter((thread) => thread.subject_type === "file"),
+    });
   }
 
   return publishedThreads;
