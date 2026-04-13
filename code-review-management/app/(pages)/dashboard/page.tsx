@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { PullRequest } from "@/types/github.types";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
@@ -13,7 +14,7 @@ export default function Dashboard() {
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
 
-  const pulls = data?.pages.flatMap((page) => page.data);
+  const pulls = data?.pages.flatMap((page) => page.data) as PullRequest[];
 
   // Auto fetch all remaining pulls if a search string is applied
   useEffect(() => {
