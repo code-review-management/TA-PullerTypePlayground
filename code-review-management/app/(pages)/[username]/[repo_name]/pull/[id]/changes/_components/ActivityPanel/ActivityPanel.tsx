@@ -88,13 +88,13 @@ function CommentsTab({
           No comments on files yet.
         </div>
       ) : (
-        <div className={styles.threads}>
+        <>
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
               <InlinePublishedThread thread={thread} viewType="panel" />
             </div>
           ))}
-        </div>
+        </>
       )}
     </>
   );
