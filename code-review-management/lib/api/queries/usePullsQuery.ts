@@ -8,7 +8,7 @@ import { PullRequestV2 } from "@/types/github.types.wrapper";
  * @param queryType:
  * @returns: TanStack query result containing the pull request data.
  */
-export function usePullsQuery<T>(queryType?: "open" | "draft" | "merged") {
+export function usePullsQuery(queryType?: "open" | "draft" | "merged") {
   const queryTypeString = queryType ? `&${queryType}=true` : "";
 
   return useInfiniteQuery({
