@@ -37,7 +37,6 @@ export default function Dashboard() {
       ) : (
         <div className={styles.pageBody}>
           <form
-            action="#"
             className={styles.searchPullTitleWrapper}
             onSubmit={(e) => {
               e.preventDefault();
