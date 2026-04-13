@@ -5,8 +5,8 @@ import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { PullRequest } from "@/types/github.types";
+import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
@@ -23,11 +23,6 @@ export default function Dashboard() {
     }
   }, [appliedSearchString, hasNextPage, isFetching, fetchNextPage]);
 
-  const clearSearch = () => {
-    setSearchString("");
-    setAppliedSearchString("");
-  };
-
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
@@ -36,41 +31,12 @@ export default function Dashboard() {
         "Loading dashboard..."
       ) : (
         <div className={styles.pageBody}>
-          <form
-            className={styles.searchPullTitleWrapper}
-            onSubmit={(e) => {
-              e.preventDefault();
-              setAppliedSearchString(searchString);
-            }}
-          >
-            <input
-              value={searchString}
-              onChange={(e) => setSearchString(e.target.value)}
-              className={styles.searchPullTitle}
-              placeholder="Search pull requests"
-            ></input>
-            <div className={styles.searchButtons}>
-              {(searchString || appliedSearchString) && (
-                <button type="button" onClick={clearSearch}>
-                  <Image
-                    src="/icons/cancel_search.svg"
-                    alt="Cancel search"
-                    height={24}
-                    width={24}
-                  />
-                </button>
-              )}
-              <div className={styles.searchButtonsDivider} />
-              <button type="submit">
-                <Image
-                  src="/icons/search.svg"
-                  alt="Search"
-                  height={24}
-                  width={24}
-                />
-              </button>
-            </div>
-          </form>
+          <DashboardSearchBar
+            searchString={searchString}
+            setSearchString={setSearchString}
+            appliedSearchString={appliedSearchString}
+            setAppliedSearchString={setAppliedSearchString}
+          />
           <DashboardGrid pulls={pulls} searchString={appliedSearchString} />
           {hasNextPage &&
             (isFetching ? (
