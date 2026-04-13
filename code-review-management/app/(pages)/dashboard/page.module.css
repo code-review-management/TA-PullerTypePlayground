@@ -24,14 +24,14 @@
 
 .searchPullTitle {
   flex: 1;
-  padding: 10px 20px;
+  padding: var(--spacer-10) var(--spacer-16);
   border-radius: 32px;
-  border: 1px solid var(--border-gray-secondary);
+  border: var(--border-normal-width) solid var(--border-gray-secondary);
 }
 
 .searchButtons {
   position: absolute;
-  right: 10px;
+  right: var(--spacer-10);
   height: 100%;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@
 
 .searchButtonsDivider {
   height: 20px;
-  border-left: 1px solid var(--border-gray-secondary);
+  border-left: var(--border-normal-width) solid var(--border-gray-secondary);
 }
 
 .loadingSpinnerWrapper {
