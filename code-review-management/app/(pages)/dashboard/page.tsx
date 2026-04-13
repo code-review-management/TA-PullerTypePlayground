@@ -33,7 +33,7 @@ export default function Dashboard() {
       <IconTooltip id="user-icon-tooltip" />
       <div className={styles.repoSideBar} />
       {isPending ? (
-        <LoadingSpinner />
+        "Loading dashboard..."
       ) : (
         <div className={styles.pageBody}>
           <form
