@@ -46,6 +46,7 @@ export default function PRChangesHeader({
         viewHref={`/${username}/${repo_name}/pull/${id}`}
         viewLabel="View pull request"
         pull={pull}
+        showCommitPicker
       />
       <div className={isActivityPanelOpen ? styles.activityButtonEnabled : ""}>
         <HeaderButton variant="secondary" onClick={toggleActivityPanel}>

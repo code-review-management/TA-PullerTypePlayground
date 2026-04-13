@@ -11,7 +11,13 @@ export default function IconTooltip({ id }: { id: string }) {
     // Include container arround tooltip to increase CSS specificity for
     // overriding default tooltip style.
     <div className={styles.wrapper}>
-      <Tooltip id={id} noArrow className={styles.tooltip} opacity={100} />
+      <Tooltip
+        id={id}
+        noArrow
+        opacity={100}
+        globalCloseEvents={{ scroll: true }}
+        className={styles.tooltip}
+      />
     </div>
   );
 }

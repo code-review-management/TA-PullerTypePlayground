@@ -15,7 +15,7 @@
     --color-interactive: #1e84de;
     --color-interactive-transparent: #d8edff80;
     --color-disabled: #919191;
-    
+
     /* Tooltip colors */
     --tooltip-gray: #4c4c4c;
 
@@ -58,6 +58,18 @@
     --status-waiting: rgb(var(--status-waiting-rgb));
     --status-conflict: rgb(var(--status-conflict-rgb));
     --status-failure: rgb(var(--status-failure-rgb));
+
+    --file-status-added-rgb: 63, 184, 63;
+    --file-status-modified-rgb: 128, 128, 128;
+    --file-status-removed-rgb: 239, 79, 79;
+    --file-status-renamed-rgb: 255, 165, 0;
+    --file-status-fallback-rgb: 63, 170, 224;
+
+    --file-status-added: rgb(var(--file-status-added-rgb));
+    --file-status-modified: rgb(var(--file-status-modified-rgb));
+    --file-status-removed: rgb(var(--file-status-removed-rgb));
+    --file-status-renamed: rgb(var(--file-status-renamed-rgb));
+    --file-status-fallback: rgb(var(--file-status-fallback-rgb));
 
     --box-shadow-rgba: 150, 136, 136, 0.10;
     --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));
