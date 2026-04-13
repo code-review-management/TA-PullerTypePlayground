@@ -1,4 +1,4 @@
-import { Tooltip } from "react-tooltip";
+import { PositionStrategy, Tooltip } from "react-tooltip";
 import styles from "./IconTooltip.module.css";
 
 /**
@@ -6,7 +6,13 @@ import styles from "./IconTooltip.module.css";
  * 1. https://react-tooltip.com/docs/examples/styling#classes
  */
 
-export default function IconTooltip({ id }: { id: string }) {
+export default function IconTooltip({
+  id,
+  positionStrategy,
+}: {
+  id: string;
+  positionStrategy?: PositionStrategy;
+}) {
   return (
     // Include container arround tooltip to increase CSS specificity for
     // overriding default tooltip style.
@@ -16,6 +22,7 @@ export default function IconTooltip({ id }: { id: string }) {
         noArrow
         opacity={100}
         globalCloseEvents={{ scroll: true }}
+        positionStrategy={positionStrategy}
         className={styles.tooltip}
       />
     </div>
