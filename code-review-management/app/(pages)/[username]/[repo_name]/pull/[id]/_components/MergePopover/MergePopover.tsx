@@ -78,7 +78,7 @@ export default function MergePopover({
         ? `Merge pull request #${pull.number} from ${pull.base.repo.full_name}`
         : prev,
     );
-  }, [setCommitTitle, pull.number, pull.base?.repo.full_name]);
+  }, [setCommitTitle, pull.number, pull.base]);
 
   return (
     <PopoverContent>

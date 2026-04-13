@@ -3,8 +3,8 @@ import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 import { useDraftRepliesContext } from "../_contexts/DraftRepliesContext";
 import { useDraftThreadsContext } from "../_contexts/DraftThreadsContext";
-import { getDraftReplyKey } from "./useDraftReplies";
 import {
+  deleteDraftReply,
   deleteDraftThread,
   getDraftThreadFilePath,
 } from "../_utils/comment-utils";
@@ -70,17 +70,7 @@ export function useSubmitDraftItem(
         in_reply_to: draft.payload.parentId,
       },
       {
-        onSuccess: () => {
-          setDraftReplies((prev) => {
-            const key = getDraftReplyKey(
-              draft.payload.filename,
-              draft.payload.parentId,
-            );
-            const draftReplies = { ...prev };
-            delete draftReplies[key];
-            return draftReplies;
-          });
-        },
+        onSuccess: () => deleteDraftReply(draft.payload, setDraftReplies),
       },
     );
   };
