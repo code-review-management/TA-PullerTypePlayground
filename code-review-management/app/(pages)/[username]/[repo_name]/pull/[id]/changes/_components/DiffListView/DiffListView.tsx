@@ -61,7 +61,7 @@ export default function DiffListView({
               diff={diff}
               fileMeta={fileMeta}
               viewType="split"
-              publishedThreadsByLine={publishedThreadsByDiff[activePath]}
+              publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
             />

@@ -69,7 +69,7 @@ export default function InlineThreadList({
  * @param publishedThreads: List of published threads to render.
  * @param draftThread: Draft thread to render, or null if none exists.
  */
-function ThreadList({
+export function ThreadList({
   publishedThreads,
   draftThread,
 }: {

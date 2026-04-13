@@ -13,10 +13,11 @@ import {
 
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
-import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
+import { PublishedThreadsGroup } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
+import { ThreadList } from "../InlineThreadList/InlineThreadList";
 import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
@@ -36,14 +37,14 @@ export default memo(function FileDiffView({
   diff,
   fileMeta,
   viewType,
-  publishedThreadsByLine,
+  publishedThreads,
   draftThreadsByLine,
   setDraftThreads,
 }: {
   diff: FileData;
   fileMeta?: FileDiff;
   viewType: ViewType;
-  publishedThreadsByLine: PublishedThreadsByLine;
+  publishedThreads: PublishedThreadsGroup;
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
@@ -74,10 +75,10 @@ export default memo(function FileDiffView({
       getWidgets(
         activePath,
         hunks,
-        publishedThreadsByLine,
+        publishedThreads.lineThreads,
         draftThreadsByLine ?? {},
       ),
-    [activePath, hunks, publishedThreadsByLine, draftThreadsByLine],
+    [activePath, hunks, publishedThreads.lineThreads, draftThreadsByLine],
   );
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
@@ -103,6 +104,12 @@ export default memo(function FileDiffView({
           setIsExpanded={setIsExpanded}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
+          {publishedThreads.fileThreads.length > 0 && (
+            <ThreadList
+              publishedThreads={publishedThreads.fileThreads}
+              draftThread={null}
+            />
+          )}
           {hunks.length > 0 ? (
             <Diff
               viewType={viewType}
