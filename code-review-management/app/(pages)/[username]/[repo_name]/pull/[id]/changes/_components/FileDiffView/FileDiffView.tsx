@@ -96,6 +96,7 @@ export default memo(function FileDiffView({
         id={`file-${activePath}`}
       >
         <FileDiffHeader
+          fileMeta={fileMeta}
           diffType={diffType}
           oldPath={oldPath}
           newPath={newPath}
