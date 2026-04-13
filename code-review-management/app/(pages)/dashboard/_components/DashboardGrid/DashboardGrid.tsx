@@ -13,28 +13,28 @@ export default function DashboardGrid({
   pulls: PullRequest[];
   searchString: string;
 }) {
-  const filteredPulls = pulls.filter((pull) => pull.title.toLowerCase().includes(searchString.toLowerCase()));
-  
+  const filteredPulls = pulls.filter((pull) =>
+    pull.title.toLowerCase().includes(searchString.toLowerCase()),
+  );
+
   return (
-    <div>
-      <table className={styles.dashboardGrid}>
-        <thead>
-          <tr className={styles.gridHeader}>
-            <th className={styles.iconWidth} />
-            <th className={styles.titleWidth}>Title</th>
-            <th className={styles.reviewerAssigneeWidth}>Assignees</th>
-            <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
-            <th className={styles.statusWidth}>Status</th>
-            <th className={styles.updatedWidth}>Updated</th>
-          </tr>
-        </thead>
-        <tbody className={styles.gridBody}>
-          {filteredPulls.map((pull) => (
-            <DashboardGridRow pull={pull} key={pull.id} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className={styles.dashboardGrid}>
+      <thead>
+        <tr className={styles.gridHeader}>
+          <th className={styles.iconWidth} />
+          <th className={styles.titleWidth}>Title</th>
+          <th className={styles.reviewerAssigneeWidth}>Assignees</th>
+          <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
+          <th className={styles.statusWidth}>Status</th>
+          <th className={styles.updatedWidth}>Updated</th>
+        </tr>
+      </thead>
+      <tbody className={styles.gridBody}>
+        {filteredPulls.map((pull) => (
+          <DashboardGridRow pull={pull} key={pull.id} />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
