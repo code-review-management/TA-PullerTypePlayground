@@ -31,7 +31,7 @@ export default function DashboardSearchBar({
         onChange={(e) => setSearchString(e.target.value)}
         className={styles.searchPullTitle}
         placeholder="Search pull requests"
-      ></input>
+      />
       <div className={styles.searchButtons}>
         {(searchString || appliedSearchString) && (
           <button type="button" onClick={clearSearch}>
