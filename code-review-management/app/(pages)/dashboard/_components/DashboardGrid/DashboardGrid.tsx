@@ -1,14 +1,21 @@
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
-import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid() {
-  // TODO: Use real data instead of MOCK_PULLS
+export default function DashboardGrid({
+  pulls,
+  searchString,
+}: {
+  pulls: PullRequest[];
+  searchString: string;
+}) {
+  const filteredPulls = pulls.filter((pull) =>
+    pull.title.toLowerCase().includes(searchString.toLowerCase()),
+  );
 
   return (
     <table className={styles.dashboardGrid}>
@@ -23,8 +30,8 @@ export default function DashboardGrid() {
         </tr>
       </thead>
       <tbody className={styles.gridBody}>
-        {MOCK_PULLS.map((pull) => (
-          <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
+        {filteredPulls.map((pull) => (
+          <DashboardGridRow pull={pull} key={pull.id} />
         ))}
       </tbody>
     </table>
