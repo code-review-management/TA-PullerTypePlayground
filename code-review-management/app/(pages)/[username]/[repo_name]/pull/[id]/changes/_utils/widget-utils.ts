@@ -9,7 +9,7 @@ import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
 import { buildSuggestionWidget, buildStandardWidget } from '../_components/SuggestionEntry/diffWidgetBuilder';
 import { Comment } from "@/types/github.types";
 
-interface SuggestiveComment {
+export interface SuggestiveComment {
   hasSuggestion: boolean,
   relativeStartLine: number,
   deletionContent: string,
@@ -194,11 +194,6 @@ export function prepareDiffData(
         ...published.right
       ];
 
-      const allDraftThreads = [
-        ...draft.left,
-        ...draft.right
-      ]
-
       const currentChangeKey = getChangeKey(change);
 
       let hasSuggestion = false;
@@ -214,7 +209,7 @@ export function prepareDiffData(
 
           widgets[anchorKey] = buildSuggestionWidget(
             anchorKey,
-            suggestionData.suggestions,
+            suggestionData,
             existingWidget
           );
         } else {
