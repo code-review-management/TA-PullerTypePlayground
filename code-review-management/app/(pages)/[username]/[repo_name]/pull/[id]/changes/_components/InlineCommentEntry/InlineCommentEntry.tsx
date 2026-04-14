@@ -69,8 +69,7 @@ export default function InlineCommentEntry({
           {headerActions}
         </div>
         
-        {/* 2. Use a ternary operator for the conditional rendering */}
-        {suggestiveComment.hasSuggestion ? (
+        {(suggestiveComment.hasSuggestion && false) ? (
           <SuggestionReplacementWidget
             suggestion={suggestiveComment}
             activePath={activePath}  

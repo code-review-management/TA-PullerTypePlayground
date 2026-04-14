@@ -28,7 +28,8 @@ export default function InlineThreadList({
   publishedThreadsBySide: { left: PublishedThreadItem[]; right: PublishedThreadItem[] };
   draftThreadsBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
   activePath: string;
-}) {
+}) {  
+  console.log("Inside thread inline: " + change.type)
   if (change.type === "delete") {
     return (
       <ThreadList
@@ -38,6 +39,7 @@ export default function InlineThreadList({
       />
     );
   } else if (change.type === "insert") {
+    console.log("Inside thread inline: " + publishedThreadsBySide.right.length)
     return (
       <ThreadList
         publishedThreads={publishedThreadsBySide.right}
@@ -74,6 +76,7 @@ export default function InlineThreadList({
  *
  * @param publishedThreads: List of published threads to render.
  * @param draftThread: Draft thread to render, or null if none exists.
+ * @param activePath: Filename of the file the thread is on. Used to get keyword highlighting for the suggestions
  */
 export function ThreadList({
   publishedThreads,
@@ -84,17 +87,22 @@ export function ThreadList({
   draftThread: DraftThreadItem | null;
   activePath: string;
 }) {
+  console.log("Inside thread list. Published thread items");
   return (
-    <div className={styles.list}>
-      {publishedThreads.map((publishedThread) => (
-        <InlinePublishedThread
-          key={publishedThread.id}
-          thread={publishedThread}
-          viewType="inline"
-          activePath={activePath}
-        />
-      ))}
-      {draftThread && <InlineDraftThread draft={draftThread} />}
-    </div>
+    // <div className={styles.list}>
+    //   {publishedThreads.map((publishedThread) => {
+    //     console.log("published thread!")
+    //     return (
+    //       <InlinePublishedThread
+    //         key={publishedThread.id}
+    //         thread={publishedThread}
+    //         viewType="inline"
+    //         activePath={activePath}
+    //       />
+    //     )
+    //   })}
+    //   {draftThread && <InlineDraftThread draft={draftThread} />}
+    // </div>
+    <div>TESTTTTTTT</div>
   );
 }

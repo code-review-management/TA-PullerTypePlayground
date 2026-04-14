@@ -24,6 +24,10 @@ import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
 
 import styles from "./FileDiffView.module.css";
+import "prism-color-variables/variables.css";
+import "react-diff-view/style/index.css";
+import "./ReactDiffView.css";
+
 
 /**
  * Docs:
