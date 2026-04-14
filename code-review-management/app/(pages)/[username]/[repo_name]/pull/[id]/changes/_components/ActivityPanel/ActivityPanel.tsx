@@ -93,12 +93,19 @@ function CommentsTab({
     // Sort by file position in the flat file tree.
     if (indexA !== indexB) return indexA - indexB;
 
-    // If file positions are the same, sort by end of the line ranges.
-    const endA = a.line;
-    const endB = b.line;
-    if (endA && endB && endA !== endB) return endA - endB;
+    // If file positions are the same, put file-level comments first.
+    const isFileA = a.subject_type === "file";
+    const isFileB = b.subject_type === "file";
+    if (isFileA !== isFileB) return isFileA ? -1 : 1;
 
-    // If end of the line ranges are the same, sort by creation time.
+    // If subject types are both line-level, sort by end of the line ranges.
+    if (!isFileA && !isFileB) {
+      const endA = a.line;
+      const endB = b.line;
+      if (endA && endB && endA !== endB) return endA - endB;
+    }
+
+    // Fallback: sort by creation time.
     return (
       new Date(a.comments[0].created_at).getTime() -
       new Date(b.comments[0].created_at).getTime()
