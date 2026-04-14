@@ -90,13 +90,24 @@ function CommentsTab({
     const indexA = flatFileTree.findIndex((node) => node.filename === a.path);
     const indexB = flatFileTree.findIndex((node) => node.filename === b.path);
 
-    if (indexA === indexB) {
-      return (
-        new Date(a.comments[0].created_at).getTime() -
-        new Date(b.comments[0].created_at).getTime()
-      );
-    }
-    return indexA - indexB;
+    // Sort by file position in the flat file tree.
+    if (indexA !== indexB) return indexA - indexB;
+
+    // If file positions are the same, sort by start of the line ranges.
+    const startA = a.start_line ?? a.line;
+    const startB = b.start_line ?? b.line;
+    if (startA && startB && startA !== startB) return startA - startB;
+
+    // If start of the line ranges are the same, sort by end of the line ranges.
+    const endA = a.line;
+    const endB = b.line;
+    if (endA && endB && endA !== endB) return endA - endB;
+
+    // If end of the line ranges are the same, sort by creation time.
+    return (
+      new Date(a.comments[0].created_at).getTime() -
+      new Date(b.comments[0].created_at).getTime()
+    );
   });
 
   return (
