@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import {
   PublishedThreads,
-  PublishedThreadsByLine,
+  PublishedThreadsByScope,
 } from "./usePublishedThreads";
 import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
@@ -16,7 +16,7 @@ export function usePublishedThreadsByDiff(
   }[],
 ) {
   return useMemo(() => {
-    const publishedThreadsByDiff: Record<string, PublishedThreadsByLine> = {};
+    const publishedThreadsByDiff: Record<string, PublishedThreadsByScope> = {};
 
     diffs.forEach(({ diff, fileMeta }) => {
       const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
@@ -26,7 +26,10 @@ export function usePublishedThreadsByDiff(
         activePath,
         fileMeta?.status ?? "",
       );
-      publishedThreadsByDiff[activePath] = publishedThreadsByLine;
+      publishedThreadsByDiff[activePath] = {
+        lineThreads: publishedThreadsByLine,
+        fileThreads: publishedThreads.get(activePath)?.fileThreads ?? [],
+      };
     });
 
     return publishedThreadsByDiff;

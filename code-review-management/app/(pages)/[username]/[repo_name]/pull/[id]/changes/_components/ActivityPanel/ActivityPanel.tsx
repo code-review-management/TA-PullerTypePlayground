@@ -79,9 +79,12 @@ function CommentsTab({
   publishedThreads: PublishedThreads;
   flatFileTree: FileDiff[];
 }) {
-  const allThreads = [...publishedThreads.values()]
-    .flatMap((byLine) => [...byLine.values()])
-    .flatMap(({ left, right }) => [...left.values(), ...right.values()]);
+  const allThreads = [...publishedThreads.values()].flatMap((byGroup) => {
+    const lineThreads = [...byGroup.lineThreads.values()].flatMap(
+      ({ left, right }) => [...left, ...right],
+    );
+    return [...byGroup.fileThreads, ...lineThreads];
+  });
 
   allThreads.sort((a, b) => {
     const indexA = flatFileTree.findIndex((node) => node.filename === a.path);
