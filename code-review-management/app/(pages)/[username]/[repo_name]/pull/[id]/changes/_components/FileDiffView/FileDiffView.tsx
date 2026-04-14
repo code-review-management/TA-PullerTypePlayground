@@ -13,7 +13,7 @@ import {
 
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
-import { PublishedThreadsGroup } from "../../_hooks/usePublishedThreads";
+import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
@@ -44,7 +44,7 @@ export default memo(function FileDiffView({
   diff: FileData;
   fileMeta?: FileDiff;
   viewType: ViewType;
-  publishedThreads: PublishedThreadsGroup;
+  publishedThreads: PublishedThreadsByScope;
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {

@@ -21,12 +21,12 @@ import { Comment } from "@/types/github.types";
 type FileName = string;
 type LineNumber = number;
 
-export type PublishedThreadsGroup = {
+export type PublishedThreadsByScope = {
   lineThreads: PublishedThreadsByLine;
   fileThreads: PublishedThreadItem[];
 };
 
-export type PublishedThreads = Map<FileName, PublishedThreadsGroup>;
+export type PublishedThreads = Map<FileName, PublishedThreadsByScope>;
 export type PublishedThreadsByLine = Map<LineNumber, PublishedThreadsBySide>;
 
 /**
