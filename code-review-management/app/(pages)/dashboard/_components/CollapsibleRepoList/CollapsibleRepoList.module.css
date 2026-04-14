@@ -1,0 +1,21 @@
+.repoListSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+}
+
+.ownerName {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.repoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+}
+
+.repoListEntry {
+  display: flex;
+  gap: var(--spacer-4);
+}

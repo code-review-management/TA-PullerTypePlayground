@@ -1,8 +1,8 @@
 import styles from "./DashboardSidebar.module.css";
 import MOCK_REPOS from "@/mocks/repos.json";
 import { Repo } from "@/types/github.types";
-import Checkbox from "@/app/(pages)/_components/Checkbox/Checkbox";
 import { useState } from "react";
+import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 
 function sortReposByOrg(repos: Repo[]) {
   const mappedRepos = new Map<string, string[]>();
@@ -37,23 +37,10 @@ export default function DashboardSidebar() {
     <div className={styles.dashboardSidebar}>
       <div className={styles.sidebarContent}>
         <h4 className={styles.sidebarHeader}>REPOSITORIES</h4>
-        {Array.from(mappedRepoList.keys()).map((owner: string) => (
-          <div className={styles.repoListSection} key={owner}>
-            <h5 className={styles.ownerName}>{owner}</h5>
-            <form className={styles.repoList}>
-              {mappedRepoList.get(owner)?.map((repoName) => (
-                <div key={repoName} className={styles.repoListEntry}>
-                  <Checkbox
-                    id={repoName}
-                    name={repoName}
-                    onChange={onCheckboxChange}
-                  />
-                  <label htmlFor={repoName}>{repoName}</label>
-                </div>
-              ))}
-            </form>
-          </div>
-        ))}
+        <CollapsibleRepoList
+          mappedRepoList={mappedRepoList}
+          onCheckboxChange={onCheckboxChange}
+        />
       </div>
       <div className={styles.sideBorder} />
     </div>
