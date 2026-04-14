@@ -93,12 +93,7 @@ function CommentsTab({
     // Sort by file position in the flat file tree.
     if (indexA !== indexB) return indexA - indexB;
 
-    // If file positions are the same, sort by start of the line ranges.
-    const startA = a.start_line ?? a.line;
-    const startB = b.start_line ?? b.line;
-    if (startA && startB && startA !== startB) return startA - startB;
-
-    // If start of the line ranges are the same, sort by end of the line ranges.
+    // If file positions are the same, sort by end of the line ranges.
     const endA = a.line;
     const endB = b.line;
     if (endA && endB && endA !== endB) return endA - endB;
