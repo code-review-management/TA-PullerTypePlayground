@@ -6,17 +6,6 @@ import {
 } from "../_hooks/useDraftThreads";
 import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
-import { buildSuggestionWidget, buildStandardWidget } from '../_components/SuggestionEntry/diffWidgetBuilder';
-import { Comment } from "@/types/github.types";
-import { SuggestionReplacementWidget } from "../_components/SuggestionEntry/SuggestionReplacementWidget";
-import { file } from "zod";
-
-export interface SuggestiveComment {
-  hasSuggestion: boolean,
-  relativeStartLine: number,
-  deletionContent: string,
-  additionContent: string,
-}
 
 /**
  * For a given line in the file diff, group its published and draft threads by
@@ -81,56 +70,6 @@ export function getThreadsBySide(
 }
 
 /**
- * Parses out every comment in a thread and finds if there is a suggestion. If so, it will return the content 
- */
-function extractSuggestions(comments: Comment[]): SuggestiveComment {
-  const extractedSuggestion: SuggestiveComment = {
-    hasSuggestion: false,
-    relativeStartLine: 0,
-    deletionContent: "",
-    additionContent: "",
-  };
-
-  for (let i = comments.length - 1; i >= 0; i--) {
-    const comment: Comment = comments[i];
-    const text = comment.body; 
-
-    const match = text.match(/<!--\[Gemini Suggestion#HLTP]\[(.*?)\]/);
-    if (match) {
-      const relativeStartLine = parseInt(match[1]);
-      extractedSuggestion.relativeStartLine = relativeStartLine;
-
-      const deletedMatch = text.match(
-        /<!--Gemini-Tag \[Code To Be Deleted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Code To Be Inserted]-->/
-      );
-
-      const insertedMatch = text.match(
-        /<!--Gemini-Tag \[Code To Be Inserted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Diff End] -->/
-      );
-
-      if (deletedMatch){
-        extractedSuggestion.deletionContent = deletedMatch[1].replace(/^- /gm, "");
-      } else {
-        console.log("tag tampered!");
-        return extractedSuggestion;
-      }
-
-      if (insertedMatch) {
-        extractedSuggestion.additionContent = insertedMatch[1].replace(/^\+ /gm, "");
-      } else {
-        console.log("tag tampered!");
-        return extractedSuggestion;
-      }
-      // Break after finding the most recent suggestion
-      extractedSuggestion.hasSuggestion = true;
-      break;
-    }
-  }
-
-  return extractedSuggestion;
-}
-
-/**
  * Builds a map of widgets to render within `react-diff-view`.
  *
  * @param filename: File being diffed.
@@ -163,92 +102,10 @@ export function getWidgets(
         change,
         publishedThreadsBySide,
         draftThreadsBySide,
+        activePath: filename
       });
     }
   });
 
   return widgets;
-}
-
-export function prepareDiffData(
-  filename: string,
-  hunks: HunkData[],
-  publishedThreads: PublishedThreadsByLine,
-  draftThreads: DraftThreadsByLine
-) {
-  const widgets: Record<string, ReactNode> = {};
-  const processedHunks: HunkData[] = [];
-
-  hunks.forEach((hunk) => {
-    const newChanges: ChangeData[] = [];
-
-    hunk.changes.forEach((change) => {
-      const { published, draft } = getThreadsBySide(
-        filename,
-        change,
-        publishedThreads,
-        draftThreads
-      );
-
-      const allPublishedThreads = [
-        ...published.left,
-        ...published.right
-      ];
-
-      const currentChangeKey = getChangeKey(change);
-
-      let suggestionData: SuggestiveComment = {
-        hasSuggestion: false,
-        relativeStartLine: 0,
-        deletionContent: "",
-        additionContent: ""
-      };
-
-      for (const thread of allPublishedThreads){
-        suggestionData = extractSuggestions(thread.comments || []);
-        if (suggestionData.hasSuggestion){
-          break;
-        }
-      }
-
-      const hasContent =
-        published.left.length > 0 ||
-        published.right.length > 0 ||
-        draft.left ||
-        draft.right;
-
-      if (hasContent){
-
-        if (suggestionData.hasSuggestion){
-          const threadWidgets = InlineThreadList({
-            change,
-            publishedThreadsBySide: published,
-            draftThreadsBySide: draft,
-          })
-          buildSuggestionWidget(
-            widgets,
-            suggestionData,
-            threadWidgets,
-            filename,
-            change
-          )
-        } else {
-          widgets[getChangeKey(change)] = InlineThreadList({
-            change,
-            publishedThreadsBySide: published,
-            draftThreadsBySide: draft,
-          });
-        }
-      }
-
-      newChanges.push(change);
-    });
-
-    processedHunks.push({
-      ...hunk,
-      changes: newChanges,
-    });
-  });
-
-  return { widgets, processedHunks };
 }

@@ -1,13 +1,11 @@
 import React, { ReactNode, useMemo, Fragment, useState } from 'react';
 import refractor from 'refractor';
-import { SuggestiveComment } from "../../_utils/widget-utils";
-import InlineThreadList from "../InlineThreadList/InlineThreadList";
+import { SuggestiveComment } from "./suggestionParser";
 import styles from "./SuggestionReplacementWidget.module.css"
 import { getLanguage } from '../../_utils/diff-utils';
 
 interface SuggestionReplacementWidgetProps {
   suggestion: SuggestiveComment,
-  threadWidgets: ReactNode | null,
   activePath: string
 }
 
@@ -49,7 +47,7 @@ function renderASTNode(node: ASTNode, i: number): ReactNode {
   return null;
 }
 
-export function SuggestionReplacementWidget({ suggestion, threadWidgets, activePath }: SuggestionReplacementWidgetProps) {
+export function SuggestionReplacementWidget({ suggestion, activePath }: SuggestionReplacementWidgetProps) {
   const language = getLanguage(activePath); 
   const [activeTab, setActiveTab] = useState<'replace' | 'insert'>('insert');
 
@@ -106,8 +104,6 @@ return (
           </code>
         </pre>
       )}
-
-      {threadWidgets}
     </div>
   );
 }

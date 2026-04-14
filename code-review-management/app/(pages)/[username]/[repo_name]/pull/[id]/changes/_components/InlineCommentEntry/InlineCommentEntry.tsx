@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import { formatDate } from "../../../_utils/date-utils";
+import { extractSuggestions } from "../CommentSuggestionEntry/suggestionParser";
+import { SuggestionReplacementWidget } from "../CommentSuggestionEntry/SuggestionReplacementWidget";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@components/UserIcon/UserIcon";
 import styles from "./InlineCommentEntry.module.css";
@@ -11,12 +13,12 @@ import styles from "./InlineCommentEntry.module.css";
  * @param username: Username of the comment author.
  * @param created: Date of comment creation.
  * @param defaultEditable: Whether the editor should be editable by default
- *                         (e.g., false for published comments and true for
- *                         draft comments)
+ * (e.g., false for published comments and true for
+ * draft comments)
  * @param defaultContent: Contents of the comment. Can be empty for newly
- *                        created drafts.
+ * created drafts.
  * @param actions: Action buttons to render below the editor content when it is
- *                 editable (e.g., publish or cancel buttons).
+ * editable (e.g., publish or cancel buttons).
  */
 export default function InlineCommentEntry({
   avatar,
@@ -24,6 +26,7 @@ export default function InlineCommentEntry({
   created,
   defaultEditable,
   defaultContent,
+  activePath,
   actions,
 }: {
   avatar: string;
@@ -31,8 +34,20 @@ export default function InlineCommentEntry({
   created?: string;
   defaultEditable: boolean;
   defaultContent?: string;
+  activePath?: string;
   actions?: ReactNode;
 }) {
+  const suggestiveComment = defaultContent 
+    ? extractSuggestions(defaultContent) : 
+    { 
+      hasSuggestion: false, 
+      relativeStartLine: 0,
+      deletionContent: "",
+      additionContent: ""
+    };
+  
+  if (!activePath) activePath = "";
+
   return (
     <div className={styles.comment}>
       <UserIcon avatarUrl={avatar} username={username} size={22} />
@@ -43,11 +58,20 @@ export default function InlineCommentEntry({
             <span className={styles.date}>{formatDate(new Date(created))}</span>
           )}
         </div>
-        <MarkdownEditor
-          defaultEditable={defaultEditable}
-          defaultContent={defaultContent}
-          actions={actions}
-        />
+        
+        {/* 2. Use a ternary operator for the conditional rendering */}
+        {suggestiveComment.hasSuggestion ? (
+          <SuggestionReplacementWidget
+            suggestion={suggestiveComment}
+            activePath={activePath}  
+          />
+        ) : (
+          <MarkdownEditor
+            defaultEditable={defaultEditable}
+            defaultContent={defaultContent}
+            actions={actions}
+          />
+        )}
       </div>
     </div>
   );

@@ -22,16 +22,19 @@ export default function InlineThreadList({
   change,
   publishedThreadsBySide,
   draftThreadsBySide,
+  activePath
 }: {
   change: ChangeData;
   publishedThreadsBySide: { left: PublishedThreadItem[]; right: PublishedThreadItem[] };
   draftThreadsBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
+  activePath: string;
 }) {
   if (change.type === "delete") {
     return (
       <ThreadList
         publishedThreads={publishedThreadsBySide.left}
         draftThread={draftThreadsBySide.left}
+        activePath={activePath}
       />
     );
   } else if (change.type === "insert") {
@@ -39,6 +42,7 @@ export default function InlineThreadList({
       <ThreadList
         publishedThreads={publishedThreadsBySide.right}
         draftThread={draftThreadsBySide.right}
+        activePath={activePath}
       />
     );
   } else {
@@ -49,12 +53,14 @@ export default function InlineThreadList({
           <ThreadList
             publishedThreads={publishedThreadsBySide.left}
             draftThread={draftThreadsBySide.left}
+            activePath={activePath}
           />
         </div>
         <div className={styles.normalLineSide}>
           <ThreadList
             publishedThreads={publishedThreadsBySide.right}
             draftThread={draftThreadsBySide.right}
+            activePath={activePath}
           />
         </div>
       </div>
@@ -72,14 +78,16 @@ export default function InlineThreadList({
 function ThreadList({
   publishedThreads,
   draftThread,
+  activePath,
 }: {
   publishedThreads: PublishedThreadItem[];
   draftThread: DraftThreadItem | null;
+  activePath: string;
 }) {
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => (
-        <InlinePublishedThread key={publishedThread.id} thread={publishedThread} />
+        <InlinePublishedThread key={publishedThread.id} thread={publishedThread} activePath={activePath}/>
       ))}
       {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>

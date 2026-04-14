@@ -2,12 +2,13 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
+import { extractSuggestions, SuggestiveComment } from "../CommentSuggestionEntry/suggestionParser";
+import { SuggestionReplacementWidget } from "../CommentSuggestionEntry/SuggestionReplacementWidget";
 import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
-
 /**
  * Displays a published thread that is anchored to specific lines in a file diff.
  *
@@ -15,8 +16,10 @@ import styles from "./InlinePublishedThread.module.css";
  */
 export default function InlinePublishedThread({
   thread,
+  activePath
 }: {
   thread: PublishedThreadItem;
+  activePath: string;
 }) {
   const { draftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
@@ -27,14 +30,15 @@ export default function InlinePublishedThread({
       <InlineThreadHeader title={getThreadTitle(thread)} />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
-          <InlineCommentEntry
+            <InlineCommentEntry
             key={comment.id}
             avatar={comment.user.avatar_url}
             username={comment.user.login}
             created={comment.created_at}
             defaultEditable={false}
             defaultContent={comment.body}
-          />
+            activePath={activePath}
+            />
         ))}
         {isDraftingReply ? (
           <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
