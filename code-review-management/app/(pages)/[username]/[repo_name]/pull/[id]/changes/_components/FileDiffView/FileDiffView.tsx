@@ -106,6 +106,7 @@ export default memo(function FileDiffView({
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
               draftThread={null}
+              activePath={activePath}
             />
           )}
           {hunks.length > 0 ? (
