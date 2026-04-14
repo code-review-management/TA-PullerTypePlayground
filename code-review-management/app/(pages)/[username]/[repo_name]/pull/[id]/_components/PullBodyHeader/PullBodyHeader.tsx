@@ -29,7 +29,7 @@ export default function PullBodyHeader({
     <div className={styles.pullBodyHeader}>
       <div className={styles.titleLeft}>
         <div className={styles.titleIdentifierHeaders}>
-          <h2 className={styles.repoName}>{pullData.base.repo.name}</h2>
+          <h2 className={styles.repoName}>{pullData.base?.repo.name}</h2>
           <div className={styles.titleAndNum}>
             <h1 className={styles.pullTitle}>
               {pullData.title}{" "}
@@ -42,14 +42,14 @@ export default function PullBodyHeader({
           <div className={styles.userInfo}>
             <UserIcon
               avatarUrl={pullData.user?.avatar_url || ""}
-              username="octocat"
+              username={pullData.user?.login || ""}
               size={32}
             />
             <p className={styles.user}>{pullData.user?.login}</p>
           </div>
           <BranchDisplay
-            headRef={pullData.head.ref}
-            baseRef={pullData.base.ref}
+            headRef={pullData.head?.ref ?? ""}
+            baseRef={pullData.base?.ref ?? ""}
           />
         </div>
       </div>

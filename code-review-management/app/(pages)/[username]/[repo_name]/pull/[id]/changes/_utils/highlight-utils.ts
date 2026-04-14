@@ -100,13 +100,17 @@ export function highlightOnMouseEnter(
  * the user has stopped highlighting. Generates a new draft thread associated
  * with the highlighted lines.
  *
- * @param filename: File associated with this active highlight state.
+ * @param oldPath: Old path of the file associated with this highlight state.
+ * @param activePath: Active path of the file associated with this highlight state.
+ * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
  * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
  * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
  * @param setDraftThreads: State setter for `draftThreads`.
  */
 export function highlightOnMouseUp(
-  filename: string,
+  oldPath: string,
+  activePath: string,
+  fileStatus: string,
   activeHighlightRef: RefObject<ActiveHighlight>,
   setActiveHighlightSync: (data: ActiveHighlight) => void,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
@@ -124,7 +128,7 @@ export function highlightOnMouseUp(
     activeHighlight.start,
     activeHighlight.end,
   );
-  const draftThreadKey = `${filename}:${maxLine}:${activeHighlight.side}`;
+  const draftThreadKey = `${maxLine}:${activeHighlight.side}`;
 
   /**
    * If there is already a draft associated with the max highlighted line on the
@@ -133,17 +137,55 @@ export function highlightOnMouseUp(
    * and we do not want to override the already existing draft.
    */
   setDraftThreads((prev) => {
-    if (draftThreadKey in prev) return prev;
+    if (activePath in prev && draftThreadKey in prev[activePath]) return prev;
+
     return {
       ...prev,
-      [draftThreadKey]: {
-        filename: filename,
-        start: minLine,
-        end: maxLine,
-        side: activeHighlight.side,
-        created: new Date().toISOString(),
-        body: "",
+      [activePath]: {
+        ...prev[activePath],
+        [draftThreadKey]: {
+          oldPath: oldPath,
+          activePath: activePath,
+          fileStatus: fileStatus,
+          start: minLine,
+          end: maxLine,
+          side: activeHighlight.side,
+          body: "",
+        },
       },
     };
   });
+}
+
+/**
+ * Clear the highlight if it exists at the given start line, end line, and side
+ * of the diff.
+ *
+ * @param start: Start line of highlight.
+ * @param end: End line of highlight.
+ * @param side: Diff side of highlight.
+ * @param activeHighlightRef: Ref of the `activeHighlight` state in the file diff.
+ * @param setActiveHighlightSync: State setter for `activeHighlight` and its corresponding ref.
+ */
+export function clearHighlightIfMatch(
+  start: number | null,
+  end: number | null,
+  side: Side | null,
+  activeHighlightRef: RefObject<ActiveHighlight>,
+  setActiveHighlightSync: (data: ActiveHighlight) => void,
+) {
+  const activeHighlight = activeHighlightRef.current;
+
+  if (
+    activeHighlight.start === start &&
+    activeHighlight.end === end &&
+    activeHighlight.side === side
+  ) {
+    setActiveHighlightSync({
+      isHighlighting: false,
+      start: null,
+      end: null,
+      side: null,
+    });
+  }
 }

@@ -1,14 +1,21 @@
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
-import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid() {
-  // TODO: Use real data instead of MOCK_PULLS
+export default function DashboardGrid({
+  pulls,
+  searchString,
+}: {
+  pulls: PullRequest[];
+  searchString: string;
+}) {
+  const filteredPulls = pulls.filter((pull) =>
+    pull.title.toLowerCase().includes(searchString.toLowerCase()),
+  );
 
   return (
     <table className={styles.dashboardGrid}>
@@ -23,7 +30,7 @@ export default function DashboardGrid() {
         </tr>
       </thead>
       <tbody className={styles.gridBody}>
-        {MOCK_PULLS.map((pull) => (
+        {filteredPulls.map((pull) => (
           <DashboardGridRow pull={pull} key={pull.id} />
         ))}
       </tbody>
@@ -46,17 +53,18 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
           avatarUrl={pull.user?.avatar_url ?? "/mock/octocat.png"}
           username={pull.user?.login ?? "octocat"}
           size={40}
+          showTooltip
         />
       </td>
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
         <Link
           className={styles.rowTitleTop}
-          href={`${pull.base.repo.full_name}/pull/${pull.number}`}
+          href={`${pull.base?.repo.full_name}/pull/${pull.number}`}
         >
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
         </Link>
-        <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
+        <span className={styles.rowTitleBottom}>{pull.head?.repo.name}</span>
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />
@@ -80,11 +88,12 @@ function UserIconList({ users }: { users: User[] }) {
   return (
     <div className={styles.userIconList}>
       {firstThreeUsers.map((reviewer, idx) => (
-        <div key={reviewer.login} style={{ zIndex: -idx }}>
+        <div key={reviewer.login} style={{ zIndex: 1000 - idx }}>
           <UserIcon
             avatarUrl={reviewer.avatar_url}
             username={reviewer.login}
             size={32}
+            showTooltip
           />
         </div>
       ))}

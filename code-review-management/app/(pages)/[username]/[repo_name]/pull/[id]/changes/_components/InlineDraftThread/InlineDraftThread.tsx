@@ -1,6 +1,12 @@
 import { useSession } from "next-auth/react";
+import { useClearHighlightContext } from "../../_contexts/ClearHighlightContext";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
+import { getCreateReviewCommentMutationKey } from "@/lib/api/mutations/useCreateReviewCommentMutation";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
-import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
+import { deleteDraftThread } from "../../_utils/comment-utils";
+import CancelButton from "@components/CancelButton/CancelButton";
+import DraftEditorActions, { DraftItem } from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlineDraftThread.module.css";
@@ -18,15 +24,43 @@ export default function InlineDraftThread({
   draft: DraftThreadItem;
 }) {
   const { data: session } = useSession();
+  const { setDraftThreads } = useDraftThreadsContext();
+  const { clearHighlight } = useClearHighlightContext();
+
+  const handleCancel = () => {
+    deleteDraftThread(draft, setDraftThreads);
+    // Clear highlight if it is currently associated with the draft to be deleted.
+    clearHighlight({
+      start: draft.start,
+      end: draft.end,
+      side: draft.side,
+    });
+  };
+
+  const draftItem: DraftItem = { type: "thread", payload: draft };
+  const isSubmitPending = useMutationInFlight({
+    mutationKey: getCreateReviewCommentMutationKey(draftItem),
+  });
+
   return (
     <div className={styles.thread}>
-      <InlineThreadHeader title={getThreadTitle(draft)} />
+      <InlineThreadHeader
+        title={getThreadTitle(draft)}
+        actions={
+          !isSubmitPending && (
+            <CancelButton
+              onClick={handleCancel}
+              tooltipContent="Cancel draft"
+            />
+          )
+        }
+      />
       <div className={styles.comment}>
         <InlineCommentEntry
           avatar={session?.user.image ?? "/mock/octocat.png"}
           username={session?.user.githubLogin ?? ""}
           defaultEditable={true}
-          actions={<DraftEditorActions draft={{ type: "thread", payload: draft }} />}
+          editorActions={<DraftEditorActions draft={draftItem} />}
         />
       </div>
     </div>
