@@ -9,11 +9,11 @@ export type MergeOutput = z.infer<typeof MergeOutputSchema>;
 export type MergeCommitInputData = z.infer<typeof MergeCommitInputDataSchema>;
 export type MergeCommitContent = z.infer<typeof MergeCommitContentSchema>;
 export type MergeCommitPayloadSchema = z.infer<typeof MergeCommitPayloadSchema>;
-export type MergeQueryParams = z.infer<typeof MergeQueryParamsSchema>
+export type TargetFeatureParams = z.infer<typeof TargetFeatureParamsSchema>;
 
-export const MergeQueryParamsSchema = z.object({
-  target_branch: z.string().min(1, "Target branch is required in the query URL"),
-  feature_branch: z.string().min(1, "Feature branch is required in the query URL"),
+export const TargetFeatureParamsSchema = z.object({
+  target_branch: z.string().min(1, "target_branch is required"),
+  feature_branch: z.string().min(1, "feature_branch is required"),
 });
 
 export const MergeCommitInputDataSchema = z.object({

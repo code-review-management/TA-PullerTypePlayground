@@ -1,9 +1,11 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/commit-merge
+/api/v1/{owner}/{repo}/pulls/{pull_number}/conflicts/commit-merge
+
+*NOT TO BE POLLED*
 */
 
-import { commitMergeChanges } from "../utils/merge-commiter/push-merge";
-import { MergeCommitPayloadSchema } from "../utils/merge-github.types";
+import { commitMergeChanges } from "@merge-conflict/utils/merge-commiter/push-merge";
+import { MergeCommitPayloadSchema } from "@merge-conflict/utils/merge-github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 
@@ -22,6 +24,7 @@ const cookieKey =
     : "authjs.session-token";
 
 export async function POST(req: Request, context: RouteContext) {
+
   const token = await getToken({
     req: req,
     secret: secret,
@@ -30,7 +33,7 @@ export async function POST(req: Request, context: RouteContext) {
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
-    console.log("Unauthorized request at ${new Date()}");
+    console.log(`Unauthorized request at ${new Date()}`);
     return new Response(null, { status: 401 });
   }
 
@@ -41,7 +44,8 @@ export async function POST(req: Request, context: RouteContext) {
     return Response.json(result.error.format(), { status: 400 });
   }
 
-  const { mergeCommitData, mergeContent }= result.data;
+  const mergeCommitData = result.data.mergeCommitData;
+  const mergeContent = result.data.mergeContent;
 
   const octokit = new Octokit({ auth: token.accessToken });
 
@@ -59,8 +63,7 @@ export async function POST(req: Request, context: RouteContext) {
       },
     });
   } catch (error) {
+      console.error("Merge commit failed:", error);
       return new Response("Server error", { status: 500 });
   }
 }
-
-

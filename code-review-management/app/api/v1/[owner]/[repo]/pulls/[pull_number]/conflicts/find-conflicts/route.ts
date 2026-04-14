@@ -1,16 +1,12 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/{target_branch}/{feature_branch}/merge-conflict
-
-*NOT TO BE POLLED*
-
-Polling can be enabled dependent on the status of the PR access tag
+/api/v1/{owner}/{repo}/pulls/{pull_number}/conflicts/merge-conflict
 */
 
 import { getMergeConflict } from "../utils/merge-conflict-finder/get-merge";
-import { MergeQueryParamsSchema } from "../utils/merge-github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 import { AllowanceError } from "../utils/merge-conflict-finder/detect-modified";
+import { TargetFeatureParamsSchema } from "../utils/merge-github.types";
 
 type RouteContext = {
   params: Promise<{
@@ -28,29 +24,32 @@ const cookieKey =
 
 export async function GET(req: Request, context: RouteContext) {
   const { owner, repo } = await context.params;
-
-  const { searchParams } = new URL(req.url);
-  const queryResult = MergeQueryParamsSchema.safeParse(Object.fromEntries(searchParams));
-  if (!queryResult.success) {
-    return Response.json(queryResult.error.format(), { status: 400 });
-  }
-
-  const { target_branch, feature_branch } = queryResult.data;
-
   const token = await getToken({
     req: req,
     secret: secret,
     cookieName: cookieKey,
   });
 
-  console.log("Received merge conflict request!")
   if (token == null || token.accessToken == null || token.githubId == null) {
     console.log("Unauthorized request at ${new Date()}");
     return new Response(null, { status: 401 });
   }
 
+  const { searchParams } = new URL(req.url);
+  const queryObj = Object.fromEntries(searchParams.entries());
+  const queryResult = TargetFeatureParamsSchema.safeParse(queryObj);
+
+  if (!queryResult.success) {
+    return Response.json(
+        { error: "Invalid query parameters", details: queryResult.error.format() }, 
+        { status: 400 }
+    );
+  }
+  const { target_branch, feature_branch } = queryResult.data;
+
+  console.log("Received merge conflict request!");
   // Validate required parameters
-  if (!owner || !repo) {
+  if (!owner || !repo || !target_branch || ! feature_branch) {
     console.log("Missing params!")
     return Response.json(
       { error: "Missing required parameters" },

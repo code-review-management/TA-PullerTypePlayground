@@ -1,7 +1,7 @@
 "use client"
 
 import styles from "./page.module.css"
-import { MergeOutput, MergeQueryParamsSchema } from "@merge-conflict/utils/merge-github.types"
+import { MergeOutput, TargetFeatureParamsSchema } from "@merge-conflict/utils/merge-github.types"
 import { useParams, useSearchParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import dynamic from 'next/dynamic';
@@ -34,7 +34,7 @@ export default function Page() {
     const {username, repo_name, id} = params;
 
     const searchParams = useSearchParams();
-    const parsedParams = MergeQueryParamsSchema.parse(Object.fromEntries(searchParams.entries()))
+    const parsedParams = TargetFeatureParamsSchema.parse(Object.fromEntries(searchParams.entries()))
     const { target_branch, feature_branch } = parsedParams
 
     const { 

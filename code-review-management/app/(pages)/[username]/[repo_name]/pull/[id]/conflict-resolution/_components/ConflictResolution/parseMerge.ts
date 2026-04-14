@@ -33,7 +33,7 @@ export function parseMerge(mergeContent: string) : ParsedResult {
     const conflicts: ParsedConflict[] = [];
     
     let state: 'NORMAL' | 'CURRENT' | 'INCOMING' = 'NORMAL';
-    let currConflict: Partial<ParsedConflict> = {};
+    const currConflict: Partial<ParsedConflict> = {};
     let currentTextLines: string[] = [];
     let incomingTextLines: string[] = [];
 

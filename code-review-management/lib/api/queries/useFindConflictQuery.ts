@@ -27,7 +27,7 @@ export function useMergeConflictQuery(
         });
 
         const rawData = await fetcher(
-            `/api/v1/${owner}/${repo}/pulls/${pullId}/merge-conflict/find-conflicts?${queryParams.toString()}`
+            `/api/v1/${owner}/${repo}/pulls/${pullId}/conflicts/find-conflicts?${queryParams.toString()}`
         );
       
         const mergeOutput = MergeOutputSchema.parse(rawData);

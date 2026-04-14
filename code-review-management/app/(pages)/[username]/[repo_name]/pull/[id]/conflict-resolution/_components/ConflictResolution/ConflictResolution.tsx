@@ -8,7 +8,7 @@ import { parseMerge, ParsedConflict } from "./parseMerge";
 import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions, getMonacoLanguage } from "./configureEditor";
 import { ConflictResolutionProp } from "../../page";
 import { SyncAnchor, bindInterpolatedScroll, generateAnchors, refreshAnchors } from "./syncedScrolling";
-import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent, MergeCommitContentSchema } from "@/app/api/v1/[owner]/[repo]/pulls/[pull_number]/merge-conflict/utils/merge-github.types";
+import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent } from "@merge-conflict/utils/merge-github.types";
 import HeaderButton from "@components/HeaderButton/HeaderButton";
 import MergeSuccessPopup from "./WindowPopup/MergeSuccessPopup";
 import UnresolvedFilesPopup from "./WindowPopup/UnresolvedFilesPopup";
@@ -327,8 +327,8 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
                 targetBranch: targetBranch,
                 featureBranch: featureBranch
             }
-            // 2. Send the POST request
-            const response = await fetch(`/api/v1/${owner}/${repo}/pulls/${pullId}/${targetBranch}/${featureBranch}/commit-merge`, {
+            
+            const response = await fetch(`/api/v1/${owner}/${repo}/pulls/${pullId}/conflicts/commit-merge`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

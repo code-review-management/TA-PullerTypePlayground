@@ -1,4 +1,4 @@
-import { CompareResponse, CompareResponseSchema, CompareWithRateLimitSchema } from './merge-github.types';
+import { CompareResponse, CompareResponseSchema, CompareWithRateLimitSchema } from '../merge-github.types';
 import { Octokit } from 'octokit';
 
 export interface ConflictingFilesResponse{
