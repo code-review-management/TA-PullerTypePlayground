@@ -17,7 +17,7 @@
 }
 
 .sideBorder {
-  margin-top: 12px;
-  height: calc(100vh - 2 * var(--spacer-12));
+  margin-top: 24px;
+  height: calc(100vh - 2 * var(--spacer-24));
   border-right: 1px solid var(--border-gray-secondary);
 }
