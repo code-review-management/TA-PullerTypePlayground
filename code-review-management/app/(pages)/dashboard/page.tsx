@@ -7,6 +7,7 @@ import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState } from "react";
 import { PullRequest } from "@/types/github.types";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
+import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
@@ -26,7 +27,7 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
-      <div className={styles.repoSideBar} />
+      <DashboardSidebar/>
       {isPending ? (
         "Loading dashboard..."
       ) : (
