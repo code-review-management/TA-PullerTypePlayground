@@ -87,22 +87,20 @@ function CommentsTab({
   });
 
   allThreads.sort((a, b) => {
+    // Sort by file position in the flat file tree.
     const indexA = flatFileTree.findIndex((node) => node.filename === a.path);
     const indexB = flatFileTree.findIndex((node) => node.filename === b.path);
-
-    // Sort by file position in the flat file tree.
     if (indexA !== indexB) return indexA - indexB;
 
-    // If file positions are the same, put file-level comments first.
+    // Within the same file, put file-level comments first.
     const isFileA = a.subject_type === "file";
     const isFileB = b.subject_type === "file";
     if (isFileA !== isFileB) return isFileA ? -1 : 1;
 
-    // If subject types are both line-level, sort by end of the line ranges.
-    if (!isFileA && !isFileB) {
-      const endA = a.line;
-      const endB = b.line;
-      if (endA && endB && endA !== endB) return endA - endB;
+    // For line-level comments, sort by line number, then side.
+    if (!isFileA && !isFileB && a.line && b.line) {
+      if (a.line !== b.line) return a.line - b.line;
+      if (a.side !== b.side) return a.side === "LEFT" ? -1 : 1;
     }
 
     // Fallback: sort by creation time.
