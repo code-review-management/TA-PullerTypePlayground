@@ -43,7 +43,6 @@
     "@types/refractor": "^3.4.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
-    "globals": "^17.5.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "ts-node": "^10.9.2",
