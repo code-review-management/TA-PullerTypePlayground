@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import Image from "next/image";
 import CancelButton from "@components/CancelButton/CancelButton";
@@ -15,10 +16,12 @@ export type ActivityPanelTabs = (typeof TABS)[number];
 
 export default function ActivityPanel({
   publishedThreads,
+  flatFileTree,
   isOpen,
   togglePanel,
 }: {
   publishedThreads: PublishedThreads;
+  flatFileTree: FileDiff[];
   isOpen: boolean;
   togglePanel: () => void;
 }) {
@@ -50,7 +53,10 @@ export default function ActivityPanel({
         </div>
         <div className={styles.body}>
           {activeTab === "Comments" ? (
-            <CommentsTab publishedThreads={publishedThreads} />
+            <CommentsTab
+              publishedThreads={publishedThreads}
+              flatFileTree={flatFileTree}
+            />
           ) : (
             <div className={styles.timeline} data-view="activity-panel">
               <TimelineDisplay
@@ -68,12 +74,27 @@ export default function ActivityPanel({
 
 function CommentsTab({
   publishedThreads,
+  flatFileTree,
 }: {
   publishedThreads: PublishedThreads;
+  flatFileTree: FileDiff[];
 }) {
   const allThreads = [...publishedThreads.values()]
     .flatMap((byLine) => [...byLine.values()])
     .flatMap(({ left, right }) => [...left.values(), ...right.values()]);
+
+  allThreads.sort((a, b) => {
+    const indexA = flatFileTree.findIndex((node) => node.filename === a.path);
+    const indexB = flatFileTree.findIndex((node) => node.filename === b.path);
+
+    if (indexA === indexB) {
+      return (
+        new Date(a.comments[0].created_at).getTime() -
+        new Date(b.comments[0].created_at).getTime()
+      );
+    }
+    return indexA - indexB;
+  });
 
   return (
     <>
