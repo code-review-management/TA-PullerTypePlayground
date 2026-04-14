@@ -53,7 +53,7 @@ return (
       {/* 1. Add 'index' to the map callback */}
       {diffs.map(({ diff, fileMeta }, index) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
-        const diffId = diff.oldPath + "-" + diff.newPath + "-" + index;
+        const diffId = diff.oldPath + "-" + diff.newPath;
 
         return (
           <div key={diffId}>

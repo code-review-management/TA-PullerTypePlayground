@@ -98,14 +98,12 @@ export function getWidgets(
       draftThreadsBySide.right;
 
     if (hasContent) {
-      console.log("Has Content!");
-      widgets[getChangeKey(change)] = (
-        <InlineThreadList
-          change={change}
-          publishedThreadsBySide={publishedThreadsBySide}
-          draftThreadsBySide={draftThreadsBySide}
-          activePath={filename}
-      />);
+      widgets[getChangeKey(change)] = InlineThreadList({
+        change,
+        publishedThreadsBySide,
+        draftThreadsBySide,
+        activePath: ""
+      });
     }
   });
 
