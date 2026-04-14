@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./UserLister.module.css";
 import { User } from "@/types/github.types";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
+import Subheader from "../Subheader/Subheader";
 
 export type UserListType = "reviewers" | "assignees";
 
@@ -45,7 +46,7 @@ export default function UserLister({
   return (
     <div className={styles.userLister}>
       <div className={styles.headerRow}>
-        <h4>{headerDisplay}</h4>
+        <Subheader>{headerDisplay}</Subheader>
         <Image
           className={styles.plusIcon}
           src="/icons/plus.svg"

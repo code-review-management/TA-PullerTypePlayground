@@ -75,7 +75,7 @@ export default function InlineThreadList({
  * @param publishedThreads: List of published threads to render.
  * @param draftThread: Draft thread to render, or null if none exists.
  */
-function ThreadList({
+export function ThreadList({
   publishedThreads,
   draftThread,
   activePath,
@@ -87,7 +87,12 @@ function ThreadList({
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => (
-        <InlinePublishedThread key={publishedThread.id} thread={publishedThread} activePath={activePath}/>
+        <InlinePublishedThread
+          key={publishedThread.id}
+          thread={publishedThread}
+          viewType="inline"
+          activePath={activePath}
+        />
       ))}
       {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>

@@ -14,5 +14,5 @@
 }
 
 .normalLineColumns > .normalLineSide:first-child {
-    border-right: var(--border-thin-width) solid var(--border-gray);
+    border-right: var(--border-normal-width) solid var(--border-gray);
 }

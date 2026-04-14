@@ -16,9 +16,12 @@ import styles from "./InlineCommentEntry.module.css";
  * (e.g., false for published comments and true for
  * draft comments)
  * @param defaultContent: Contents of the comment. Can be empty for newly
- * created drafts.
- * @param actions: Action buttons to render below the editor content when it is
- * editable (e.g., publish or cancel buttons).
+ *                        created drafts.
+ * @param activePath: Path of the file being commented on. Used to highlight llm suggestions
+ * @param editorActions: Action buttons to render below the editor content when
+ *                       it is editable (e.g., publish buttons).
+ * @param headerActions: Action buttons to render on the right-side of the
+ *                       comment header.
  */
 export default function InlineCommentEntry({
   avatar,
@@ -27,7 +30,8 @@ export default function InlineCommentEntry({
   defaultEditable,
   defaultContent,
   activePath,
-  actions,
+  editorActions,
+  headerActions,
 }: {
   avatar: string;
   username: string;
@@ -35,7 +39,8 @@ export default function InlineCommentEntry({
   defaultEditable: boolean;
   defaultContent?: string;
   activePath?: string;
-  actions?: ReactNode;
+  editorActions?: ReactNode;
+  headerActions?: ReactNode;
 }) {
   const suggestiveComment = defaultContent 
     ? extractSuggestions(defaultContent) : 
@@ -53,10 +58,15 @@ export default function InlineCommentEntry({
       <UserIcon avatarUrl={avatar} username={username} size={22} />
       <div className={styles.content}>
         <div className={styles.header}>
-          <span className={styles.username}>{username}</span>
-          {created && (
-            <span className={styles.date}>{formatDate(new Date(created))}</span>
-          )}
+          <div className={styles.metadata}>
+            <span className={styles.username}>{username}</span>
+            {created && (
+              <span className={styles.date}>
+                {formatDate(new Date(created))}
+              </span>
+            )}
+          </div>
+          {headerActions}
         </div>
         
         {/* 2. Use a ternary operator for the conditional rendering */}
@@ -69,7 +79,7 @@ export default function InlineCommentEntry({
           <MarkdownEditor
             defaultEditable={defaultEditable}
             defaultContent={defaultContent}
-            actions={actions}
+            actions={editorActions}
           />
         )}
       </div>

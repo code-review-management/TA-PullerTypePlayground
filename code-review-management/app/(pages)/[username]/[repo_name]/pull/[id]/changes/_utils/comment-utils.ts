@@ -1,6 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 import { Side } from "react-diff-view/types/interface";
 import {
+  DraftReplies,
+  DraftReplyItem,
+  getDraftReplyKey,
+} from "../_hooks/useDraftReplies";
+import {
   DraftThreadItem,
   DraftThreads,
   getDraftThreadKey,
@@ -28,6 +33,24 @@ export function deleteDraftThread(
     delete activePathThreads[key];
     draftThreads[draft.activePath] = activePathThreads;
     return draftThreads;
+  });
+}
+
+/**
+ * Deletes the given draft reply from the state.
+ *
+ * @param reply: `DraftReplyItem` representing the reply to delete.
+ * @param setDraftReplies: Draft reply state setter.
+ */
+export function deleteDraftReply(
+  reply: DraftReplyItem,
+  setDraftReplies: Dispatch<SetStateAction<DraftReplies>>,
+) {
+  setDraftReplies((prev) => {
+    const key = getDraftReplyKey(reply.filename, reply.parentId);
+    const draftReplies = { ...prev };
+    delete draftReplies[key];
+    return draftReplies;
   });
 }
 
@@ -72,9 +95,9 @@ export function getPublishedThreadsByLine(
   fileStatus: string,
 ) {
   const activePathThreads: PublishedThreadsByLine =
-    publishedThreads.get(activePath) ?? new Map();
+    publishedThreads.get(activePath)?.lineThreads ?? new Map();
   const oldPathThreads: PublishedThreadsByLine =
-    publishedThreads.get(oldPath) ?? new Map();
+    publishedThreads.get(oldPath)?.lineThreads ?? new Map();
   const merged: PublishedThreadsByLine = new Map();
 
   if (fileStatus !== "renamed") return activePathThreads;
@@ -108,4 +131,14 @@ export function getPublishedThreadsByLine(
   }
 
   return merged;
+}
+
+/**
+ * Gets the basename of a file path. Used for displaying the file basename in
+ * the comment headers on the activity panel.
+ *
+ * @param path: File path.
+ */
+export function getBasename(path: string) {
+  return path.split("/").at(-1) ?? path;
 }

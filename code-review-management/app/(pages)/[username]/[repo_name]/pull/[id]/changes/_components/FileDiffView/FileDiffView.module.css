@@ -1,5 +1,5 @@
 .fileDiffView {
-    border: var(--border-thin-width) solid var(--border-gray);
+    border: var(--border-normal-width) solid var(--border-gray);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow-soft);
     overflow: clip;

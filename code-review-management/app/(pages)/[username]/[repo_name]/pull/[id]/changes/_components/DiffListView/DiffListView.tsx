@@ -56,13 +56,15 @@ return (
         const diffId = diff.oldPath + "-" + diff.newPath;
 
         return (
-          <div key={`${diffId}-${index}`}>
-            <IconTooltip id={`collapse-expand-diff-${diffId}-${index}`} />
+          <div key={diffId}>
+            <IconTooltip id={`collapse-expand-diff-${diffId}`} />
+            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
+            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
             <FileDiffView
               diff={diff}
               fileMeta={fileMeta}
               viewType="split"
-              publishedThreadsByLine={publishedThreadsByDiff[activePath]}
+              publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
             />
