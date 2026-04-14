@@ -48,15 +48,16 @@ export default function DiffListView({
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) return <div>Failed to load diffs.</div>;
 
-  return (
+return (
     <div className={styles.diffListView}>
-      {diffs.map(({ diff, fileMeta }) => {
+      {/* 1. Add 'index' to the map callback */}
+      {diffs.map(({ diff, fileMeta }, index) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
 
         return (
-          <div key={diffId}>
-            <IconTooltip id={`collapse-expand-diff-${diffId}`} />
+          <div key={`${diffId}-${index}`}>
+            <IconTooltip id={`collapse-expand-diff-${diffId}-${index}`} />
             <FileDiffView
               diff={diff}
               fileMeta={fileMeta}

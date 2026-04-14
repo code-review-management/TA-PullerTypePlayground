@@ -8,6 +8,8 @@ import { PublishedThreadsByLine } from "../_hooks/usePublishedThreads";
 import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
 import { buildSuggestionWidget, buildStandardWidget } from '../_components/SuggestionEntry/diffWidgetBuilder';
 import { Comment } from "@/types/github.types";
+import { SuggestionReplacementWidget } from "../_components/SuggestionEntry/SuggestionReplacementWidget";
+import { file } from "zod";
 
 export interface SuggestiveComment {
   hasSuggestion: boolean,
@@ -31,7 +33,7 @@ export function getThreadsBySide(
   filename: string,
   change: ChangeData,
   publishedThreads: PublishedThreadsByLine,
-  draftThreads: DraftThreadsByLine,
+  draftThreads: DraftThreadsByLine
 ) {
   if (change.type === "normal") {
     return {
@@ -99,22 +101,22 @@ function extractSuggestions(comments: Comment[]): SuggestiveComment {
       extractedSuggestion.relativeStartLine = relativeStartLine;
 
       const deletedMatch = text.match(
-        /<!--Gemini-Tag \[Code To Be Deleted]-->\n([\s\S]*?)\n<!--Gemini-Tag \[Code To Be Inserted]-->/
+        /<!--Gemini-Tag \[Code To Be Deleted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Code To Be Inserted]-->/
       );
 
       const insertedMatch = text.match(
-        /<!--Gemini-Tag \[Code To Be Inserted]-->\n([\s\S]*?)\n<!--Gemini-Tag \[Diff End] -->/
+        /<!--Gemini-Tag \[Code To Be Inserted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Diff End] -->/
       );
 
       if (deletedMatch){
-        extractedSuggestion.deletionContent = deletedMatch[1];
+        extractedSuggestion.deletionContent = deletedMatch[1].replace(/^- /gm, "");
       } else {
         console.log("tag tampered!");
         return extractedSuggestion;
       }
 
       if (insertedMatch) {
-        extractedSuggestion.additionContent = insertedMatch[1];
+        extractedSuggestion.additionContent = insertedMatch[1].replace(/^\+ /gm, "");
       } else {
         console.log("tag tampered!");
         return extractedSuggestion;
@@ -179,7 +181,6 @@ export function prepareDiffData(
 
   hunks.forEach((hunk) => {
     const newChanges: ChangeData[] = [];
-    let previousChangeKey: string | null = null;
 
     hunk.changes.forEach((change) => {
       const { published, draft } = getThreadsBySide(
@@ -196,48 +197,51 @@ export function prepareDiffData(
 
       const currentChangeKey = getChangeKey(change);
 
-      let hasSuggestion = false;
+      let suggestionData: SuggestiveComment = {
+        hasSuggestion: false,
+        relativeStartLine: 0,
+        deletionContent: "",
+        additionContent: ""
+      };
 
-      allPublishedThreads.forEach((thread) => {
-        const suggestionData = extractSuggestions(thread.comments || []);
-
-        if (suggestionData.hasSuggestion) {
-          hasSuggestion = true;
-
-          const anchorKey = previousChangeKey || currentChangeKey;
-          const existingWidget = widgets[anchorKey] || null;
-
-          widgets[anchorKey] = buildSuggestionWidget(
-            anchorKey,
-            suggestionData,
-            existingWidget
-          );
-        } else {
-          // Normal thread → render normally
-          const existingWidget = widgets[currentChangeKey] || null;
-
-          widgets[currentChangeKey] = buildStandardWidget(
-            change,
-            published,
-            draft,
-            existingWidget
-          );
-        }
-      });
-
-      // 🔥 KEY BEHAVIOR CHANGE
-      if (!hasSuggestion) {
-        // normal line → render as usual
-        newChanges.push(change);
-        previousChangeKey = currentChangeKey;
-      } else {
-        // suggestion line → DO NOT render original line
-        if (previousChangeKey === null) {
-          // edge case: first line is suggestion
-          newChanges.push(change);
-          previousChangeKey = currentChangeKey;
+      for (const thread of allPublishedThreads){
+        suggestionData = extractSuggestions(thread.comments || []);
+        if (suggestionData.hasSuggestion){
+          break;
         }
       }
+
+      const hasContent =
+        published.left.length > 0 ||
+        published.right.length > 0 ||
+        draft.left ||
+        draft.right;
+
+      if (hasContent){
+
+        if (suggestionData.hasSuggestion){
+          const threadWidgets = InlineThreadList({
+            change,
+            publishedThreadsBySide: published,
+            draftThreadsBySide: draft,
+          })
+          buildSuggestionWidget(
+            widgets,
+            suggestionData,
+            threadWidgets,
+            filename,
+            change
+          )
+        } else {
+          widgets[getChangeKey(change)] = InlineThreadList({
+            change,
+            publishedThreadsBySide: published,
+            draftThreadsBySide: draft,
+          });
+        }
+      }
+
+      newChanges.push(change);
     });
 
     processedHunks.push({

@@ -75,7 +75,7 @@ export default memo(function FileDiffView({
         activePath,
         hunks,
         publishedThreadsByLine,
-        draftThreadsByLine ?? {},
+        draftThreadsByLine ?? {}
       ),
     [activePath, hunks, publishedThreadsByLine, draftThreadsByLine],
   );

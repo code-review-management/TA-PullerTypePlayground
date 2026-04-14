@@ -16,7 +16,7 @@ export async function commentGeminiSuggestion(
     const { deleteRange, additionBlock } = suggestion;
     let deletionBlock = "";
 
-    for (let i = deleteRange.minInclusiveLine; i < deleteRange.maxExclusiveLine; i++){
+    for (let i = deleteRange.minInclusiveLine - 1; i < deleteRange.maxExclusiveLine - 1; i++){
         deletionBlock += fileLines[i] + '\n';
     }
 
@@ -56,11 +56,13 @@ function convertIntoMarkdownSuggestion(header: string, tag: string, deletionBloc
 
   return `### ${header}
 ${tag}
-\`\`\`diff
 <!--Gemini-Tag [Code To Be Deleted]-->
+\`\`\`diff
 ${formattedDeletions}
+\`\`\`
 <!--Gemini-Tag [Code To Be Inserted]-->
+\`\`\`diff
 ${formattedInsertions}
-<!--Gemini-Tag [Diff End] -->
-\`\`\``;
+\`\`\`
+<!--Gemini-Tag [Diff End] -->`;
 }

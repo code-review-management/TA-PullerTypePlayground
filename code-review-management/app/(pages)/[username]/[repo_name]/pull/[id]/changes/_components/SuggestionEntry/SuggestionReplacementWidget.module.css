@@ -1,0 +1,79 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-12);
+    margin: var(--spacer-12);
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-soft);
+}
+
+.deletion {
+    font-size: var(--font-size-diff-code);
+    margin: 0; 
+    padding: '12px'; 
+    overflowX: 'auto';
+    color: var(--text-secondary);
+    background-color: red;
+}
+
+.replacement {
+    font-size: var(--font-size-diff-code);
+    margin: 0; 
+    padding: '12px'; 
+    overflowX: 'auto';
+    color: var(--text-secondary);
+    background-color: green;
+}
+
+/* Container for the new header */
+.formalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacer-8) var(--spacer-12);
+  background-color: var(--background-secondary-light); /* Light GitHub-style gray */
+  border-bottom: 1px solid var(--border-gray);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  font-size: var(--font-size-label);
+}
+
+.headerTitle {
+  font-weight: 600;
+  font-size: 14px;
+  color: #24292f;
+}
+
+/* The Segmented Control Toggle */
+.toggleGroup {
+  display: flex;
+  background-color: #ebecf0;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.toggleButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #57606a;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.toggleButton:hover {
+  color: #24292f;
+}
+
+/* The active state for the clicked button */
+.toggleButton.activeTab {
+  background-color: #ffffff;
+  color: #24292f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Gives it a popped-out look */
+}
+
