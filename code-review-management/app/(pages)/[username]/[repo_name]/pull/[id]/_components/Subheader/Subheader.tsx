@@ -1,4 +1,4 @@
-import styles from "./Subheader.module.css"
+import styles from "./Subheader.module.css";
 import { ReactNode } from "react";
 
 export default function Subheader({ children }: { children: ReactNode }) {
