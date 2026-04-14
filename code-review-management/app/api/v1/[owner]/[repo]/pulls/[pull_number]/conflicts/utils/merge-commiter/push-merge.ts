@@ -26,7 +26,7 @@ export const commitMergeChanges = async (
     octokit: Octokit
 ) : Promise<boolean> => {
     const { owner, repo, targetMergeSha, targetBranch, featureBranch } = mergeCommitInput;
-    let start = startTimer();
+    const start = startTimer();
     try {
         const [featureRef, compareResponse] = await Promise.all([
             octokit.rest.git.getRef({
@@ -73,7 +73,7 @@ export const commitMergeChanges = async (
         for (const [filename, content] of resolvedFilesMap.entries()) {
             if (content === '') markDirectoryForFetch(filename, targetMergeSha);
         }
-        let secondStart = startTimer()
+        const secondStart = startTimer()
         // Fetch everything in massive GraphQL batches
         const folderTreeCache = await fetchDirectoryTreesWithGraphQL(owner, repo, requiredDirsSet, octokit);
         endTimer(secondStart, "Graph API call")
@@ -89,7 +89,7 @@ export const commitMergeChanges = async (
             return treeEntries.find((item: any) => item.name === fileName);
         };
 
-        let treeCreation = startTimer()
+        const treeCreation = startTimer()
         for (const file of featureFiles) {
             if (resolvedFilesMap.has(file.filename)) {
                 if (resolvedFilesMap.get(file.filename) === '') {
@@ -157,7 +157,7 @@ export const commitMergeChanges = async (
         }
         endTimer(treeCreation, "Created tree")
 
-        let thirdStart = startTimer()
+        const thirdStart = startTimer()
         const newTree = await octokit.rest.git.createTree({
             owner,
             repo,

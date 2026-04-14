@@ -1,7 +1,5 @@
 /*
 /api/v1/{owner}/{repo}/pulls/{pull_number}/conflicts/commit-merge
-
-*NOT TO BE POLLED*
 */
 
 import { commitMergeChanges } from "@merge-conflict/utils/merge-commiter/push-merge";
@@ -9,21 +7,13 @@ import { MergeCommitPayloadSchema } from "@merge-conflict/utils/merge-github.typ
 import { getToken } from "next-auth/jwt";
 import { Octokit } from "octokit";
 
-type RouteContext = {
-  params: Promise<{
-    owner: string;
-    repo: string;
-    pull_number: string;
-  }>;
-};
-
 const secret = process.env.AUTH_SECRET;
 const cookieKey =
   process.env.NODE_ENV === "production"
     ? "__Secure-authjs.session-token"
     : "authjs.session-token";
 
-export async function POST(req: Request, context: RouteContext) {
+export async function POST(req: Request) {
 
   const token = await getToken({
     req: req,
@@ -41,7 +31,7 @@ export async function POST(req: Request, context: RouteContext) {
   const result = MergeCommitPayloadSchema.safeParse(body);
 
   if (!result.success) {
-    return Response.json(result.error.format(), { status: 400 });
+    return Response.json(result.error, { status: 400 });
   }
 
   const mergeCommitData = result.data.mergeCommitData;

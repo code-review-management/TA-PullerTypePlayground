@@ -12,7 +12,7 @@ import { SideConflictBlock, renderSideConflicts, insertReverseWidget } from "./r
 
 // Define base options that all 3 editors will share
 export const sharedEditorOptions: MonacoEditor.editor.IEditorConstructionOptions = {
-    fontSize: 20,             
+    fontSize: 14,             
     // This is the default VS Code font stack
     fontFamily: 'Consolas, Menlo, Monaco, "Courier New", monospace', 
     fontWeight: "400",         // VS Code's default weight
@@ -168,35 +168,4 @@ export function updateResultPanelUI(
             resultZonesMap.set(c.id, zoneId);
         }
     });
-}
-
-const languageMap: Record<string, string> = {
-    js: 'javascript',
-    jsx: 'javascript',
-    ts: 'typescript',
-    tsx: 'typescript',
-    html: 'html',
-    css: 'css',
-    json: 'json',
-    
-    cs: 'csharp',
-    c: 'c',
-    h: 'c',
-    cpp: 'cpp',
-    hpp: 'cpp',
-    
-    py: 'python',
-    sh: 'shell',
-    yaml: 'yaml',
-    yml: 'yaml',
-    md: 'markdown',
-};
-
-export function getMonacoLanguage(filename: string): string {
-    if (!filename.includes('.')) {
-        return 'plaintext';
-    }
-
-    const extension = filename.split('.').pop()?.toLowerCase() || '';
-    return languageMap[extension] || 'plaintext';
 }

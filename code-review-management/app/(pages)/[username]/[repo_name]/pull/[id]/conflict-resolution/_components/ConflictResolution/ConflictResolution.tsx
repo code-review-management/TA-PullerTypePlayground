@@ -5,7 +5,7 @@ import * as MonacoEditor from "monaco-editor";
 import { useState, useMemo, useRef, useEffect } from "react";
 import useIsDark from "./useIsDark"
 import { parseMerge, ParsedConflict } from "./parseMerge";
-import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions, getMonacoLanguage } from "./configureEditor";
+import { updateSidePanelsUI, updateResultPanelUI, sharedEditorOptions } from "./configureEditor";
 import { ConflictResolutionProp } from "../../page";
 import { SyncAnchor, bindInterpolatedScroll, generateAnchors, refreshAnchors } from "./syncedScrolling";
 import { MergeOutput, MergeFileOutput, MergeCommitInputData, MergeCommitContent } from "@merge-conflict/utils/merge-github.types";
@@ -100,11 +100,10 @@ export default function ConflictResolution({ conflictResolutionProp }: { conflic
 
         if (!workspaceCache.current[filename]) {
             const parsed = parseMerge(activeFile.contents);
-            
-            const langType = getMonacoLanguage(filename)
-            const cModel = monaco.editor.createModel(parsed.currentContent, langType);
-            const iModel = monaco.editor.createModel(parsed.incomingContent, langType);
-            const rModel = monaco.editor.createModel(parsed.resultContent, langType);
+
+            const cModel = monaco.editor.createModel(parsed.currentContent, undefined, monaco.Uri.file("current_" + filename));
+            const iModel = monaco.editor.createModel(parsed.incomingContent, undefined, monaco.Uri.file("incoming_" + filename));
+            const rModel = monaco.editor.createModel(parsed.resultContent, undefined, monaco.Uri.file(filename));
             const resultDecs: Record<string, string[]> = {};
             
             parsed.conflicts.forEach(c => {
