@@ -6,12 +6,12 @@
     position: sticky;
     top: var(--page-header-height);
 
-    /* TODO: Make file tree resizable. */
+    flex: none;
     min-width: 300px;
     width: 300px;
 
     padding: var(--spacer-10) var(--spacer-16);
     padding-left: 0;
-    border-right: var(--border-normal-width) solid var(--border-gray);
+    border-right: var(--spacer-4) solid var(--border-gray);
     font-size: 0.875rem;
 }
