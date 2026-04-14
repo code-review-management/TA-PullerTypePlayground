@@ -71,9 +71,12 @@ function CommentsTab({
 }: {
   publishedThreads: PublishedThreads;
 }) {
-  const allThreads = [...publishedThreads.values()]
-    .flatMap((byLine) => [...byLine.values()])
-    .flatMap(({ left, right }) => [...left.values(), ...right.values()]);
+  const allThreads = [...publishedThreads.values()].flatMap((byGroup) => {
+    const lineThreads = [...byGroup.lineThreads.values()].flatMap(
+      ({ left, right }) => [...left, ...right],
+    );
+    return [...byGroup.fileThreads, ...lineThreads];
+  });
 
   return (
     <>

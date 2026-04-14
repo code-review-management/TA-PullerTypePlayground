@@ -95,9 +95,9 @@ export function getPublishedThreadsByLine(
   fileStatus: string,
 ) {
   const activePathThreads: PublishedThreadsByLine =
-    publishedThreads.get(activePath) ?? new Map();
+    publishedThreads.get(activePath)?.lineThreads ?? new Map();
   const oldPathThreads: PublishedThreadsByLine =
-    publishedThreads.get(oldPath) ?? new Map();
+    publishedThreads.get(oldPath)?.lineThreads ?? new Map();
   const merged: PublishedThreadsByLine = new Map();
 
   if (fileStatus !== "renamed") return activePathThreads;

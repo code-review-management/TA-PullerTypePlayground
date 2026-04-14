@@ -105,9 +105,13 @@ function InlineDraftReplyEntry({
 function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
   const basename = getBasename(thread.path);
 
+  if (thread.subject_type === "file") {
+    return viewType === "inline" ? "Thread on file-level" : basename;
+  }
+
   // Placeholder in case the ending line and side are undefined.
   if (!thread.line && !thread.side) {
-    return viewType === "inline" ? "File thread" : basename;
+    return viewType === "inline" ? "Thread on file changes" : basename;
   }
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
