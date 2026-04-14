@@ -1,5 +1,8 @@
 import { useMemo } from "react";
-import { PublishedThreads, PublishedThreadsByScope } from "./usePublishedThreads";
+import {
+  PublishedThreads,
+  PublishedThreadsByScope,
+} from "./usePublishedThreads";
 import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
 import { getActivePath } from "../_utils/diff-utils";
