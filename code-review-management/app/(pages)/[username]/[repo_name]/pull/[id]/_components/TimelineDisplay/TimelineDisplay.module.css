@@ -28,6 +28,10 @@
   color: var(--text-secondary);
 }
 
+[data-view="activity-panel"] .eventSmall > :nth-child(2) {
+  margin-top: var(--spacer-4);
+}
+
 .userLink {
   color: var(--text-primary);
   text-decoration: none;
