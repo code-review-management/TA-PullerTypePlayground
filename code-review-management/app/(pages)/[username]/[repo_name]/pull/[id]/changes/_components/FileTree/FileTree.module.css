@@ -1,7 +1,7 @@
 .container {
     /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
     max-height: calc(100vh - var(--page-header-height));
-    overflow-y: auto;
+    /* overflow-y: auto; */
 
     position: sticky;
     top: var(--page-header-height);
@@ -26,7 +26,8 @@
     cursor: ew-resize;
 }
 
-.container.resizing {
+.container.resizing,
+.container.hovered {
     border-right: var(--border-thick-width) solid var(--color-interactive);
 }
 

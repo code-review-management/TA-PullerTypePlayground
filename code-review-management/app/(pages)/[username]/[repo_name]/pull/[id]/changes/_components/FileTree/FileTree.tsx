@@ -10,6 +10,7 @@ import styles from "./FileTree.module.css";
  */
 export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
   const [isResizing, setIsResizing] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const treeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,11 +55,31 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
       document.removeEventListener("mousemove", resize, false);
     }
 
+    function onMouseMove(e: MouseEvent) {
+      if (tree) {
+        if (e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
+          setIsHovered(true);
+        } else {
+          setIsHovered(false);
+        }
+      }
+    }
+
+    function onMouseLeave() {
+      if (tree) {
+        setIsHovered(false);
+      }
+    }
+
     tree.addEventListener("mousedown", onMouseDown, false);
+    tree.addEventListener("mousemove", onMouseMove, false);
+    tree.addEventListener("mouseleave", onMouseLeave, false);
     document.addEventListener("mouseup", onMouseUp, false);
 
     return () => {
       tree.removeEventListener("mousedown", onMouseDown, false);
+      tree.addEventListener("mousemove", onMouseMove, false);
+      tree.addEventListener("mouseleave", onMouseLeave, false);
       document.removeEventListener("mouseup", onMouseUp, false);
       document.removeEventListener("mousemove", resize, false);
     };
@@ -66,7 +87,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
 
   return (
     <div
-      className={`${styles.container} ${isResizing ? styles.resizing : ""}`}
+      className={`${styles.container} ${isResizing ? styles.resizing : ""} ${isHovered ? styles.hovered : ""}`}
       ref={treeRef}
     >
       <div className={styles.tree}>
