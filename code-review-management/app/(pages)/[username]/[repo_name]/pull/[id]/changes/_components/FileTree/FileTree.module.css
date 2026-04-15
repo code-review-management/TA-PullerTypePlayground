@@ -1,16 +1,32 @@
 .container {
     /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
+    max-height: calc(100vh - var(--page-header-height));
+    overflow-y: auto;
+
     position: sticky;
     top: var(--page-header-height);
-    overflow-y: auto;
 
     min-width: 300px;
     width: 300px;
     max-width: 600px;
-    max-height: calc(100vh - var(--page-header-height));
-
     flex: none;
+
+    border-right: var(--border-normal-width) solid var(--border-gray);
     font-size: 0.875rem;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--spacer-4);
+    height: 100%;
+    cursor: ew-resize;
+}
+
+.container.resizing {
+    border-right: var(--border-thick-width) solid var(--color-interactive);
 }
 
 .tree {
@@ -18,15 +34,4 @@
     padding-left: 0;
     max-height: calc(100vh - var(--page-header-height));
     overflow: auto;
-}
-
-.tree::after {
-    content: '';
-    background-color: var(--border-gray);
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: var(--spacer-6);
-    height: 100%;
-    cursor: ew-resize;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileTreeRow from "../FileTreeRow/FileTreeRow";
 import styles from "./FileTree.module.css";
@@ -9,13 +9,14 @@ import styles from "./FileTree.module.css";
  * @param fileTree: Array of `FileTreeNode`s representing the file hierarchy.
  */
 export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
+  const [isResizing, setIsResizing] = useState(false);
   const treeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tree = treeRef.current;
     if (!tree) return;
 
-    const BORDER_SIZE = 6; // Width of the right-side border used for resizing.
+    const BORDER_SIZE = 4; // Width of the right-side border used for resizing.
     let startX: number; // Viewport x-coordinate at mouse down (e.clientX).
     let startTreeWidth: number; // Tree width at mouse down (tree.offsetWidth).
 
@@ -40,10 +41,12 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
         startX = e.clientX;
         startTreeWidth = tree.offsetWidth;
         document.addEventListener("mousemove", resize, false);
+        setIsResizing(true);
       }
     }
 
     function onMouseUp() {
+      setIsResizing(false);
       document.removeEventListener("mousemove", resize, false);
     }
 
@@ -58,7 +61,10 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
   }, []);
 
   return (
-    <div className={styles.container} ref={treeRef}>
+    <div
+      className={`${styles.container} ${isResizing ? styles.resizing : ""}`}
+      ref={treeRef}
+    >
       <div className={styles.tree}>
         {fileTree.map((node: FileTreeNode) => (
           <FileTreeRow key={node.name} node={node} />
