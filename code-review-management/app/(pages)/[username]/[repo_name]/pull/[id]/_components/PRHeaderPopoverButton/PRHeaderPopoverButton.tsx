@@ -23,7 +23,7 @@ export default function PRHeaderPopoverButton({
   isDisabled,
   tooltip,
 }: {
-  buttonLabel: string;
+  buttonLabel: ReactNode;
   buttonVariant?: "primary" | "secondary";
   isPopoverOpen: boolean;
   popoverContent: ReactNode;

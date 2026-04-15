@@ -81,11 +81,11 @@ export const BranchSchema = z.object({
   repo: RepoSchema,
 });
 
-// optional fields are not included in list endpoint
+// optional fields are not included in either list or search endpoints
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
-  diff_url: z.string(),
+  diff_url: z.string().optional(),
   number: z.number(),
   state: z.enum(issueState),
   locked: z.boolean(),
@@ -95,12 +95,12 @@ export const PullRequestSchema = z.object({
   created_at: z.string(),
   updated_at: z.string(),
   closed_at: z.string().nullable(),
-  merged_at: z.string().nullable(),
-  merge_commit_sha: z.string().nullable(),
+  merged_at: z.string().nullish(),
+  merge_commit_sha: z.string().nullish(),
   assignees: z.array(UserSchema).nullable(),
-  requested_reviewers: z.array(UserSchema).nullable(),
-  head: BranchSchema,
-  base: BranchSchema,
+  requested_reviewers: z.array(UserSchema).nullish(),
+  head: BranchSchema.optional(),
+  base: BranchSchema.optional(),
   author_association: z.enum(authorAssociation),
   draft: z.boolean(),
   assignee: UserSchema.nullable(),

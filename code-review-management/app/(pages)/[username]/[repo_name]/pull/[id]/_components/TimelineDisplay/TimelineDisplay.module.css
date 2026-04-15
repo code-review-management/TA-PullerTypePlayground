@@ -23,9 +23,13 @@
 
 .eventSmall {
   display: flex;
-  align-items: center;
+  min-width: 0;
   gap: var(--spacer-12);
   color: var(--text-secondary);
+}
+
+[data-view="activity-panel"] .eventSmall > :nth-child(2) {
+  margin-top: 5px;
 }
 
 .userLink {
@@ -39,7 +43,9 @@
 }
 
 .timelineIcon {
-  width: 25px;
+  margin-left: 2.5px;
+  width: 20px;
+  height: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,13 +57,31 @@
   padding-bottom: var(--spacer-4);
 }
 
-.committedLine {
+.timelineCommit {
+  min-width: 0;
+  margin-top: 3px;
   display: flex;
   gap: var(--spacer-12);
 }
 
-.commitLineText {
-  color: var(--text-tertiary);
+.expandableCommitText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  gap: var(--spacer-4);
+}
+
+.commitMessage {
+  flex: 1;
+  min-width: 0;
+}
+
+.expandButton {
+  border: none;
+  background: var(--background-secondary-light);
+  cursor: pointer;
+  height: 1rem;
 }
 
 .commitSha {

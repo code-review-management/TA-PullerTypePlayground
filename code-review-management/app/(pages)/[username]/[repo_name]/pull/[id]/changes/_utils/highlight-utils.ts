@@ -128,7 +128,7 @@ export function highlightOnMouseUp(
     activeHighlight.start,
     activeHighlight.end,
   );
-  const draftThreadKey = `${activePath}:${maxLine}:${activeHighlight.side}`;
+  const draftThreadKey = `${maxLine}:${activeHighlight.side}`;
 
   /**
    * If there is already a draft associated with the max highlighted line on the
@@ -137,17 +137,21 @@ export function highlightOnMouseUp(
    * and we do not want to override the already existing draft.
    */
   setDraftThreads((prev) => {
-    if (draftThreadKey in prev) return prev;
+    if (activePath in prev && draftThreadKey in prev[activePath]) return prev;
+
     return {
       ...prev,
-      [draftThreadKey]: {
-        oldPath: oldPath,
-        activePath: activePath,
-        fileStatus: fileStatus,
-        start: minLine,
-        end: maxLine,
-        side: activeHighlight.side,
-        body: "",
+      [activePath]: {
+        ...prev[activePath],
+        [draftThreadKey]: {
+          oldPath: oldPath,
+          activePath: activePath,
+          fileStatus: fileStatus,
+          start: minLine,
+          end: maxLine,
+          side: activeHighlight.side,
+          body: "",
+        },
       },
     };
   });

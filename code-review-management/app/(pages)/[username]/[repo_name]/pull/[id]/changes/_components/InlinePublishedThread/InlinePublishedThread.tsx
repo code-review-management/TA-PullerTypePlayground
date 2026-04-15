@@ -2,29 +2,50 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
-import DraftEditorActions from "../DraftEditorActions/DraftEditorActions";
+import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
+import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
+import { getCreateReviewCommentMutationKey } from "@/lib/api/mutations/useCreateReviewCommentMutation";
+import CancelButton from "@components/CancelButton/CancelButton";
+import DraftEditorActions, {
+  DraftItem,
+} from "../DraftEditorActions/DraftEditorActions";
 import InlineCommentEntry from "../InlineCommentEntry/InlineCommentEntry";
 import InlineDraftReplyTrigger from "../InlineDraftReplyTrigger/InlineDraftReplyTrigger";
 import InlineThreadHeader from "../InlineThreadHeader/InlineThreadHeader";
 import styles from "./InlinePublishedThread.module.css";
 
+type ThreadViewType = "inline" | "panel";
+
 /**
  * Displays a published thread that is anchored to specific lines in a file diff.
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
+ * @param viewType: Where the published thread is rendered.
  */
 export default function InlinePublishedThread({
   thread,
+  viewType,
 }: {
   thread: PublishedThreadItem;
+  viewType: ThreadViewType;
 }) {
-  const { draftReplies } = useDraftRepliesContext();
+  const { draftReplies, setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
 
+  const handleCancelReply = () => {
+    deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
+  };
+
   return (
-    <div className={styles.thread}>
-      <InlineThreadHeader title={getThreadTitle(thread)} />
+    <div
+      className={styles.thread}
+      {...(viewType === "inline" && { id: `thread-${thread.id}` })}
+    >
+      <InlineThreadHeader
+        title={getThreadTitle(thread, viewType)}
+        {...(viewType === "panel" && { anchorHref: `#thread-${thread.id}` })}
+      />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
           <InlineCommentEntry
@@ -36,38 +57,62 @@ export default function InlinePublishedThread({
             defaultContent={comment.body}
           />
         ))}
-        {isDraftingReply ? (
-          <InlineDraftReplyEntry reply={draftReplies[draftReplyKey]} />
-        ) : (
-          <InlineDraftReplyTrigger thread={thread} />
+        {viewType === "inline" && ( // Reply option currently supported only for inline threads.
+          <>
+            {isDraftingReply ? (
+              <InlineDraftReplyEntry
+                reply={draftReplies[draftReplyKey]}
+                handleCancel={handleCancelReply}
+              />
+            ) : (
+              <InlineDraftReplyTrigger thread={thread} />
+            )}
+          </>
         )}
       </div>
     </div>
   );
 }
 
-function InlineDraftReplyEntry({ reply }: { reply: DraftReplyItem }) {
+function InlineDraftReplyEntry({
+  reply,
+  handleCancel,
+}: {
+  reply: DraftReplyItem;
+  handleCancel: () => void;
+}) {
   const { data: session } = useSession();
+  const draftItem: DraftItem = { type: "reply", payload: reply };
+  const isSubmitPending = useMutationInFlight({
+    mutationKey: getCreateReviewCommentMutationKey(draftItem),
+  });
+
   return (
     <InlineCommentEntry
       avatar={session?.user.image ?? "/mock/octocat.png"}
       username={session?.user.githubLogin ?? ""}
       defaultEditable={true}
-      actions={
-        <DraftEditorActions
-          draft={{
-            type: "reply",
-            payload: reply,
-          }}
-        />
+      editorActions={<DraftEditorActions draft={draftItem} />}
+      headerActions={
+        !isSubmitPending && (
+          <CancelButton onClick={handleCancel} tooltipContent="Cancel reply" />
+        )
       }
     />
   );
 }
 
-function getThreadTitle(thread: PublishedThreadItem) {
+function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
+  const basename = getBasename(thread.path);
+
+  if (thread.subject_type === "file") {
+    return viewType === "inline" ? "Thread on file-level" : basename;
+  }
+
   // Placeholder in case the ending line and side are undefined.
-  if (!thread.line && !thread.side) return "File thread";
+  if (!thread.line && !thread.side) {
+    return viewType === "inline" ? "Thread on file changes" : basename;
+  }
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
   const endRange = `${formatSide(thread.side!)}${thread.line}`;
@@ -79,8 +124,12 @@ function getThreadTitle(thread: PublishedThreadItem) {
     thread.start_line !== thread.line
   ) {
     const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
-    return `Thread on lines ${startRange} to ${endRange}`;
+    return viewType === "inline"
+      ? `Thread on lines ${startRange} to ${endRange}`
+      : `${basename}: ${startRange} to ${endRange}`;
   }
 
-  return `Thread on line ${endRange}`;
+  return viewType === "inline"
+    ? `Thread on line ${endRange}`
+    : `${basename}: ${endRange}`;
 }

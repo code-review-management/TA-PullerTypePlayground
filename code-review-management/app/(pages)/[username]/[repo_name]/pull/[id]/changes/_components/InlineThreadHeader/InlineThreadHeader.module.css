@@ -6,3 +6,12 @@
     border-bottom: var(--border-normal-width) solid var(--border-gray);
     font-weight: 450;
 }
+
+.headerAnchor {
+    text-decoration: none;
+    color: inherit;
+}
+
+.headerAnchor:hover > .header {
+    background-color: var(--background-secondary-light);
+}

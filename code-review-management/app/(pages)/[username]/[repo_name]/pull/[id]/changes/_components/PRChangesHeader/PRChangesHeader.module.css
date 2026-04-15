@@ -1,3 +1,7 @@
+.headerWithPanel {
+    padding-right: var(--spacer-16);
+}
+
 .pullTitle {
     font-size: 1rem;
     font-weight: 500;
@@ -24,4 +28,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.activityButtonEnabled button {
+    outline: var(--border-thick-width) solid var(--color-interactive);
+    border-color: transparent;
+}
+
+.activityIcon {
+    display: flex;
 }

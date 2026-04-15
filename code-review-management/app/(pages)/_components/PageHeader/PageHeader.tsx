@@ -7,13 +7,16 @@ import styles from "./PageHeader.module.css";
  *
  * @param leftChildren: Children to display on the left side of the header.
  * @param rightChildren: Children to display on the right side of the header.
+ * @param className: Optional styling classes to apply to the header container.
  */
 export default function PageHeader({
   leftChildren,
   rightChildren,
+  className,
 }: {
   leftChildren?: ReactNode;
   rightChildren?: ReactNode;
+  className?: string;
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -34,7 +37,9 @@ export default function PageHeader({
 
   return (
     <>
-      <div className={`${styles.header} ${isScrolled && styles.shadow}`}>
+      <div
+        className={`${styles.header} ${isScrolled && styles.shadow} ${className || ""}`}
+      >
         <div className={styles.group}>{leftChildren}</div>
         <div className={styles.group}>{rightChildren}</div>
       </div>

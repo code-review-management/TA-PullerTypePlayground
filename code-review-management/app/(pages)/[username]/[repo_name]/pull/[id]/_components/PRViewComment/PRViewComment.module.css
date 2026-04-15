@@ -18,6 +18,10 @@
   gap: var(--spacer-8);
 }
 
+[data-view="activity-panel"] .commentContent {
+  min-width: 0;
+}
+
 .usernameAndDate {
   display: flex;
   align-items: center;
@@ -32,4 +36,8 @@
 .date {
   color: var(--text-tertiary);
   font-size: 0.9375rem; /* 1px smaller than username. Using rem here for accessibility*/
+}
+
+[data-view="activity-panel"] .date {
+  font-size: 0.75rem !important;
 }
