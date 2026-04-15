@@ -6,6 +6,7 @@
 
 .sectionHeader {
   display: flex;
+  align-items: center;
   gap: var(--spacer-4);
   cursor: pointer;
 }
