@@ -15,13 +15,16 @@ const INDENT_PADDING = 16;
  * @param node: `FileTreeNode` object representing the node to render.
  * @param depth: How many levels deep the row is nested in the file hierarchy.
  *               Defaults to 0. Used for calculating the padding for each row.
+ * @param isResizing: Whether the file-tree is currently being resized or not.
  */
 export default function FileTreeRow({
   node,
   depth = 0,
+  isResizing,
 }: {
   node: FileTreeNode;
   depth?: number;
+  isResizing: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const nodeLabel = (
@@ -29,6 +32,7 @@ export default function FileTreeRow({
       node={node}
       depth={depth}
       isExpanded={isExpanded}
+      isResizing={isResizing}
       onFolderClick={() => setIsExpanded((prev) => !prev)}
     />
   );
@@ -45,7 +49,11 @@ export default function FileTreeRow({
       {node.type === "directory" &&
         node.children.map((child) => (
           <div key={child.name} className={!isExpanded ? styles.collapsed : ""}>
-            <FileTreeRow node={child} depth={depth + 1} />
+            <FileTreeRow
+              node={child}
+              depth={depth + 1}
+              isResizing={isResizing}
+            />
           </div>
         ))}
     </>
@@ -56,11 +64,13 @@ function NodeLabel({
   node,
   depth,
   isExpanded,
+  isResizing,
   onFolderClick,
 }: {
   node: FileTreeNode;
   depth: number;
   isExpanded: boolean;
+  isResizing: boolean;
   onFolderClick: () => void;
 }) {
   const [isOverflow, setIsOverflow] = useState(false);
@@ -73,7 +83,7 @@ function NodeLabel({
       const hasOverflow = current.scrollWidth > current.clientWidth;
       setIsOverflow(hasOverflow);
     }
-  }, []); // TODO: Update dependencies once we make the file tree resizable.
+  }, [isResizing]);
 
   return (
     <div

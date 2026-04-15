@@ -15,7 +15,6 @@ import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
 import FileTree from "./_components/FileTree/FileTree";
-import IconTooltip from "@components/IconTooltip/IconTooltip";
 import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
 
@@ -75,7 +74,6 @@ export default function Changes() {
               <div
                 className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
               >
-                <IconTooltip id="file-tree-row-tooltip" />
                 <FileTree fileTree={fileTree} />
                 <DiffListView
                   flatFileTree={flatFileTree}
