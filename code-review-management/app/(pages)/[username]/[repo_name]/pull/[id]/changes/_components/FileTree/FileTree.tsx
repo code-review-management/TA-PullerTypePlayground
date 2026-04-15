@@ -15,22 +15,30 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
     const tree = treeRef.current;
     if (!tree) return;
 
-    const BORDER_SIZE = 6;
-    let mousePosition: number;
+    const BORDER_SIZE = 6; // Width of the right-side border used for resizing.
+    let startX: number; // Viewport x-coordinate at mouse down (e.clientX).
+    let startTreeWidth: number; // Tree width at mouse down (tree.offsetWidth).
 
     function resize(e: MouseEvent) {
       if (tree) {
-        const dx = e.x - mousePosition;
-        mousePosition = e.x;
-        tree.style.width =
-          parseInt(getComputedStyle(tree, "").width) + dx + "px";
+        const dx = e.clientX - startX; // How far the mouse has moved from where the drag started.
+        tree.style.width = startTreeWidth + dx + "px";
       }
     }
 
     function onMouseDown(e: MouseEvent) {
+      /**
+       * Only start dragging if the click lands within the right-side border of
+       * the file tree.
+       *
+       * e.offsetX: Current mouse position relative to the tree's left-edge.
+       * e.clientX: Current mouse position relative to the entire viewport.
+       * tree.offsetWidth: Current tree's width.
+       */
       if (tree && e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
         e.preventDefault();
-        mousePosition = e.x;
+        startX = e.clientX;
+        startTreeWidth = tree.offsetWidth;
         document.addEventListener("mousemove", resize, false);
       }
     }
