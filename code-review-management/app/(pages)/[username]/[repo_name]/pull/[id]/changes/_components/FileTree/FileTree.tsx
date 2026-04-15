@@ -15,7 +15,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
     const tree = treeRef.current;
     if (!tree) return;
 
-    const BORDER_SIZE = 4;
+    const BORDER_SIZE = 6;
     let mousePosition: number;
 
     function resize(e: MouseEvent) {
@@ -50,10 +50,12 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
   }, []);
 
   return (
-    <div className={styles.tree} ref={treeRef}>
-      {fileTree.map((node: FileTreeNode) => (
-        <FileTreeRow key={node.name} node={node} />
-      ))}
+    <div className={styles.container} ref={treeRef}>
+      <div className={styles.tree}>
+        {fileTree.map((node: FileTreeNode) => (
+          <FileTreeRow key={node.name} node={node} />
+        ))}
+      </div>
     </div>
   );
 }
