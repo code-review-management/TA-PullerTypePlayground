@@ -11,8 +11,10 @@
     max-width: 600px;
     flex: none;
 
+    padding-right: var(--spacer-8);
     border-right: var(--border-normal-width) solid var(--border-gray);
     font-size: 0.875rem;
+    transition: border-color 0.1s ease-in-out;
 }
 
 /* The transparent drag handle on the right-edge of the file tree. */
@@ -32,8 +34,7 @@
 }
 
 .tree {
-    padding: var(--spacer-10) var(--spacer-16);
-    padding-left: 0;
+    padding: var(--spacer-10) var(--spacer-8) var(--spacer-10) 0;
     max-height: calc(100vh - var(--page-header-height));
     overflow: auto;
 }
