@@ -29,6 +29,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
 
     function onMouseDown(e: MouseEvent) {
       if (tree && e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
+        e.preventDefault();
         mousePosition = e.x;
         document.addEventListener("mousemove", resize, false);
       }
