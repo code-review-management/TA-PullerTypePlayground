@@ -11,7 +11,7 @@ export default function Checkbox({
   name: string;
   onChange: (name: string, isChecked: boolean) => void;
 }) {
-    const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
   return (
     <div className={styles.checkboxWrapper}>
       <input
@@ -25,14 +25,16 @@ export default function Checkbox({
           onChange(name, isChecked);
         }}
       />
-      {checked && <div className={styles.checkImage}>
-        <Image
-          src="/icons/check_small.svg"
-          height={10}
-          width={12}
-          alt="Checkmark"
-        />
-      </div>}
+      {checked && (
+        <div className={styles.checkImage}>
+          <Image
+            src="/icons/check_small.svg"
+            height={10}
+            width={12}
+            alt="Checkmark"
+          />
+        </div>
+      )}
     </div>
   );
 }
