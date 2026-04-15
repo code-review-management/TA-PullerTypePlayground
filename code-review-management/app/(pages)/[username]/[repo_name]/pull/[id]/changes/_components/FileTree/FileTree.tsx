@@ -21,22 +21,22 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
     let startX: number; // Viewport x-coordinate at mouse down (e.clientX).
     let startTreeWidth: number; // Tree width at mouse down (tree.offsetWidth).
 
-    function resize(e: MouseEvent) {
+    function applyResize(e: MouseEvent) {
       if (tree) {
         const dx = e.clientX - startX; // How far the mouse has moved from where the drag started.
         tree.style.width = startTreeWidth + dx + "px";
       }
     }
 
-    function onMouseDown(e: MouseEvent) {
-      /**
-       * Only start dragging if the click lands within the right-side border of
-       * the file tree.
-       *
-       * e.offsetX: Current mouse position relative to the tree's left-edge.
-       * e.clientX: Current mouse position relative to the entire viewport.
-       * tree.offsetWidth: Current tree's width.
-       */
+    /**
+     * Only start dragging if the click lands within the right-side border of
+     * the file tree.
+     *
+     * e.offsetX: Current mouse position relative to the tree's left-edge.
+     * e.clientX: Current mouse position relative to the entire viewport.
+     * tree.offsetWidth: Current tree's width.
+     */
+    function startResize(e: MouseEvent) {
       if (tree && e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
         e.preventDefault();
 
@@ -45,43 +45,39 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
 
         setIsResizing(true);
         document.body.style.cursor = "ew-resize";
-        document.addEventListener("mousemove", resize, false);
+        document.addEventListener("mousemove", applyResize, false);
       }
     }
 
-    function onMouseUp() {
+    function stopResize() {
       setIsResizing(false);
       document.body.style.cursor = "auto";
-      document.removeEventListener("mousemove", resize, false);
+      document.removeEventListener("mousemove", applyResize, false);
     }
 
-    function onMouseMove(e: MouseEvent) {
-      if (tree) {
-        if (e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
-          setIsHovered(true);
-        } else {
-          setIsHovered(false);
-        }
-      }
-    }
-
-    function onMouseLeave() {
-      if (tree) {
+    function updateHoverState(e: MouseEvent) {
+      if (tree && e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
+        setIsHovered(true);
+      } else {
         setIsHovered(false);
       }
     }
 
-    tree.addEventListener("mousedown", onMouseDown, false);
-    tree.addEventListener("mousemove", onMouseMove, false);
-    tree.addEventListener("mouseleave", onMouseLeave, false);
-    document.addEventListener("mouseup", onMouseUp, false);
+    function clearHoverState() {
+      if (tree) setIsHovered(false);
+    }
+
+    tree.addEventListener("mousemove", updateHoverState, false);
+    tree.addEventListener("mouseleave", clearHoverState, false);
+    tree.addEventListener("mousedown", startResize, false);
+    document.addEventListener("mouseup", stopResize, false);
 
     return () => {
-      tree.removeEventListener("mousedown", onMouseDown, false);
-      tree.addEventListener("mousemove", onMouseMove, false);
-      tree.addEventListener("mouseleave", onMouseLeave, false);
-      document.removeEventListener("mouseup", onMouseUp, false);
-      document.removeEventListener("mousemove", resize, false);
+      tree.removeEventListener("mousemove", updateHoverState, false);
+      tree.removeEventListener("mouseleave", clearHoverState, false);
+      tree.removeEventListener("mousedown", startResize, false);
+      document.removeEventListener("mouseup", stopResize, false);
+      document.removeEventListener("mousemove", applyResize, false);
     };
   }, []);
 
