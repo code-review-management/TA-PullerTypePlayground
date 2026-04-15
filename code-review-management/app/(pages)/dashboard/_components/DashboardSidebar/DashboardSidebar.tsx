@@ -37,10 +37,14 @@ export default function DashboardSidebar() {
     <div className={styles.dashboardSidebar}>
       <div className={styles.sidebarContent}>
         <h4 className={styles.sidebarHeader}>REPOSITORIES</h4>
-        <CollapsibleRepoList
-          mappedRepoList={mappedRepoList}
-          onCheckboxChange={onCheckboxChange}
-        />
+        {Array.from(mappedRepoList.keys()).map((owner: string) => (
+          <CollapsibleRepoList
+            key={owner}
+            owner={owner}
+            mappedRepoList={mappedRepoList}
+            onCheckboxChange={onCheckboxChange}
+          />
+        ))}
       </div>
       <div className={styles.sideBorder} />
     </div>
