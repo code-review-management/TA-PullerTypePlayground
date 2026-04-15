@@ -4,7 +4,6 @@ import Image from "next/image";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
 import { useState } from "react";
-import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 
 export default function CollapsibleRepoList({
   owner,
