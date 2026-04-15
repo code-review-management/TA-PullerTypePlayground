@@ -38,15 +38,19 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
        */
       if (tree && e.offsetX >= tree.offsetWidth - BORDER_SIZE) {
         e.preventDefault();
+
         startX = e.clientX;
         startTreeWidth = tree.offsetWidth;
-        document.addEventListener("mousemove", resize, false);
+
         setIsResizing(true);
+        document.body.style.cursor = "ew-resize";
+        document.addEventListener("mousemove", resize, false);
       }
     }
 
     function onMouseUp() {
       setIsResizing(false);
+      document.body.style.cursor = "auto";
       document.removeEventListener("mousemove", resize, false);
     }
 
