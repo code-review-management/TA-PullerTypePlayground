@@ -10,7 +10,7 @@ export function useResizableFileTree(
     const tree = treeRef.current;
     if (!tree) return;
 
-    const BORDER_SIZE = 4; // Width of the right-side border used for resizing.
+    const BORDER_SIZE = 2; // Width of the right-side border used for resizing.
     let startX: number; // Viewport x-coordinate at mouse down (e.clientX).
     let startTreeWidth: number; // Tree width at mouse down (tree.offsetWidth).
 
