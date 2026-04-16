@@ -29,3 +29,7 @@
   gap: var(--spacer-8);
   user-select: none;
 }
+
+.repoName {
+  cursor: pointer;
+}

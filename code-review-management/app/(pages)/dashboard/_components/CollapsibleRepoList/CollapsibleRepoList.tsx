@@ -18,7 +18,10 @@ export default function CollapsibleRepoList({
 
   return (
     <div className={styles.repoListSection} key={owner}>
-      <div className={styles.sectionHeader} onClick={() => setIsExpanded((prev) => !prev)}>
+      <div
+        className={styles.sectionHeader}
+        onClick={() => setIsExpanded((prev) => !prev)}
+      >
         <Image
           src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
           alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
@@ -35,7 +38,9 @@ export default function CollapsibleRepoList({
                 name={repoName}
                 onChange={onCheckboxChange}
               />
-              <label htmlFor={repoName}>{repoName}</label>
+              <label htmlFor={repoName} className={styles.repoName}>
+                {repoName}
+              </label>
             </div>
           ))}
         </form>
