@@ -42,6 +42,16 @@ describe("Pull body header", () => {
     expect(screen.getByTestId("state-chip")).toBeDefined();
   });
 
+  it("renders the pull author avatar", () => {
+    render(<PullBodyHeader pullData={examplePull1} />);
+    expect(screen.getByTestId("user-icon")).toBeDefined();
+  });
+
+  it("renders the pull author username", () => {
+    render(<PullBodyHeader pullData={examplePull1} />);
+    expect(screen.getByText(examplePull1.user?.login || "")).toBeDefined();
+  });
+
   it("renders the branch display", () => {
     render(<PullBodyHeader pullData={examplePull1} />);
     expect(screen.getByTestId("branch-display")).toBeDefined();
