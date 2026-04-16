@@ -1,5 +1,9 @@
 import { FileDiff } from "@/types/github.types";
-import { buildFileTree } from "../filetree-utils";
+import {
+  buildFileTree,
+  FileTreeNode,
+  flattenFileTree,
+} from "../filetree-utils";
 
 describe("buildFileTree", () => {
   it("returns an empty array when given no files", () => {
@@ -274,5 +278,107 @@ describe("buildFileTree", () => {
         { type: "file", name: "g.ts", fileDiff: files[6] },
       ]);
     });
+  });
+});
+
+describe("flattenFileTree", () => {
+  it("returns an empty array when given an empty tree", () => {
+    expect(flattenFileTree([])).toEqual([]);
+  });
+
+  it("flattens a tree of root-level files", () => {
+    const files = [
+      { filename: "a.ts" },
+      { filename: "b.ts" },
+      { filename: "c.ts" },
+    ] as FileDiff[];
+
+    const tree: FileTreeNode[] = [
+      { type: "file", name: "a.ts", fileDiff: files[0] },
+      { type: "file", name: "b.ts", fileDiff: files[1] },
+      { type: "file", name: "c.ts", fileDiff: files[2] },
+    ];
+
+    expect(flattenFileTree(tree)).toEqual([files[0], files[1], files[2]]);
+  });
+
+  it("flattens a tree with files within a single directory", () => {
+    const files = [
+      { filename: "app/a.ts" },
+      { filename: "app/b.ts" },
+      { filename: "app/c.ts" },
+    ] as FileDiff[];
+
+    const tree: FileTreeNode[] = [
+      {
+        type: "directory",
+        name: "app",
+        children: [
+          { type: "file", name: "a.ts", fileDiff: files[0] },
+          { type: "file", name: "b.ts", fileDiff: files[1] },
+          { type: "file", name: "c.ts", fileDiff: files[2] },
+        ],
+      },
+    ];
+
+    expect(flattenFileTree(tree)).toEqual([files[0], files[1], files[2]]);
+  });
+
+  it("flattens a tree with files across multiple nested directories", () => {
+    const files = [
+      { filename: "app/a.ts" },
+      { filename: "app/pages/b.ts" },
+      { filename: "app/pages/utils/c.ts" },
+    ] as FileDiff[];
+
+    const tree: FileTreeNode[] = [
+      {
+        type: "directory",
+        name: "app",
+        children: [
+          {
+            type: "directory",
+            name: "pages",
+            children: [
+              {
+                type: "directory",
+                name: "utils",
+                children: [{ type: "file", name: "c.ts", fileDiff: files[2] }],
+              },
+              { type: "file", name: "b.ts", fileDiff: files[1] },
+            ],
+          },
+          { type: "file", name: "a.ts", fileDiff: files[0] },
+        ],
+      },
+    ];
+    expect(flattenFileTree(tree)).toEqual([files[2], files[1], files[0]]);
+  });
+
+  it("flattens a tree with sibling directories and files", () => {
+    const files = [
+      { filename: "a.ts" },
+      { filename: "b.ts" },
+      { filename: "app/c.ts" },
+      { filename: "app/d.ts" },
+    ] as FileDiff[];
+    const tree: FileTreeNode[] = [
+      {
+        type: "directory",
+        name: "app",
+        children: [
+          { type: "file", name: "c.ts", fileDiff: files[2] },
+          { type: "file", name: "d.ts", fileDiff: files[3] },
+        ],
+      },
+      { type: "file", name: "a.ts", fileDiff: files[0] },
+      { type: "file", name: "b.ts", fileDiff: files[1] },
+    ];
+    expect(flattenFileTree(tree)).toEqual([
+      files[2],
+      files[3],
+      files[0],
+      files[1],
+    ]);
   });
 });
