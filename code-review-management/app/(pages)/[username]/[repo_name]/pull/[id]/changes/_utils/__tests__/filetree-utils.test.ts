@@ -312,7 +312,7 @@ describe("flattenFileTree", () => {
     expect(flattenFileTree(tree)).toEqual([files[0], files[1], files[2]]);
   });
 
-  it("flattens a tree with files within a single directory", () => {
+  it("flattens a tree of files within a single directory", () => {
     const files = [
       { filename: "app/a.ts" },
       { filename: "app/b.ts" },
@@ -334,7 +334,7 @@ describe("flattenFileTree", () => {
     expect(flattenFileTree(tree)).toEqual([files[0], files[1], files[2]]);
   });
 
-  it("flattens a tree with files across multiple nested directories", () => {
+  it("flattens a tree of files across multiple nested directories", () => {
     const files = [
       { filename: "app/a.ts" },
       { filename: "app/pages/b.ts" },
@@ -365,7 +365,7 @@ describe("flattenFileTree", () => {
     expect(flattenFileTree(tree)).toEqual([files[2], files[1], files[0]]);
   });
 
-  it("flattens a tree with sibling directories and files", () => {
+  it("flattens a tree of files with sibling directories", () => {
     const files = [
       { filename: "a.ts" },
       { filename: "b.ts" },
