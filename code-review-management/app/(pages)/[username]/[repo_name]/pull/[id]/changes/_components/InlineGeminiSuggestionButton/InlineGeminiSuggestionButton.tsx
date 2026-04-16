@@ -3,17 +3,25 @@ import { ThreadSuggestionRequest } from "@/types/request.types";
 import styles from "./InlineGeminiSuggestionButton.module.css";
 import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
+import { useGeminiSuggestionMutation } from "@/lib/api/mutations/useGeminiSuggestionMutation";
 
 export default function InlineGeminiSuggestionButton({
   thread,
 }: {
   thread: PublishedThreadItem;
 }) {
-
   const { username, repo_name, id } = useParams<PullParams>();
+  const { mutate, isPending } = useGeminiSuggestionMutation(username, repo_name, id, thread.id)
 
   const handleCallGeminiSuggestion = () => {
-    if (thread.start_line === null){
+    if (isPending) return;
+
+    let line: number;
+    if (thread.start_line !== null){
+      line = thread.start_line
+    } else if (thread.start_line === null && thread.line !== null){
+      line = thread.line;
+    } else {
       return;
     }
 
@@ -21,25 +29,20 @@ export default function InlineGeminiSuggestionButton({
       id: thread.id,
       filePath: thread.path,
       side: thread.side,
-      line: thread.start_line,
+      line: line,
       sha: thread.comments[0].commit_id,
       comments: thread.comments,
     }
 
-    fetch(`/api/v1/${username}/${repo_name}/pulls/${id}/suggest`, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestParams),
-      });
+    mutate(requestParams);
+
    };
 
   return (
     <button 
     className={styles.suggestionButton}
     onClick={handleCallGeminiSuggestion}>
-      <span>Suggest</span>
+      <span>{isPending ? "Pending..." : "Suggest"}</span>
       <img 
           src="/icons/ai_star.png" 
           alt="AI Star" 
