@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import PullBodyHeader from "./PullBodyHeader";
-import { getExamplePull1 } from "@/types/github.defaults";
+import { getExamplePull1 } from "@/mocks/tests/pulls";
 
 jest.mock("../StateChip/StateChip", () => ({
   __esModule: true,
