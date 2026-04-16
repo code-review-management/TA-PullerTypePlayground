@@ -313,7 +313,7 @@ describe("flattenFileTree", () => {
   it("flattens a tree of files across multiple nested directories", () => {
     const files = createFileDiffs([
       "app/a.ts",
-      "app/page/b.ts",
+      "app/pages/b.ts",
       "app/pages/utils/c.ts",
     ]);
 
