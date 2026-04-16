@@ -79,7 +79,6 @@ export async function GET(req: Request, context: RouteContext) {
         const parsedItem = TimelineEventSchema.parse(item);
         if (parsedItem?.event == "committed") {
           since = parsedItem.author.date;
-          console.log(since);
           return true;
         }
       });
