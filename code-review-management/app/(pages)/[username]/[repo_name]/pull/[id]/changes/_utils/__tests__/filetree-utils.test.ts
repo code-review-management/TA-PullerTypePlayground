@@ -3,7 +3,9 @@ import {
   buildFileTree,
   FileTreeNode,
   flattenFileTree,
+  orderParsedDiffs,
 } from "../filetree-utils";
+import { FileData } from "react-diff-view";
 
 describe("buildFileTree", () => {
   it("returns an empty array when given no files", () => {
@@ -390,6 +392,33 @@ describe("flattenFileTree", () => {
       files[3],
       files[0],
       files[1],
+    ]);
+  });
+});
+
+describe("orderParsedDiffs", () => {
+  it("reorders diffs in-place to match the flat file tree", () => {
+    const flatFiletree = [
+      { filename: "lib/b.ts" },
+      { filename: "d.ts" },
+      { filename: "app/a.ts" },
+      { filename: "c.ts" },
+    ] as FileDiff[];
+
+    const diffs = [
+      { type: "modify", oldPath: "c.ts", newPath: "c.ts" },
+      { type: "modify", oldPath: "app/a.ts", newPath: "app/a.ts" },
+      { type: "modify", oldPath: "lib/b.ts", newPath: "lib/b.ts" },
+      { type: "modify", oldPath: "d.ts", newPath: "d.ts" },
+    ] as FileData[];
+
+    orderParsedDiffs(diffs, flatFiletree);
+
+    expect(diffs).toEqual([
+      { type: "modify", oldPath: "lib/b.ts", newPath: "lib/b.ts" },
+      { type: "modify", oldPath: "d.ts", newPath: "d.ts" },
+      { type: "modify", oldPath: "app/a.ts", newPath: "app/a.ts" },
+      { type: "modify", oldPath: "c.ts", newPath: "c.ts" },
     ]);
   });
 });
