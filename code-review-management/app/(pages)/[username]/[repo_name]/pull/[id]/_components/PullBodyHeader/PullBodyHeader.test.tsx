@@ -27,13 +27,15 @@ jest.mock("../BranchDisplay/BranchDisplay", () => ({
 
 describe("Pull body header", () => {
   const examplePull1 = getExamplePull1();
-  it("renders the pull title", () => {
+
+  it("renders the repo name", () => {
     render(<PullBodyHeader pullData={examplePull1} />);
     expect(screen.getByText(examplePull1.base?.repo.name || "")).toBeDefined();
   });
 
-  it("renders the pull number", () => {
+  it("renders the pull title and number", () => {
     render(<PullBodyHeader pullData={examplePull1} />);
+    expect(screen.getByText(examplePull1.title || "")).toBeDefined();
     expect(screen.getByText(`#${examplePull1.number}`)).toBeDefined();
   });
 
@@ -42,13 +44,9 @@ describe("Pull body header", () => {
     expect(screen.getByTestId("state-chip")).toBeDefined();
   });
 
-  it("renders the pull author avatar", () => {
+  it("renders the pull author avatar and username", () => {
     render(<PullBodyHeader pullData={examplePull1} />);
     expect(screen.getByTestId("user-icon")).toBeDefined();
-  });
-
-  it("renders the pull author username", () => {
-    render(<PullBodyHeader pullData={examplePull1} />);
     expect(screen.getByText(examplePull1.user?.login || "")).toBeDefined();
   });
 
