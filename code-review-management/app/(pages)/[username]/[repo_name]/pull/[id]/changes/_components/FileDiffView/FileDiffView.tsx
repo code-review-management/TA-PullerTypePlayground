@@ -15,7 +15,7 @@ import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByLine } from "../../_hooks/usePublishedThreads";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
-import { getWidgets, prepareDiffData } from "../../_utils/widget-utils";
+import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
 import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import EmptyDiff from "../EmptyDiff/EmptyDiff";
@@ -69,9 +69,9 @@ export default memo(function FileDiffView({
   );
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
-  const { widgets, processedHunks } = useMemo(
+  const widgets = useMemo(
     () =>
-      prepareDiffData(
+      getWidgets(
         activePath,
         hunks,
         publishedThreadsByLine,
@@ -107,7 +107,7 @@ export default memo(function FileDiffView({
             <Diff
               viewType={viewType}
               diffType={diffType}
-              hunks={processedHunks}
+              hunks={hunks}
               tokens={tokens}
               widgets={widgets}
               renderGutter={renderGutter}
