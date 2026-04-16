@@ -61,7 +61,16 @@ export async function GET(req: Request) {
 
     // Filter response
     const filteredResponse: PullRequest[] = data.data.items.map((item) => {
-      return PullRequestSchema.parse(item);
+      const rv: PullRequest = PullRequestSchema.parse(item);
+
+      if (rv.repository_url) {
+        // Populate repo name
+        const repoUrlArray = rv.repository_url.split("/");
+        const index = repoUrlArray.findIndex((element) => element == "repos");
+        rv.repository_name = repoUrlArray.slice(index + 2).join("/");
+      }
+
+      return rv;
     });
 
     const linkHeaders = parse(data.headers.link);
