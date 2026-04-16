@@ -8,11 +8,9 @@ import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import {
   Commit,
   CommitSchema,
-  FileDiff,
-  FileDiffSchema,
   TimelineEventSchema,
 } from "@/types/github.types";
-import { CommitV2, FileDiffV2 } from "@/types/github.types.wrapper";
+import { CommitV2 } from "@/types/github.types.wrapper";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
@@ -46,9 +44,10 @@ export async function GET(req: Request, context: RouteContext) {
   const { searchParams: qParams } = new URL(req.url);
   const page = Number(qParams.get("page"));
   const branch = qParams.get("branch");
+  const time = qParams.get("since");
 
   // Validate query parameters
-  if (isNaN(page) || page < 1) {
+  if (isNaN(page) || page < 1 || !branch) {
     return Response.json(
       { error: "Missing or invalid query parameters" },
       { status: 400 },
@@ -66,31 +65,33 @@ export async function GET(req: Request, context: RouteContext) {
   const octokit = new Octokit({ auth: token.accessToken });
   let since: string = "";
 
-  // Get the first relevant commit time
-  try {
-    const { data: contents } = await octokit.rest.issues.listEventsForTimeline({
-      owner: owner,
-      repo: repo,
-      issue_number: Number(pull_number),
-    });
+  // Get the first relevant commit time if not provided
+  if (!time) {
+    try {
+      const { data: contents } =
+        await octokit.rest.issues.listEventsForTimeline({
+          owner: owner,
+          repo: repo,
+          issue_number: Number(pull_number),
+        });
 
-    contents.some((item) => {
-      const parsedItem = TimelineEventSchema.parse(item);
-      if (parsedItem?.event == "committed") {
-        since = parsedItem.author.date;
-        console.log(since)
-        return true;
+      contents.some((item) => {
+        const parsedItem = TimelineEventSchema.parse(item);
+        if (parsedItem?.event == "committed") {
+          since = parsedItem.author.date;
+          console.log(since);
+          return true;
+        }
+      });
+    } catch (error) {
+      if (error instanceof RequestError && error.status) {
+        // Octokit Http error
+        return new Response(error.message, { status: error.status });
+      } else {
+        // Parsing/other error
+        console.log(error);
+        return new Response("Server error", { status: 500 });
       }
-    });
-
-  } catch (error) {
-    if (error instanceof RequestError && error.status) {
-      // Octokit Http error
-      return new Response(error.message, { status: error.status });
-    } else {
-      // Parsing/other error
-      console.log(error);
-      return new Response("Server error", { status: 500 });
     }
   }
 
@@ -102,15 +103,12 @@ export async function GET(req: Request, context: RouteContext) {
       sha: branch ?? undefined,
       page: page,
       per_page: 100,
-      since: since,
+      since: time ?? since,
     });
 
     // Filter response
     const filteredResponse: Commit[] = data.data.map((item) =>
-      {
-        console.log(item)
-        return CommitSchema.parse(item)
-      }
+      CommitSchema.parse(item),
     );
 
     const linkHeaders = parse(data.headers.link);
