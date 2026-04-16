@@ -3,24 +3,7 @@ import MOCK_REPOS from "@/mocks/repos.json";
 import { Repo } from "@/types/github.types";
 import { useState } from "react";
 import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
-
-/**
- * Sorts a flat array of repo objects into a Map of owners (usernames / org names) to repo names
- * @param repos Array of Repo objects.
- * @returns Map of owners (usernames / org names) to repo names
- */
-function sortReposByOrg(repos: Repo[]) {
-  const mappedRepos = new Map<string, string[]>();
-  for (const repo of repos) {
-    const [owner, name] = repo.full_name.split("/");
-    if (mappedRepos.get(owner)) {
-      mappedRepos.get(owner)!.push(name);
-    } else {
-      mappedRepos.set(owner, [name]);
-    }
-  }
-  return mappedRepos;
-}
+import { sortReposByOrg } from "../../_utils/repo-utils";
 
 /**
  * Sidebar displayed on the left of the dashboard page with repo filter options.
