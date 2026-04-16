@@ -3,15 +3,16 @@ import { buildFileTree } from "../filetree-utils";
 
 describe("buildFileTree", () => {
   it("returns an empty array when given no files", () => {
-    const tree = buildFileTree([]);
-    expect(tree).toEqual([]);
+    expect(buildFileTree([])).toEqual([]);
   });
 
   describe("flat files at the root", () => {
     it("returns a single file node for one root-level file", () => {
       const file = { filename: "a.ts" } as FileDiff;
-      const tree = buildFileTree([file]);
-      expect(tree).toEqual([{ type: "file", name: "a.ts", fileDiff: file }]);
+
+      expect(buildFileTree([file])).toEqual([
+        { type: "file", name: "a.ts", fileDiff: file },
+      ]);
     });
 
     it("returns a file node for each root-level file", () => {
@@ -20,8 +21,8 @@ describe("buildFileTree", () => {
         { filename: "b.ts" },
         { filename: "c.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         { type: "file", name: "a.ts", fileDiff: files[0] },
         { type: "file", name: "b.ts", fileDiff: files[1] },
         { type: "file", name: "c.ts", fileDiff: files[2] },
@@ -32,8 +33,8 @@ describe("buildFileTree", () => {
   describe("collapsing single-child directories", () => {
     it("collapses a chain that terminates in a single file", () => {
       const file = { filename: "app/pages/utils/a.ts" } as FileDiff;
-      const tree = buildFileTree([file]);
-      expect(tree).toEqual([
+
+      expect(buildFileTree([file])).toEqual([
         {
           type: "directory",
           name: "app/pages/utils",
@@ -48,8 +49,8 @@ describe("buildFileTree", () => {
         { filename: "app/pages/utils/b.ts" },
         { filename: "app/pages/utils/c.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app/pages/utils",
@@ -67,8 +68,8 @@ describe("buildFileTree", () => {
         { filename: "app/pages/utils/a.ts" },
         { filename: "lib/api/hooks/b.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app/pages/utils",
@@ -84,9 +85,8 @@ describe("buildFileTree", () => {
 
     it("does not collapse a directory whose only child is a file", () => {
       const file = { filename: "app/a.ts" } as FileDiff;
-      const tree = buildFileTree([file]);
 
-      expect(tree).toEqual([
+      expect(buildFileTree([file])).toEqual([
         {
           type: "directory",
           name: "app",
@@ -100,8 +100,8 @@ describe("buildFileTree", () => {
         { filename: "app/pages/lib/a.ts" },
         { filename: "app/pages/utils/b.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app/pages",
@@ -126,8 +126,8 @@ describe("buildFileTree", () => {
         { filename: "app/pages/lib/a.ts" },
         { filename: "app/pages/lib/utils/b.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app/pages/lib",
@@ -151,8 +151,8 @@ describe("buildFileTree", () => {
         { filename: "a.ts" },
         { filename: "b.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         { type: "file", name: "a.ts", fileDiff: files[1] },
         { type: "file", name: "b.ts", fileDiff: files[2] },
         { type: "file", name: "c.ts", fileDiff: files[0] },
@@ -165,8 +165,8 @@ describe("buildFileTree", () => {
         { filename: "app/a.ts" },
         { filename: "lib/b.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
@@ -191,8 +191,8 @@ describe("buildFileTree", () => {
         { filename: "app/c.ts" },
         { filename: "app/a.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
@@ -211,8 +211,8 @@ describe("buildFileTree", () => {
         { filename: "a.ts" },
         { filename: "app/c.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
@@ -234,8 +234,8 @@ describe("buildFileTree", () => {
         { filename: "g.ts" },
         { filename: "app/a.ts" },
       ] as FileDiff[];
-      const tree = buildFileTree(files);
-      expect(tree).toEqual([
+
+      expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
