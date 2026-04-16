@@ -11,16 +11,16 @@ import { Comment } from "@/types/github.types";
  * @param select: Function that transforms the data returned.
  * @returns: TanStack query result containing the list of review comments.
  */
-export function useReviewCommentsQuery<TData = Comment[]>(
+export function useReviewCommentsQuery(
   owner: string,
   repo: string,
   pullNumber: string,
-  select?: (comments: Comment[], owner: string, repo: string, pullNumber: string) => TData,
+  select?: (comments: Comment[]) => void,
 ) {
   return useQuery({
     queryKey: ["review-comments", owner, repo, pullNumber],
     queryFn: async (): Promise<Comment[]> =>
       fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/comments`),
-    select: select ? (data: Comment[]) => select(data, owner, repo, pullNumber) : undefined,
+    select,
   });
 }

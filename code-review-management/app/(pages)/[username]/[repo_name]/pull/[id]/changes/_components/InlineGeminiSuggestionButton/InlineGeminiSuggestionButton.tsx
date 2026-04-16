@@ -1,12 +1,16 @@
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { ThreadSuggestionRequest } from "@/types/request.types";
 import styles from "./InlineGeminiSuggestionButton.module.css";
+import { useParams } from "next/navigation";
+import { PullParams } from "@/types/routing.types";
 
 export default function InlineGeminiSuggestionButton({
   thread,
 }: {
   thread: PublishedThreadItem;
 }) {
+
+  const { username, repo_name, id } = useParams<PullParams>();
 
   const handleCallGeminiSuggestion = () => {
     if (thread.start_line === null){
@@ -22,7 +26,7 @@ export default function InlineGeminiSuggestionButton({
       comments: thread.comments,
     }
 
-    fetch(`/api/v1/${thread.owner}/${thread.repo}/pulls/${thread.pull_number}/suggest`, {
+    fetch(`/api/v1/${username}/${repo_name}/pulls/${id}/suggest`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +41,7 @@ export default function InlineGeminiSuggestionButton({
     onClick={handleCallGeminiSuggestion}>
       <span>Suggest</span>
       <img 
-          src="/ai_star.png" 
+          src="/icons/ai_star.png" 
           alt="AI Star" 
           className={styles.buttonIcon}
       />
