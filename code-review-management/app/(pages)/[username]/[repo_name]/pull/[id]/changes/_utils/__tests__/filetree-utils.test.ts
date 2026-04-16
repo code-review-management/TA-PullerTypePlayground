@@ -35,7 +35,7 @@ describe("buildFileTree", () => {
   });
 
   describe("collapsing single-child directories", () => {
-    it("collapses a chain that terminates in a single file", () => {
+    it("collapses a chain that ends in a single file", () => {
       const file = { filename: "app/pages/utils/a.ts" } as FileDiff;
 
       expect(buildFileTree([file])).toEqual([
@@ -47,7 +47,7 @@ describe("buildFileTree", () => {
       ]);
     });
 
-    it("collapses a chain that terminates in multiple files", () => {
+    it("collapses a chain that ends in multiple files", () => {
       const files = [
         { filename: "app/pages/utils/a.ts" },
         { filename: "app/pages/utils/b.ts" },
@@ -189,7 +189,7 @@ describe("buildFileTree", () => {
       ]);
     });
 
-    it("sorts files alphabetically within a directory", () => {
+    it("sorts files alphabetically within a single directory", () => {
       const files = [
         { filename: "app/b.ts" },
         { filename: "app/c.ts" },
@@ -214,6 +214,7 @@ describe("buildFileTree", () => {
         { filename: "b.ts" },
         { filename: "a.ts" },
         { filename: "app/c.ts" },
+        { filename: "lib/d.ts" },
       ] as FileDiff[];
 
       expect(buildFileTree(files)).toEqual([
@@ -221,6 +222,11 @@ describe("buildFileTree", () => {
           type: "directory",
           name: "app",
           children: [{ type: "file", name: "c.ts", fileDiff: files[2] }],
+        },
+        {
+          type: "directory",
+          name: "lib",
+          children: [{ type: "file", name: "d.ts", fileDiff: files[3] }],
         },
         { type: "file", name: "a.ts", fileDiff: files[1] },
         { type: "file", name: "b.ts", fileDiff: files[0] },
@@ -231,6 +237,7 @@ describe("buildFileTree", () => {
       const files = [
         { filename: "lib/utils/h.ts" },
         { filename: "d.ts" },
+        { filename: "app/api/i.ts" },
         { filename: "app/f.ts" },
         { filename: "app/lib/c.ts" },
         { filename: "app/api/b.ts" },
@@ -247,15 +254,18 @@ describe("buildFileTree", () => {
             {
               type: "directory",
               name: "api",
-              children: [{ type: "file", name: "b.ts", fileDiff: files[4] }],
+              children: [
+                { type: "file", name: "b.ts", fileDiff: files[5] },
+                { type: "file", name: "i.ts", fileDiff: files[2] },
+              ],
             },
             {
               type: "directory",
               name: "lib",
-              children: [{ type: "file", name: "c.ts", fileDiff: files[3] }],
+              children: [{ type: "file", name: "c.ts", fileDiff: files[4] }],
             },
-            { type: "file", name: "a.ts", fileDiff: files[7] },
-            { type: "file", name: "f.ts", fileDiff: files[2] },
+            { type: "file", name: "a.ts", fileDiff: files[8] },
+            { type: "file", name: "f.ts", fileDiff: files[3] },
           ],
         },
         {
@@ -265,7 +275,7 @@ describe("buildFileTree", () => {
             {
               type: "directory",
               name: "api/hooks",
-              children: [{ type: "file", name: "e.ts", fileDiff: files[5] }],
+              children: [{ type: "file", name: "e.ts", fileDiff: files[6] }],
             },
             {
               type: "directory",
@@ -275,7 +285,7 @@ describe("buildFileTree", () => {
           ],
         },
         { type: "file", name: "d.ts", fileDiff: files[1] },
-        { type: "file", name: "g.ts", fileDiff: files[6] },
+        { type: "file", name: "g.ts", fileDiff: files[7] },
       ]);
     });
   });
@@ -362,6 +372,7 @@ describe("flattenFileTree", () => {
       { filename: "app/c.ts" },
       { filename: "app/d.ts" },
     ] as FileDiff[];
+
     const tree: FileTreeNode[] = [
       {
         type: "directory",
