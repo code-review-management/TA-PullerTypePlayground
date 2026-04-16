@@ -7,11 +7,12 @@ import {
 } from "../filetree-utils";
 import { FileData } from "react-diff-view";
 
-// Helper function to construct an array of FileDiff's given a list of filenames.
+// Helper function to construct an array of `FileDiff` objects with type assertion.
 function createFileMeta(filenames: string[]): FileDiff[] {
   return filenames.map((filename) => ({ filename }) as FileDiff);
 }
 
+// Helper function to construct a react-diff-view `FileData` object with type assertion.
 function createDiff(
   type: FileData["type"],
   oldPath: string,
@@ -282,6 +283,23 @@ describe("buildFileTree", () => {
         { type: "file", name: "g.ts", fileDiff: files[7] },
       ]);
     });
+
+    it("sorts directories with different names that share a prefix", () => {
+      const files = createFileMeta(["application/b.ts", "app/a.ts"]);
+
+      expect(buildFileTree(files)).toEqual([
+        {
+          type: "directory",
+          name: "app",
+          children: [{ type: "file", name: "a.ts", fileDiff: files[1] }],
+        },
+        {
+          type: "directory",
+          name: "application",
+          children: [{ type: "file", name: "b.ts", fileDiff: files[0] }],
+        },
+      ]);
+    });
   });
 });
 
@@ -476,6 +494,24 @@ describe("orderParsedDiffs", () => {
       createDiff("modify", "", "a.ts"),
       createDiff("modify", "", "b.ts"),
       createDiff("modify", "", "c.ts"),
+    ]);
+  });
+
+  it("reorders a mix of diff types to match the flat file tree", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts", "d.ts"]);
+    const diffs = [
+      createDiff("delete", "c.ts", ""),
+      createDiff("add", "", "d.ts"),
+      createDiff("rename", "", "b.ts"),
+      createDiff("modify", "", "a.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("modify", "", "a.ts"),
+      createDiff("rename", "", "b.ts"),
+      createDiff("delete", "c.ts", ""),
+      createDiff("add", "", "d.ts"),
     ]);
   });
 });
