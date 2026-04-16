@@ -5,6 +5,12 @@ import ChevronDownIcon from "@/public/icons/chevron_down.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
 import { useState } from "react";
 
+/**
+ * Collapsible checklist used for a section of list of repos in the repo filters section on the dashboard.
+ * @param owner The username or organization name that this section is for.
+ * @param mappedRepoList Mapping of owner name to array of repo names
+ * @param onCheckboxChange Callback to pass into each checkbox in the the list.
+ */
 export default function CollapsibleRepoList({
   owner,
   mappedRepoList,

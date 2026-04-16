@@ -2,6 +2,12 @@ import Image from "next/image";
 import styles from "./Checkbox.module.css";
 import { useState } from "react";
 
+/**
+ * Styled Checkbox component.
+ * @param id Unique ID for the checkbox. Can be used to link labels to the checkbox
+ * @param name Name of the checkbox value. Gets passed into onChange
+ * @param onChange Callback triggered when checkbox value changes.
+ */
 export default function Checkbox({
   id,
   name,

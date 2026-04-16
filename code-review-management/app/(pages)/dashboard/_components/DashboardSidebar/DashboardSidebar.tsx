@@ -4,6 +4,11 @@ import { Repo } from "@/types/github.types";
 import { useState } from "react";
 import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 
+/**
+ * Sorts a flat array of repo objects into a Map of owners (usernames / org names) to repo names
+ * @param repos Array of Repo objects.
+ * @returns Map of owners (usernames / org names) to repo names
+ */
 function sortReposByOrg(repos: Repo[]) {
   const mappedRepos = new Map<string, string[]>();
   for (const repo of repos) {
@@ -17,6 +22,9 @@ function sortReposByOrg(repos: Repo[]) {
   return mappedRepos;
 }
 
+/**
+ * Sidebar displayed on the left of the dashboard page with repo filter options.
+ */
 export default function DashboardSidebar() {
   const [selectedRepos, setSelectedRepos] = useState<Set<string>>(new Set());
   const fullRepoList = MOCK_REPOS.data as Repo[];
