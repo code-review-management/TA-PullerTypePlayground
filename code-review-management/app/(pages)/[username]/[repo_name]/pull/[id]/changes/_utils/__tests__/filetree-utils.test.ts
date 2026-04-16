@@ -3,11 +3,21 @@ import {
   buildFileTree,
   FileTreeNode,
   flattenFileTree,
+  orderParsedDiffs,
 } from "../filetree-utils";
+import { FileData } from "react-diff-view";
 
 // Helper function to construct an array of FileDiff's given a list of filenames.
-function createFileDiffs(filenames: string[]): FileDiff[] {
+function createFileMeta(filenames: string[]): FileDiff[] {
   return filenames.map((filename) => ({ filename }) as FileDiff);
+}
+
+function createDiff(
+  type: FileData["type"],
+  oldPath: string,
+  newPath: string,
+): FileData {
+  return { type, oldPath, newPath } as FileData;
 }
 
 describe("buildFileTree", () => {
@@ -17,7 +27,7 @@ describe("buildFileTree", () => {
 
   describe("flat files at the root", () => {
     it("returns a single file node for one root-level file", () => {
-      const files = createFileDiffs(["a.ts"]);
+      const files = createFileMeta(["a.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         { type: "file", name: "a.ts", fileDiff: files[0] },
@@ -25,7 +35,7 @@ describe("buildFileTree", () => {
     });
 
     it("returns a file node for each root-level file", () => {
-      const files = createFileDiffs(["a.ts", "b.ts", "c.ts"]);
+      const files = createFileMeta(["a.ts", "b.ts", "c.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         { type: "file", name: "a.ts", fileDiff: files[0] },
@@ -37,7 +47,7 @@ describe("buildFileTree", () => {
 
   describe("collapsing single-child directories", () => {
     it("collapses a chain that ends in a single file", () => {
-      const files = createFileDiffs(["app/pages/utils/a.ts"]);
+      const files = createFileMeta(["app/pages/utils/a.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
@@ -49,7 +59,7 @@ describe("buildFileTree", () => {
     });
 
     it("collapses a chain that ends in multiple files", () => {
-      const files = createFileDiffs([
+      const files = createFileMeta([
         "app/pages/utils/a.ts",
         "app/pages/utils/b.ts",
         "app/pages/utils/c.ts",
@@ -69,7 +79,7 @@ describe("buildFileTree", () => {
     });
 
     it("collapses independently within separate branches of the tree", () => {
-      const files = createFileDiffs([
+      const files = createFileMeta([
         "app/pages/utils/a.ts",
         "lib/api/hooks/b.ts",
       ]);
@@ -89,7 +99,7 @@ describe("buildFileTree", () => {
     });
 
     it("does not collapse a directory whose only child is a file", () => {
-      const files = createFileDiffs(["app/a.ts"]);
+      const files = createFileMeta(["app/a.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
@@ -101,7 +111,7 @@ describe("buildFileTree", () => {
     });
 
     it("stops collapsing at the first branching directory", () => {
-      const files = createFileDiffs([
+      const files = createFileMeta([
         "app/pages/lib/a.ts",
         "app/pages/utils/b.ts",
       ]);
@@ -127,7 +137,7 @@ describe("buildFileTree", () => {
     });
 
     it("stops collapsing when a directory contains both a file and a subdirectory", () => {
-      const files = createFileDiffs([
+      const files = createFileMeta([
         "app/pages/lib/a.ts",
         "app/pages/lib/utils/b.ts",
       ]);
@@ -151,7 +161,7 @@ describe("buildFileTree", () => {
 
   describe("sorting", () => {
     it("sorts root-level files alphabetically", () => {
-      const files = createFileDiffs(["c.ts", "a.ts", "b.ts"]);
+      const files = createFileMeta(["c.ts", "a.ts", "b.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         { type: "file", name: "a.ts", fileDiff: files[1] },
@@ -161,7 +171,7 @@ describe("buildFileTree", () => {
     });
 
     it("sorts sibling directories alphabetically", () => {
-      const files = createFileDiffs(["mocks/c.ts", "app/a.ts", "lib/b.ts"]);
+      const files = createFileMeta(["mocks/c.ts", "app/a.ts", "lib/b.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
@@ -183,7 +193,7 @@ describe("buildFileTree", () => {
     });
 
     it("sorts files alphabetically within a single directory", () => {
-      const files = createFileDiffs(["app/b.ts", "app/c.ts", "app/a.ts"]);
+      const files = createFileMeta(["app/b.ts", "app/c.ts", "app/a.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
@@ -199,7 +209,7 @@ describe("buildFileTree", () => {
     });
 
     it("places directories before files at the same level", () => {
-      const files = createFileDiffs(["b.ts", "a.ts", "app/c.ts", "lib/d.ts"]);
+      const files = createFileMeta(["b.ts", "a.ts", "app/c.ts", "lib/d.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
@@ -218,7 +228,7 @@ describe("buildFileTree", () => {
     });
 
     it("sorts files and directories at every level of the tree", () => {
-      const files = createFileDiffs([
+      const files = createFileMeta([
         "lib/utils/h.ts",
         "d.ts",
         "app/api/i.ts",
@@ -281,7 +291,7 @@ describe("flattenFileTree", () => {
   });
 
   it("flattens a tree of root-level files", () => {
-    const files = createFileDiffs(["a.ts", "b.ts", "c.ts"]);
+    const files = createFileMeta(["a.ts", "b.ts", "c.ts"]);
 
     const tree: FileTreeNode[] = [
       { type: "file", name: "a.ts", fileDiff: files[0] },
@@ -293,7 +303,7 @@ describe("flattenFileTree", () => {
   });
 
   it("flattens a tree of files within a single directory", () => {
-    const files = createFileDiffs(["app/a.ts", "app/b.ts", "app/c.ts"]);
+    const files = createFileMeta(["app/a.ts", "app/b.ts", "app/c.ts"]);
 
     const tree: FileTreeNode[] = [
       {
@@ -311,7 +321,7 @@ describe("flattenFileTree", () => {
   });
 
   it("flattens a tree of files across multiple nested directories", () => {
-    const files = createFileDiffs([
+    const files = createFileMeta([
       "app/a.ts",
       "app/pages/b.ts",
       "app/pages/utils/c.ts",
@@ -342,7 +352,7 @@ describe("flattenFileTree", () => {
   });
 
   it("flattens a tree of files with sibling directories", () => {
-    const files = createFileDiffs(["a.ts", "b.ts", "app/c.ts", "app/d.ts"]);
+    const files = createFileMeta(["a.ts", "b.ts", "app/c.ts", "app/d.ts"]);
 
     const tree: FileTreeNode[] = [
       {
@@ -361,6 +371,111 @@ describe("flattenFileTree", () => {
       files[3],
       files[0],
       files[1],
+    ]);
+  });
+});
+
+describe("orderParsedDiffs", () => {
+  it("does nothing when given no diffs and an empty flat file tree", () => {
+    const diffs: FileData[] = [];
+
+    orderParsedDiffs(diffs, []);
+    expect(diffs).toEqual([]);
+  });
+
+  it("preserves order when diffs already match the flat file tree", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("modify", "a.ts", "a.ts"),
+      createDiff("modify", "b.ts", "b.ts"),
+      createDiff("modify", "c.ts", "c.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("modify", "a.ts", "a.ts"),
+      createDiff("modify", "b.ts", "b.ts"),
+      createDiff("modify", "c.ts", "c.ts"),
+    ]);
+  });
+
+  it("reorders diffs to match the flat file tree", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("modify", "c.ts", "c.ts"),
+      createDiff("modify", "b.ts", "b.ts"),
+      createDiff("modify", "a.ts", "a.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("modify", "a.ts", "a.ts"),
+      createDiff("modify", "b.ts", "b.ts"),
+      createDiff("modify", "c.ts", "c.ts"),
+    ]);
+  });
+
+  it("reorders deleted-file diffs by their oldPath", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("delete", "c.ts", ""),
+      createDiff("delete", "a.ts", ""),
+      createDiff("delete", "b.ts", ""),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("delete", "a.ts", ""),
+      createDiff("delete", "b.ts", ""),
+      createDiff("delete", "c.ts", ""),
+    ]);
+  });
+
+  it("reorders added-file diffs by their newPath", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("add", "", "c.ts"),
+      createDiff("add", "", "a.ts"),
+      createDiff("add", "", "b.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("add", "", "a.ts"),
+      createDiff("add", "", "b.ts"),
+      createDiff("add", "", "c.ts"),
+    ]);
+  });
+
+  it("reorders renamed-file diffs by their newPath", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("rename", "", "c.ts"),
+      createDiff("rename", "", "a.ts"),
+      createDiff("rename", "", "b.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("rename", "", "a.ts"),
+      createDiff("rename", "", "b.ts"),
+      createDiff("rename", "", "c.ts"),
+    ]);
+  });
+
+  it("reorders modified-file diffs by their newPath", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const diffs = [
+      createDiff("modify", "", "c.ts"),
+      createDiff("modify", "", "a.ts"),
+      createDiff("modify", "", "b.ts"),
+    ];
+
+    orderParsedDiffs(diffs, flatFileTree);
+    expect(diffs).toEqual([
+      createDiff("modify", "", "a.ts"),
+      createDiff("modify", "", "b.ts"),
+      createDiff("modify", "", "c.ts"),
     ]);
   });
 });
