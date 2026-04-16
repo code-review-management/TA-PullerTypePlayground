@@ -8,7 +8,7 @@ jest.mock("../StateChip/StateChip", () => ({
 }));
 
 jest.mock("../../_utils/date-utils", () => ({
-  formatRelativeDate: () => {},
+  formatRelativeDate: () => "formatteddate",
 }));
 
 jest.mock("../../_utils/pull-utils", () => ({
@@ -45,6 +45,11 @@ describe("Pull body header", () => {
   it("renders the branch display", () => {
     render(<PullBodyHeader pullData={examplePull1} />);
     expect(screen.getByTestId("branch-display")).toBeDefined();
+  });
+
+  it("renders the relative date", () => {
+    render(<PullBodyHeader pullData={examplePull1} />);
+    expect(screen.getByText("Updated formatteddate ago")).toBeDefined();
   });
 
   it("renders the commits, changed files, additions, and deletions", () => {
