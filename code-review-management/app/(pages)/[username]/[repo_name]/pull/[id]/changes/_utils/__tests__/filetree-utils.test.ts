@@ -172,13 +172,13 @@ describe("buildFileTree", () => {
     });
 
     it("sorts sibling directories alphabetically", () => {
-      const files = createFileMeta(["mocks/c.ts", "app/a.ts", "lib/b.ts"]);
+      const files = createFileMeta(["mocks/a.ts", "app/c.ts", "lib/b.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
-          children: [{ type: "file", name: "a.ts", fileDiff: files[1] }],
+          children: [{ type: "file", name: "c.ts", fileDiff: files[1] }],
         },
         {
           type: "directory",
@@ -188,7 +188,7 @@ describe("buildFileTree", () => {
         {
           type: "directory",
           name: "mocks",
-          children: [{ type: "file", name: "c.ts", fileDiff: files[0] }],
+          children: [{ type: "file", name: "a.ts", fileDiff: files[0] }],
         },
       ]);
     });
@@ -210,18 +210,18 @@ describe("buildFileTree", () => {
     });
 
     it("places directories before files at the same level", () => {
-      const files = createFileMeta(["b.ts", "a.ts", "app/c.ts", "lib/d.ts"]);
+      const files = createFileMeta(["b.ts", "a.ts", "lib/d.ts", "app/c.ts"]);
 
       expect(buildFileTree(files)).toEqual([
         {
           type: "directory",
           name: "app",
-          children: [{ type: "file", name: "c.ts", fileDiff: files[2] }],
+          children: [{ type: "file", name: "c.ts", fileDiff: files[3] }],
         },
         {
           type: "directory",
           name: "lib",
-          children: [{ type: "file", name: "d.ts", fileDiff: files[3] }],
+          children: [{ type: "file", name: "d.ts", fileDiff: files[2] }],
         },
         { type: "file", name: "a.ts", fileDiff: files[1] },
         { type: "file", name: "b.ts", fileDiff: files[0] },
