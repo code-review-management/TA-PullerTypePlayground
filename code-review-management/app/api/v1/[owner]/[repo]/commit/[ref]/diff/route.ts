@@ -1,5 +1,5 @@
 /*
-/api/v1/{owner}/{repo}/commit/{ref}
+/api/v1/{owner}/{repo}/commit/{ref}/diff
 
 *NOT TO BE POLLED*
 */
