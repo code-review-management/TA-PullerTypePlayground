@@ -8,28 +8,16 @@ describe("FileStatusChip", () => {
     expect(screen.getByText("mock-status")).toBeDefined();
   });
 
-  it("renders an 'added' status chip with the correct CSS styling", () => {
-    render(<FileStatusChip status="added" />);
-    expect(screen.getByTestId("file-status-chip")).toHaveClass("added");
-  });
+  it.each(["added", "modified", "removed", "renamed"])(
+    "renders a %s file status chip with the correct CSS class",
+    (status) => {
+      render(<FileStatusChip status={status} />);
+      expect(screen.getByTestId("file-status-chip")).toHaveClass(status);
+    },
+  );
 
-  it("renders a 'modified' status chip with the correct CSS styling", () => {
-    render(<FileStatusChip status="modified" />);
-    expect(screen.getByTestId("file-status-chip")).toHaveClass("modified");
-  });
-
-  it("renders a 'removed' status chip with the correct CSS styling", () => {
-    render(<FileStatusChip status="removed" />);
-    expect(screen.getByTestId("file-status-chip")).toHaveClass("removed");
-  });
-
-  it("renders a 'renamed' status chip with the correct CSS styling", () => {
-    render(<FileStatusChip status="renamed" />);
-    expect(screen.getByTestId("file-status-chip")).toHaveClass("renamed");
-  });
-
-  it("renders an unknown status chip with the fallback CSS styling", () => {
-    render(<FileStatusChip status="unknown-status" />);
+  it("renders an unknown file status chip with the fallback CSS class", () => {
+    render(<FileStatusChip status="unknown" />);
     expect(screen.getByTestId("file-status-chip")).toHaveClass("fallback");
   });
 });
