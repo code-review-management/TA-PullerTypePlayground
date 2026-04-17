@@ -468,16 +468,16 @@ describe("orderParsedDiffs", () => {
   it("reorders renamed-file diffs by their newPath", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("rename", "", "c.ts"),
-      createDiff("rename", "", "a.ts"),
-      createDiff("rename", "", "b.ts"),
+      createDiff("rename", "old-c.ts", "c.ts"),
+      createDiff("rename", "old-a.ts", "a.ts"),
+      createDiff("rename", "old-b.ts", "b.ts"),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("rename", "", "a.ts"),
-      createDiff("rename", "", "b.ts"),
-      createDiff("rename", "", "c.ts"),
+      createDiff("rename", "old-a.ts", "a.ts"),
+      createDiff("rename", "old-b.ts", "b.ts"),
+      createDiff("rename", "old-c.ts", "c.ts"),
     ]);
   });
 
@@ -502,14 +502,14 @@ describe("orderParsedDiffs", () => {
     const diffs = [
       createDiff("delete", "c.ts", ""),
       createDiff("add", "", "d.ts"),
-      createDiff("rename", "", "b.ts"),
+      createDiff("rename", "old-b.ts", "b.ts"),
       createDiff("modify", "", "a.ts"),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
       createDiff("modify", "", "a.ts"),
-      createDiff("rename", "", "b.ts"),
+      createDiff("rename", "old-b.ts", "b.ts"),
       createDiff("delete", "c.ts", ""),
       createDiff("add", "", "d.ts"),
     ]);
