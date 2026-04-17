@@ -29,12 +29,6 @@ describe("FileTree", () => {
     expect(screen.getAllByTestId("file-tree-row")).toHaveLength(3);
   });
 
-  it("applies no conditional classes while not resizing or hovered", () => {
-    render(<FileTree fileTree={mockFileTree} />);
-    expect(screen.getByTestId("file-tree")).not.toHaveClass("resizing");
-    expect(screen.getByTestId("file-tree")).not.toHaveClass("hovered");
-  });
-
   it("applies the resizing class while the tree is being resized", () => {
     jest.mocked(useResizableFileTree).mockReturnValueOnce({
       isResizing: true,
@@ -53,5 +47,11 @@ describe("FileTree", () => {
 
     render(<FileTree fileTree={mockFileTree} />);
     expect(screen.getByTestId("file-tree")).toHaveClass("hovered");
+  });
+
+  it("applies no conditional classes while not being resized or hovered", () => {
+    render(<FileTree fileTree={mockFileTree} />);
+    expect(screen.getByTestId("file-tree")).not.toHaveClass("resizing");
+    expect(screen.getByTestId("file-tree")).not.toHaveClass("hovered");
   });
 });
