@@ -31,7 +31,7 @@ describe("FileTreeIcon", () => {
 
   describe("file nodes", () => {
     it.each(["added", "modified", "removed", "renamed"])(
-      "renders a status icon for a %s file",
+      "renders the correct status icon for a %s file",
       (status) => {
         render(
           <FileTreeIcon node={createFileNode(status)} isExpanded={false} />,
@@ -40,7 +40,7 @@ describe("FileTreeIcon", () => {
       },
     );
 
-    it("renders nothing for an unknown file status", () => {
+    it("renders nothing for an unknown status type", () => {
       const { container } = render(
         <FileTreeIcon node={createFileNode("unknown")} isExpanded={false} />,
       );

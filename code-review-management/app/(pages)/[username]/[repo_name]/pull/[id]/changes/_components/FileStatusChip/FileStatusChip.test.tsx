@@ -9,14 +9,14 @@ describe("FileStatusChip", () => {
   });
 
   it.each(["added", "modified", "removed", "renamed"])(
-    "renders a %s file status chip with the correct CSS class",
+    "applies the correct CSS class for a %s file",
     (status) => {
       render(<FileStatusChip status={status} />);
       expect(screen.getByTestId("file-status-chip")).toHaveClass(status);
     },
   );
 
-  it("renders an unknown file status chip with the fallback CSS class", () => {
+  it("applies the fallback CSS class for a file with an unknown status type", () => {
     render(<FileStatusChip status="unknown" />);
     expect(screen.getByTestId("file-status-chip")).toHaveClass("fallback");
   });
