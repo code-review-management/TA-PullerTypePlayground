@@ -20,12 +20,12 @@ describe("FileTreeIcon", () => {
   describe("directory nodes", () => {
     it("renders an open folder icon when expanded", () => {
       render(<FileTreeIcon node={directoryNode} isExpanded />);
-      expect(screen.getByAltText("Open folder")).toBeDefined();
+      expect(screen.getByAltText("Open folder")).toBeInTheDocument();
     });
 
     it("renders a closed folder icon when not expanded", () => {
       render(<FileTreeIcon node={directoryNode} isExpanded={false} />);
-      expect(screen.getByAltText("Closed folder")).toBeDefined();
+      expect(screen.getByAltText("Closed folder")).toBeInTheDocument();
     });
   });
 
@@ -36,7 +36,7 @@ describe("FileTreeIcon", () => {
         render(
           <FileTreeIcon node={createFileNode(status)} isExpanded={false} />,
         );
-        expect(screen.getByAltText(status)).toBeDefined();
+        expect(screen.getByAltText(status)).toBeInTheDocument();
       },
     );
 

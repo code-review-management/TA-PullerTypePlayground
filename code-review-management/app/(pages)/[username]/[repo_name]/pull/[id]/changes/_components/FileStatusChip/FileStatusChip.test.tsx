@@ -5,7 +5,7 @@ import FileStatusChip from "./FileStatusChip";
 describe("FileStatusChip", () => {
   it("renders the provided status as text", () => {
     render(<FileStatusChip status="mock-status" />);
-    expect(screen.getByText("mock-status")).toBeDefined();
+    expect(screen.getByText("mock-status")).toBeInTheDocument();
   });
 
   it.each(["added", "modified", "removed", "renamed"])(
