@@ -1,7 +1,7 @@
 import { Repo } from "@/types/github.types";
 import { getDefaultUser, getExampleUser1 } from "./users";
 
-export function getDefaultRepo() {
+export function getDefaultRepo(): Repo {
   return {
     id: 0,
     name: "",
@@ -17,10 +17,10 @@ export function getDefaultRepo() {
     open_issues_count: 0,
     has_pull_requests: true,
     visibility: "public",
-  } as Repo;
+  };
 }
 
-export function getExampleRepo1() {
+export function getExampleRepo1(): Repo {
   return {
     id: 0,
     name: "example-repo-1",
@@ -36,5 +36,5 @@ export function getExampleRepo1() {
     open_issues_count: 1,
     has_pull_requests: true,
     visibility: "public",
-  } as Repo;
+  };
 }

@@ -3,7 +3,7 @@ import { getDefaultBranch } from "./branches";
 import { getDefaultUser, getExampleUser1, getExampleUser2 } from "./users";
 import { getExampleRepo1 } from "./repos";
 
-export function getDefaultPull() {
+export function getDefaultPull(): PullRequest {
   return {
     url: "",
     id: 0,
@@ -24,10 +24,10 @@ export function getDefaultPull() {
     author_association: "CONTRIBUTOR",
     draft: false,
     assignee: null,
-  } as PullRequest;
+  };
 }
 
-export function getExamplePull1() {
+export function getExamplePull1(): PullRequest {
   return {
     url: "",
     id: 0,
@@ -65,5 +65,5 @@ export function getExamplePull1() {
     additions: 123,
     deletions: 5,
     changed_files: 4,
-  } as PullRequest;
+  };
 }
