@@ -1,5 +1,5 @@
 /*
-/api/v2/{owner}/{repo}/{pull_number}/commits
+/api/v2/{owner}/{repo}/pulls/{pull_number}/commits
 
 *NOT TO BE POLLED*
 */
