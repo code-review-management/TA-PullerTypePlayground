@@ -68,6 +68,9 @@ export async function GET(req: Request) {
         const repoUrlArray = rv.repository_url.split("/");
         const index = repoUrlArray.findIndex((element) => element == "repos");
         rv.repository_name = repoUrlArray.slice(index + 2).join("/");
+
+        // Populate repo owner
+        rv.repository_owner = repoUrlArray[index + 1];
       }
 
       return rv;
