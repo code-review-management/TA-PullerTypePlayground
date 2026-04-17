@@ -36,7 +36,6 @@ export async function _post(
 
   // Validate required parameters
   if (!owner || !repo || !pull_number || !reqArgs.success) {
-    console.log(reqArgs.error);
     return Response.json(
       { error: "Issue with required parameters" },
       { status: 400 },
