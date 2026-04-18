@@ -1,36 +1,68 @@
 import { FileDiff } from "@/types/github.types";
 import { FileTreeNode } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_utils/filetree-utils";
+import { FileData } from "react-diff-view";
+
+// Helper function to create an array of GitHub `FileDiff` objects.
+export function createFileMeta(filenames: string[]): FileDiff[] {
+  return filenames.map((filename) => ({ filename }) as FileDiff);
+}
+
+// Helper function to create a GitHub `FileDiff` object.
+export function createFileMetaItem(filename: string): FileDiff {
+  return { filename } as FileDiff;
+}
+
+// Helper function to create a react-diff-view `FileData` object.
+export function createDiff(
+  type: FileData["type"],
+  oldPath: string,
+  newPath: string,
+): FileData {
+  return { type, oldPath, newPath } as FileData;
+}
+
+export function getExampleFileNode1(): FileTreeNode {
+  return { type: "file", name: "a.ts", fileDiff: createFileMetaItem("a.ts") };
+}
+
+export function getExampleDirectoryNode1(): FileTreeNode {
+  return {
+    type: "directory",
+    name: "src",
+    children: [
+      {
+        type: "directory",
+        name: "pages",
+        children: [
+          {
+            type: "file",
+            name: "home.tsx",
+            fileDiff: createFileMetaItem("src/pages/home.tsx"),
+          },
+          {
+            type: "file",
+            name: "layout.tsx",
+            fileDiff: createFileMetaItem("src/pages/layout.tsx"),
+          },
+        ],
+      },
+      {
+        type: "file",
+        name: "utils.ts",
+        fileDiff: createFileMetaItem("src/utils.ts"),
+      },
+    ],
+  };
+}
+
+export function getExampleDirectoryNode2(): FileTreeNode {
+  return { type: "directory", name: "lib", children: [] };
+}
 
 export function getExampleFileTree1(): FileTreeNode[] {
   return [
-    {
-      type: "directory",
-      name: "src",
-      children: [
-        {
-          type: "directory",
-          name: "pages",
-          children: [
-            {
-              type: "file",
-              name: "home.tsx",
-              fileDiff: { filename: "src/pages/home.tsx" } as FileDiff,
-            },
-            {
-              type: "file",
-              name: "layout.tsx",
-              fileDiff: { filename: "src/pages/layout.tsx" } as FileDiff,
-            },
-          ],
-        },
-        {
-          type: "file",
-          name: "utils.ts",
-          fileDiff: { filename: "src/utils.ts" } as FileDiff,
-        },
-      ],
-    },
-    { type: "directory", name: "lib", children: [] },
-    { type: "file", name: "a.ts", fileDiff: { filename: "a.ts" } as FileDiff },
+    getExampleDirectoryNode1(),
+    getExampleDirectoryNode2(),
+    getExampleFileNode1(),
   ];
 }
