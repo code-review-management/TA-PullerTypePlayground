@@ -17,6 +17,8 @@ export default function DashboardGrid({
     pull.title.toLowerCase().includes(searchString.toLowerCase()),
   );
 
+  console.log(pulls)
+
   return (
     <table className={styles.dashboardGrid}>
       <thead>
