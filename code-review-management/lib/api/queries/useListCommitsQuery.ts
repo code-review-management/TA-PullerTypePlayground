@@ -22,12 +22,12 @@ export function useListCommitsQuery(
     queryKey: ["list-commits", owner, repo, pullNumber],
     queryFn: async ({ pageParam }): Promise<CommitV2> =>
       fetcher(
-        `/api/v2/${owner}/${repo}/pulls/${pullNumber}/commits?page=${pageParam}?branch=${branch}`,
+        `/api/v2/${owner}/${repo}/pulls/${pullNumber}/commits?page=${pageParam}&branch=${branch}`,
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
     select: useCallback((data: InfiniteData<CommitV2, number>) => {
-      data.pages.flatMap((page) => page.data);
+      return data.pages.flatMap((page) => page.data);
     }, []),
   });
 }
