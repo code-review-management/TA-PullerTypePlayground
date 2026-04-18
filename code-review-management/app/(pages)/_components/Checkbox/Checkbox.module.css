@@ -13,7 +13,6 @@
 }
 
 .checkbox:checked {
-  background-image: url("/public/icons/check_small.svg");
   background-color: var(--text-accent);
   border: var(--border-thick-width) solid var(--text-accent);
 }
