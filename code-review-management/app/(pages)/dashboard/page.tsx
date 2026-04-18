@@ -5,8 +5,8 @@ import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useEffect, useState } from "react";
-import { PullRequest } from "@/types/github.types";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
+import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
 
-  const pulls = data?.pages.flatMap((page) => page.data) as PullRequest[];
+  const pulls = data?.pages.flatMap((page) => page.data) ?? [];
 
   // Auto fetch all remaining pulls if a search string is applied
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
-      <div className={styles.repoSideBar} />
+      <DashboardSidebar />
       {isPending ? (
         "Loading dashboard..."
       ) : (

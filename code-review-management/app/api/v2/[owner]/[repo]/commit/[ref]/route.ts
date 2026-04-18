@@ -1,20 +1,29 @@
 /*
-/api/v2/pulls
+/api/v2/{owner}/{repo}/commit/{ref}
 
 *NOT TO BE POLLED*
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { PullRequest, PullRequestSchema } from "@/types/github.types";
-import { PullRequestV2 } from "@/types/github.types.wrapper";
+import { Commit, CommitSchema } from "@/types/github.types";
+import { CommitV2 } from "@/types/github.types.wrapper";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 import parse from "parse-link-header";
 
+type RouteContext = {
+  params: Promise<{
+    owner: string;
+    repo: string;
+    ref: string;
+  }>;
+};
+
 const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
-export async function GET(req: Request) {
+export async function GET(req: Request, context: RouteContext) {
+  const { owner, repo, ref } = await context.params;
   const token = await getToken({
     req: req,
     secret: secret,
@@ -28,13 +37,10 @@ export async function GET(req: Request) {
   }
 
   // Get query parameters
-  const { searchParams: params } = new URL(req.url);
-  const page = Number(params.get("page"));
-  const open = params.get("open");
-  const draft = params.get("draft");
-  const merged = params.get("merged");
+  const { searchParams: qParams } = new URL(req.url);
+  const page = Number(qParams.get("page"));
 
-  // Validate parameters
+  // Validate query parameters
   if (isNaN(page) || page < 1) {
     return Response.json(
       { error: "Missing or invalid query parameters" },
@@ -42,45 +48,30 @@ export async function GET(req: Request) {
     );
   }
 
+  // Validate required parameters
+  if (!owner || !repo || !ref) {
+    return Response.json(
+      { error: "Missing required parameters" },
+      { status: 400 },
+    );
+  }
+
   const octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    let query = "is:pr involves:@me ";
-    query +=
-      open != null ? (open == "true" ? "state:open " : "state:closed ") : "";
-    query +=
-      draft != null ? (draft == "true" ? "draft:true " : "draft:false ") : "";
-    query +=
-      merged != null ? (merged == "true" ? "is:merged " : "is:unmerged ") : "";
-
-    const data = await octokit.request("GET /search/issues", {
-      q: query,
+    const data = await octokit.rest.repos.getCommit({
+      owner: owner,
+      repo: repo,
+      ref: ref,
       page: page,
       per_page: 100,
     });
 
-    // Filter response
-    const filteredResponse: PullRequest[] = data.data.items.map((item) => {
-      const rv: PullRequest = PullRequestSchema.parse(item);
-
-      if (rv.repository_url) {
-        // Populate repo name
-        const repoUrlArray = rv.repository_url.split("/");
-        const index = repoUrlArray.findIndex((element) => element == "repos");
-        rv.repository_name = repoUrlArray.slice(index + 2).join("/");
-
-        // Populate repo owner
-        rv.repository_owner = repoUrlArray[index + 1];
-      }
-
-      return rv;
-    });
-
     const linkHeaders = parse(data.headers.link);
 
-    const wrappedResponse: PullRequestV2 = {
-      data: filteredResponse,
-      totalCount: data.data.total_count,
+    const filteredResponse: Commit = CommitSchema.parse(data.data);
+    const wrappedResponse: CommitV2 = {
+      data: [filteredResponse],
       ...(linkHeaders && {
         ...(linkHeaders.prev && { prev: Number(linkHeaders.prev.page) }),
         ...(linkHeaders.next && { next: Number(linkHeaders.next.page) }),
@@ -101,7 +92,6 @@ export async function GET(req: Request) {
       return new Response(error.message, { status: error.status });
     } else {
       // Parsing/other error
-      console.log(error);
       return new Response("Server error", { status: 500 });
     }
   }

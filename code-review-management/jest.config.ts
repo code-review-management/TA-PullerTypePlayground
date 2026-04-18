@@ -10,6 +10,7 @@ const createJestConfig = nextJest({ dir: "./" });
 
 const config: Config = {
   collectCoverage: true,
+  coveragePathIgnorePatterns: ["mocks", "node_modules"],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
   testEnvironment: "jest-environment-jsdom",
