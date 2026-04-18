@@ -82,6 +82,9 @@ export const BranchSchema = z.object({
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
+  repository_url: z.string().optional(),
+  repository_name: z.string().optional(),
+  repository_owner: z.string().optional(),
   diff_url: z.string().optional(),
   number: z.number(),
   state: z.enum(issueState),
@@ -112,6 +115,11 @@ export const PullRequestSchema = z.object({
   additions: z.number().optional(),
   deletions: z.number().optional(),
   changed_files: z.number().optional(),
+  pull_request: z
+    .object({
+      merged_at: z.string().nullable(),
+    })
+    .optional(),
 });
 
 // Not in use
@@ -226,6 +234,7 @@ export const CommitSchema = z.object({
       total: z.number(),
     })
     .optional(),
+  files: z.array(FileDiffSchema).optional(),
 });
 
 export const CommitCommentSchema = z.object({

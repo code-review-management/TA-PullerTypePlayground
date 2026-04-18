@@ -49,6 +49,7 @@ export function useSubmitDraftItem(
         side: githubSide,
         start_line: start,
         line: end,
+        subject_type: "line",
       },
       {
         // Fires after invalidating the TanStack cache for review comments
@@ -68,6 +69,7 @@ export function useSubmitDraftItem(
         commit_id: pull.head?.sha ?? "",
         path: draft.payload.filename,
         in_reply_to: draft.payload.parentId,
+        subject_type: "line",
       },
       {
         onSuccess: () => deleteDraftReply(draft.payload, setDraftReplies),
