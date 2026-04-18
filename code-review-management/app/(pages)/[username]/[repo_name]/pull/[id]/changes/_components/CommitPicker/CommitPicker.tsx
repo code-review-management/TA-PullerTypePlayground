@@ -1,4 +1,5 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
+import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { formatDate } from "../../../_utils/date-utils";
 import MOCK_COMMITS from "@/mocks/commits.json";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
@@ -8,7 +9,7 @@ import styles from "./CommitPicker.module.css";
 const ALL_CHANGES = "all-changes";
 
 export default function CommitPicker() {
-  const [selected, setSelected] = useState(ALL_CHANGES);
+  const { selectedSha, setSelectedSha } = useCommitPickerContext();
 
   return (
     <PopoverContent>
@@ -24,8 +25,8 @@ export default function CommitPicker() {
         <div className={styles.list}>
           <CommitOption
             value={ALL_CHANGES}
-            checked={selected === ALL_CHANGES}
-            onChange={setSelected}
+            checked={selectedSha === ALL_CHANGES}
+            onChange={setSelectedSha}
           >
             <span className={styles.message}>Show all changes</span>
           </CommitOption>
@@ -33,8 +34,8 @@ export default function CommitPicker() {
             <CommitOption
               key={commit.sha}
               value={commit.sha}
-              checked={selected === commit.sha}
-              onChange={setSelected}
+              checked={selectedSha === commit.sha}
+              onChange={setSelectedSha}
             >
               <span className={styles.info}>
                 <span className={styles.message}>{commit.commit.message}</span>
