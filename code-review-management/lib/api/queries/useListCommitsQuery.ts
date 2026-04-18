@@ -12,7 +12,7 @@ import { CommitV2 } from "@/types/github.types.wrapper";
  * @param branch: Feature branch of the pull request.
  * @returns: TanStack query result containing the list of pull request commits.
  */
-export function useListFilesQuery(
+export function useListCommitsQuery(
   owner: string,
   repo: string,
   pullNumber: string,
