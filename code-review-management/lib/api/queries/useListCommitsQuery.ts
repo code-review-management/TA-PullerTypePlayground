@@ -10,6 +10,8 @@ import { CommitV2 } from "@/types/github.types.wrapper";
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
  * @param branch: Feature branch of the pull request.
+ * @param enabled: Optional flag to disable the query from automatically running
+ *                 if set to false.
  * @returns: TanStack query result containing the list of pull request commits.
  */
 export function useListCommitsQuery(
@@ -17,6 +19,7 @@ export function useListCommitsQuery(
   repo: string,
   pullNumber: string,
   branch: string,
+  enabled?: boolean,
 ) {
   return useInfiniteQuery({
     queryKey: ["list-commits", owner, repo, pullNumber],
@@ -29,5 +32,6 @@ export function useListCommitsQuery(
     select: useCallback((data: InfiniteData<CommitV2, number>) => {
       return data.pages.flatMap((page) => page.data);
     }, []),
+    enabled,
   });
 }
