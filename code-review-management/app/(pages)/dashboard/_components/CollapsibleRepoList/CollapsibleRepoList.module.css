@@ -18,10 +18,14 @@
 }
 
 .repoList {
+  display: none;
+  margin-left: var(--spacer-20);
+}
+
+.repoListExpanded {
   display: flex;
   flex-direction: column;
   gap: var(--spacer-10);
-  margin-left: var(--spacer-20);
 }
 
 .repoListEntry {

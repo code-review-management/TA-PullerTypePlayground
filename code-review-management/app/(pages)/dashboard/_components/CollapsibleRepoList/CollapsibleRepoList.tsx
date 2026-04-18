@@ -35,22 +35,22 @@ export default function CollapsibleRepoList({
         />
         <h5 className={styles.ownerName}>{owner}</h5>
       </div>
-      {isExpanded && (
-        <form className={styles.repoList}>
-          {mappedRepoList.get(owner)?.map((repoName) => (
-            <div key={repoName} className={styles.repoListEntry}>
-              <Checkbox
-                id={repoName}
-                name={repoName}
-                onChange={onCheckboxChange}
-              />
-              <label htmlFor={repoName} className={styles.repoName}>
-                {repoName}
-              </label>
-            </div>
-          ))}
-        </form>
-      )}
+      <form
+        className={`${styles.repoList} ${isExpanded && styles.repoListExpanded}`}
+      >
+        {mappedRepoList.get(owner)?.map((repoName) => (
+          <div key={repoName} className={styles.repoListEntry}>
+            <Checkbox
+              id={repoName}
+              name={repoName}
+              onChange={onCheckboxChange}
+            />
+            <label htmlFor={repoName} className={styles.repoName}>
+              {repoName}
+            </label>
+          </div>
+        ))}
+      </form>
     </div>
   );
 }
