@@ -226,6 +226,7 @@ export const CommitSchema = z.object({
       total: z.number(),
     })
     .optional(),
+  files: z.array(FileDiffSchema).optional(),
 });
 
 export const CommitCommentSchema = z.object({
