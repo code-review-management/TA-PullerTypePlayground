@@ -26,7 +26,7 @@ export default function Dashboard() {
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
-      <DashboardSidebar/>
+      <DashboardSidebar />
       {isPending ? (
         "Loading dashboard..."
       ) : (
