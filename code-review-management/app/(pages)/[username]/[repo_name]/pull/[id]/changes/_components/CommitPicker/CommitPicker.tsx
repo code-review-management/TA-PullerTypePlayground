@@ -1,67 +1,86 @@
 import { useParams, useRouter } from "next/navigation";
-import { Dispatch, ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction, SubmitEvent } from "react";
 import { PullParams } from "@/types/routing.types";
+import { Commit, PullRequest } from "@/types/github.types";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
+import { useListCommitsQuery } from "@/lib/api/queries/useListCommitsQuery";
 import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { formatDate } from "../../../_utils/date-utils";
-import MOCK_COMMITS from "@/mocks/commits.json";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
 import SubmitButton from "@components/SubmitButton/SubmitButton";
 import styles from "./CommitPicker.module.css";
 
-export default function CommitPicker() {
+export default function CommitPicker({ pull }: { pull: PullRequest }) {
   const router = useRouter();
   const { username, repo_name, id } = useParams<PullParams>();
   const { selectedSha, setSelectedSha } = useCommitPickerContext();
 
-  const handleSubmit = () => {
-    const BASE_ROUTE = `/${username}/${repo_name}/pull/${id}/changes`;
-    if (selectedSha === null) router.push(BASE_ROUTE);
-    else router.push(BASE_ROUTE + `?sha=${selectedSha}`);
+  const {
+    data: commits,
+    hasNextPage,
+    fetchNextPage,
+    isFetching,
+    isPending,
+  } = useListCommitsQuery(username, repo_name, id, pull.head?.sha ?? "");
+  useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
+  // TODO: Handle error.
+
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const base = `/${username}/${repo_name}/pull/${id}/changes`;
+    router.push(selectedSha ? `${base}?sha=${selectedSha}` : base);
   };
 
   return (
     <PopoverContent>
-      <form
-        className={styles.container}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <p className={styles.title}>
-          Commits <span className={styles.count}>{MOCK_COMMITS.length}</span>
-        </p>
-        <div className={styles.list}>
-          <CommitOption
-            value={null}
-            checked={selectedSha === null}
-            onChange={setSelectedSha}
-          >
-            <span className={styles.message}>Show all changes</span>
-          </CommitOption>
-          {MOCK_COMMITS.map((commit) => (
-            <CommitOption
-              key={commit.sha}
-              value={commit.sha}
-              checked={selectedSha === commit.sha}
-              onChange={setSelectedSha}
-            >
-              <span className={styles.info}>
-                <span className={styles.message}>{commit.commit.message}</span>
-                <span className={styles.meta}>
-                  <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
-                  <span>{commit.commit.author.name}</span>
-                  <span>{formatDate(new Date(commit.commit.author.date))}</span>
-                </span>
-              </span>
-            </CommitOption>
-          ))}
-        </div>
-        <div className={styles.submit}>
-          <SubmitButton label="View changes" isDisabled={false} />
-        </div>
+      <form className={styles.container} onSubmit={handleSubmit}>
+        {isPending ? (
+          <div>Loading commits...</div>
+        ) : (
+          <>
+            <p className={styles.title}>
+              Commits{" "}
+              <span className={styles.count}>{commits?.length ?? ""}</span>
+            </p>
+            <div className={styles.list}>
+              <CommitOption
+                value={null}
+                checked={selectedSha === null}
+                onChange={setSelectedSha}
+              >
+                <span className={styles.message}>Show all changes</span>
+              </CommitOption>
+              {commits?.map((commit) => (
+                <CommitOption
+                  key={commit.sha}
+                  value={commit.sha}
+                  checked={selectedSha === commit.sha}
+                  onChange={setSelectedSha}
+                >
+                  <CommitDetails commit={commit} />
+                </CommitOption>
+              ))}
+            </div>
+            <div className={styles.submit}>
+              <SubmitButton label="View changes" isDisabled={false} />
+            </div>
+          </>
+        )}
       </form>
     </PopoverContent>
+  );
+}
+
+function CommitDetails({ commit }: { commit: Commit }) {
+  return (
+    <span className={styles.info}>
+      <span className={styles.message}>{commit.commit.message}</span>
+      <span className={styles.meta}>
+        <span className={styles.sha}>{commit.sha.slice(0, 7)}</span>
+        <span>{commit.commit.author.name}</span>
+        <span>{formatDate(new Date(commit.commit.author.date))}</span>
+      </span>
+    </span>
   );
 }
 
