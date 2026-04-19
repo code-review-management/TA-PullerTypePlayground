@@ -3,7 +3,8 @@ import { State } from "@/app/(pages)/_utils/stateConstants";
 
 export function getPullState(pull: PullRequest): State {
   if (pull.draft) return "draft";
-  if (pull.merged_at) return "merged";
+  if (pull.merged_at || (pull.pull_request && pull.pull_request.merged_at))
+    return "merged";
   return pull.state;
 }
 
