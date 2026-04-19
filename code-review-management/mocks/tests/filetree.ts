@@ -22,7 +22,11 @@ export function createDiff(
 }
 
 export function getExampleFileNode1(): Extract<FileTreeNode, { type: "file" }> {
-  return { type: "file", name: "a.ts", fileDiff: createFileMetaItem("a.ts") };
+  return {
+    type: "file",
+    name: "index.ts",
+    fileDiff: createFileMetaItem("index.ts"),
+  };
 }
 
 export function getExampleDirectoryNode1(): Extract<
