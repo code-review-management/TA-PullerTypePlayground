@@ -1,4 +1,6 @@
+import { useParams, useRouter } from "next/navigation";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { PullParams } from "@/types/routing.types";
 import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { formatDate } from "../../../_utils/date-utils";
 import MOCK_COMMITS from "@/mocks/commits.json";
@@ -6,10 +8,16 @@ import PopoverContent from "@components/PopoverContent/PopoverContent";
 import SubmitButton from "@components/SubmitButton/SubmitButton";
 import styles from "./CommitPicker.module.css";
 
-const ALL_CHANGES = "all-changes";
-
 export default function CommitPicker() {
+  const router = useRouter();
+  const { username, repo_name, id } = useParams<PullParams>();
   const { selectedSha, setSelectedSha } = useCommitPickerContext();
+
+  const handleSubmit = () => {
+    const BASE_ROUTE = `/${username}/${repo_name}/pull/${id}/changes`;
+    if (selectedSha === null) router.push(BASE_ROUTE);
+    else router.push(BASE_ROUTE + `?sha=${selectedSha}`);
+  };
 
   return (
     <PopoverContent>
@@ -17,6 +25,7 @@ export default function CommitPicker() {
         className={styles.container}
         onSubmit={(e) => {
           e.preventDefault();
+          handleSubmit();
         }}
       >
         <p className={styles.title}>
@@ -24,8 +33,8 @@ export default function CommitPicker() {
         </p>
         <div className={styles.list}>
           <CommitOption
-            value={ALL_CHANGES}
-            checked={selectedSha === ALL_CHANGES}
+            value={null}
+            checked={selectedSha === null}
             onChange={setSelectedSha}
           >
             <span className={styles.message}>Show all changes</span>
@@ -62,9 +71,9 @@ function CommitOption({
   onChange,
   children,
 }: {
-  value: string;
+  value: string | null;
   checked: boolean;
-  onChange: Dispatch<SetStateAction<string>>;
+  onChange: Dispatch<SetStateAction<string | null>>;
   children: ReactNode;
 }) {
   return (
@@ -72,7 +81,7 @@ function CommitOption({
       <input
         type="radio"
         name="commit"
-        value={value}
+        value={value ?? ""}
         required
         checked={checked}
         onChange={() => onChange(value)}

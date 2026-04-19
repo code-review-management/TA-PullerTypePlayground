@@ -7,11 +7,9 @@ import {
   useState,
 } from "react";
 
-export const ALL_CHANGES = "all-changes";
-
 const CommitPickerContext = createContext<{
-  selectedSha: string;
-  setSelectedSha: Dispatch<SetStateAction<string>>;
+  selectedSha: string | null;
+  setSelectedSha: Dispatch<SetStateAction<string | null>>;
 } | null>(null);
 
 export const useCommitPickerContext = () => {
@@ -29,7 +27,7 @@ export default function CommitPickerProvider({
 }: {
   children: ReactNode;
 }) {
-  const [selectedSha, setSelectedSha] = useState(ALL_CHANGES);
+  const [selectedSha, setSelectedSha] = useState<string | null>(null);
 
   return (
     <CommitPickerContext
