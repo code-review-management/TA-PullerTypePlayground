@@ -17,7 +17,10 @@ export default function FileStatusChip({ status }: { status: string }) {
   const colorClass = COLOR_CLASSES[status] ?? styles.fallback;
 
   return (
-    <div className={`${styles.fileStatusChip} ${colorClass}`}>
+    <div
+      className={`${styles.fileStatusChip} ${colorClass}`}
+      data-testid="file-status-chip"
+    >
       <p>{status}</p>
     </div>
   );
