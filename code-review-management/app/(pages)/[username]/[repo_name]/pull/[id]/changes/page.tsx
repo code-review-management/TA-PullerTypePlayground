@@ -1,14 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useParams } from "next/navigation";
-import { usePullQuery } from "@/lib/api/queries/usePullQuery";
-import { PullParams } from "@/types/routing.types";
+import { useChangesData } from "./_hooks/useChangesData";
 import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
-import { usePublishedThreads } from "./_hooks/usePublishedThreads";
-import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
 import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
@@ -19,30 +14,11 @@ import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
 
 export default function Changes() {
-  const { username, repo_name, id } = useParams<PullParams>();
   const { draftReplies, setDraftReplies } = useDraftReplies();
   const { draftThreads, setDraftThreads } = useDraftThreads();
-  const {
-    publishedThreads,
-    isPending: isPublishedThreadsPending,
-    isError: isPublishedThreadsError,
-  } = usePublishedThreads(username, repo_name, id);
 
-  const {
-    data: pull,
-    isPending: isPullPending,
-    isError: isPullError,
-  } = usePullQuery(username, repo_name, id);
-
-  const {
-    data: files,
-    hasNextPage: hasNextFilesPage,
-    fetchNextPage: fetchNextFilesPage,
-    isFetching: isFilesFetching,
-    isPending: isFilesPending,
-    isError: isFilesError,
-  } = useListFilesQuery(username, repo_name, id);
-  useAutoFetchAllPages(hasNextFilesPage, isFilesFetching, fetchNextFilesPage);
+  const { pull, files, publishedThreads, isPending, isError } =
+    useChangesData();
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
   const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);
@@ -54,12 +30,9 @@ export default function Changes() {
    * TODO: Replace with proper loading/error UI. Move to affected sections
    * instead of returning at the page-level.
    */
-  if (isPullPending || isFilesPending || isPublishedThreadsPending) {
-    return <div>Loading changes...</div>;
-  }
-  if (isPullError || isFilesError || isPublishedThreadsError) {
-    return <div>Failed to load changes.</div>;
-  }
+  if (isPending) return <div>Loading changes...</div>;
+  if (isError) return <div>Failed to load changes.</div>;
+
   return (
     <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
       <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
@@ -67,7 +40,7 @@ export default function Changes() {
           <div className={styles.pageBody}>
             <div className={styles.bodyMain}>
               <PRChangesHeader
-                pull={pull}
+                pull={pull!}
                 isActivityPanelOpen={isActivityPanelOpen}
                 toggleActivityPanel={toggleActivityPanel}
               />
