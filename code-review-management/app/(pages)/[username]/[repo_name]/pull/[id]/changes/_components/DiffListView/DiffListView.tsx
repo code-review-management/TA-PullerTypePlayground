@@ -1,11 +1,9 @@
-import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
-import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { useActiveDiffs } from "../../_hooks/useActiveDiffs";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff } from "@/types/github.types";
-import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
@@ -20,13 +18,8 @@ export default function DiffListView({
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
 }) {
-  const { username, repo_name, id } = useParams<PullParams>();
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const {
-    data: diffString,
-    isPending,
-    isError,
-  } = useFileDiffsQuery(username, repo_name, id);
+  const { diffString, isPending, isError } = useActiveDiffs();
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
