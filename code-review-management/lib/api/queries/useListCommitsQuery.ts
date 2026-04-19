@@ -19,7 +19,7 @@ export function useListCommitsQuery(
   repo: string,
   pullNumber: string,
   branch: string,
-  enabled?: boolean,
+  enabled = true,
 ) {
   return useInfiniteQuery({
     queryKey: ["list-commits", owner, repo, pullNumber],
