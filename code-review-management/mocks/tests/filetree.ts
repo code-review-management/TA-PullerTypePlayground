@@ -21,11 +21,14 @@ export function createDiff(
   return { type, oldPath, newPath } as FileData;
 }
 
-export function getExampleFileNode1(): FileTreeNode {
+export function getExampleFileNode1(): Extract<FileTreeNode, { type: "file" }> {
   return { type: "file", name: "a.ts", fileDiff: createFileMetaItem("a.ts") };
 }
 
-export function getExampleDirectoryNode1(): FileTreeNode {
+export function getExampleDirectoryNode1(): Extract<
+  FileTreeNode,
+  { type: "directory" }
+> {
   return {
     type: "directory",
     name: "src",
@@ -55,7 +58,10 @@ export function getExampleDirectoryNode1(): FileTreeNode {
   };
 }
 
-export function getExampleDirectoryNode2(): FileTreeNode {
+export function getExampleDirectoryNode2(): Extract<
+  FileTreeNode,
+  { type: "directory" }
+> {
   return { type: "directory", name: "lib", children: [] };
 }
 
