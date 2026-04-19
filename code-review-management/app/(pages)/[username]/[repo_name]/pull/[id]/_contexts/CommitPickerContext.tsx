@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import {
   createContext,
   Dispatch,
@@ -27,7 +28,8 @@ export default function CommitPickerProvider({
 }: {
   children: ReactNode;
 }) {
-  const [selectedSha, setSelectedSha] = useState<string | null>(null);
+  const sha = useSearchParams().get("sha");
+  const [selectedSha, setSelectedSha] = useState<string | null>(sha);
 
   return (
     <CommitPickerContext
