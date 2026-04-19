@@ -8,7 +8,6 @@ const DATE2 = "2026-04-18T00:00:00Z";
 const DATE3 = "2026-04-19T00:00:00Z";
 const DATE4 = "2026-04-19T00:00:01Z";
 
-// Helper function to constsruct an array of GitHub `PullRequest` objects.
 function createPull(updated_at: string): PullRequest {
   return {
     ...getDefaultPull(),
