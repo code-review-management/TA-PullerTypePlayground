@@ -1,13 +1,13 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { useResizableFileTree } from "../../_hooks/useResizableFileTree";
 import { getExampleFileTree1 } from "@/mocks/tests/filetree";
+import { useResizableFileTree } from "../../_hooks/useResizableFileTree";
 import FileTree from "./FileTree";
 
 jest.mock("../../_hooks/useResizableFileTree", () => ({
   useResizableFileTree: jest.fn(() => ({
-    isHovered: false,
     isResizing: false,
+    isHovered: false,
   })),
 }));
 
