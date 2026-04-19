@@ -2,6 +2,7 @@ import { PullRequest } from "@/types/github.types";
 import { sortPullsByUpdated } from "../pulls-utils";
 import { getDefaultPull } from "@/mocks/tests/pulls";
 
+// Example date strings from least to most recent
 const DATE1 = "2026-04-17T00:00:00Z";
 const DATE2 = "2026-04-18T00:00:00Z";
 const DATE3 = "2026-04-19T00:00:00Z";
