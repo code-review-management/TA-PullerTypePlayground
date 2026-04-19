@@ -20,9 +20,24 @@ describe("sortPullsByUpdated", () => {
     expect(sortPullsByUpdated([])).toEqual([]);
   });
 
-  it("returns an array with a single pull request when given an array with a single pull request", () => {
+  it("preserves the array when it only has one item", () => {
     const pulls = [createPull(DATE1)];
     expect(sortPullsByUpdated(pulls)).toEqual([createPull(DATE1)]);
+  });
+
+  it("preserves order when arrays are already sorted by update time", () => {
+    const pulls = [
+      createPull(DATE4),
+      createPull(DATE3),
+      createPull(DATE2),
+      createPull(DATE1),
+    ];
+    expect(sortPullsByUpdated(pulls)).toEqual([
+      createPull(DATE4),
+      createPull(DATE3),
+      createPull(DATE2),
+      createPull(DATE1),
+    ]);
   });
 
   it("sorts an unsorted array of pull requests", () => {
