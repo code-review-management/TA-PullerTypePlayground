@@ -16,6 +16,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
   return (
     <div
       className={`${styles.container} ${isResizing ? styles.resizing : ""} ${isHovered ? styles.hovered : ""}`}
+      data-testid="file-tree"
       ref={treeRef}
     >
       <div className={styles.tree}>

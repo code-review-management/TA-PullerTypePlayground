@@ -59,7 +59,7 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
         <Link
           className={styles.rowTitleTop}
-          href={`${pull.base?.repo.full_name}/pull/${pull.number}`}
+          href={`${pull.repository_owner}/${pull.repository_name}/pull/${pull.number}`}
         >
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
