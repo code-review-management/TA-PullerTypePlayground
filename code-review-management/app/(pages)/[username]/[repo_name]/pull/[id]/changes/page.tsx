@@ -6,6 +6,7 @@ import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
 import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
+import CommitPickerProvider from "../_contexts/CommitPickerContext";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
@@ -34,35 +35,37 @@ export default function Changes() {
   if (isError) return <div>Failed to load changes.</div>;
 
   return (
-    <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
-      <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
-        <div className={styles.page}>
-          <div className={styles.pageBody}>
-            <div className={styles.bodyMain}>
-              <PRChangesHeader
-                pull={pull!}
-                isActivityPanelOpen={isActivityPanelOpen}
-                toggleActivityPanel={toggleActivityPanel}
-              />
-              <div
-                className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
-              >
-                <FileTree fileTree={fileTree} />
-                <DiffListView
-                  flatFileTree={flatFileTree}
-                  // Use non-null assertion since threads are defined if not in pending/error state.
-                  publishedThreads={publishedThreads!}
+    <CommitPickerProvider>
+      <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
+        <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
+          <div className={styles.page}>
+            <div className={styles.pageBody}>
+              <div className={styles.bodyMain}>
+                <PRChangesHeader
+                  pull={pull!}
+                  isActivityPanelOpen={isActivityPanelOpen}
+                  toggleActivityPanel={toggleActivityPanel}
                 />
+                <div
+                  className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
+                >
+                  <FileTree fileTree={fileTree} />
+                  <DiffListView
+                    flatFileTree={flatFileTree}
+                    // Use non-null assertion since threads are defined if not in pending/error state.
+                    publishedThreads={publishedThreads!}
+                  />
+                </div>
               </div>
+              <ActivityPanel
+                publishedThreads={publishedThreads!}
+                isOpen={isActivityPanelOpen}
+                togglePanel={toggleActivityPanel}
+              />
             </div>
-            <ActivityPanel
-              publishedThreads={publishedThreads!}
-              isOpen={isActivityPanelOpen}
-              togglePanel={toggleActivityPanel}
-            />
           </div>
-        </div>
-      </DraftThreadsContext>
-    </DraftRepliesContext>
+        </DraftThreadsContext>
+      </DraftRepliesContext>
+    </CommitPickerProvider>
   );
 }
