@@ -1,4 +1,3 @@
-import { FileDiff } from "@/types/github.types";
 import {
   buildFileTree,
   FileTreeNode,
@@ -6,20 +5,7 @@ import {
   orderParsedDiffs,
 } from "../filetree-utils";
 import { FileData } from "react-diff-view";
-
-// Helper function to construct an array of GitHub `FileDiff` objects.
-function createFileMeta(filenames: string[]): FileDiff[] {
-  return filenames.map((filename) => ({ filename }) as FileDiff);
-}
-
-// Helper function to construct a react-diff-view `FileData` object.
-function createDiff(
-  type: FileData["type"],
-  oldPath: string,
-  newPath: string,
-): FileData {
-  return { type, oldPath, newPath } as FileData;
-}
+import { createDiff, createFileMeta } from "@/mocks/tests/filetree";
 
 describe("buildFileTree", () => {
   it("returns an empty array when given no files", () => {

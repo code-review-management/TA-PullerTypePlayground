@@ -44,7 +44,11 @@ export default function FileTreeRow({
       )}
       {node.type === "directory" &&
         node.children.map((child) => (
-          <div key={child.name} className={!isExpanded ? styles.collapsed : ""}>
+          <div
+            key={child.name}
+            className={!isExpanded ? styles.collapsed : ""}
+            data-testid="directory-child"
+          >
             <FileTreeRow node={child} depth={depth + 1} />
           </div>
         ))}
