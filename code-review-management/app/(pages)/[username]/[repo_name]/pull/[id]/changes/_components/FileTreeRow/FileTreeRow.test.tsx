@@ -8,7 +8,6 @@ import {
 import FileTreeRow from "./FileTreeRow";
 
 describe("FileTreeRow", () => {
-  const user = userEvent.setup();
   const mockDirectory = getExampleDirectoryNode1();
   const mockFile = getExampleFileNode1();
 
@@ -44,9 +43,11 @@ describe("FileTreeRow", () => {
 
     it("collapses its immediate children when clicked", async () => {
       const { container } = render(<FileTreeRow node={mockDirectory} />);
-      await user.click(screen.getByText("src"));
-      const collapsed = container.getElementsByClassName("collapsed");
 
+      const user = userEvent.setup();
+      await user.click(screen.getByText("src"));
+
+      const collapsed = container.getElementsByClassName("collapsed");
       expect(collapsed).toHaveLength(2);
       expect(collapsed[0]).toHaveTextContent("pages");
       expect(collapsed[1]).toHaveTextContent("utils.ts");
@@ -54,13 +55,18 @@ describe("FileTreeRow", () => {
 
     it("un-collapses its immediate children when clicked again", async () => {
       const { container } = render(<FileTreeRow node={mockDirectory} />);
+
+      const user = userEvent.setup();
       await user.click(screen.getByText("src"));
       await user.click(screen.getByText("src"));
+
       expect(container.getElementsByClassName("collapsed")).toHaveLength(0);
     });
 
     it("re-expanding a parent keeps the collapsed state of child directories", async () => {
       const { container } = render(<FileTreeRow node={mockDirectory} />);
+
+      const user = userEvent.setup();
       await user.click(screen.getByText("pages"));
       await user.click(screen.getByText("src"));
       await user.click(screen.getByText("src"));
