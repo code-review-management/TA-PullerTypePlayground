@@ -4,7 +4,8 @@ import { fetcher } from "../utils/fetcher";
 import { CommitV2 } from "@/types/github.types.wrapper";
 
 /**
- * Fetches the commits in a GitHub pull request. Supports pagination.
+ * Fetches the list of commits associated with a GitHub pull request. Supports
+ * pagination.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
