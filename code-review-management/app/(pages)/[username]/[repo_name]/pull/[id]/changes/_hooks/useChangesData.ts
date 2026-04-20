@@ -29,34 +29,34 @@ export function useChangesData() {
     isFetching: isFilesFetching,
     isPending: isFilesPending,
     isError: isFilesError,
-  } = useListFilesQuery(username, repo_name, id);
+  } = useListFilesQuery(username, repo_name, id, sha === null);
   useAutoFetchAllPages(hasNextFilesPage, isFilesFetching, fetchNextFilesPage);
 
   const {
-    data: commitFiles,
-    hasNextPage: hasNextCommitFilesPage,
-    fetchNextPage: fetchNextCommitFilesPage,
-    isFetching: isCommitFilesFetching,
-    isPending: isCommitFilesPending,
-    isError: isCommitFilesError,
+    data: commit,
+    hasNextPage: hasNextCommitPage,
+    fetchNextPage: fetchNextCommitPage,
+    isFetching: isCommitFetching,
+    isPending: isCommitPending,
+    isError: isCommitError,
   } = useCommitQuery(username, repo_name, sha ?? "", sha !== null);
   useAutoFetchAllPages(
-    hasNextCommitFilesPage,
-    isCommitFilesFetching,
-    fetchNextCommitFilesPage,
+    hasNextCommitPage,
+    isCommitFetching,
+    fetchNextCommitPage,
   );
 
   return {
     pull,
-    files: sha ? commitFiles?.files : files,
+    files: sha ? commit?.files : files,
     publishedThreads,
     isPending:
       isPullPending ||
       isPublishedThreadsPending ||
-      (sha ? isCommitFilesPending : isFilesPending),
+      (sha ? isCommitPending : isFilesPending),
     isError:
       isPullError ||
       isPublishedThreadsError ||
-      (sha ? isCommitFilesError : isFilesError),
+      (sha ? isCommitError : isFilesError),
   };
 }
