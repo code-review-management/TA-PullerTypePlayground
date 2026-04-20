@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
 
 /**
- * Fetches the diff-string of a commit.
+ * Fetches the diff-string of a GitHub commit.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
@@ -11,14 +11,14 @@ import { fetcher } from "@/lib/api/utils/fetcher";
  *                 if set to false.
  * @returns: TanStack query result containing the diff-string.
  */
-export function useCommitDiffQuery(
+export function useCommitDiffsQuery(
   owner: string,
   repo: string,
   ref: string,
   enabled = true,
 ) {
   return useQuery({
-    queryKey: ["commit-diff", owner, repo, ref],
+    queryKey: ["commit-diffs", owner, repo, ref],
     queryFn: async (): Promise<string> =>
       fetcher(`/api/v1/${owner}/${repo}/commit/${ref}/diff`),
     enabled,
