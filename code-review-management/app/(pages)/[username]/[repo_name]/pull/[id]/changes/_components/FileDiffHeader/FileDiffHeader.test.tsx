@@ -60,6 +60,30 @@ describe("FileDiffHeader", () => {
     });
   });
 
+  describe("file-level comment button", () => {
+    it("renders button", () => {
+      render(<FileDiffHeader {...defaultProps} />);
+      expect(
+        screen.getByRole("button", { name: "File-level comment" }),
+      ).toBeInTheDocument();
+    });
+
+    it("calls createFileDraftThread when button is clicked", async () => {
+      const mockCreateFileDraftThread = jest.fn();
+      const user = userEvent.setup();
+      render(
+        <FileDiffHeader
+          {...defaultProps}
+          createFileDraftThread={mockCreateFileDraftThread}
+        />,
+      );
+      await user.click(
+        screen.getByRole("button", { name: "File-level comment" }),
+      );
+      expect(mockCreateFileDraftThread).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe("file path", () => {
     it("renders both paths with an arrow for renamed files", () => {
       render(
