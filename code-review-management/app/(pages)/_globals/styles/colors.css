@@ -1,67 +1,67 @@
 :root {
-  /* Component background colors */
-  --background-light: #ffffff;
-  --background-secondary-light: #f2f2f2;
+    /* Component background colors */
+    --background-light: #ffffff;
+    --background-secondary-light: #f2f2f2;
 
-  /* Component text colors */
-  --text-primary: #49454f;
-  --text-secondary: #79747e;
-  --text-tertiary: #938f99;
-  --text-accent: #589ddd;
+    /* Component text colors */
+    --text-primary: #49454f;
+    --text-secondary: #79747e;
+    --text-tertiary: #938f99;
+    --text-accent: #589ddd;
 
-  /* Semantic colors */
-  --color-success: #3ca133;
-  --color-failure: #e30202;
-  --color-interactive: #1e84de;
-  --color-interactive-transparent: #d8edff80;
-  --color-disabled: #919191;
+    /* Semantic colors */
+    --color-success: #3ca133;
+    --color-failure: #e30202;
+    --color-interactive: #1e84de;
+    --color-interactive-transparent: #d8edff80;
+    --color-disabled: #919191;
 
-  /* Tooltip colors */
-  --tooltip-gray: #4c4c4c;
+    /* Tooltip colors */
+    --tooltip-gray: #4c4c4c;
 
-  /* Icon colors */
-  --icon-hover-gray: #efefef;
+    /* Icon colors */
+    --icon-hover-gray: #efefef;
 
-  /* Border colors */
-  --border-gray: #e2e2e2;
-  --border-gray-secondary: #cac4d0; /* Darker borders */
+    /* Border colors */
+    --border-gray: #e2e2e2;
+    --border-gray-secondary: #cac4d0; /* Darker borders */
 
-  /* Diff-view colors */
-  --diff-omit-bg-color: #f9f9f9;
-  --diff-decoration-bg-color: #e2f4ff;
-  --diff-code-delete-bg-color: #fdeff0;
-  --diff-code-insert-bg-color: #eaffee;
-  --diff-code-highlight-bg-color: #fffdd5;
+    /* Diff-view colors */
+    --diff-omit-bg-color: #f9f9f9;
+    --diff-decoration-bg-color: #e2f4ff;
+    --diff-code-delete-bg-color: #fdeff0;
+    --diff-code-insert-bg-color: #eaffee;
+    --diff-code-highlight-bg-color: #fffdd5;
 
-  --diff-gutter-font-color: #5e5e5e;
-  --diff-gutter-delete-bg-color: #fadde0;
-  --diff-gutter-delete-border-color: #eca7a7;
-  --diff-gutter-insert-bg-color: #d6fedb;
-  --diff-gutter-insert-border-color: #93de7a;
-  --diff-gutter-highlight-bg-color: #fffbac;
-  --diff-gutter-highlight-border-color: #ffea48;
+    --diff-gutter-font-color: #5e5e5e;
+    --diff-gutter-delete-bg-color: #fadde0;
+    --diff-gutter-delete-border-color: #eca7a7;
+    --diff-gutter-insert-bg-color: #d6fedb;
+    --diff-gutter-insert-border-color: #93de7a;
+    --diff-gutter-highlight-bg-color: #fffbac;
+    --diff-gutter-highlight-border-color: #ffea48;
 
-  /* Diff state colors */
-  --state-draft: #989898;
-  --state-open: var(--color-success);
-  --state-closed: var(--color-failure);
-  --state-merged: #9f81d7;
+    /* Diff state colors */
+    --state-draft: #989898;
+    --state-open: var(--color-success);
+    --state-closed: var(--color-failure);
+    --state-merged: #9F81d7;
 
-  /* Diff status RGB values */
-  /* Use RBG for customizable alpha in RGBA, used for transparent chip backgrounds */
-  --status-ready-rgb: 60, 161, 51;
-  --status-waiting-rgb: 12, 162, 227;
-  --status-conflict-rgb: 255, 158, 2;
-  --status-failure-rgb: 227, 2, 2;
+    /* Diff status RGB values */
+    /* Use RBG for customizable alpha in RGBA, used for transparent chip backgrounds */
+    --status-ready-rgb: 60, 161, 51;
+    --status-waiting-rgb: 12, 162, 227;
+    --status-conflict-rgb: 255, 158, 2;
+    --status-failure-rgb: 227, 2, 2;
 
-  --status-ready: rgb(var(--status-ready-rgb));
-  --status-waiting: rgb(var(--status-waiting-rgb));
-  --status-conflict: rgb(var(--status-conflict-rgb));
-  --status-failure: rgb(var(--status-failure-rgb));
+    --status-ready: rgb(var(--status-ready-rgb));
+    --status-waiting: rgb(var(--status-waiting-rgb));
+    --status-conflict: rgb(var(--status-conflict-rgb));
+    --status-failure: rgb(var(--status-failure-rgb));
 
-  --box-shadow-rgba: 150, 136, 136, 0.1;
-  --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));
-  --box-shadow-soft: 0 2px 4px rgba(var(--box-shadow-rgba)); /* Larger blur radius */
-  --box-shadow-button: 0 2px 4px rgba(181, 179, 179, 0.5);
-  --box-shadow-popover: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --box-shadow-rgba: 150, 136, 136, 0.10;
+    --box-shadow: 0 2px 2px 0 rgba(var(--box-shadow-rgba));
+    --box-shadow-soft: 0 2px 4px rgba(var(--box-shadow-rgba)); /* Larger blur radius */
+    --box-shadow-button: 0 2px 4px rgba(181, 179, 179, 0.5);
+    --box-shadow-popover: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
