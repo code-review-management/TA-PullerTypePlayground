@@ -1,0 +1,35 @@
+.banner {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-6);
+
+    position: fixed;
+    bottom: var(--spacer-24);
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 20;
+
+    padding: var(--spacer-12) var(--spacer-16);
+    border: var(--border-normal-width) solid var(--color-interactive-border);
+    border-radius: var(--spacer-24);
+    box-shadow: var(--box-shadow-popover);
+    background-color: var(--color-interactive-light);
+
+    white-space: nowrap;
+    font-size: 0.9375rem;
+    font-weight: 450;
+}
+
+.infoIcon {
+    margin-bottom: var(--spacer-2);
+}
+
+.sha {
+    padding: 0 var(--spacer-4);
+    border: var(--border-thin-width) solid var(--color-interactive-border);
+    border-radius: var(--spacer-2);
+    background-color: var(--color-interactive-transparent);
+    color: var(--text-accent);
+    font-family: var(--font-roboto-mono);
+    font-size: 0.875rem;
+}

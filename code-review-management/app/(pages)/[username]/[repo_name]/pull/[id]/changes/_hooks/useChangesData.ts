@@ -50,6 +50,7 @@ export function useChangesData() {
     pull,
     files: sha ? commit?.files : files,
     publishedThreads,
+    sha,
     isPending:
       isPullPending ||
       isPublishedThreadsPending ||
