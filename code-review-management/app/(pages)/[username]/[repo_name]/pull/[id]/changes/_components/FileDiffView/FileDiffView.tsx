@@ -14,6 +14,7 @@ import {
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
+import { createDraftThread } from "../../_utils/comment-utils";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
@@ -90,6 +91,10 @@ export default memo(function FileDiffView({
     />
   );
 
+  const hasFileLevelThreads =
+    publishedThreads.fileThreads.length > 0 ||
+    draftThreadsByLine?.["file-level"];
+
   return (
     <ClearHighlightContext value={{ clearHighlight }}>
       <div
@@ -103,12 +108,22 @@ export default memo(function FileDiffView({
           newPath={newPath}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          createFileDraftThread={() => {
+            setIsExpanded(true);
+            createDraftThread(setDraftThreads, activePath, {
+              oldPath,
+              activePath,
+              fileStatus: fileMeta?.status ?? "",
+              body: "",
+              subjectType: "file",
+            });
+          }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {publishedThreads.fileThreads.length > 0 && (
+          {hasFileLevelThreads && (
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
-              draftThread={null}
+              draftThread={draftThreadsByLine?.["file-level"]}
             />
           )}
           {hunks.length > 0 ? (
