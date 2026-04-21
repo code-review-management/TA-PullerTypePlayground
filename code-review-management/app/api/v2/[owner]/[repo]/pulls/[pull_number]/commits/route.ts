@@ -45,9 +45,10 @@ export async function GET(req: Request, context: RouteContext) {
   const page = Number(qParams.get("page"));
   const branch = qParams.get("branch");
   const time = qParams.get("since");
+  const allCommits = qParams.get("all");
 
   // Validate query parameters
-  if (isNaN(page) || page < 1 || !branch) {
+  if (isNaN(page) || page < 1 || (!branch && allCommits != null)) {
     return Response.json(
       { error: "Missing or invalid query parameters" },
       { status: 400 },
@@ -66,7 +67,7 @@ export async function GET(req: Request, context: RouteContext) {
   let since: string = "";
 
   // Get the first relevant commit time if not provided
-  if (!time) {
+  if (!time && allCommits != null) {
     try {
       const { data: contents } =
         await octokit.rest.issues.listEventsForTimeline({
@@ -96,14 +97,23 @@ export async function GET(req: Request, context: RouteContext) {
 
   // Get list of commits on the timeline
   try {
-    const data = await octokit.rest.repos.listCommits({
-      owner: owner,
-      repo: repo,
-      sha: branch ?? undefined,
-      page: page,
-      per_page: 100,
-      since: time ?? since,
-    });
+    const data =
+      allCommits != null
+        ? await octokit.rest.repos.listCommits({
+            owner: owner,
+            repo: repo,
+            sha: branch ?? undefined,
+            page: page,
+            per_page: 100,
+            since: time ?? since,
+          })
+        : await octokit.rest.pulls.listCommits({
+            owner: owner,
+            repo: repo,
+            pull_number: Number(pull_number),
+            page: page,
+            per_page: 100,
+          });
 
     // Filter response
     const filteredResponse: Commit[] = data.data.map((item) =>
