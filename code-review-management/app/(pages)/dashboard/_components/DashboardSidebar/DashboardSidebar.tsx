@@ -4,7 +4,7 @@ import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 import { sortReposByOrg } from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import LoadingSpinner from "@/app/(pages)/_components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 /**
  * Sidebar displayed on the left of the dashboard page with repo filter options.
