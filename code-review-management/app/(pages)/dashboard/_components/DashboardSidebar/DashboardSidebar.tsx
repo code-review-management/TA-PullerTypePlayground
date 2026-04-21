@@ -13,10 +13,9 @@ export default function DashboardSidebar() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     useReposQuery();
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
-  
+
   const [selectedRepos, setSelectedRepos] = useState<Set<string>>(new Set());
-  const fullRepoList = data?.pages.flatMap((page) => page.data) ?? [];
-  const mappedRepoList = sortReposByOrg(fullRepoList);
+  const mappedRepoList = sortReposByOrg(data || []);
 
   const onCheckboxChange = (name: string, isChecked: boolean) => {
     const newSelectedRepos = new Set(selectedRepos);
