@@ -7,6 +7,7 @@ import { ThreadSuggestionRequest } from "@/types/request.types";
  * * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
+ * @param commentId: We only allow one suggestion at a time per thread, so we use thread id to identify queries
  * @returns: TanStack mutation result to execute the suggestion request.
  */
 export function useGeminiSuggestionMutation(owner: string, repo: string, pullNumber: string, commentId: number) {

@@ -4,6 +4,7 @@ import styles from "./InlineGeminiSuggestionButton.module.css";
 import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { useGeminiSuggestionMutation } from "@/lib/api/mutations/useGeminiSuggestionMutation";
+import Image from "next/image";
 
 export default function InlineGeminiSuggestionButton({
   thread,
@@ -43,7 +44,7 @@ export default function InlineGeminiSuggestionButton({
     className={styles.suggestionButton}
     onClick={handleCallGeminiSuggestion}>
       <span>{isPending ? "Pending..." : "Suggest"}</span>
-      <img 
+      <Image 
           src="/icons/ai_star.png" 
           alt="AI Star" 
           className={styles.buttonIcon}

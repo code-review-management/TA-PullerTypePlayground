@@ -19,8 +19,6 @@ try {
     const userPrompt = getUserPrompt(context, comments, line);
 
     const geminiResponse = await callGeminiToGenerateSuggestion(systemPrompt, userPrompt);
-    console.log("Gemini Respose: ");
-    console.log(geminiResponse);
     commentGeminiSuggestion(ocktokit, owner, repo, pull_number, geminiResponse, context.content, threadVal)
     return;
 } catch (error) {

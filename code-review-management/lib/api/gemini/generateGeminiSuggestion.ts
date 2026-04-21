@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { CodeEditResponse, CodeEditResponseSchema } from "@/types/request.types";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 let genAI: GoogleGenerativeAI;
 
@@ -27,48 +28,24 @@ export async function callGeminiToGenerateSuggestion(systemPrompt: string, userP
         genAI = new GoogleGenerativeAI(apiKey);
     }
 
+    const rawJsonSchema = zodToJsonSchema(CodeEditResponseSchema as any);
+    delete rawJsonSchema.$schema;
+
     const model = genAI.getGenerativeModel({
         model: "gemini-3-flash-preview",
-        systemInstruction: systemPrompt
+        systemInstruction: systemPrompt,
+        generationConfig: {
+            responseMimeType: "application/json", 
+            responseSchema: rawJsonSchema as any,
+        }
     })
 
     try {
         console.log("Calling model!");
-        // console.log("System prompt: \n" + systemPrompt);
-        // console.log("User prompt: " + userPrompt);
         const result = await model.generateContent(userPrompt);
-        const responseText = result.response.text();
-        // console.log("----Gemini response----");
-        // console.log(responseText);
-        return parseGeminiJsonResponse(responseText);
+        return CodeEditResponseSchema.parse(JSON.parse(result.response.text()))
     } catch (error){
         console.log("Error when calling gemini: " + error);
         throw error;
     }
-}
-
-export function parseGeminiJsonResponse(rawResponse: string): CodeEditResponse {
-  const start = rawResponse.indexOf('{');
-  const end = rawResponse.lastIndexOf('}');
-
-  if (start === -1 || end === -1) {
-    throw new Error("Could not find a valid JSON structure in the response.");
-  }
-  
-  const cleanText = rawResponse.slice(start, end + 1);
-  let rawJson: unknown;
-  try {
-    rawJson = JSON.parse(cleanText);
-  } catch (error) {
-    throw new Error("Failed to parse JSON string. The LLM output might be malformed.");
-  }
-
-  const result = CodeEditResponseSchema.safeParse(rawJson);
-
-  if (!result.success) {
-    console.error("Zod Validation Error:", result.error.format());
-    throw new Error("LLM output did not match the expected schema.");
-  }
-
-  return result.data;
 }

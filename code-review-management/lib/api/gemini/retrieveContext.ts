@@ -1,7 +1,6 @@
 import { Octokit } from "octokit";
 
 export interface FileContext {
-//   diff: string | null;
   content: string;
 }
 
@@ -20,23 +19,8 @@ export async function getFileDiffAndContent(
     filePath: string,
     sha: string
 ): Promise<FileContext> {
-    // let diff: string | null = null;
-    let content: string = "";
-    try {
-    // const { data: commitData } = await octokit.rest.repos.getCommit({
-    //     owner,
-    //     repo,
-    //     ref: sha,
-    // });
-
-    // const fileInCommit = commitData.files?.find((f) => f.filename === filePath);
-    
-    // if (fileInCommit) {
-    //     diff = fileInCommit.patch || null;
-    // } else {
-    //     console.warn(`File ${filePath} was not modified in commit ${sha}`);
-    // }
-
+  let content: string = "";
+  try {
     const { data: contentData } = await octokit.rest.repos.getContent({
         owner,
         repo,

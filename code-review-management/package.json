@@ -29,7 +29,8 @@
     "react-tiny-popover": "^8.1.6",
     "react-tooltip": "^5.30.0",
     "refractor": "^3.6.0",
-    "zod": "^4.3.6"
+    "zod": "^4.3.6",
+    "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
     "@types/node": "^20",
