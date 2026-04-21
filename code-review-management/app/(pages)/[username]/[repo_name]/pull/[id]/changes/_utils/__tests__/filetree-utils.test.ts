@@ -373,114 +373,114 @@ describe("orderParsedDiffs", () => {
   it("preserves order when diffs already match the flat file tree", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("modify", "a.ts", "a.ts"),
-      createDiff("modify", "b.ts", "b.ts"),
-      createDiff("modify", "c.ts", "c.ts"),
+      createDiff({ type: "modify", oldPath: "a.ts", newPath: "a.ts" }),
+      createDiff({ type: "modify", oldPath: "b.ts", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "c.ts", newPath: "c.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("modify", "a.ts", "a.ts"),
-      createDiff("modify", "b.ts", "b.ts"),
-      createDiff("modify", "c.ts", "c.ts"),
+      createDiff({ type: "modify", oldPath: "a.ts", newPath: "a.ts" }),
+      createDiff({ type: "modify", oldPath: "b.ts", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "c.ts", newPath: "c.ts" }),
     ]);
   });
 
   it("reorders diffs to match the flat file tree", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("modify", "c.ts", "c.ts"),
-      createDiff("modify", "b.ts", "b.ts"),
-      createDiff("modify", "a.ts", "a.ts"),
+      createDiff({ type: "modify", oldPath: "c.ts", newPath: "c.ts" }),
+      createDiff({ type: "modify", oldPath: "b.ts", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "a.ts", newPath: "a.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("modify", "a.ts", "a.ts"),
-      createDiff("modify", "b.ts", "b.ts"),
-      createDiff("modify", "c.ts", "c.ts"),
+      createDiff({ type: "modify", oldPath: "a.ts", newPath: "a.ts" }),
+      createDiff({ type: "modify", oldPath: "b.ts", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "c.ts", newPath: "c.ts" }),
     ]);
   });
 
   it("reorders deleted-file diffs by their oldPath", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("delete", "c.ts", ""),
-      createDiff("delete", "a.ts", ""),
-      createDiff("delete", "b.ts", ""),
+      createDiff({ type: "delete", oldPath: "c.ts", newPath: "" }),
+      createDiff({ type: "delete", oldPath: "a.ts", newPath: "" }),
+      createDiff({ type: "delete", oldPath: "b.ts", newPath: "" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("delete", "a.ts", ""),
-      createDiff("delete", "b.ts", ""),
-      createDiff("delete", "c.ts", ""),
+      createDiff({ type: "delete", oldPath: "a.ts", newPath: "" }),
+      createDiff({ type: "delete", oldPath: "b.ts", newPath: "" }),
+      createDiff({ type: "delete", oldPath: "c.ts", newPath: "" }),
     ]);
   });
 
   it("reorders added-file diffs by their newPath", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("add", "", "c.ts"),
-      createDiff("add", "", "a.ts"),
-      createDiff("add", "", "b.ts"),
+      createDiff({ type: "add", oldPath: "", newPath: "c.ts" }),
+      createDiff({ type: "add", oldPath: "", newPath: "a.ts" }),
+      createDiff({ type: "add", oldPath: "", newPath: "b.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("add", "", "a.ts"),
-      createDiff("add", "", "b.ts"),
-      createDiff("add", "", "c.ts"),
+      createDiff({ type: "add", oldPath: "", newPath: "a.ts" }),
+      createDiff({ type: "add", oldPath: "", newPath: "b.ts" }),
+      createDiff({ type: "add", oldPath: "", newPath: "c.ts" }),
     ]);
   });
 
   it("reorders renamed-file diffs by their newPath", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("rename", "old-c.ts", "c.ts"),
-      createDiff("rename", "old-a.ts", "a.ts"),
-      createDiff("rename", "old-b.ts", "b.ts"),
+      createDiff({ type: "rename", oldPath: "old-c.ts", newPath: "c.ts" }),
+      createDiff({ type: "rename", oldPath: "old-a.ts", newPath: "a.ts" }),
+      createDiff({ type: "rename", oldPath: "old-b.ts", newPath: "b.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("rename", "old-a.ts", "a.ts"),
-      createDiff("rename", "old-b.ts", "b.ts"),
-      createDiff("rename", "old-c.ts", "c.ts"),
+      createDiff({ type: "rename", oldPath: "old-a.ts", newPath: "a.ts" }),
+      createDiff({ type: "rename", oldPath: "old-b.ts", newPath: "b.ts" }),
+      createDiff({ type: "rename", oldPath: "old-c.ts", newPath: "c.ts" }),
     ]);
   });
 
   it("reorders modified-file diffs by their newPath", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
     const diffs = [
-      createDiff("modify", "", "c.ts"),
-      createDiff("modify", "", "a.ts"),
-      createDiff("modify", "", "b.ts"),
+      createDiff({ type: "modify", oldPath: "", newPath: "c.ts" }),
+      createDiff({ type: "modify", oldPath: "", newPath: "a.ts" }),
+      createDiff({ type: "modify", oldPath: "", newPath: "b.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("modify", "", "a.ts"),
-      createDiff("modify", "", "b.ts"),
-      createDiff("modify", "", "c.ts"),
+      createDiff({ type: "modify", oldPath: "", newPath: "a.ts" }),
+      createDiff({ type: "modify", oldPath: "", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "", newPath: "c.ts" }),
     ]);
   });
 
   it("reorders a mix of diff types to match the flat file tree", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts", "d.ts"]);
     const diffs = [
-      createDiff("delete", "c.ts", ""),
-      createDiff("add", "", "d.ts"),
-      createDiff("rename", "old-b.ts", "b.ts"),
-      createDiff("modify", "", "a.ts"),
+      createDiff({ type: "delete", oldPath: "c.ts", newPath: "" }),
+      createDiff({ type: "add", oldPath: "", newPath: "d.ts" }),
+      createDiff({ type: "rename", oldPath: "old-b.ts", newPath: "b.ts" }),
+      createDiff({ type: "modify", oldPath: "", newPath: "a.ts" }),
     ];
 
     orderParsedDiffs(diffs, flatFileTree);
     expect(diffs).toEqual([
-      createDiff("modify", "", "a.ts"),
-      createDiff("rename", "old-b.ts", "b.ts"),
-      createDiff("delete", "c.ts", ""),
-      createDiff("add", "", "d.ts"),
+      createDiff({ type: "modify", oldPath: "", newPath: "a.ts" }),
+      createDiff({ type: "rename", oldPath: "old-b.ts", newPath: "b.ts" }),
+      createDiff({ type: "delete", oldPath: "c.ts", newPath: "" }),
+      createDiff({ type: "add", oldPath: "", newPath: "d.ts" }),
     ]);
   });
 });

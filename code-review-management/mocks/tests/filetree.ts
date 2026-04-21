@@ -8,27 +8,13 @@ export function createFileMeta(filenames: string[]): FileDiff[] {
 }
 
 // Helper function to create a GitHub `FileDiff` object.
-export function createFileMetaItem({
-  filename,
-  status,
-  additions,
-  deletions,
-}: {
-  filename?: string;
-  status?: string;
-  additions?: number;
-  deletions?: number;
-}): FileDiff {
-  return { filename, status, additions, deletions } as FileDiff;
+export function createFileMetaItem(fileMeta: Partial<FileDiff>): FileDiff {
+  return fileMeta as FileDiff;
 }
 
 // Helper function to create a react-diff-view `FileData` object.
-export function createDiff(
-  type: FileData["type"],
-  oldPath: string,
-  newPath: string,
-): FileData {
-  return { type, oldPath, newPath } as FileData;
+export function createDiff(diff: Partial<FileData>): FileData {
+  return diff as FileData;
 }
 
 export function getExampleFileNode1(): Extract<FileTreeNode, { type: "file" }> {
