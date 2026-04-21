@@ -18,7 +18,7 @@ import InlineThreadList from "../_components/InlineThreadList/InlineThreadList";
  * @returns: An object with `published` and `draft` sub-objects that groups
  *           threads by left and right sides.
  */
-export function getThreadsBySide(
+function getThreadsBySide(
   filename: string,
   change: ChangeData,
   publishedThreads: PublishedThreadsByLine,
