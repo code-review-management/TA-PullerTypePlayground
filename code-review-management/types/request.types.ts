@@ -6,9 +6,10 @@ export type CommentPatchRequest = z.infer<typeof CommentPatchRequestSchema>;
 export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
 export type PRMergeRequest = z.infer<typeof PRMergeRequestSchema>;
 export type CreateReviewRequest = z.infer<typeof CreateReviewRequestSchema>;
-export type ThreadSuggestionRequest = z.infer<typeof ThreadSuggestionRequestSchema>;
+export type ThreadSuggestionRequest = z.infer<
+  typeof ThreadSuggestionRequestSchema
+>;
 export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
-
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
@@ -77,7 +78,7 @@ export const CreateReviewRequestSchema = z
   );
 
 export const ThreadSuggestionRequestSchema = z.object({
-  id: z.number(), 
+  id: z.number(),
   filePath: z.string(),
   side: z.enum(side),
   line: z.number(),

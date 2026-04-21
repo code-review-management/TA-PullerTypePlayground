@@ -13,27 +13,26 @@ export interface FileContext {
  * @param sha The commit SHA to fetch the data from
  */
 export async function getFileDiffAndContent(
-    octokit: Octokit,
-    owner: string,
-    repo: string,
-    filePath: string,
-    sha: string
+  octokit: Octokit,
+  owner: string,
+  repo: string,
+  filePath: string,
+  sha: string,
 ): Promise<FileContext> {
   let content: string = "";
   try {
     const { data: contentData } = await octokit.rest.repos.getContent({
-        owner,
-        repo,
-        path: filePath,
-        ref: sha,
+      owner,
+      repo,
+      path: filePath,
+      ref: sha,
     });
 
     if (!Array.isArray(contentData) && contentData.type === "file") {
-        content = Buffer.from(contentData.content, "base64").toString("utf-8");
+      content = Buffer.from(contentData.content, "base64").toString("utf-8");
     }
 
     return { content };
-
   } catch (error) {
     console.error(`Error fetching data for ${filePath} at ${sha}:`, error);
     throw error;

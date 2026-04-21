@@ -48,13 +48,18 @@ export async function POST(req: Request, context: RouteContext) {
     return Response.json({ error: error[0]["message"] }, { status: 400 });
   }
 
-  
   try {
     const octokit = new Octokit({ auth: token.accessToken });
-    await generateSuggestion(octokit, reqArgs.data, owner, repo, castedPullNumber);
+    await generateSuggestion(
+      octokit,
+      reqArgs.data,
+      owner,
+      repo,
+      castedPullNumber,
+    );
 
     return new Response("", {
-      status: 200
+      status: 200,
     });
   } catch (error) {
     if (error instanceof RequestError && error.status) {

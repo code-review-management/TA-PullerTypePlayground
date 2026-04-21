@@ -1,11 +1,11 @@
 .suggestionButton {
-  margin-left: auto; 
+  margin-left: auto;
   cursor: pointer;
   border: none;
-  background-color: var(--text-accent); 
+  background-color: var(--text-accent);
   color: var(--background-light);
   font-size: 0.75rem;
-  
+
   display: flex;
   align-items: center;
   gap: var(--spacer-4);

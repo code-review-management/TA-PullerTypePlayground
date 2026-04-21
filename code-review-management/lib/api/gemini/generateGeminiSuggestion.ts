@@ -1,9 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { CodeEditResponse, CodeEditResponseSchema } from "@/types/request.types";
+import {
+  CodeEditResponse,
+  CodeEditResponseSchema,
+} from "@/types/request.types";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 let genAI: GoogleGenerativeAI;
-
 
 const cachedResult = `\`\`\`json
 {
@@ -17,35 +19,37 @@ const cachedResult = `\`\`\`json
 }
 \`\`\``;
 
-export async function callGeminiToGenerateSuggestion(systemPrompt: string, userPrompt: string) : Promise<CodeEditResponse> {
-    
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-        throw new Error("GEMINI_API_KEY is not set in the environment.");
-    }
+export async function callGeminiToGenerateSuggestion(
+  systemPrompt: string,
+  userPrompt: string,
+): Promise<CodeEditResponse> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY is not set in the environment.");
+  }
 
-    if (!genAI) {
-        genAI = new GoogleGenerativeAI(apiKey);
-    }
+  if (!genAI) {
+    genAI = new GoogleGenerativeAI(apiKey);
+  }
 
-    const rawJsonSchema = zodToJsonSchema(CodeEditResponseSchema as any);
-    delete rawJsonSchema.$schema;
+  const rawJsonSchema = zodToJsonSchema(CodeEditResponseSchema as any);
+  delete rawJsonSchema.$schema;
 
-    const model = genAI.getGenerativeModel({
-        model: "gemini-3-flash-preview",
-        systemInstruction: systemPrompt,
-        generationConfig: {
-            responseMimeType: "application/json", 
-            responseSchema: rawJsonSchema as any,
-        }
-    })
+  const model = genAI.getGenerativeModel({
+    model: "gemini-3-flash-preview",
+    systemInstruction: systemPrompt,
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: rawJsonSchema as any,
+    },
+  });
 
-    try {
-        console.log("Calling model!");
-        const result = await model.generateContent(userPrompt);
-        return CodeEditResponseSchema.parse(JSON.parse(result.response.text()))
-    } catch (error){
-        console.log("Error when calling gemini: " + error);
-        throw error;
-    }
+  try {
+    console.log("Calling model!");
+    const result = await model.generateContent(userPrompt);
+    return CodeEditResponseSchema.parse(JSON.parse(result.response.text()));
+  } catch (error) {
+    console.log("Error when calling gemini: " + error);
+    throw error;
+  }
 }
