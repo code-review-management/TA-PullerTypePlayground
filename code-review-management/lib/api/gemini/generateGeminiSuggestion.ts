@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
 import {
   CodeEditResponse,
   CodeEditResponseSchema,
@@ -19,6 +19,29 @@ const cachedResult = `\`\`\`json
 }
 \`\`\``;
 
+const geminiCodeEditSchema: Schema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    deleteRange: {
+      type: SchemaType.OBJECT,
+      properties: {
+        // Using INTEGER because line numbers are whole numbers
+        minInclusiveLine: { type: SchemaType.INTEGER }, 
+        maxExclusiveLine: { type: SchemaType.INTEGER },
+      },
+      required: ["minInclusiveLine", "maxExclusiveLine"],
+    },
+    additionBlock: {
+      type: SchemaType.OBJECT,
+      properties: {
+        insertionCode: { type: SchemaType.STRING },
+      },
+      required: ["insertionCode"],
+    },
+  },
+  required: ["deleteRange", "additionBlock"],
+};
+
 export async function callGeminiToGenerateSuggestion(
   systemPrompt: string,
   userPrompt: string,
@@ -32,22 +55,20 @@ export async function callGeminiToGenerateSuggestion(
     genAI = new GoogleGenerativeAI(apiKey);
   }
 
-  const rawJsonSchema = zodToJsonSchema(CodeEditResponseSchema as any);
-  delete rawJsonSchema.$schema;
-
   const model = genAI.getGenerativeModel({
     model: "gemini-3-flash-preview",
     systemInstruction: systemPrompt,
     generationConfig: {
       responseMimeType: "application/json",
-      responseSchema: rawJsonSchema as any,
+      responseSchema: geminiCodeEditSchema,
     },
   });
 
   try {
-    console.log("Calling model!");
     const result = await model.generateContent(userPrompt);
-    return CodeEditResponseSchema.parse(JSON.parse(result.response.text()));
+    const parsedData = JSON.parse(result.response.text());
+    const dataToValidate = Array.isArray(parsedData) ? parsedData[0] : parsedData;
+    return CodeEditResponseSchema.parse(dataToValidate);
   } catch (error) {
     console.log("Error when calling gemini: " + error);
     throw error;

@@ -53,6 +53,8 @@ export default function InlineGeminiSuggestionButton({
         src="/icons/ai_star.png"
         alt="AI Star"
         className={styles.buttonIcon}
+        width={12}
+        height={12}
       />
     </button>
   );
