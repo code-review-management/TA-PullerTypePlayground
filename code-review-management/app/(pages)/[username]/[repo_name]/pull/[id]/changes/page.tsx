@@ -7,6 +7,7 @@ import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
 import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
 import CommitPickerProvider from "../_contexts/CommitPickerContext";
+import CommitViewBanner from "./_components/CommitViewBanner/CommitViewBanner";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
@@ -18,7 +19,7 @@ export default function Changes() {
   const { draftReplies, setDraftReplies } = useDraftReplies();
   const { draftThreads, setDraftThreads } = useDraftThreads();
 
-  const { pull, files, publishedThreads, isPending, isError } =
+  const { pull, files, publishedThreads, sha, isPending, isError } =
     useChangesData();
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
@@ -54,6 +55,7 @@ export default function Changes() {
                     flatFileTree={flatFileTree}
                     // Use non-null assertion since threads are defined if not in pending/error state.
                     publishedThreads={publishedThreads!}
+                    sha={sha}
                   />
                 </div>
               </div>
@@ -63,6 +65,7 @@ export default function Changes() {
                 togglePanel={toggleActivityPanel}
               />
             </div>
+            {sha && <CommitViewBanner sha={sha} />}
           </div>
         </DraftThreadsContext>
       </DraftRepliesContext>

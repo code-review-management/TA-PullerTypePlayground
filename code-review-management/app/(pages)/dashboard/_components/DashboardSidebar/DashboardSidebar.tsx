@@ -1,17 +1,21 @@
 import styles from "./DashboardSidebar.module.css";
-import MOCK_REPOS from "@/mocks/repos.json";
-import { Repo } from "@/types/github.types";
 import { useState } from "react";
 import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 import { sortReposByOrg } from "../../_utils/repo-utils";
+import { useReposQuery } from "@/lib/api/queries/useReposQuery";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 /**
  * Sidebar displayed on the left of the dashboard page with repo filter options.
  */
 export default function DashboardSidebar() {
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    useReposQuery();
+  useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
+
   const [selectedRepos, setSelectedRepos] = useState<Set<string>>(new Set());
-  const fullRepoList = MOCK_REPOS.data as Repo[];
-  const mappedRepoList = sortReposByOrg(fullRepoList);
+  const mappedRepoList = sortReposByOrg(data || []);
 
   const onCheckboxChange = (name: string, isChecked: boolean) => {
     const newSelectedRepos = new Set(selectedRepos);
@@ -36,6 +40,7 @@ export default function DashboardSidebar() {
             onCheckboxChange={onCheckboxChange}
           />
         ))}
+        {(isPending || (hasNextPage && isFetching)) && <LoadingSpinner />}
       </div>
       <div className={styles.sideBorder} />
     </div>
