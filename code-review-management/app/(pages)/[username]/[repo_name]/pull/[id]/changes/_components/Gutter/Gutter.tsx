@@ -21,20 +21,23 @@ export default function Gutter({
   side,
   renderDefault,
   activeHighlight,
+  isHighlightDisabled,
 }: {
   change: ChangeData;
   side: Side;
   renderDefault: () => ReactNode;
   activeHighlight: ActiveHighlight;
+  isHighlightDisabled?: boolean;
 }) {
   const line = getLineNumber(change, side);
-  const isHighlighted = isWithinHighlightRange(line, side, activeHighlight);
+  const isHighlighted =
+    !isHighlightDisabled && isWithinHighlightRange(line, side, activeHighlight);
 
   return (
     // Do not use CSS module for "diff-gutter-highlighted" class, so we can
     // access it in ReactDiffView.css when overriding react-diff-view styling.
     <div
-      className={`${isHighlighted ? "diff-gutter-highlighted" : ""}`}
+      className={`${isHighlighted ? "diff-gutter-highlighted" : ""} ${isHighlightDisabled ? "diff-gutter-highlight-disabled" : ""}`}
     >
       {renderDefault()}
     </div>

@@ -96,6 +96,7 @@ export default memo(function FileDiffView({
       side={side}
       renderDefault={renderDefault}
       activeHighlight={activeHighlight}
+      isHighlightDisabled={isCommitView}
     />
   );
 
