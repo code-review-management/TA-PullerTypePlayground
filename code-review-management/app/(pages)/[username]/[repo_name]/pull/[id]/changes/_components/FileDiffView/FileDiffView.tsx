@@ -74,16 +74,21 @@ export default memo(function FileDiffView({
   );
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
-  const widgets = useMemo(
-    () =>
-      getWidgets(
-        activePath,
-        hunks,
-        publishedThreads.lineThreads,
-        draftThreadsByLine ?? {},
-      ),
-    [activePath, hunks, publishedThreads.lineThreads, draftThreadsByLine],
-  );
+  const widgets = useMemo(() => {
+    if (isCommitView) return;
+    return getWidgets(
+      activePath,
+      hunks,
+      publishedThreads.lineThreads,
+      draftThreadsByLine ?? {},
+    );
+  }, [
+    isCommitView,
+    activePath,
+    hunks,
+    publishedThreads.lineThreads,
+    draftThreadsByLine,
+  ]);
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter
