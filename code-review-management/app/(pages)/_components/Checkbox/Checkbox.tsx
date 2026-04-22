@@ -6,6 +6,7 @@ import styles from "./Checkbox.module.css";
  * @param id Unique ID for the checkbox. Can be used to link labels to the checkbox
  * @param name Name of the checkbox value. Gets passed into onChange
  * @param onChange Callback triggered when checkbox value changes.
+ * @param checked Checked state boolean
  */
 export default function Checkbox({
   id,
@@ -18,8 +19,6 @@ export default function Checkbox({
   onChange: (name: string, isChecked: boolean) => void;
   checked: boolean;
 }) {
-  // const [checked, setChecked] = useState(defaultChecked);
-  
   return (
     <div className={styles.checkboxWrapper}>
       <input

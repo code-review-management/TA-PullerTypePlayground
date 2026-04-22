@@ -9,13 +9,12 @@ import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[i
 export default function DashboardGrid({
   pulls,
   searchString,
-  selectedRepos,
+  repoSet,
 }: {
   pulls: PullRequest[];
   searchString: string;
-  selectedRepos: string[];
+  repoSet: Set<string>;
 }) {
-  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
   const filteredPulls = pulls.filter(
     (pull) =>
       pull.title.toLowerCase().includes(searchString.toLowerCase()) &&

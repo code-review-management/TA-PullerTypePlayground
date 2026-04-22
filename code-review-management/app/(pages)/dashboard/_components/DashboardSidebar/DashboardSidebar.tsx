@@ -8,6 +8,8 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 
 /**
  * Sidebar displayed on the left of the dashboard page with repo filter options.
+ * @param selectedRepos List of full names of selected repos
+ * @param setSelectedRepos Setter for list of full names of selected repos
  */
 export default function DashboardSidebar({
   selectedRepos,
@@ -21,9 +23,9 @@ export default function DashboardSidebar({
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
   const mappedRepoList = sortReposByOrg(data || []);
+  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   const onCheckboxChange = (name: string, isChecked: boolean) => {
-    
     if (isChecked) {
       const newSelectedRepos = [...selectedRepos];
       newSelectedRepos.push(name);
@@ -31,10 +33,7 @@ export default function DashboardSidebar({
     } else {
       setSelectedRepos(selectedRepos.filter(repoName => repoName !== name));
     }
-    
   };
-
-  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   return (
     <div className={styles.dashboardSidebar}>

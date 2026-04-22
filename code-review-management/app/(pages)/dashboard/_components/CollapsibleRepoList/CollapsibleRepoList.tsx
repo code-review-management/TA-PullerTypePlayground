@@ -10,6 +10,7 @@ import { useState } from "react";
  * @param owner The username or organization name that this section is for.
  * @param mappedRepoList Mapping of owner name to array of repo names
  * @param onCheckboxChange Callback to pass into each checkbox in the the list.
+ * @param selectedRepos Set of full names of selected repos. Determines if items in list should be checked
  */
 export default function CollapsibleRepoList({
   owner,

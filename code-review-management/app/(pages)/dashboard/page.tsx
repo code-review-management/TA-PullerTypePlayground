@@ -16,6 +16,7 @@ export default function Dashboard() {
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
   const [selectedRepos, setSelectedRepos] = useLocalStorage<string[]>("selectedRepos", []);
+  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   const pulls = data?.pages.flatMap((page) => page.data) ?? [];
   const sortedPulls = sortPullsByUpdated(pulls);
@@ -59,7 +60,7 @@ export default function Dashboard() {
           <DashboardGrid
             pulls={sortedPulls}
             searchString={appliedSearchString}
-            selectedRepos={selectedRepos}
+            repoSet={repoSet}
           />
           {hasNextPage &&
             (isFetching ? (
