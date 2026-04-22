@@ -41,7 +41,7 @@ export default function InlineDraftReplyTrigger({
       <button className={styles.trigger} onClick={handleCreateDraftReply}>
         Reply
       </button>
-      <InlineGeminiSuggestionButton thread={thread}/>
+      <InlineGeminiSuggestionButton thread={thread} />
     </div>
   );
 }

@@ -1,17 +1,18 @@
 .suggestionButton {
-  margin-left: auto; 
+  margin-left: auto;
   cursor: pointer;
   border: none;
-  background-color: var(--ai-color-purple); 
-  color: var(--ai-text-white);
-  font-size: var(--font-size-diff-code);
-  
+  background-color: var(--text-accent);
+  color: var(--background-light);
+  font-size: 0.75rem;
+
   display: flex;
   align-items: center;
   gap: var(--spacer-4);
 
-  border-radius: var(--spacer-8);
-  padding: var(--spacer-4);
+  border-radius: var(--spacer-16);
+  padding: var(--spacer-4) var(--spacer-8);
+  box-shadow: var(--box-shadow-button);
 }
 
 .buttonIcon {

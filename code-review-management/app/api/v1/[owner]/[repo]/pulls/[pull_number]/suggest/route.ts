@@ -8,7 +8,7 @@ type RouteContext = {
   params: Promise<{
     owner: string;
     repo: string;
-    pull_number: number;
+    pull_number: string;
   }>;
 };
 
@@ -17,6 +17,8 @@ const cookie = getCookieName();
 
 export async function POST(req: Request, context: RouteContext) {
   const { owner, repo, pull_number } = await context.params;
+  const castedPullNumber: number = Number(pull_number);
+
   const reqBody = await req.json();
   const reqArgs = ThreadSuggestionRequestSchema.safeParse(reqBody);
   const token = await getToken({
@@ -32,7 +34,7 @@ export async function POST(req: Request, context: RouteContext) {
   }
 
   // Validate required parameters
-  if (!owner || !repo) {
+  if (!owner || !repo || !castedPullNumber) {
     return Response.json(
       { error: "Missing required parameters" },
       { status: 400 },
@@ -46,13 +48,18 @@ export async function POST(req: Request, context: RouteContext) {
     return Response.json({ error: error[0]["message"] }, { status: 400 });
   }
 
-  
   try {
     const octokit = new Octokit({ auth: token.accessToken });
-    const response = await generateSuggestion(octokit, reqArgs.data, owner, repo, pull_number);
+    await generateSuggestion(
+      octokit,
+      reqArgs.data,
+      owner,
+      repo,
+      castedPullNumber,
+    );
 
     return new Response("", {
-      status: 200
+      status: 200,
     });
   } catch (error) {
     if (error instanceof RequestError && error.status) {

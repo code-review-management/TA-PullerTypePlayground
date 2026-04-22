@@ -40,9 +40,6 @@ export interface PublishedThreadsBySide {
 }
 
 export interface PublishedThreadItem {
-  owner: string;
-  repo: string;
-  pull_number: string;
   id: number;
   path: string;
   start_line: number | null;
@@ -75,8 +72,8 @@ export function usePublishedThreads(
   };
 }
 
-function buildCommentRelations(comments: Comment[], owner: string, repo: string, pull_number: string) {
-  const threadsByFile = groupThreadsByFile(comments, owner, repo, pull_number);
+function buildCommentRelations(comments: Comment[]) {
+  const threadsByFile = groupThreadsByFile(comments);
   const publishedThreads: PublishedThreads = new Map();
 
   for (const [filename, threads] of threadsByFile) {
@@ -96,7 +93,7 @@ function buildCommentRelations(comments: Comment[], owner: string, repo: string,
  * by their creation time, assuming that the GitHub API returns the data in this
  * sorted order.
  */
-function groupThreadsByFile(comments: Comment[], owner: string, repo: string, pull_number: string) {
+function groupThreadsByFile(comments: Comment[]) {
   const threadsByFile: Map<FileName, PublishedThreadItem[]> = new Map();
 
   for (const comment of comments) {
@@ -128,9 +125,6 @@ function groupThreadsByFile(comments: Comment[], owner: string, repo: string, pu
        * its corresponding file.
        */
       threadsByFile.get(comment.path)!.push({
-        owner: owner,
-        repo : repo,
-        pull_number: pull_number,
         id: comment.id,
         path: comment.path,
         start_side: comment.start_side,

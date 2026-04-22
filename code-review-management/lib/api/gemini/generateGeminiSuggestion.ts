@@ -1,8 +1,11 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { CodeEditResponse, CodeEditResponseSchema } from "@/types/request.types";
+import { GoogleGenerativeAI, SchemaType, Schema } from "@google/generative-ai";
+import {
+  CodeEditResponse,
+  CodeEditResponseSchema,
+} from "@/types/request.types";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 let genAI: GoogleGenerativeAI;
-
 
 const cachedResult = `\`\`\`json
 {
@@ -16,60 +19,58 @@ const cachedResult = `\`\`\`json
 }
 \`\`\``;
 
-export async function callGeminiToGenerateSuggestion(systemPrompt: string, userPrompt: string) : Promise<CodeEditResponse> {
-    
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-        throw new Error("GEMINI_API_KEY is not set in the environment.");
-    }
+//We use gemini schema instead of zod because I swear zod is broken. The outputs were not consistent
+const geminiCodeEditSchema: Schema = {
+  type: SchemaType.OBJECT,
+  properties: {
+    deleteRange: {
+      type: SchemaType.OBJECT,
+      properties: {
+        minInclusiveLine: { type: SchemaType.INTEGER }, 
+        maxExclusiveLine: { type: SchemaType.INTEGER },
+      },
+      required: ["minInclusiveLine", "maxExclusiveLine"],
+    },
+    additionBlock: {
+      type: SchemaType.OBJECT,
+      properties: {
+        insertionCode: { type: SchemaType.STRING },
+      },
+      required: ["insertionCode"],
+    },
+  },
+  required: ["deleteRange", "additionBlock"],
+};
 
-    if (!genAI) {
-        genAI = new GoogleGenerativeAI(apiKey);
-    }
-
-    const model = genAI.getGenerativeModel({
-        model: "gemini-3-flash-preview",
-        systemInstruction: systemPrompt
-    })
-
-    try {
-        console.log("Calling model!");
-        // console.log("System prompt: \n" + systemPrompt);
-        // console.log("User prompt: " + userPrompt);
-        // const result = await model.generateContent(userPrompt);
-        // const responseText = result.response.text();
-        // // console.log("----Gemini response----");
-        // // console.log(responseText);
-        // return parseGeminiJsonResponse(responseText);
-        return parseGeminiJsonResponse(cachedResult);
-    } catch (error){
-        console.log("Error when calling gemini: " + error);
-        throw error;
-    }
-}
-
-export function parseGeminiJsonResponse(rawResponse: string): CodeEditResponse {
-  const start = rawResponse.indexOf('{');
-  const end = rawResponse.lastIndexOf('}');
-
-  if (start === -1 || end === -1) {
-    throw new Error("Could not find a valid JSON structure in the response.");
+export async function callGeminiToGenerateSuggestion(
+  systemPrompt: string,
+  userPrompt: string,
+): Promise<CodeEditResponse> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error("GEMINI_API_KEY is not set in the environment.");
   }
-  
-  const cleanText = rawResponse.slice(start, end + 1);
-  let rawJson: unknown;
+
+  if (!genAI) {
+    genAI = new GoogleGenerativeAI(apiKey);
+  }
+
+  const model = genAI.getGenerativeModel({
+    model: "gemini-3-flash-preview",
+    systemInstruction: systemPrompt,
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: geminiCodeEditSchema,
+    },
+  });
+
   try {
-    rawJson = JSON.parse(cleanText);
+    const result = await model.generateContent(userPrompt);
+    const parsedData = JSON.parse(result.response.text());
+    const dataToValidate = Array.isArray(parsedData) ? parsedData[0] : parsedData;
+    return CodeEditResponseSchema.parse(dataToValidate);
   } catch (error) {
-    throw new Error("Failed to parse JSON string. The LLM output might be malformed.");
+    console.log("Error when calling gemini: " + error);
+    throw error;
   }
-
-  const result = CodeEditResponseSchema.safeParse(rawJson);
-
-  if (!result.success) {
-    console.error("Zod Validation Error:", result.error.format());
-    throw new Error("LLM output did not match the expected schema.");
-  }
-
-  return result.data;
 }
