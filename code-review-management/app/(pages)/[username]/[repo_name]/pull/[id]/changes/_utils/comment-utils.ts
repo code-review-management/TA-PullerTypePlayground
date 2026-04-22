@@ -73,6 +73,14 @@ export function createDraftThread(
   });
 }
 
+export function clearDrafts(
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
+  setDraftReplies: Dispatch<SetStateAction<DraftReplies>>,
+) {
+  setDraftThreads({});
+  setDraftReplies({});
+}
+
 /**
  * Gets the correct path to pass to the GitHub API when publishing a draft
  * thread. If the file has a "renamed" status, the LHS of the diff is associated

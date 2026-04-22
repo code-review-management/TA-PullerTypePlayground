@@ -5,6 +5,9 @@ import { Commit, PullRequest } from "@/types/github.types";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import { useListCommitsQuery } from "@/lib/api/queries/useListCommitsQuery";
 import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
+import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
+import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
+import { clearDrafts } from "../../_utils/comment-utils";
 import { formatDate } from "../../../_utils/date-utils";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
 import SubmitButton from "@components/SubmitButton/SubmitButton";
@@ -14,6 +17,8 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
   const router = useRouter();
   const { username, repo_name, id } = useParams<PullParams>();
   const { selectedSha, setSelectedSha } = useCommitPickerContext();
+  const { setDraftThreads } = useDraftThreadsContext();
+  const { setDraftReplies } = useDraftRepliesContext();
 
   const {
     data: commits,
@@ -29,6 +34,7 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
     e.preventDefault();
     const base = `/${username}/${repo_name}/pull/${id}/changes`;
     router.push(selectedSha ? `${base}?sha=${selectedSha}` : base);
+    clearDrafts(setDraftThreads, setDraftReplies);
   };
 
   return (
