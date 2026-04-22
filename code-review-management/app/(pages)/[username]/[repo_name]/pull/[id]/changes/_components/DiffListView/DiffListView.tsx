@@ -14,9 +14,11 @@ import styles from "./DiffListView.module.css";
 export default function DiffListView({
   flatFileTree,
   publishedThreads,
+  sha,
 }: {
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
+  sha: string | null;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { diffString, isPending, isError } = useActiveDiffs();
@@ -42,7 +44,7 @@ export default function DiffListView({
   if (isError) return <div>Failed to load diffs.</div>;
 
   return (
-    <div className={styles.diffListView}>
+    <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
       {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;

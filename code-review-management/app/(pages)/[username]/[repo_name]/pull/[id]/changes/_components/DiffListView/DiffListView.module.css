@@ -6,3 +6,7 @@
     width: 100%;
     min-width: 0;
 }
+
+.extraPadding {
+    padding-bottom: calc(var(--spacer-48) * 2);
+}

@@ -55,6 +55,7 @@ export default function Changes() {
                     flatFileTree={flatFileTree}
                     // Use non-null assertion since threads are defined if not in pending/error state.
                     publishedThreads={publishedThreads!}
+                    sha={sha}
                   />
                 </div>
               </div>
