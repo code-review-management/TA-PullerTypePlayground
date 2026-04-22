@@ -29,6 +29,11 @@ describe("CommitViewBanner", () => {
     jest.clearAllMocks();
   });
 
+  it("renders info icon", () => {
+    render(<CommitViewBanner sha={mockSha} />);
+    expect(screen.getByAltText("Info")).toBeInTheDocument();
+  });
+
   it("renders message with shortened SHA", () => {
     render(<CommitViewBanner sha={mockSha} />);
     expect(screen.getByTestId("commit-view-banner")).toHaveTextContent(
