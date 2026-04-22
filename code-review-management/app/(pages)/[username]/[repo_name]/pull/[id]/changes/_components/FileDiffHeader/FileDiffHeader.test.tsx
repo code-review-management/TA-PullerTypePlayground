@@ -181,8 +181,27 @@ describe("FileDiffHeader", () => {
   });
 
   describe("TruncatedPath", () => {
+    /**
+     * Docs:
+     * 1. https://testing-library.com/docs/using-fake-timers/
+     * Setup fake timers, and exit tests by restoring real timers.
+     *
+     * 2. https://testing-library.com/docs/user-event/options/#advancetimers
+     * Setup user with advance timers.
+     */
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.runOnlyPendingTimers();
+      jest.useRealTimers();
+    });
+
     it("copies the path to clipboard when clicked", async () => {
-      const user = userEvent.setup();
+      const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+      });
       render(<FileDiffHeader {...defaultProps} diffType="modify" />);
       await user.click(screen.getByText("new-path.ts"));
 
@@ -193,39 +212,26 @@ describe("FileDiffHeader", () => {
 
     /**
      * Docs:
-     * 1. https://testing-library.com/docs/user-event/options/#advancetimers
-     * Setup user with advance timers.
-     *
-     * 2. https://stackoverflow.com/questions/71286328/react-testing-library-waiting-for-state-update-before-testing-component
-     * Use waitFor to wait for state setters to execute.
-     *
-     * 3. https://testing-library.com/docs/using-fake-timers/
-     * Setup fake timers, and exit tests by restoring real timers.
+     * 1. https://stackoverflow.com/questions/71286328/react-testing-library-waiting-for-state-update-before-testing-component
+     * Use `waitFor` to wait for state setters to execute.
      */
-    it("updates copy tooltip when clicked", async () => {
-      jest.useFakeTimers();
+    it("updates tooltip content when clicked and unhovered", async () => {
       const user = userEvent.setup({
         advanceTimers: jest.advanceTimersByTime,
       });
+      render(<FileDiffHeader {...defaultProps} />);
+      const path = screen.getByText("new-path.ts").parentElement!;
 
-      try {
-        render(<FileDiffHeader {...defaultProps} />);
-        const path = screen.getByText("new-path.ts").parentElement!;
+      await user.click(path);
+      // Use `waitFor` to wait for `setCopied(true)` to cause re-render.
+      await waitFor(() =>
+        expect(path).toHaveAttribute("data-tooltip-content", "Copied"),
+      );
 
-        await user.click(path);
-        // Use `waitFor` to wait for `setCopied(true)` to cause re-render.
-        await waitFor(() =>
-          expect(path).toHaveAttribute("data-tooltip-content", "Copied"),
-        );
-
-        await user.unhover(path);
-        // Use `act` to flush state setter. Otherwise, causes error.
-        act(() => jest.advanceTimersByTime(200));
-        expect(path).toHaveAttribute("data-tooltip-content", "Copy");
-      } finally {
-        jest.runOnlyPendingTimers();
-        jest.useRealTimers();
-      }
+      await user.unhover(path);
+      // Use `act` to flush state setter. Otherwise, causes error.
+      act(() => jest.advanceTimersByTime(200));
+      expect(path).toHaveAttribute("data-tooltip-content", "Copy");
     });
   });
 });
