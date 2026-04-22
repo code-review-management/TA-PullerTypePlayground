@@ -1,23 +1,24 @@
 import Image from "next/image";
 import styles from "./Checkbox.module.css";
-import { useState } from "react";
 
 /**
  * Styled Checkbox component.
  * @param id Unique ID for the checkbox. Can be used to link labels to the checkbox
  * @param name Name of the checkbox value. Gets passed into onChange
  * @param onChange Callback triggered when checkbox value changes.
+ * @param checked Checked state boolean
  */
 export default function Checkbox({
   id,
   name,
   onChange,
+  checked,
 }: {
   id: string;
   name: string;
   onChange: (name: string, isChecked: boolean) => void;
+  checked: boolean;
 }) {
-  const [checked, setChecked] = useState(false);
   return (
     <div className={styles.checkboxWrapper}>
       <input
@@ -27,9 +28,9 @@ export default function Checkbox({
         className={styles.checkbox}
         onChange={(e) => {
           const isChecked = e.target.checked;
-          setChecked(isChecked);
           onChange(name, isChecked);
         }}
+        checked={checked}
       />
       {checked && (
         <div className={styles.checkImage}>
