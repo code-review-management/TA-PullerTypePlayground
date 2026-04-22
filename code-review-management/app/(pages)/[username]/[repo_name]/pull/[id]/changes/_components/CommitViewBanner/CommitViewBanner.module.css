@@ -9,7 +9,7 @@
     transform: translate(-50%);
     z-index: 20;
 
-    padding: var(--spacer-8) var(--spacer-12);
+    padding: var(--spacer-10);
     border: var(--border-normal-width) solid var(--color-interactive-border);
     border-radius: var(--spacer-24);
     box-shadow: var(--box-shadow-popover);
