@@ -10,6 +10,8 @@ import ChevronRightIcon from "@/public/icons/chevron_right.svg";
  * @param mappedRepoList Mapping of owner name to array of repo names
  * @param onCheckboxChange Callback to pass into each checkbox in the the list.
  * @param selectedRepos Set of full names of selected repos. Determines if items in list should be checked
+ * @param isExpanded State of whether this list is expandedOwners
+ * @param onExpandedChange Callback triggered when the checklist is expanded/collapsed
  */
 export default function CollapsibleRepoList({
   owner,
