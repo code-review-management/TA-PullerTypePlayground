@@ -1,6 +1,5 @@
 import Image from "next/image";
 import styles from "./Checkbox.module.css";
-import { useState } from "react";
 
 /**
  * Styled Checkbox component.
@@ -12,12 +11,15 @@ export default function Checkbox({
   id,
   name,
   onChange,
+  checked,
 }: {
   id: string;
   name: string;
   onChange: (name: string, isChecked: boolean) => void;
+  checked: boolean;
 }) {
-  const [checked, setChecked] = useState(false);
+  // const [checked, setChecked] = useState(defaultChecked);
+  
   return (
     <div className={styles.checkboxWrapper}>
       <input
@@ -27,9 +29,9 @@ export default function Checkbox({
         className={styles.checkbox}
         onChange={(e) => {
           const isChecked = e.target.checked;
-          setChecked(isChecked);
           onChange(name, isChecked);
         }}
+        checked={checked}
       />
       {checked && (
         <div className={styles.checkImage}>

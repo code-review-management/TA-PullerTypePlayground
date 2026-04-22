@@ -1,5 +1,5 @@
 import styles from "./DashboardSidebar.module.css";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 import { sortReposByOrg } from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
@@ -9,24 +9,32 @@ import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 /**
  * Sidebar displayed on the left of the dashboard page with repo filter options.
  */
-export default function DashboardSidebar() {
+export default function DashboardSidebar({
+  selectedRepos,
+  setSelectedRepos,
+}: {
+  selectedRepos: string[];
+  setSelectedRepos: Dispatch<SetStateAction<string[]>>;
+}) {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     useReposQuery();
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
-  const [selectedRepos, setSelectedRepos] = useState<Set<string>>(new Set());
   const mappedRepoList = sortReposByOrg(data || []);
 
   const onCheckboxChange = (name: string, isChecked: boolean) => {
-    const newSelectedRepos = new Set(selectedRepos);
+    
     if (isChecked) {
-      newSelectedRepos.add(name);
+      const newSelectedRepos = [...selectedRepos];
+      newSelectedRepos.push(name);
+      setSelectedRepos(newSelectedRepos);
     } else {
-      newSelectedRepos.delete(name);
+      setSelectedRepos(selectedRepos.filter(repoName => repoName !== name));
     }
-    console.log(newSelectedRepos);
-    setSelectedRepos(newSelectedRepos);
+    
   };
+
+  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   return (
     <div className={styles.dashboardSidebar}>
@@ -38,6 +46,7 @@ export default function DashboardSidebar() {
             owner={owner}
             mappedRepoList={mappedRepoList}
             onCheckboxChange={onCheckboxChange}
+            selectedRepos={repoSet}
           />
         ))}
         {(isPending || (hasNextPage && isFetching)) && <LoadingSpinner />}

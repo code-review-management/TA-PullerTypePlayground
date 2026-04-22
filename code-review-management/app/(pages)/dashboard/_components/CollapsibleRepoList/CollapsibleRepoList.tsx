@@ -15,10 +15,12 @@ export default function CollapsibleRepoList({
   owner,
   mappedRepoList,
   onCheckboxChange,
+  selectedRepos,
 }: {
   owner: string;
   mappedRepoList: Map<string, string[]>;
   onCheckboxChange: (name: string, isChecked: boolean) => void;
+  selectedRepos: Set<string>;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -41,11 +43,12 @@ export default function CollapsibleRepoList({
         {mappedRepoList.get(owner)?.map((repoName) => (
           <div key={repoName} className={styles.repoListEntry}>
             <Checkbox
-              id={repoName}
-              name={repoName}
+              id={`${owner}/${repoName}`}
+              name={`${owner}/${repoName}`}
               onChange={onCheckboxChange}
+              checked={selectedRepos.has(`${owner}/${repoName}`)}
             />
-            <label htmlFor={repoName} className={styles.repoName}>
+            <label htmlFor={`${owner}/${repoName}`} className={styles.repoName}>
               {repoName}
             </label>
           </div>

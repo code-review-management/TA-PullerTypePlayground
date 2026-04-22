@@ -9,12 +9,17 @@ import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[i
 export default function DashboardGrid({
   pulls,
   searchString,
+  selectedRepos,
 }: {
   pulls: PullRequest[];
   searchString: string;
+  selectedRepos: string[];
 }) {
-  const filteredPulls = pulls.filter((pull) =>
-    pull.title.toLowerCase().includes(searchString.toLowerCase()),
+  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
+  const filteredPulls = pulls.filter(
+    (pull) =>
+      pull.title.toLowerCase().includes(searchString.toLowerCase()) &&
+      repoSet.has(`${pull.repository_owner}/${pull.repository_name}`),
   );
 
   return (
