@@ -213,7 +213,7 @@ describe("FileDiffHeader", () => {
     /**
      * Docs:
      * 1. https://stackoverflow.com/questions/71286328/react-testing-library-waiting-for-state-update-before-testing-component
-     * Use `waitFor` to wait for state setters to execute.
+     * Use `waitFor` to wait for state setters to cause update.
      */
     it("updates tooltip content when clicked and unhovered", async () => {
       const user = userEvent.setup({
