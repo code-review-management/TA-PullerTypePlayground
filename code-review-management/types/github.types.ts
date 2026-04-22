@@ -14,6 +14,7 @@ export type PRMerge = z.infer<typeof PRMergeSchema>;
 export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 export type Review = z.infer<typeof ReviewSchema>;
+export type IssueComment = z.infer<typeof IssueCommentSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -348,3 +349,13 @@ export const TimelineEventSchema = z
     StateChangeEventSchema, // event: closed, merged, reopened
   ])
   .nullable();
+
+export const IssueCommentSchema = z.object({
+  id: z.number(),
+  body: z.string().optional(),
+  user: UserSchema,
+  created_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation).optional(),
+  reactions: ReactionSchema.optional(),
+});

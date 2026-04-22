@@ -5,6 +5,9 @@ export type CommentPatchRequest = z.infer<typeof CommentPatchRequestSchema>;
 export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
 export type PRMergeRequest = z.infer<typeof PRMergeRequestSchema>;
 export type CreateReviewRequest = z.infer<typeof CreateReviewRequestSchema>;
+export type CreateIssueCommentRequest = z.infer<
+  typeof CreateIssueCommentRequestSchema
+>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
@@ -74,3 +77,7 @@ export const CreateReviewRequestSchema = z
       message: "Must provide body if event is REQUEST_CHANGES or COMMENT",
     },
   );
+
+export const CreateIssueCommentRequestSchema = z.object({
+  body: z.string(),
+});
