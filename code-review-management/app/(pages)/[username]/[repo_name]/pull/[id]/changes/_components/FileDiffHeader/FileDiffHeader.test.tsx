@@ -136,96 +136,96 @@ describe("FileDiffHeader", () => {
       expect(screen.queryByTestId("file-status-chip")).not.toBeInTheDocument();
     });
   });
-});
 
-describe("ChangeCount", () => {
-  it("renders deletions when greater than zero", () => {
-    render(
-      <FileDiffHeader
-        {...defaultProps}
-        fileMeta={createFileMetaItem({ deletions: 3, additions: 0 })}
-      />,
-    );
-    expect(screen.getByText("-3")).toBeInTheDocument();
-  });
-
-  it("renders additions when greater than zero", () => {
-    render(
-      <FileDiffHeader
-        {...defaultProps}
-        fileMeta={createFileMetaItem({ deletions: 0, additions: 5 })}
-      />,
-    );
-    expect(screen.getByText("+5")).toBeInTheDocument();
-  });
-
-  it("renders both deletions and additions when greater than zero", () => {
-    render(
-      <FileDiffHeader
-        {...defaultProps}
-        fileMeta={createFileMetaItem({ deletions: 3, additions: 5 })}
-      />,
-    );
-    expect(screen.getByText("-3")).toBeInTheDocument();
-    expect(screen.getByText("+5")).toBeInTheDocument();
-  });
-
-  it("does not render deletions nor additions when zero", () => {
-    render(
-      <FileDiffHeader
-        {...defaultProps}
-        fileMeta={createFileMetaItem({ deletions: 0, additions: 0 })}
-      />,
-    );
-    expect(screen.queryByTestId("change-count")).not.toBeInTheDocument();
-  });
-});
-
-describe("TruncatedPath", () => {
-  it("copies the path to clipboard when clicked", async () => {
-    const user = userEvent.setup();
-    render(<FileDiffHeader {...defaultProps} diffType="modify" />);
-    await user.click(screen.getByText("new-path.ts"));
-
-    // Docs: https://stackoverflow.com/a/72584756
-    const clipboardText = await navigator.clipboard.readText();
-    expect(clipboardText).toBe("new-path.ts");
-  });
-
-  /**
-   * Docs:
-   * 1. https://testing-library.com/docs/user-event/options/#advancetimers
-   * Setup user with advance timers.
-   *
-   * 2. https://stackoverflow.com/questions/71286328/react-testing-library-waiting-for-state-update-before-testing-component
-   * Use waitFor to wait for state setters to execute.
-   *
-   * 3. https://testing-library.com/docs/using-fake-timers/
-   * Setup fake timers, and exit tests by restoring real timers.
-   */
-  it("updates copy tooltip when clicked", async () => {
-    jest.useFakeTimers();
-    const user = userEvent.setup({
-      advanceTimers: jest.advanceTimersByTime,
+  describe("ChangeCount", () => {
+    it("renders deletions when greater than zero", () => {
+      render(
+        <FileDiffHeader
+          {...defaultProps}
+          fileMeta={createFileMetaItem({ deletions: 3, additions: 0 })}
+        />,
+      );
+      expect(screen.getByText("-3")).toBeInTheDocument();
     });
 
-    try {
-      render(<FileDiffHeader {...defaultProps} />);
-      const path = screen.getByText("new-path.ts").parentElement!;
-
-      await user.click(path);
-      // Use `waitFor` to wait for `setCopied(true)` to cause re-render.
-      await waitFor(() =>
-        expect(path).toHaveAttribute("data-tooltip-content", "Copied"),
+    it("renders additions when greater than zero", () => {
+      render(
+        <FileDiffHeader
+          {...defaultProps}
+          fileMeta={createFileMetaItem({ deletions: 0, additions: 5 })}
+        />,
       );
+      expect(screen.getByText("+5")).toBeInTheDocument();
+    });
 
-      await user.unhover(path);
-      // Use `act` to flush state setter. Otherwise, causes error.
-      act(() => jest.advanceTimersByTime(200));
-      expect(path).toHaveAttribute("data-tooltip-content", "Copy");
-    } finally {
-      jest.runOnlyPendingTimers();
-      jest.useRealTimers();
-    }
+    it("renders both deletions and additions when greater than zero", () => {
+      render(
+        <FileDiffHeader
+          {...defaultProps}
+          fileMeta={createFileMetaItem({ deletions: 3, additions: 5 })}
+        />,
+      );
+      expect(screen.getByText("-3")).toBeInTheDocument();
+      expect(screen.getByText("+5")).toBeInTheDocument();
+    });
+
+    it("does not render deletions nor additions when zero", () => {
+      render(
+        <FileDiffHeader
+          {...defaultProps}
+          fileMeta={createFileMetaItem({ deletions: 0, additions: 0 })}
+        />,
+      );
+      expect(screen.queryByTestId("change-count")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("TruncatedPath", () => {
+    it("copies the path to clipboard when clicked", async () => {
+      const user = userEvent.setup();
+      render(<FileDiffHeader {...defaultProps} diffType="modify" />);
+      await user.click(screen.getByText("new-path.ts"));
+
+      // Docs: https://stackoverflow.com/a/72584756
+      const clipboardText = await navigator.clipboard.readText();
+      expect(clipboardText).toBe("new-path.ts");
+    });
+
+    /**
+     * Docs:
+     * 1. https://testing-library.com/docs/user-event/options/#advancetimers
+     * Setup user with advance timers.
+     *
+     * 2. https://stackoverflow.com/questions/71286328/react-testing-library-waiting-for-state-update-before-testing-component
+     * Use waitFor to wait for state setters to execute.
+     *
+     * 3. https://testing-library.com/docs/using-fake-timers/
+     * Setup fake timers, and exit tests by restoring real timers.
+     */
+    it("updates copy tooltip when clicked", async () => {
+      jest.useFakeTimers();
+      const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+      });
+
+      try {
+        render(<FileDiffHeader {...defaultProps} />);
+        const path = screen.getByText("new-path.ts").parentElement!;
+
+        await user.click(path);
+        // Use `waitFor` to wait for `setCopied(true)` to cause re-render.
+        await waitFor(() =>
+          expect(path).toHaveAttribute("data-tooltip-content", "Copied"),
+        );
+
+        await user.unhover(path);
+        // Use `act` to flush state setter. Otherwise, causes error.
+        act(() => jest.advanceTimersByTime(200));
+        expect(path).toHaveAttribute("data-tooltip-content", "Copy");
+      } finally {
+        jest.runOnlyPendingTimers();
+        jest.useRealTimers();
+      }
+    });
   });
 });
