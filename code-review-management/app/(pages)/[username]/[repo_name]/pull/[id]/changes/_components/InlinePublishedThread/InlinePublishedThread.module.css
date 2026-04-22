@@ -17,3 +17,9 @@
     gap: var(--spacer-12);
     padding: var(--spacer-12);
 }
+
+.notificationText {
+    font-size:  22px;
+    color: var(--text-primary);
+    font-family: var(--font-roboto);
+}

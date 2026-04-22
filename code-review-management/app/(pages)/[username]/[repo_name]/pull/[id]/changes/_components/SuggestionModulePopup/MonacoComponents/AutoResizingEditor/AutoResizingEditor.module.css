@@ -1,0 +1,44 @@
+.monaco-hover-line-yellow {
+  background-color: rgba(255, 255, 0, 0.2) !important;
+}
+
+/* 2. The "Button" in the margin */
+.monaco-hover-btn {
+  width: 20px;
+  height: 20px;
+  background-color: aqua;
+  background-position: center;
+  cursor: pointer !important;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.monaco-hover-btn:hover {
+  opacity: 1;
+}
+
+.monaco-hover-line-yellow {
+  background-color: rgba(255, 255, 0, 0.2) !important;
+}
+
+.monaco-hover-btn-overlay {
+  /* CRITICAL: A solid background color to cover the line number. 
+     Match this to your editor's background color! */
+  background-color: #ffffff !important; 
+  
+  /* Elevate it above the line numbers layer */
+  z-index: 10 !important; 
+
+  /* Your Icon */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%230066ff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>');
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  cursor: pointer !important;
+}
+
+/* Optional hover state for the button itself */
+.monaco-hover-btn-overlay:hover {
+  background-color: #f0f0f0 !important; 
+}

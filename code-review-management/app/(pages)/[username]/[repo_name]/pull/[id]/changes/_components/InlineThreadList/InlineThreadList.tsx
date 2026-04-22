@@ -89,20 +89,19 @@ export function ThreadList({
 }) {
   console.log("Inside thread list. Published thread items");
   return (
-    // <div className={styles.list}>
-    //   {publishedThreads.map((publishedThread) => {
-    //     console.log("published thread!")
-    //     return (
-    //       <InlinePublishedThread
-    //         key={publishedThread.id}
-    //         thread={publishedThread}
-    //         viewType="inline"
-    //         activePath={activePath}
-    //       />
-    //     )
-    //   })}
-    //   {draftThread && <InlineDraftThread draft={draftThread} />}
-    // </div>
-    <div>TESTTTTTTT</div>
+    <div className={styles.list}>
+      {publishedThreads.map((publishedThread) => {
+        console.log("published thread!")
+        return (
+          <InlinePublishedThread
+            key={publishedThread.id}
+            thread={publishedThread}
+            viewType="inline"
+            activePath={activePath}
+          />
+        )
+      })}
+      {draftThread && <InlineDraftThread draft={draftThread} />}
+    </div>
   );
 }

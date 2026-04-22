@@ -13,6 +13,7 @@ export type PRMerge = z.infer<typeof PRMergeSchema>;
 export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 export type Review = z.infer<typeof ReviewSchema>;
+export type FileContent = z.infer<typeof FileContentSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -323,3 +324,22 @@ export const TimelineEventSchema = z
     StateChangeEventSchema, // event: closed, merged, reopened
   ])
   .nullable();
+
+export const FileContentSchema = z.object({
+  type: z.literal("file"),
+  encoding: z.string(),
+  size: z.number(),
+  name: z.string(),
+  path: z.string(),
+  content: z.string(),
+  sha: z.string(),
+  url: z.url(),
+  git_url: z.url().nullable().optional(),
+  html_url: z.url().nullable().optional(),
+  download_url: z.string().url().nullable().optional(),
+  _links: z.object({
+    git: z.url().nullable().optional(),
+    self: z.url(),
+    html: z.url().nullable().optional(),
+  }).optional(),
+});

@@ -71,7 +71,7 @@ export default memo(function FileDiffView({
   );
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
-  const { widgets } = useMemo(
+  const widgets = useMemo(
     () =>
       getWidgets(
         activePath,

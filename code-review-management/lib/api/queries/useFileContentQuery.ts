@@ -1,0 +1,20 @@
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "@/lib/api/utils/fetcher";
+
+/**
+ * Fetches the diff-string of a GitHub pull request.
+ * 
+ * @param owner: Owner of the repository.
+ * @param repo: Name of the repository.
+ * @param pullNumber: Pull request number.
+ * @returns: TanStack query result containing the diff-string.
+ */
+export function useFileContentQuery(owner: string, repo: string, pullNumber: string, path: string) {
+  return useQuery({
+    queryKey: ["file-diffs", owner, repo, pullNumber, path],
+    queryFn: async (): Promise<string> => {
+      const encodedPath = encodeURIComponent(path);
+      return fetcher(`/api/v1/${owner}/${repo}/pulls/${pullNumber}/single-file-content?path=${encodedPath}`);
+    }
+  });
+}

@@ -1,12 +1,17 @@
 import React, { ReactNode, useMemo, Fragment, useState } from 'react';
 import refractor from 'refractor';
 import { SuggestiveComment } from "./suggestionParser";
+import { SuggestionModuleContent } from '../SuggestionModulePopup/SuggestionModulePopup';
 import styles from "./SuggestionReplacementWidget.module.css"
 import { getLanguage } from '../../_utils/diff-utils';
+import { useFileContentQuery } from '@/lib/api/queries/useFileContentQuery';
+import { useParams } from 'next/navigation';
+import { PullParams } from '@/types/routing.types';
 
 interface SuggestionReplacementWidgetProps {
   suggestion: SuggestiveComment,
-  activePath: string
+  activePath: string,
+  startLine: number
 }
 
 // A raw text node
@@ -47,9 +52,11 @@ function renderASTNode(node: ASTNode, i: number): ReactNode {
   return null;
 }
 
-export function SuggestionReplacementWidget({ suggestion, activePath }: SuggestionReplacementWidgetProps) {
-  const language = getLanguage(activePath); 
+export function SuggestionReplacementWidget({ suggestion, activePath, startLine }: SuggestionReplacementWidgetProps) {
+  const language = getLanguage(activePath);
+  const { username, repo_name, id } = useParams<PullParams>();
   const [activeTab, setActiveTab] = useState<'replace' | 'insert'>('insert');
+  const [moduleExpanded, setModuleExpanded] = useState(false);
 
   const deletionNodes = useMemo<ASTNode[]>(() => {
     try {
@@ -67,13 +74,60 @@ export function SuggestionReplacementWidget({ suggestion, activePath }: Suggesti
     }
   }, [suggestion.additionContent, language]);
 
+  const {
+    data: fileContent,
+    isLoading,
+    isError,
+    error
+   } = useFileContentQuery(username, repo_name, id, activePath);
+
+   const { deletionContent, additionContent } = suggestion;
+   const endLine: number = startLine + deletionContent.split('\n').length;
+
+   console.log("end line: " + endLine);
 return (
+  <>
+    {moduleExpanded && (
+      <div className={styles.modalBackdrop} onClick={() => setModuleExpanded(false)}>
+        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalBody}>
+            {/* If loading is true, render this */}
+            {isLoading && (
+              <div className={styles.notificationText}>Loading file content...</div>
+            )}
+
+            {/* If error is true, render this */}
+            {isError && (
+              <div className={styles.notificationText}>Failed to load: {error?.message}</div>
+            )}
+
+            {/* If NOT loading, NOT an error, and we have content, render the good state */}
+            {!isLoading && !isError && fileContent && (
+              <SuggestionModuleContent
+                fullFileCode={fileContent}
+                filename={activePath}
+                replaceStartLine={startLine}
+                replaceEndLine={endLine}
+                deletionContent={deletionContent}
+                additionContent={additionContent}
+                onXClicked={() => setModuleExpanded(false)}
+              />
+            )}
+          </div>
+
+        </div>
+      </div>
+    )}
+
+
+
     <div className={styles.container}>
       
       {/* 2. The Formal Header with Toggle Buttons */}
       <div className={styles.formalHeader}>
         <div className={styles.headerTitle}>Suggested Change</div>
         
+        <div className={styles.buttonContainer}>
         <div className={styles.toggleGroup}>
           <button 
             className={`${styles.toggleButton} ${activeTab === 'replace' ? styles.activeTab : ''}`}
@@ -87,7 +141,12 @@ return (
           >
             Suggestion
           </button>
-        </div>
+          </div>
+          <button
+            className={styles.expandButton} onClick={() => setModuleExpanded(true)}>
+              Expand
+          </button>
+          </div>
       </div>
 
       {/* 3. Conditionally render based on the active tab */}
@@ -105,5 +164,6 @@ return (
         </pre>
       )}
     </div>
+  </>
   );
 }

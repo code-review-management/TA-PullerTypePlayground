@@ -30,6 +30,7 @@ export default function InlineCommentEntry({
   defaultEditable,
   defaultContent,
   activePath,
+  startLine,
   editorActions,
   headerActions,
 }: {
@@ -39,6 +40,7 @@ export default function InlineCommentEntry({
   defaultEditable: boolean;
   defaultContent?: string;
   activePath?: string;
+  startLine?: number;
   editorActions?: ReactNode;
   headerActions?: ReactNode;
 }) {
@@ -52,6 +54,14 @@ export default function InlineCommentEntry({
     };
   
   if (!activePath) activePath = "";
+  if (suggestiveComment.hasSuggestion){
+    if (!startLine){
+      suggestiveComment.hasSuggestion = false;
+      startLine = 0;
+    }
+  } else {
+    startLine = 0;
+  }
 
   return (
     <div className={styles.comment}>
@@ -69,10 +79,11 @@ export default function InlineCommentEntry({
           {headerActions}
         </div>
         
-        {(suggestiveComment.hasSuggestion && false) ? (
+        {suggestiveComment.hasSuggestion ? (
           <SuggestionReplacementWidget
             suggestion={suggestiveComment}
-            activePath={activePath}  
+            activePath={activePath}
+            startLine={startLine}  
           />
         ) : (
           <MarkdownEditor

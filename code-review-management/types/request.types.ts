@@ -98,3 +98,14 @@ export const CodeEditResponseSchema = z.object({
   deleteRange: DeleteRangeSchema,
   additionBlock: AdditionBlockSchema,
 });
+
+export const FileNameParamsSchema = z
+  .string()
+  .trim()
+  .min(1, "Path cannot be empty")
+  .refine((path) => !path.includes(".."), {
+    message: "Directory traversal is not allowed",
+  })
+  .refine((path) => !path.startsWith("/"), {
+    message: "Path must be relative (do not start with a slash)",
+  });

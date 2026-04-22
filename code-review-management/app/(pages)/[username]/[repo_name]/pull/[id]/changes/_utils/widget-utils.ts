@@ -102,7 +102,7 @@ export function getWidgets(
         change,
         publishedThreadsBySide,
         draftThreadsBySide,
-        activePath: ""
+        activePath: filename
       });
     }
   });

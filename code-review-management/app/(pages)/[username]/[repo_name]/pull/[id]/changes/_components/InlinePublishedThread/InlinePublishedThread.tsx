@@ -35,6 +35,9 @@ export default function InlinePublishedThread({
   const { draftReplies, setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
+  let startLine: number | undefined = undefined;
+  if (thread.start_line) startLine = thread.start_line;
+  else if (thread.line) startLine = thread.line;
 
   const handleCancelReply = () => {
     deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
@@ -59,6 +62,7 @@ export default function InlinePublishedThread({
             defaultEditable={false}
             defaultContent={comment.body}
             activePath={activePath}
+            startLine={startLine}
             />
         ))}
         {viewType === "inline" && ( // Reply option currently supported only for inline threads.
