@@ -8,8 +8,8 @@ export function createFileMeta(filenames: string[]): FileDiff[] {
 }
 
 // Helper function to create a GitHub `FileDiff` object.
-export function createFileMetaItem(fileMeta: Partial<FileDiff>): FileDiff {
-  return fileMeta as FileDiff;
+export function createFileMetaItem(fileMetaItem: Partial<FileDiff>): FileDiff {
+  return fileMetaItem as FileDiff;
 }
 
 // Helper function to create a react-diff-view `FileData` object.
