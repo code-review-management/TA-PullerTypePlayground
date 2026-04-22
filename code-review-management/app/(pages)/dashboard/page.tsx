@@ -8,14 +8,17 @@ import { useEffect, useState } from "react";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
 import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
 import { sortPullsByUpdated } from "./_utils/pulls-utils";
-import { useLocalStorage } from 'usehooks-ts'
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     usePullsQuery();
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
-  const [selectedRepos, setSelectedRepos] = useLocalStorage<string[]>("selectedRepos", []);
+  const [selectedRepos, setSelectedRepos] = useLocalStorage<string[]>(
+    "selectedRepos",
+    [],
+  );
   const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   const pulls = data?.pages.flatMap((page) => page.data) ?? [];

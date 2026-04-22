@@ -31,7 +31,7 @@ export default function DashboardSidebar({
       newSelectedRepos.push(name);
       setSelectedRepos(newSelectedRepos);
     } else {
-      setSelectedRepos(selectedRepos.filter(repoName => repoName !== name));
+      setSelectedRepos(selectedRepos.filter((repoName) => repoName !== name));
     }
   };
 
