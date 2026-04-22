@@ -3,7 +3,6 @@ import styles from "./CollapsibleRepoList.module.css";
 import Image from "next/image";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
-import { useState } from "react";
 
 /**
  * Collapsible checklist used for a section of list of repos in the repo filters section on the dashboard.
@@ -17,29 +16,31 @@ export default function CollapsibleRepoList({
   mappedRepoList,
   onCheckboxChange,
   selectedRepos,
+  isCollapsed,
+  onCollapsedChange,
 }: {
   owner: string;
   mappedRepoList: Map<string, string[]>;
   onCheckboxChange: (name: string, isChecked: boolean) => void;
   selectedRepos: Set<string>;
+  isCollapsed: boolean;
+  onCollapsedChange: (owner: string, isCollapsed: boolean) => void;
 }) {
-  const [isExpanded, setIsExpanded] = useState(true);
-
   return (
     <div className={styles.repoListSection} key={owner}>
       <div
         className={styles.sectionHeader}
-        onClick={() => setIsExpanded((prev) => !prev)}
+        onClick={() => onCollapsedChange(owner, !isCollapsed)}
       >
         <Image
-          src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
-          alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
+          src={!isCollapsed ? ChevronDownIcon : ChevronRightIcon}
+          alt={`Chevron icon pointing ${!isCollapsed ? "down" : "right"}`}
           className={styles.chevron}
         />
         <h5 className={styles.ownerName}>{owner}</h5>
       </div>
       <form
-        className={`${styles.repoList} ${isExpanded && styles.repoListExpanded}`}
+        className={`${styles.repoList} ${!isCollapsed && styles.repoListExpanded}`}
       >
         {mappedRepoList.get(owner)?.map((repoName) => (
           <div key={repoName} className={styles.repoListEntry}>
