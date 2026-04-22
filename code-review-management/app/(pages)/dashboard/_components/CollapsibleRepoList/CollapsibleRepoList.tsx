@@ -16,31 +16,31 @@ export default function CollapsibleRepoList({
   mappedRepoList,
   onCheckboxChange,
   selectedRepos,
-  isCollapsed,
-  onCollapsedChange,
+  isExpanded,
+  onExpandedChange,
 }: {
   owner: string;
   mappedRepoList: Map<string, string[]>;
   onCheckboxChange: (name: string, isChecked: boolean) => void;
   selectedRepos: Set<string>;
-  isCollapsed: boolean;
-  onCollapsedChange: (owner: string, isCollapsed: boolean) => void;
+  isExpanded: boolean;
+  onExpandedChange: (owner: string, isCollapsed: boolean) => void;
 }) {
   return (
     <div className={styles.repoListSection} key={owner}>
       <div
         className={styles.sectionHeader}
-        onClick={() => onCollapsedChange(owner, !isCollapsed)}
+        onClick={() => onExpandedChange(owner, !isExpanded)}
       >
         <Image
-          src={!isCollapsed ? ChevronDownIcon : ChevronRightIcon}
-          alt={`Chevron icon pointing ${!isCollapsed ? "down" : "right"}`}
+          src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
+          alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
           className={styles.chevron}
         />
         <h5 className={styles.ownerName}>{owner}</h5>
       </div>
       <form
-        className={`${styles.repoList} ${!isCollapsed && styles.repoListExpanded}`}
+        className={`${styles.repoList} ${isExpanded && styles.repoListExpanded}`}
       >
         {mappedRepoList.get(owner)?.map((repoName) => (
           <div key={repoName} className={styles.repoListEntry}>
