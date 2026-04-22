@@ -39,6 +39,7 @@ export function useHighlight(
   activePath: string,
   fileStatus: string,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
+  isDisabled?: boolean,
 ) {
   const [activeHighlight, _setActiveHighlight] = useState<ActiveHighlight>({
     isHighlighting: false,
@@ -62,23 +63,25 @@ export function useHighlight(
     activeHighlightRef.current = data;
   };
 
-  const highlightEvents: DiffProps["gutterEvents"] = {
-    // Starts a new highlight session when the user clicks on a gutter.
-    onMouseDown: ({ change, side }) => {
-      if (!change || !side) return;
-      highlightOnMouseDown(change, side, setActiveHighlightSync);
-    },
-    // Updates the highlighted lines as the user drags their mouse through the gutters.
-    onMouseEnter: ({ change, side }) => {
-      if (!change || !side) return;
-      highlightOnMouseEnter(
-        change,
-        side,
-        activeHighlightRef,
-        setActiveHighlightSync,
-      );
-    },
-  };
+  const highlightEvents: DiffProps["gutterEvents"] = isDisabled
+    ? {}
+    : {
+        // Starts a new highlight session when the user clicks on a gutter.
+        onMouseDown: ({ change, side }) => {
+          if (!change || !side) return;
+          highlightOnMouseDown(change, side, setActiveHighlightSync);
+        },
+        // Updates the highlighted lines as the user drags their mouse through the gutters.
+        onMouseEnter: ({ change, side }) => {
+          if (!change || !side) return;
+          highlightOnMouseEnter(
+            change,
+            side,
+            activeHighlightRef,
+            setActiveHighlightSync,
+          );
+        },
+      };
 
   const clearHighlight = ({ start, end, side }: ClearHighlightProps) =>
     clearHighlightIfMatch(
@@ -96,6 +99,8 @@ export function useHighlight(
    * their mouse.
    */
   useEffect(() => {
+    if (isDisabled) return;
+
     const handleMouseUp = () => {
       if (activeHighlightRef.current.isHighlighting) {
         highlightOnMouseUp(
@@ -113,7 +118,7 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [oldPath, activePath, fileStatus, setDraftThreads]);
+  }, [oldPath, activePath, fileStatus, setDraftThreads, isDisabled]);
 
   return { activeHighlight, highlightEvents, clearHighlight };
 }

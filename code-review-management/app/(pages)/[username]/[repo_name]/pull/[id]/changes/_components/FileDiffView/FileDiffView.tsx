@@ -11,6 +11,7 @@ import {
   ViewType,
 } from "react-diff-view";
 
+import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
@@ -50,12 +51,14 @@ export default memo(function FileDiffView({
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
+  const { isCommitView } = useCommitPickerContext();
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
     fileMeta?.status ?? "",
     setDraftThreads,
+    isCommitView,
   );
   const [isExpanded, setIsExpanded] = useState(true);
 
