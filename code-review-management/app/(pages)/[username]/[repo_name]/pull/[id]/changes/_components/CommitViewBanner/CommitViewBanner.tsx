@@ -1,11 +1,13 @@
 import { useParams, useRouter } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
+import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import Image from "next/image";
 import InfoIcon from "@/public/icons/info.svg";
 import styles from "./CommitViewBanner.module.css";
 
 export default function CommitViewBanner({ sha }: { sha: string }) {
   const router = useRouter();
+  const { setSelectedSha } = useCommitPickerContext();
   const { username, repo_name, id } = useParams<PullParams>();
 
   return (
@@ -16,6 +18,7 @@ export default function CommitViewBanner({ sha }: { sha: string }) {
       <button
         className={styles.backButton}
         onClick={() => {
+          setSelectedSha(null);
           router.push(`/${username}/${repo_name}/pull/${id}/changes`);
         }}
       >

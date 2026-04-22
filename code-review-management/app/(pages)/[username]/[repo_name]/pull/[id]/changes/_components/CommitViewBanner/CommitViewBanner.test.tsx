@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import CommitViewBanner from "./CommitViewBanner";
 
 const mockRouterPush = jest.fn();
-
 jest.mock("next/navigation", () => ({
   useParams: () => ({
     username: "owner",
@@ -16,11 +15,18 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
+const mockSetSelectedSha = jest.fn();
+jest.mock("../../../_contexts/CommitPickerContext", () => ({
+  useCommitPickerContext: () => ({
+    setSelectedSha: mockSetSelectedSha,
+  }),
+}));
+
 describe("CommitViewBanner", () => {
   const mockSha = "ab102f9301df14";
 
   beforeEach(() => {
-    jest.clearAllMocks(); // Clear `mockRouterPush` usage data.
+    jest.clearAllMocks();
   });
 
   it("renders message with shortened SHA", () => {
@@ -44,5 +50,14 @@ describe("CommitViewBanner", () => {
       screen.getByRole("button", { name: "Back to all changes" }),
     );
     expect(mockRouterPush).toHaveBeenCalledWith("/owner/repo/pull/1/changes");
+  });
+
+  it("sets the selected sha to null on button click", async () => {
+    const user = userEvent.setup();
+    render(<CommitViewBanner sha={mockSha} />);
+    await user.click(
+      screen.getByRole("button", { name: "Back to all changes" }),
+    );
+    expect(mockSetSelectedSha).toHaveBeenCalledWith(null);
   });
 });
