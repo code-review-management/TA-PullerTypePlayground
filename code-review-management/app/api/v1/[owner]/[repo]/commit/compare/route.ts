@@ -3,7 +3,7 @@
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { PullRequest, PullRequestSchema } from "@/types/github.types";
+import { CompareCommits, CompareCommitsSchema, PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
@@ -31,6 +31,19 @@ export async function GET(req: Request, context: RouteContext) {
     return new Response(null, { status: 401 });
   }
 
+  // Get query parameters
+  const { searchParams: qParams } = new URL(req.url);
+  const base = qParams.get("base");
+  const head = qParams.get("head");
+
+  // Validate query parameters
+  if (base == null || head == null) {
+    return Response.json(
+      { error: "Missing or invalid query parameters" },
+      { status: 400 },
+    );
+  }
+
   // Validate required parameters
   if (!owner || !repo) {
     return Response.json(
@@ -46,14 +59,13 @@ export async function GET(req: Request, context: RouteContext) {
       await octokit.rest.repos.compareCommitsWithBasehead({
         owner: owner,
         repo: repo,
-        basehead:
-          "675b54bd4c0d104e0eb7b1b8edcce3cf8b95b354...85a53fd9bb1fdb7f41486e618b634d8ef4ad1248",
+        basehead: `${base}...${head}`,
       });
 
     // Filter response
-    // const filteredResponse: PullRequest = PullRequestSchema.parse(contents);
+    const filteredResponse: CompareCommits = CompareCommitsSchema.parse(contents);
 
-    return new Response(JSON.stringify(contents, null, 2), {
+    return new Response(JSON.stringify(filteredResponse, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
