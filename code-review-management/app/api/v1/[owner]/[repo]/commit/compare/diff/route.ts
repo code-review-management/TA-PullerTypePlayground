@@ -1,9 +1,9 @@
 /*
-/api/v1/{owner}/{repo}/commit/compare
+/api/v1/{owner}/{repo}/commit/compare/diff
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { CompareCommits, CompareCommitsSchema } from "@/types/github.types";
+import { CompareCommits, CompareCommitsSchema, PullRequest, PullRequestSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
@@ -63,8 +63,7 @@ export async function GET(req: Request, context: RouteContext) {
       });
 
     // Filter response
-    const filteredResponse: CompareCommits =
-      CompareCommitsSchema.parse(contents);
+    const filteredResponse: CompareCommits = CompareCommitsSchema.parse(contents);
 
     return new Response(JSON.stringify(filteredResponse, null, 2), {
       status: 200,
