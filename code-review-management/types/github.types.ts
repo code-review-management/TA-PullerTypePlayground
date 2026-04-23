@@ -15,6 +15,7 @@ export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 export type Review = z.infer<typeof ReviewSchema>;
 export type IssueComment = z.infer<typeof IssueCommentSchema>;
+export type CompareCommits = z.infer<typeof CompareCommitsSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -41,6 +42,21 @@ const authorAssociation = [
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
 const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED"] as const;
+const fileDiffStatus = [
+  "added",
+  "removed",
+  "modified",
+  "renamed",
+  "copied",
+  "changed",
+  "unchanged",
+] as const;
+const compareCommitsStatus = [
+  "diverged",
+  "ahead",
+  "behind",
+  "identical",
+] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -143,12 +159,13 @@ export const IssueSchema = z.object({
 export const FileDiffSchema = z.object({
   sha: z.string().nullable(),
   filename: z.string(),
-  status: z.string(),
+  status: z.enum(fileDiffStatus),
   additions: z.number(),
   deletions: z.number(),
   changes: z.number(),
   contents_url: z.string(),
   patch: z.string().optional(),
+  previous_filename: z.string().optional(),
 });
 
 export const ReactionSchema = z.object({
@@ -358,4 +375,14 @@ export const IssueCommentSchema = z.object({
   updated_at: z.string(),
   author_association: z.enum(authorAssociation).optional(),
   reactions: ReactionSchema.optional(),
+});
+
+export const CompareCommitsSchema = z.object({
+  base_commit: CommitSchema,
+  merge_base_commit: CommitSchema,
+  status: z.enum(compareCommitsStatus),
+  ahead_by: z.number(),
+  behind_by: z.number(),
+  total_commits: z.number(),
+  files: z.array(FileDiffSchema),
 });
