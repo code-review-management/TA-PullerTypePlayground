@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { getDefaultPublishedThreadItem } from "@/mocks/tests/threads";
+import { getDefaultSession } from "@/mocks/tests/session";
 import userEvent from "@testing-library/user-event";
 import InlineDraftReplyTrigger from "./InlineDraftReplyTrigger";
 
@@ -40,17 +41,14 @@ jest.mock("@components/UserIcon/UserIcon", () => ({
 
 describe("InlineDraftReplyTrigger", () => {
   const mockThread = getDefaultPublishedThreadItem();
+  const mockSession = getDefaultSession();
 
   beforeEach(() => {
     jest.resetAllMocks();
-    // Set session mock here so we can override it later with any data type.
+    // Since mocks are reset to clear .mockReturnValue instances, restore
+    // implementation here.
     mockUseSession.mockReturnValue({
-      data: {
-        user: {
-          image: "example-user-image",
-          githubLogin: "example-user-github-login",
-        },
-      },
+      data: mockSession,
     });
   });
 
