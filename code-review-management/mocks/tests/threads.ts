@@ -1,6 +1,6 @@
 import { PublishedThreadItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
 
-export function getDefaultPublishedThreadItem(): PublishedThreadItem {
+export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
     id: 1,
     path: "filename.ts",

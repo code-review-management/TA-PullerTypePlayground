@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 
-export function getDefaultSession(): Session {
+export function getDefaultAuthenticatedSession(): Session {
   return {
     expires: "example-expires",
     user: {

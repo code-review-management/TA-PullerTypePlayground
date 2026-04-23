@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { getDefaultPublishedThreadItem } from "@/mocks/tests/threads";
-import { getDefaultSession } from "@/mocks/tests/session";
+import { getExampleLinePublishedThreadItem1 } from "@/mocks/tests/threads";
+import { getDefaultAuthenticatedSession } from "@/mocks/tests/session";
 import userEvent from "@testing-library/user-event";
 import InlineDraftReplyTrigger from "./InlineDraftReplyTrigger";
 
@@ -40,8 +40,8 @@ jest.mock("@components/UserIcon/UserIcon", () => ({
 }));
 
 describe("InlineDraftReplyTrigger", () => {
-  const mockThread = getDefaultPublishedThreadItem();
-  const mockSession = getDefaultSession();
+  const mockThread = getExampleLinePublishedThreadItem1();
+  const mockSession = getDefaultAuthenticatedSession();
 
   beforeEach(() => {
     jest.resetAllMocks();
