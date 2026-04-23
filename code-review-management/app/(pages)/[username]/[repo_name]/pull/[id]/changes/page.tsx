@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import { useChangesData } from "./_hooks/useChangesData";
 import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
@@ -15,10 +15,22 @@ import FileTree from "./_components/FileTree/FileTree";
 import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
 
-export default function Changes() {
+function ChangesProviders({ children }: { children: ReactNode }) {
   const { draftReplies, setDraftReplies } = useDraftReplies();
   const { draftThreads, setDraftThreads } = useDraftThreads();
 
+  return (
+    <CommitPickerProvider>
+      <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
+        <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
+          {children}
+        </DraftThreadsContext>
+      </DraftRepliesContext>
+    </CommitPickerProvider>
+  );
+}
+
+export default function Changes() {
   const { pull, files, publishedThreads, sha, isPending, isError } =
     useChangesData();
 
@@ -36,39 +48,36 @@ export default function Changes() {
   if (isError) return <div>Failed to load changes.</div>;
 
   return (
-    <CommitPickerProvider>
-      <DraftRepliesContext value={{ draftReplies, setDraftReplies }}>
-        <DraftThreadsContext value={{ draftThreads, setDraftThreads }}>
-          <div className={styles.page}>
-            <div className={styles.pageBody}>
-              <div className={styles.bodyMain}>
-                <PRChangesHeader
-                  pull={pull!}
-                  isActivityPanelOpen={isActivityPanelOpen}
-                  toggleActivityPanel={toggleActivityPanel}
-                />
-                <div
-                  className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
-                >
-                  <FileTree fileTree={fileTree} />
-                  <DiffListView
-                    flatFileTree={flatFileTree}
-                    // Use non-null assertion since threads are defined if not in pending/error state.
-                    publishedThreads={publishedThreads!}
-                    sha={sha}
-                  />
-                </div>
-              </div>
-              <ActivityPanel
+    // If SHA query param changes, re-mount entire page.
+    <ChangesProviders key={sha}>
+      <div className={styles.page}>
+        <div className={styles.pageBody}>
+          <div className={styles.bodyMain}>
+            <PRChangesHeader
+              pull={pull!}
+              isActivityPanelOpen={isActivityPanelOpen}
+              toggleActivityPanel={toggleActivityPanel}
+            />
+            <div
+              className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
+            >
+              <FileTree fileTree={fileTree} />
+              <DiffListView
+                flatFileTree={flatFileTree}
+                // Use non-null assertion since threads are defined if not in pending/error state.
                 publishedThreads={publishedThreads!}
-                isOpen={isActivityPanelOpen}
-                togglePanel={toggleActivityPanel}
+                sha={sha}
               />
             </div>
-            {sha && <CommitViewBanner sha={sha} />}
           </div>
-        </DraftThreadsContext>
-      </DraftRepliesContext>
-    </CommitPickerProvider>
+          <ActivityPanel
+            publishedThreads={publishedThreads!}
+            isOpen={isActivityPanelOpen}
+            togglePanel={toggleActivityPanel}
+          />
+        </div>
+        {sha && <CommitViewBanner sha={sha} />}
+      </div>
+    </ChangesProviders>
   );
 }

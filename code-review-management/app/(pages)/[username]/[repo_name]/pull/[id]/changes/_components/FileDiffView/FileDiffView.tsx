@@ -11,6 +11,7 @@ import {
   ViewType,
 } from "react-diff-view";
 
+import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
@@ -50,12 +51,14 @@ export default memo(function FileDiffView({
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
+  const { isCommitView } = useCommitPickerContext();
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
     fileMeta?.status ?? "",
     setDraftThreads,
+    isCommitView,
   );
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -71,16 +74,21 @@ export default memo(function FileDiffView({
   );
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
-  const widgets = useMemo(
-    () =>
-      getWidgets(
-        activePath,
-        hunks,
-        publishedThreads.lineThreads,
-        draftThreadsByLine ?? {},
-      ),
-    [activePath, hunks, publishedThreads.lineThreads, draftThreadsByLine],
-  );
+  const widgets = useMemo(() => {
+    if (isCommitView) return;
+    return getWidgets(
+      activePath,
+      hunks,
+      publishedThreads.lineThreads,
+      draftThreadsByLine ?? {},
+    );
+  }, [
+    isCommitView,
+    activePath,
+    hunks,
+    publishedThreads.lineThreads,
+    draftThreadsByLine,
+  ]);
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter
@@ -88,6 +96,7 @@ export default memo(function FileDiffView({
       side={side}
       renderDefault={renderDefault}
       activeHighlight={activeHighlight}
+      isHighlightDisabled={isCommitView}
     />
   );
 

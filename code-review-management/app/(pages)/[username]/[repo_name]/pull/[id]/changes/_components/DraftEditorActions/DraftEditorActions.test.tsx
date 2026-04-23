@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { getDefaultDraftItem } from "@/mocks/tests/threads";
+import { getExampleThreadDraftItem1 } from "@/mocks/tests/threads";
 import userEvent from "@testing-library/user-event";
 import DraftEditorActions from "./DraftEditorActions";
 
@@ -29,14 +29,16 @@ jest.mock("@components/MarkdownEditor/MarkdownEditorContext", () => ({
 }));
 
 describe("DraftEditorActions", () => {
-  const mockDraft = getDefaultDraftItem();
+  const mockDraft = getExampleThreadDraftItem1();
+
   const defaultUseSubmitDraftItem = {
     isSubmitPending: false,
     isPullPending: false,
     handleSubmit: jest.fn(),
   };
+
   const defaultUseMarkdownEditorContext = {
-    editorContent: "example markdown body",
+    editorContent: "example-editor-content",
   };
 
   beforeEach(() => {
