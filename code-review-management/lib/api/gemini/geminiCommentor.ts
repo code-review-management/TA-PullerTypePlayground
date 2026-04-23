@@ -71,11 +71,14 @@ function convertIntoMarkdownSuggestion(
 
   return `### ${header}
 ${tag}
-\`\`\`diff
 <!--Gemini-Tag [Code To Be Deleted]-->
+\`\`\`diff
 ${formattedDeletions}
+\`\`\`
 <!--Gemini-Tag [Code To Be Inserted]-->
+\`\`\`diff
 ${formattedInsertions}
+\`\`\`
 <!--Gemini-Tag [Diff End] -->
-\`\`\``;
+`;
 }
