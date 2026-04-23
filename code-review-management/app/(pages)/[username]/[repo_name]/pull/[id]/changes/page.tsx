@@ -48,7 +48,7 @@ export default function Changes() {
   if (isError) return <div>Failed to load changes.</div>;
 
   return (
-    // If SHA query param changes, re-render entire page.
+    // If SHA query param changes, re-mount entire page.
     <ChangesProviders key={sha}>
       <div className={styles.page}>
         <div className={styles.pageBody}>
