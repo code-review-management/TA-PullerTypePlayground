@@ -49,10 +49,13 @@ function FileTreeSearch({
   setSearchString: Dispatch<SetStateAction<string>>;
 }) {
   return (
-    <input
-      value={searchString}
-      onChange={(e) => setSearchString(e.target.value)}
-      placeholder="Search files"
-    />
+    <div className={styles.searchContainer}>
+      <input
+        className={styles.searchInput}
+        value={searchString}
+        onChange={(e) => setSearchString(e.target.value)}
+        placeholder="Search files"
+      />
+    </div>
   );
 }

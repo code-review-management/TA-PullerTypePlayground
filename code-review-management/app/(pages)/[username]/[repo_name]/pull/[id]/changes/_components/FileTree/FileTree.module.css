@@ -28,3 +28,18 @@
     max-height: calc(100vh - var(--page-header-height));
     overflow: auto;
 }
+
+.searchContainer {
+    margin-right: var(--spacer-8);
+}
+
+.searchInput {
+    width: 100%;
+    padding: var(--spacer-10) var(--spacer-16);
+    border-radius: 32px;
+    border: none;
+    outline: none;
+    background-color: var(--background-secondary-light);
+    font-size: 0.875rem;
+    color: var(--text-primary);
+}
