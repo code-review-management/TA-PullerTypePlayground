@@ -63,8 +63,7 @@ export async function GET(req: Request, context: RouteContext) {
       });
 
     // Filter temp response
-    let filteredResponse: CompareCommits =
-      CompareCommitsSchema.parse(contents);
+    let filteredResponse: CompareCommits = CompareCommitsSchema.parse(contents);
 
     // If the base is different from the merge base commit, recompute
     if (base != filteredResponse.merge_base_commit.sha) {
