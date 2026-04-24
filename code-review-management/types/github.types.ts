@@ -6,6 +6,7 @@ export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
 export type Branch = z.infer<typeof BranchSchema>;
 export type PullRequest = z.infer<typeof PullRequestSchema>;
+export type Commit = z.infer<typeof CommitSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
@@ -13,6 +14,7 @@ export type PRMerge = z.infer<typeof PRMergeSchema>;
 export type ReviewComment = z.infer<typeof ReviewCommentSchema>;
 export type TimelineEvent = z.infer<typeof TimelineEventSchema>;
 export type Review = z.infer<typeof ReviewSchema>;
+export type IssueComment = z.infer<typeof IssueCommentSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -38,11 +40,7 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const reviewState = [
-  "APPROVED",
-  "CHANGES_REQUESTED",
-  "COMMENTED",
-] as const;
+const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED"] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -85,6 +83,9 @@ export const BranchSchema = z.object({
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
+  repository_url: z.string().optional(),
+  repository_name: z.string().optional(),
+  repository_owner: z.string().optional(),
   diff_url: z.string().optional(),
   number: z.number(),
   state: z.enum(issueState),
@@ -115,6 +116,11 @@ export const PullRequestSchema = z.object({
   additions: z.number().optional(),
   deletions: z.number().optional(),
   changed_files: z.number().optional(),
+  pull_request: z
+    .object({
+      merged_at: z.string().nullable(),
+    })
+    .optional(),
 });
 
 // Not in use
@@ -210,6 +216,26 @@ export const ReviewSchema = z.object({
   state: z.enum(reviewState),
   submitted_at: z.string().optional(),
   author_association: z.enum(authorAssociation),
+});
+
+export const CommitSchema = z.object({
+  url: z.string(),
+  sha: z.string(),
+  commit: z.object({
+    message: z.string(),
+    author: UserIdentitySchema,
+    committer: UserIdentitySchema,
+  }),
+  author: UserSchema.nullable(),
+  committer: UserSchema.nullable(),
+  stats: z
+    .object({
+      additions: z.number(),
+      deletions: z.number(),
+      total: z.number(),
+    })
+    .optional(),
+  files: z.array(FileDiffSchema).optional(),
 });
 
 export const CommitCommentSchema = z.object({
@@ -323,3 +349,13 @@ export const TimelineEventSchema = z
     StateChangeEventSchema, // event: closed, merged, reopened
   ])
   .nullable();
+
+export const IssueCommentSchema = z.object({
+  id: z.number(),
+  body: z.string().optional(),
+  user: UserSchema,
+  created_at: z.string(),
+  updated_at: z.string(),
+  author_association: z.enum(authorAssociation).optional(),
+  reactions: ReactionSchema.optional(),
+});

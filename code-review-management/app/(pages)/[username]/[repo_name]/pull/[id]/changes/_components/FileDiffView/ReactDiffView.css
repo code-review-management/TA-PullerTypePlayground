@@ -40,6 +40,10 @@
     border-right: var(--border-normal-width) solid var(--diff-gutter-highlight-border-color);
 }
 
+.diff-gutter:has(.diff-gutter-highlight-disabled) {
+    cursor: auto;
+}
+
 .diff-gutter:has(.diff-gutter-highlighted) + .diff-code {
     background-color: var(--diff-code-highlight-bg-color);
 }

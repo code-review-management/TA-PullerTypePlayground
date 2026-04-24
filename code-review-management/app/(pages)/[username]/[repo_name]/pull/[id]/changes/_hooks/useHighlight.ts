@@ -32,6 +32,7 @@ export interface ClearHighlightProps {
  * @param activePath: Active path of the file associated with this highlight state.
  * @param fileStatus: Status of the file calculated by GitHub (e.g., removed, renamed).
  * @param setDraftThreads: State setter for `draftThreads`.
+ * @param isDisabled: Whether highlighting is currently disabled or not.
  * @returns: The `activeHighlight` state and associated gutter events for highlighting.
  */
 export function useHighlight(
@@ -39,6 +40,7 @@ export function useHighlight(
   activePath: string,
   fileStatus: string,
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
+  isDisabled: boolean,
 ) {
   const [activeHighlight, _setActiveHighlight] = useState<ActiveHighlight>({
     isHighlighting: false,
@@ -96,6 +98,8 @@ export function useHighlight(
    * their mouse.
    */
   useEffect(() => {
+    if (isDisabled) return;
+
     const handleMouseUp = () => {
       if (activeHighlightRef.current.isHighlighting) {
         highlightOnMouseUp(
@@ -113,7 +117,11 @@ export function useHighlight(
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [oldPath, activePath, fileStatus, setDraftThreads]);
+  }, [oldPath, activePath, fileStatus, setDraftThreads, isDisabled]);
 
-  return { activeHighlight, highlightEvents, clearHighlight };
+  return {
+    activeHighlight,
+    highlightEvents: isDisabled ? {} : highlightEvents,
+    clearHighlight,
+  };
 }

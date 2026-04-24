@@ -50,7 +50,7 @@ export default function PRHeaderActions({
           buttonLabel={<Image src={CommitIcon} alt="Commit" />}
           buttonVariant="secondary"
           isPopoverOpen={activePopover === "commit"}
-          popoverContent={<CommitPicker />}
+          popoverContent={<CommitPicker pull={pull} />}
           onToggle={toggleCommit}
         />
       )}

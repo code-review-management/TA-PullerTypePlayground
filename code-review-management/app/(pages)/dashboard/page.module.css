@@ -3,11 +3,6 @@
   min-height: 100vh;
 }
 
-.repoSideBar {
-  width: 320px;
-  border-right: 1px solid var(--border-gray-secondary); /* TODO: Border shouldn't span entire height */
-}
-
 .pageBody {
   flex: 1;
   padding: var(--spacer-48);
