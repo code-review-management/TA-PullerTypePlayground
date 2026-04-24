@@ -223,6 +223,14 @@ export function sortPublishedThreads(
   });
 }
 
+/**
+ * Get the index of the file in that flat file tree that a published thread
+ * is associated with.
+ *
+ * @param thread: Published thread item.
+ * @param flatFileTree: Flattened file tree array.
+ * @returns: Index of the matched file; -1 if unmatched.
+ */
 function findThreadInFlatFileTree(
   thread: PublishedThreadItem,
   flatFileTree: FileDiff[],
