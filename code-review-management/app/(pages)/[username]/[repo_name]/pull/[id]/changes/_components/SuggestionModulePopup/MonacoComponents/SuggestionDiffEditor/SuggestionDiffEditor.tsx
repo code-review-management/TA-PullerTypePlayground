@@ -26,6 +26,7 @@ export interface RegionData {
 }
 
 export function SuggestionDiffEditor(props: SuggestionDiffEditorProps) {
+  const { beforeCode, originalCode, modifiedCode, afterCode, filename } = props;
   const { handleEditorMount } = useDiffEditorSetup(props);
 
   const buildFullCode = (before: string, middle: string, after: string) => {
