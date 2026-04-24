@@ -137,3 +137,30 @@ export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
     return indexA - indexB;
   });
 }
+
+export function filterFileTreeBySearch(
+  fileTree: FileTreeNode[],
+  searchString: string,
+) {
+  if (searchString.length === 0) return null; // Search string not applied.
+  const filters = new Set<FileTreeNode>();
+
+  fileTree.forEach((node) => {
+    if (node.type === "directory") {
+      const filteredChildren = filterFileTreeBySearch(
+        node.children,
+        searchString,
+      );
+      if (filteredChildren?.size) {
+        filters.add(node);
+        filteredChildren.forEach((child) => filters.add(child));
+      }
+    } else if (
+      node.fileDiff.filename.toLowerCase().includes(searchString.toLowerCase())
+    ) {
+      filters.add(node);
+    }
+  });
+
+  return filters;
+}
