@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
-import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import {
+  PublishedThreadItem,
+  PublishedThreads,
+} from "../../_hooks/usePublishedThreads";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import Image from "next/image";
@@ -87,10 +90,25 @@ function CommentsTab({
   });
 
   allThreads.sort((a, b) => {
+    const getIndex = (thread: PublishedThreadItem) =>
+      flatFileTree.findIndex(
+        (node) =>
+          node.filename === thread.path ||
+          (node.status === "renamed" && node.previous_filename === thread.path),
+      );
+
     // Sort by file position in the flat file tree.
-    const indexA = flatFileTree.findIndex((node) => node.filename === a.path);
-    const indexB = flatFileTree.findIndex((node) => node.filename === b.path);
+    const indexA = getIndex(a);
+    const indexB = getIndex(b);
     if (indexA !== indexB) return indexA - indexB;
+
+    // For renamed files, put previous filename before new filename.
+    const nodeA = flatFileTree[indexA];
+    if (nodeA?.status === "renamed") {
+      const isOldPathA = a.path === nodeA.previous_filename;
+      const isOldPathB = b.path === nodeA.previous_filename;
+      if (isOldPathA !== isOldPathB) return isOldPathA ? -1 : 1;
+    }
 
     // Within the same file, put file-level comments first.
     const isFileA = a.subject_type === "file";
