@@ -21,7 +21,10 @@ export default function StatusFlagChip({ status }: { status: Status }) {
   const textDisplay = TEXT[status];
 
   return (
-    <div className={`${styles.statusFlagChip} ${colorClass}`}>
+    <div
+      className={`${styles.statusFlagChip} ${colorClass}`}
+      data-testid="status-flag-chip"
+    >
       <Image src={`/icons/${iconSrc}`} alt={status} height={20} width={20} />
       <p>{textDisplay}</p>
     </div>

@@ -20,7 +20,10 @@ export default function StateChip({ state }: { state: State }) {
   const stateDisplay = `${state[0].toUpperCase()}${state.slice(1)}`;
 
   return (
-    <div className={`${styles.stateChip} ${colorClass}`}>
+    <div
+      className={`${styles.stateChip} ${colorClass}`}
+      data-testid="state-chip"
+    >
       <Image src={`/icons/${iconSrc}`} alt={state} height={16} width={16} />
       <p>{stateDisplay}</p>
     </div>
