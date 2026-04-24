@@ -55,16 +55,29 @@ export async function GET(req: Request, context: RouteContext) {
   const octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } =
+    const { data: tempContents } =
       await octokit.rest.repos.compareCommitsWithBasehead({
         owner: owner,
         repo: repo,
         basehead: `${base}...${head}`,
       });
 
-    // Filter response
-    const filteredResponse: CompareCommits =
-      CompareCommitsSchema.parse(contents);
+    // Filter temp response
+    let filteredResponse: CompareCommits =
+      CompareCommitsSchema.parse(tempContents);
+
+    // If the base is different from the merge base commit, recompute
+    if (base != filteredResponse.merge_base_commit.sha) {
+      const { data: contents } =
+        await octokit.rest.repos.compareCommitsWithBasehead({
+          owner: owner,
+          repo: repo,
+          basehead: `${filteredResponse.merge_base_commit.sha}...${head}`,
+        });
+
+      // Filter response
+      filteredResponse = CompareCommitsSchema.parse(contents);
+    }
 
     return new Response(JSON.stringify(filteredResponse, null, 2), {
       status: 200,
