@@ -22,7 +22,7 @@
 }
 
 .tree {
-    padding: var(--spacer-10) var(--spacer-8) var(--spacer-10) 0;
+    padding: 0 var(--spacer-8) var(--spacer-10) 0;
     max-height: calc(100vh - var(--page-header-height));
     overflow: auto;
 }
