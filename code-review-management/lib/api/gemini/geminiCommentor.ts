@@ -24,7 +24,7 @@ export async function commentGeminiSuggestion(
     i < deleteRange.maxExclusiveLine;
     i++
   ) {
-    deletionBlock += fileLines[i] + "\n";
+    deletionBlock += fileLines[i - 1] + "\n";
   }
 
   const relativeDiff = deleteRange.minInclusiveLine - thread.line;
@@ -78,6 +78,7 @@ ${formattedDeletions}
 <!--Gemini-Tag [Code To Be Inserted]-->
 \`\`\`diff
 ${formattedInsertions}
+\`\`\`
 <!--Gemini-Tag [Diff End] -->
-\`\`\``;
+`;
 }

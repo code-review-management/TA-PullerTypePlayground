@@ -1,16 +1,15 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import styles from './SuggestionModulePopup.module.css';
-import { AutoResizingEditor } from './MonacoComponents/AutoResizingEditor/AutoResizingEditor';
 import { SuggestionDiffEditor } from './MonacoComponents/SuggestionDiffEditor/SuggestionDiffEditor';
 
 export interface SuggestionPopupProp {
-    fullFileCode: string,
-    filename: string,
-    replaceStartLine: number,
-    replaceEndLine: number,
-    deletionContent: string,
-    additionContent: string,
-    onXClicked: () => void
+  fullFileCode: string,
+  filename: string,
+  replaceStartLine: number,
+  replaceEndLine: number,
+  deletionContent: string,
+  additionContent: string,
+  onXClicked: () => void
 }
 
 export function SuggestionModuleContent({
@@ -24,30 +23,48 @@ export function SuggestionModuleContent({
 } : SuggestionPopupProp) {
   const [updateChanges, setUpdateChanges] = useState(false);
 
-  const { beforeCode, afterCode } = useMemo(() => {
+  // 1. LAZY INITIALIZATION: Calculate the regions once when the component mounts
+  const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split('\n');
     let before = lines.slice(0, replaceStartLine - 1).join('\n');
-
-    // Check for Windows line endings first, then standard Unix line endings
-    if (before.endsWith('\r\n')) {
-      before = before.slice(0, -2); // Chops off both \r and \n
-    } else if (before.endsWith('\n')) {
-      before = before.slice(0, -1); // Chops off just \n
-    }
-    const after = lines.slice(replaceEndLine).join('\n');
     
-    return { beforeCode: before, afterCode: after };
-  }, [fullFileCode, replaceStartLine, replaceEndLine]);
+    if (before.endsWith('\r\n')) {
+      before = before.slice(0, -2);
+    } else if (before.endsWith('\n')) {
+      before = before.slice(0, -1);
+    }
+    return before;
+  });
 
-  const fullDeletionContent = beforeCode + deletionContent + afterCode;
-  const fullAdditionContent = beforeCode + additionContent + afterCode;
-  const handleEditorChange = (newContent: string) => {
-    if (newContent !== additionContent) {
+  const [afterCode, setAfterCode] = useState(() => {
+    const lines = fullFileCode.split('\n');
+    return lines.slice(replaceEndLine).join('\n');
+  });
+
+  // 2. Initialize the original/modified states with the incoming props
+  const [originalCode, setOriginalCode] = useState(deletionContent);
+  const [modifiedCode, setModifiedCode] = useState(additionContent);
+
+  // 3. Unified callback for both typing AND expanding regions
+  const handleEditorChange = (
+    newBeforeCode: string, 
+    newOriginalCode: string, 
+    newModifiedCode: string, 
+    newAfterCode: string
+  ) => {
+    // Check if the user has modified the core suggestion text
+    if (newModifiedCode !== additionContent || newOriginalCode !== deletionContent) {
       setUpdateChanges(true);
     } else {
       setUpdateChanges(false);
     }
-  }
+
+    // Update all 4 states so the editor re-renders with the new boundaries
+    setBeforeCode(newBeforeCode);
+    setOriginalCode(newOriginalCode);
+    setModifiedCode(newModifiedCode);
+    setAfterCode(newAfterCode);
+  };
 
   return(
     <div className={styles.moduleContainer}>
@@ -71,14 +88,17 @@ export function SuggestionModuleContent({
       </div>
 
       <div className={styles.editorContainer}>
-      <SuggestionDiffEditor
-        originalCode={deletionContent}
-        modifiedCode={additionContent}
-        beforeCode={beforeCode}
-        afterCode={afterCode}
-        filename={filename}
-        onCodeChange={handleEditorChange}
-      />
+        <SuggestionDiffEditor
+          // 4. IMPORTANT: Pass the STATE variables here, not the initial props!
+          originalCode={originalCode}
+          modifiedCode={modifiedCode}
+          beforeCode={beforeCode}
+          afterCode={afterCode}
+          filename={filename}
+          // Note: make sure this prop name matches what you exported in SuggestionDiffEditor.types.ts
+          // (If you renamed it to onExpandRegion in the previous step, use onExpandRegion={handleEditorChange})
+          onCodeChange={handleEditorChange} 
+        />
       </div>
     </div>
   );
