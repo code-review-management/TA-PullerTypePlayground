@@ -3,7 +3,7 @@
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { CompareCommits, CompareCommitsSchema, PullRequest, PullRequestSchema } from "@/types/github.types";
+import { CompareCommits, CompareCommitsSchema } from "@/types/github.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
 
@@ -62,10 +62,20 @@ export async function GET(req: Request, context: RouteContext) {
         basehead: `${base}...${head}`,
       });
 
-    // Filter response
-    const filteredResponse: CompareCommits = CompareCommitsSchema.parse(contents);
+    // Filter temp response
+    const filteredResponse: CompareCommits =
+      CompareCommitsSchema.parse(contents);
 
-    return new Response(JSON.stringify(filteredResponse, null, 2), {
+    const { data: diff } = await octokit.rest.repos.compareCommitsWithBasehead({
+      owner: owner,
+      repo: repo,
+      basehead: `${filteredResponse.merge_base_commit.sha}...${head}`,
+      mediaType: {
+        format: "diff",
+      },
+    });
+
+    return new Response(JSON.stringify(diff, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
