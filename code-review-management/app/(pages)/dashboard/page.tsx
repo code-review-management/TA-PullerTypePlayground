@@ -10,8 +10,11 @@ import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
 import { sortPullsByUpdated } from "./_utils/pulls-utils";
 import { useLocalStorage } from "usehooks-ts";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
+import TabFilters from "./_components/TabFilters/TabFilters";
+import { Tab } from "./_utils/filter-utils";
 
 export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState<Tab>("All");
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     usePullsQuery();
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
@@ -38,6 +41,7 @@ export default function Dashboard() {
         "Loading dashboard..."
       ) : (
         <div className={styles.pageBody}>
+          <TabFilters activeTab={activeTab} setActiveTab={setActiveTab} />
           <DashboardSearchBar
             searchString={searchString}
             setSearchString={setSearchString}
