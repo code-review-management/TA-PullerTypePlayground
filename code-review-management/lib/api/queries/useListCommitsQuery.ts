@@ -26,7 +26,7 @@ export function useListCommitsQuery(
     queryKey: ["list-commits", owner, repo, pullNumber],
     queryFn: async ({ pageParam }): Promise<CommitV2> =>
       fetcher(
-        `/api/v2/${owner}/${repo}/pulls/${pullNumber}/commits?page=${pageParam}&branch=${branch}?all=true`,
+        `/api/v2/${owner}/${repo}/pulls/${pullNumber}/commits?page=${pageParam}&branch=${branch}`,
       ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
