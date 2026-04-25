@@ -138,6 +138,14 @@ export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
   });
 }
 
+/**
+ * Filters a file tree by the given search string.
+ *
+ * @param fileTree: Array of `FileTreeNode`s to filter.
+ * @param searchString: The search string.
+ * @returns: A set of nodes that satisfy the search string. Null if no search
+ *           string is applied.
+ */
 export function filterFileTreeBySearch(
   fileTree: FileTreeNode[],
   searchString: string,
