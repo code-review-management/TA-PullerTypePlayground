@@ -117,6 +117,7 @@ export default memo(function FileDiffView({
           newPath={newPath}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          isCommitView={isCommitView}
           createFileDraftThread={() => {
             setIsExpanded(true);
             createDraftThread(setDraftThreads, activePath, {
