@@ -130,7 +130,7 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {(hasFileLevelThreads && !isCommitView) && (
+          {hasFileLevelThreads && !isCommitView && (
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
               draftThread={draftThreadsByLine?.["file-level"]}
