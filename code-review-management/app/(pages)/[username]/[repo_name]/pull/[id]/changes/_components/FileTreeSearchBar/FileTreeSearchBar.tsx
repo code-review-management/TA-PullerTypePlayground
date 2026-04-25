@@ -12,6 +12,13 @@ export default function FileTreeSearchBar({
   setSearchString: Dispatch<SetStateAction<string>>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const focusOnInput = () => {
+    // Without this, clicking on the magnifier does not focus on the input.
+    if (inputRef.current) inputRef.current.focus();
+  };
+  const clearSearch = () => {
+    setSearchString("");
+  };
 
   return (
     <div className={styles.searchContainer}>
@@ -22,10 +29,7 @@ export default function FileTreeSearchBar({
           alt="Search"
           height={20}
           width={20}
-          onClick={() => {
-            // Without this, clicking on the magnifier does not focus on the input.
-            if (inputRef.current) inputRef.current.focus();
-          }}
+          onClick={focusOnInput}
         />
         <input
           className={styles.searchInput}
@@ -36,10 +40,7 @@ export default function FileTreeSearchBar({
           ref={inputRef}
         />
         {searchString.length > 0 && (
-          <button
-            className={styles.searchCancelIcon}
-            onClick={() => setSearchString("")}
-          >
+          <button className={styles.searchCancelIcon} onClick={clearSearch}>
             <Image
               src={CancelSearchIcon}
               alt="Cancel search"
