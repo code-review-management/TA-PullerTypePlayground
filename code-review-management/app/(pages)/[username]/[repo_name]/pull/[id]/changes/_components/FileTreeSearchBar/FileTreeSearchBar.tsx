@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useRef } from "react";
-import SearchIcon from "@/public/icons/search.svg";
-import CancelSearchIcon from "@/public/icons/cancel_search.svg";
 import Image from "next/image";
+import CancelSearchIcon from "@/public/icons/cancel_search.svg";
+import SearchIcon from "@/public/icons/search.svg";
 import styles from "./FileTreeSearchBar.module.css";
 
 export default function FileTreeSearchBar({
@@ -12,12 +12,10 @@ export default function FileTreeSearchBar({
   setSearchString: Dispatch<SetStateAction<string>>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const clearSearch = () => setSearchString("");
   const focusOnInput = () => {
     // Without this, clicking on the magnifier does not focus on the input.
     if (inputRef.current) inputRef.current.focus();
-  };
-  const clearSearch = () => {
-    setSearchString("");
   };
 
   return (
