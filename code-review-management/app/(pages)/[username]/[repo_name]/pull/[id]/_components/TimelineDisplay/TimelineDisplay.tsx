@@ -1,6 +1,7 @@
 import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
 import { ReactNode, useState } from "react";
+import { useParams } from "next/navigation";
 import {
   EventType,
   processedTimelineEvent,
@@ -11,6 +12,7 @@ import Image from "next/image";
 import PRViewComment from "../PRViewComment/PRViewComment";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
+import { PullParams } from "@/types/routing.types";
 import { ReviewComment } from "@/types/github.types";
 import { useOverflows } from "../../changes/_hooks/useOverflows";
 
@@ -117,18 +119,24 @@ function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
 }
 
 function ExpandableCommitText({
+  full_sha,
   abbr_sha,
   message,
 }: {
+  full_sha: string;
   abbr_sha: string;
   message: string;
 }) {
+  const { username, repo_name, id } = useParams<PullParams>();
   const isOverflow = useOverflows(abbr_sha);
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className={styles.expandableCommitText}>
-      <a className={styles.commitSha} href={""}>
+      <a
+        className={styles.commitSha}
+        href={`/${username}/${repo_name}/pull/${id}/changes?sha=${full_sha}`}
+      >
         #{abbr_sha}
       </a>{" "}
       <p
@@ -176,15 +184,18 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
     return;
   }
 
-  const abbr_sha =
-    "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
+  const full_sha = "sha" in event.eventObj ? event.eventObj.sha : "";
+  const abbr_sha = full_sha.slice(0, 7);
   const message = "message" in event.eventObj ? event.eventObj.message : "";
 
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
       <div className={styles.timelineCommit}>
-        {/** TODO: Link to commit on GH */}
-        <ExpandableCommitText abbr_sha={abbr_sha} message={message} />
+        <ExpandableCommitText
+          full_sha={full_sha}
+          abbr_sha={abbr_sha}
+          message={message}
+        />
         <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
       </div>
     </TimelineEventSmall>
