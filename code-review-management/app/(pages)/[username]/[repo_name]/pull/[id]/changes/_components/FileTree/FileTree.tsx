@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useResizableFileTree } from "../../_hooks/useResizableFileTree";
 import {
   FileTreeNode,
   filterFileTreeBySearch,
 } from "../../_utils/filetree-utils";
 import FileTreeRow from "../FileTreeRow/FileTreeRow";
+import FileTreeSearchBar from "../FileTreeSearchBar/FileTreeSearchBar";
 import styles from "./FileTree.module.css";
 
 /**
@@ -28,7 +29,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
       data-testid="file-tree"
       ref={treeRef}
     >
-      <FileTreeSearch
+      <FileTreeSearchBar
         searchString={searchString}
         setSearchString={setSearchString}
       />
@@ -37,25 +38,6 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
           <FileTreeRow key={node.name} node={node} filters={filters} />
         ))}
       </div>
-    </div>
-  );
-}
-
-function FileTreeSearch({
-  searchString,
-  setSearchString,
-}: {
-  searchString: string;
-  setSearchString: Dispatch<SetStateAction<string>>;
-}) {
-  return (
-    <div className={styles.searchContainer}>
-      <input
-        className={styles.searchInput}
-        value={searchString}
-        onChange={(e) => setSearchString(e.target.value)}
-        placeholder="Search files"
-      />
     </div>
   );
 }
