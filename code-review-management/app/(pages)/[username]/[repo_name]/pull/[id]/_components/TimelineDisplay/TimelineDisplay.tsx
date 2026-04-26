@@ -9,6 +9,7 @@ import {
   isReviewState,
 } from "./processTimeline";
 import Image from "next/image";
+import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
@@ -133,12 +134,12 @@ function ExpandableCommitText({
 
   return (
     <div className={styles.expandableCommitText}>
-      <a
+      <Link
         className={styles.commitSha}
         href={`/${username}/${repo_name}/pull/${id}/changes?sha=${full_sha}`}
       >
         #{abbr_sha}
-      </a>{" "}
+      </Link>{" "}
       <p
         className={styles.commitMessage}
         id={`commit-${abbr_sha}-message`}
