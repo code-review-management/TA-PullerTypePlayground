@@ -41,7 +41,7 @@ export function useChangesData() {
     isFetching: isCommitFetching,
     isPending: isCommitPending,
     isError: isCommitError,
-  } = useCommitQuery(username, repo_name, sha ?? "", mode === "commit");
+  } = useCommitQuery(username, repo_name, sha ?? "", mode === "single-commit");
   useAutoFetchAllPages(
     hasNextCommitPage,
     isCommitFetching,
@@ -57,19 +57,18 @@ export function useChangesData() {
     repo_name,
     pull?.base?.ref ?? "",
     sha ?? "",
-    mode === "cumulative" && !!pull?.base?.ref,
+    mode === "cumulative-commit" && !!pull?.base?.ref,
   );
 
-  let activeFiles, isActiveFilesPending, isActiveFilesError;
-  if (mode === "pr") {
-    activeFiles = files;
-    isActiveFilesPending = isFilesPending;
-    isActiveFilesError = isFilesError;
-  } else if (mode === "commit") {
+  let activeFiles = files;
+  let isActiveFilesPending = isFilesPending;
+  let isActiveFilesError = isFilesError;
+
+  if (mode === "single-commit") {
     activeFiles = commit?.files;
     isActiveFilesPending = isCommitPending;
     isActiveFilesError = isCommitError;
-  } else {
+  } else if (mode === "cumulative-commit") {
     activeFiles = compareCommit?.files;
     isActiveFilesPending = isCompareCommitPending;
     isActiveFilesError = isCompareCommitError;

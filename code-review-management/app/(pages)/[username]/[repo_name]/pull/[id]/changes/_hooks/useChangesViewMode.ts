@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 
-type ChangesViewMode = "pr" | "commit" | "cumulative";
+type ChangesViewMode = "pr" | "single-commit" | "cumulative-commit";
 
 export function useChangesViewMode(): {
   sha: string | null;
@@ -11,6 +11,6 @@ export function useChangesViewMode(): {
   const cumulative = params.get("cumulative");
 
   if (sha === null) return { sha, mode: "pr" };
-  if (cumulative !== null) return { sha, mode: "cumulative" };
-  return { sha, mode: "commit" };
+  if (cumulative !== null) return { sha, mode: "cumulative-commit" };
+  return { sha, mode: "single-commit" };
 }

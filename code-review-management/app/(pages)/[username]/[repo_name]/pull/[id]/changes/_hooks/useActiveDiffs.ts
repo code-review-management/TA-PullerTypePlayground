@@ -15,20 +15,20 @@ export function useActiveDiffs(pull: PullRequest) {
     username,
     repo_name,
     sha ?? "",
-    mode === "commit",
+    mode === "single-commit",
   );
   const cumulativeDiffs = useCompareCommitDiffsQuery(
     username,
     repo_name,
     pull.base?.ref ?? "",
     sha ?? "",
-    mode === "cumulative" && !!pull.base?.ref,
+    mode === "cumulative-commit" && !!pull.base?.ref,
   );
 
   const { data, isPending, isError } =
     mode === "pr"
       ? fileDiffs
-      : mode === "commit"
+      : mode === "single-commit"
         ? commitDiffs
         : cumulativeDiffs;
 
