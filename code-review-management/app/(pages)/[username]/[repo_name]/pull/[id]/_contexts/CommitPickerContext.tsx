@@ -42,10 +42,10 @@ export default function CommitPickerProvider({
     <CommitPickerContext
       value={{
         isCommitView: sha !== null,
-        isCumulative,
-        setIsCumulative,
         selectedSha,
         setSelectedSha,
+        isCumulative,
+        setIsCumulative,
       }}
     >
       {children}

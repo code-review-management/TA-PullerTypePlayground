@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
 
 /**
- * Fetches the diff-string of the comparison between two GitHub commits in the
- * same repository.
+ * Fetches the diff-string of the comparison between two commits in the same
+ * GitHub repository.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
