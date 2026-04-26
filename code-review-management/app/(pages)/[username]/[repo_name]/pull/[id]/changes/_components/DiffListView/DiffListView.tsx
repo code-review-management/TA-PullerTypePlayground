@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
-import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useActiveDiffs } from "../../_hooks/useActiveDiffs";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
@@ -24,7 +24,7 @@ export default function DiffListView({
   sha: string | null;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const { isCommitView } = useCommitPickerContext();
+  const { mode } = useChangesViewMode();
   const { diffString, isPending, isError } = useActiveDiffs(pull);
 
   const diffs = useMemo(() => {
@@ -71,7 +71,7 @@ export default function DiffListView({
               publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
-              isCommitView={isCommitView}
+              isCommitView={mode !== "pr"}
             />
           </div>
         );
