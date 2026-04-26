@@ -13,7 +13,7 @@ import { CompareCommits } from "@/types/github.types";
  *                 if set to false.
  * @returns: TanStack query result containing the commit comparison.
  */
-export function useCompareCommitsQuery(
+export function useCompareCommitQuery(
   owner: string,
   repo: string,
   base: string,

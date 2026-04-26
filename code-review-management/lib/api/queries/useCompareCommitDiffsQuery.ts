@@ -13,7 +13,7 @@ import { fetcher } from "@/lib/api/utils/fetcher";
  *                 if set to false.
  * @returns: TanStack query result containing the diff-string.
  */
-export function useCompareCommitsDiffsQuery(
+export function useCompareCommitDiffsQuery(
   owner: string,
   repo: string,
   base: string,

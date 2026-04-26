@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation";
 import { useChangesViewMode } from "./useChangesViewMode";
 import { useCommitDiffsQuery } from "@/lib/api/queries/useCommitDiffsQuery";
-import { useCompareCommitsDiffsQuery } from "@/lib/api/queries/useCompareCommitsDiffsQuery";
+import { useCompareCommitDiffsQuery } from "@/lib/api/queries/useCompareCommitDiffsQuery";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
 import { PullParams } from "@/types/routing.types";
 import { PullRequest } from "@/types/github.types";
@@ -17,7 +17,7 @@ export function useActiveDiffs(pull: PullRequest) {
     sha ?? "",
     mode === "commit",
   );
-  const cumulativeDiffs = useCompareCommitsDiffsQuery(
+  const cumulativeDiffs = useCompareCommitDiffsQuery(
     username,
     repo_name,
     pull.base?.ref ?? "",
