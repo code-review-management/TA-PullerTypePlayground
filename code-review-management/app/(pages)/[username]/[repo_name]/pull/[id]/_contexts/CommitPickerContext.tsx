@@ -9,7 +9,6 @@ import {
 } from "react";
 
 const CommitPickerContext = createContext<{
-  isCommitView: boolean;
   selectedSha: string | null;
   setSelectedSha: Dispatch<SetStateAction<string | null>>;
   isCumulative: boolean;
@@ -41,7 +40,6 @@ export default function CommitPickerProvider({
   return (
     <CommitPickerContext
       value={{
-        isCommitView: sha !== null,
         selectedSha,
         setSelectedSha,
         isCumulative,
