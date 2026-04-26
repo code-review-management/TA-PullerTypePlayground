@@ -1,6 +1,7 @@
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import styles from "./DiscussionBox.module.css";
 import { useState } from "react";
+import DiscussionEditorActions from "../DiscussionEditorActions/DiscussionEditorActions";
 
 /**
  * Discussion box component present on the Timeline section of the PR view page.
@@ -18,6 +19,9 @@ export default function DiscussionBox() {
         defaultEditable={true}
         placeholder="Add a discussion comment"
         onChange={(content: string) => setDiscussionBoxContent(content)}
+        actions={
+          <DiscussionEditorActions editorContent={discussionBoxContent} />
+        }
       />
     </form>
   );
