@@ -14,8 +14,8 @@ export default function CommitViewBanner({ sha }: { sha: string }) {
 
   const message =
     mode === "cumulative-commit"
-      ? `showing all changes up to`
-      : `viewing commit`;
+      ? `showing all changes up to commit `
+      : `viewing commit `;
 
   return (
     <div className={styles.banner} data-testid="commit-view-banner">
