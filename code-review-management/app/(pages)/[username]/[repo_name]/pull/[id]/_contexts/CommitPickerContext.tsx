@@ -10,10 +10,10 @@ import {
 
 const CommitPickerContext = createContext<{
   isCommitView: boolean;
-  isCumulative: boolean;
-  setIsCumulative: Dispatch<SetStateAction<boolean>>;
   selectedSha: string | null;
   setSelectedSha: Dispatch<SetStateAction<string | null>>;
+  isCumulative: boolean;
+  setIsCumulative: Dispatch<SetStateAction<boolean>>;
 } | null>(null);
 
 export const useCommitPickerContext = () => {
@@ -35,8 +35,8 @@ export default function CommitPickerProvider({
   const sha = params.get("sha");
   const cumulative = params.get("cumulative");
 
-  const [isCumulative, setIsCumulative] = useState(!!cumulative);
   const [selectedSha, setSelectedSha] = useState<string | null>(sha);
+  const [isCumulative, setIsCumulative] = useState(!!cumulative);
 
   return (
     <CommitPickerContext

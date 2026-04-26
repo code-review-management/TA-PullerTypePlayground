@@ -21,7 +21,7 @@ export function useCompareCommitQuery(
   enabled = true,
 ) {
   return useQuery({
-    queryKey: ["compare-commits", owner, repo, base, head],
+    queryKey: ["compare-commit", owner, repo, base, head],
     queryFn: async (): Promise<CompareCommits> =>
       fetcher(
         `/api/v1/${owner}/${repo}/commit/compare?base=${base}&head=${head}`,
