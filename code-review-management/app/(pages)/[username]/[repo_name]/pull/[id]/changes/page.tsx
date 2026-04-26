@@ -72,6 +72,7 @@ export default function Changes() {
           </div>
           <ActivityPanel
             publishedThreads={publishedThreads!}
+            flatFileTree={flatFileTree}
             isOpen={isActivityPanelOpen}
             togglePanel={toggleActivityPanel}
           />
