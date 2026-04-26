@@ -20,7 +20,7 @@ const VIEW_MODES = [
   {
     isCumulative: true,
     label: "Cumulative",
-    tooltip: "Show all changes from the merge base up to this commit",
+    tooltip: "Show all changes up to this commit",
   },
 ];
 
