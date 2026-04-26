@@ -13,7 +13,7 @@ export default function DiscussionBox() {
   console.log(discussionBoxContent); // TODO: Remove this debug print
 
   return (
-    <form className={styles.form}>
+    <div className={styles.discussionBox}>
       <MarkdownEditor
         autofocus={false}
         defaultEditable={true}
@@ -23,6 +23,6 @@ export default function DiscussionBox() {
           <DiscussionEditorActions editorContent={discussionBoxContent} />
         }
       />
-    </form>
+    </div>
   );
 }

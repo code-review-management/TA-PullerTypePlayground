@@ -1,4 +1,4 @@
-.form > :first-child {
+.discussionBox > :first-child {
   min-height: 80px;
   width: 100%;
   resize: vertical;
