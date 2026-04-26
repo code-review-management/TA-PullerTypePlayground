@@ -20,9 +20,9 @@ export function useActiveDiffs(pull: PullRequest) {
   const cumulativeDiffs = useCompareCommitDiffsQuery(
     username,
     repo_name,
-    pull.base?.ref ?? "",
+    pull.base?.sha ?? "",
     sha ?? "",
-    mode === "cumulative-commit" && !!pull.base?.ref,
+    mode === "cumulative-commit" && !!pull.base?.sha,
   );
 
   const { data, isPending, isError } =

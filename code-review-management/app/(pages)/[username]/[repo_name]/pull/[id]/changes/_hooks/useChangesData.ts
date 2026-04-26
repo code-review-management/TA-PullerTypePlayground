@@ -55,9 +55,9 @@ export function useChangesData() {
   } = useCompareCommitQuery(
     username,
     repo_name,
-    pull?.base?.ref ?? "",
+    pull?.base?.sha ?? "",
     sha ?? "",
-    mode === "cumulative-commit" && !!pull?.base?.ref,
+    mode === "cumulative-commit" && !!pull?.base?.sha,
   );
 
   let activeFiles = files;
