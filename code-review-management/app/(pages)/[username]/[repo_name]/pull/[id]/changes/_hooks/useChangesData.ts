@@ -78,7 +78,6 @@ export function useChangesData() {
     pull,
     files: activeFiles,
     publishedThreads,
-    sha,
     isPending:
       isPullPending || isPublishedThreadsPending || isActiveFilesPending,
     isError: isPullError || isPublishedThreadsError || isActiveFilesError,
