@@ -47,11 +47,6 @@ jest.mock("./_components/Assignees/Assignees", () => ({
   default: () => <div data-testid="assignees" />,
 }));
 
-jest.mock("./_components/CISection/CISection", () => ({
-  __esModule: true,
-  default: () => <div data-testid="ci-section" />,
-}));
-
 jest.mock("./_components/PRViewTimeline/PRViewTimeline", () => ({
   __esModule: true,
   default: () => <div data-testid="pr-view-timeline" />,
@@ -77,6 +72,5 @@ describe("Pull page", () => {
     expect(screen.getByTestId("status-section")).toBeDefined();
     expect(screen.getByTestId("reviewers")).toBeDefined();
     expect(screen.getByTestId("assignees")).toBeDefined();
-    expect(screen.getByTestId("ci-section")).toBeDefined();
   });
 });

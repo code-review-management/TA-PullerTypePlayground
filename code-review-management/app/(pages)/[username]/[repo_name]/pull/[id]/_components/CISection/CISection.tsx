@@ -5,6 +5,7 @@ import styles from "./CISection.module.css";
 /**
  * The CI section of the PR View page.
  * Includes a header and collapsible sections for passing/failing tests.
+ * CURRENTLY NOT IN USE
  */
 export default function CISection() {
   return (
