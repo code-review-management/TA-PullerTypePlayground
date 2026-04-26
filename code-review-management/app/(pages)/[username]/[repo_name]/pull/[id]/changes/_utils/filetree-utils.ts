@@ -137,3 +137,38 @@ export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
     return indexA - indexB;
   });
 }
+
+/**
+ * Filters a file tree by the given search string.
+ *
+ * @param fileTree: Array of `FileTreeNode`s to filter.
+ * @param searchString: The search string.
+ * @returns: A set of nodes that satisfy the search string. Null if no search
+ *           string is applied.
+ */
+export function filterFileTreeBySearch(
+  fileTree: FileTreeNode[],
+  searchString: string,
+) {
+  if (searchString.length === 0) return null; // Search string not applied.
+  const filters = new Set<FileTreeNode>();
+
+  fileTree.forEach((node) => {
+    if (node.type === "directory") {
+      const filteredChildren = filterFileTreeBySearch(
+        node.children,
+        searchString,
+      );
+      if (filteredChildren?.size) {
+        filters.add(node);
+        filteredChildren.forEach((child) => filters.add(child));
+      }
+    } else if (
+      node.fileDiff.filename.toLowerCase().includes(searchString.toLowerCase())
+    ) {
+      filters.add(node);
+    }
+  });
+
+  return filters;
+}

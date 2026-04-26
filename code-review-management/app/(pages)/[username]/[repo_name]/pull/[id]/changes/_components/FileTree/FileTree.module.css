@@ -1,8 +1,6 @@
 .container {
     /* Docs: https://stackoverflow.com/questions/66876410/how-to-make-sticky-element-scrollable */
     max-height: calc(100vh - var(--page-header-height));
-    overflow-y: auto;
-
     position: sticky;
     top: var(--page-header-height);
 
@@ -24,7 +22,7 @@
 }
 
 .tree {
-    padding: var(--spacer-10) var(--spacer-8) var(--spacer-10) 0;
+    padding: 0 var(--spacer-8) var(--spacer-10) 0;
     max-height: calc(100vh - var(--page-header-height));
     overflow: auto;
 }
