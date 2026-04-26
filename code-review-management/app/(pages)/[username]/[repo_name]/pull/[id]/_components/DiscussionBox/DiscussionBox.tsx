@@ -9,18 +9,26 @@ import DiscussionEditorActions from "../DiscussionEditorActions/DiscussionEditor
  */
 export default function DiscussionBox() {
   const [discussionBoxContent, setDiscussionBoxContent] = useState("");
+  const [resetKey, setResetKey] = useState(0);
 
-  console.log(discussionBoxContent); // TODO: Remove this debug print
+  function resetDiscussionBox() {
+    setDiscussionBoxContent("");
+    setResetKey((resetKey) => resetKey + 1);
+  }
 
   return (
     <div className={styles.discussionBox}>
       <MarkdownEditor
+        key={resetKey}
         autofocus={false}
         defaultEditable={true}
         placeholder="Add a discussion comment"
         onChange={(content: string) => setDiscussionBoxContent(content)}
         actions={
-          <DiscussionEditorActions editorContent={discussionBoxContent} />
+          <DiscussionEditorActions
+            editorContent={discussionBoxContent}
+            onSuccess={resetDiscussionBox}
+          />
         }
       />
     </div>

@@ -5,12 +5,14 @@ import EditorSubmitButton from "@/app/(pages)/_components/EditorSubmitButton/Edi
 
 export default function DiscussionEditorActions({
   editorContent,
+  onSuccess,
 }: {
   editorContent: string;
+  onSuccess: () => void;
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { handleSubmit, isSubmitPending, isPullPending } =
-    useSubmitDiscussionItem(editorContent, username, repo_name, id);
+    useSubmitDiscussionItem(editorContent, username, repo_name, id, onSuccess);
 
   const isEditorBlank = editorContent.trim().length === 0;
   const isDisabled = isEditorBlank || isPullPending;

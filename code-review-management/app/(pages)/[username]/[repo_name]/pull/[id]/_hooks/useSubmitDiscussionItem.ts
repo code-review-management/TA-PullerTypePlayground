@@ -6,6 +6,7 @@ export function useSubmitDiscussionItem(
   owner: string,
   repo: string,
   pullNumber: string,
+  onSuccess: () => void,
 ) {
   const {
     data: pull,
@@ -23,9 +24,12 @@ export function useSubmitDiscussionItem(
     // allow submission.
     if (!pull) return;
 
-    mutate({
-      body: editorContent,
-    });
+    mutate(
+      {
+        body: editorContent,
+      },
+      { onSuccess },
+    );
   };
 
   return {
