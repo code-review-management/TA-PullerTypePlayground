@@ -36,7 +36,7 @@ export default function CommitPickerProvider({
   const cumulative = params.get("cumulative");
 
   const [selectedSha, setSelectedSha] = useState<string | null>(sha);
-  const [isCumulative, setIsCumulative] = useState(!!cumulative);
+  const [isCumulative, setIsCumulative] = useState(cumulative !== null);
 
   return (
     <CommitPickerContext
