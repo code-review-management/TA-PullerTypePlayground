@@ -47,7 +47,7 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
 
     const params = new URLSearchParams({ sha: selectedSha });
     if (isCumulative) params.set("cumulative", "true");
-    router.push(`${base}?${params}`);
+    router.push(`${base}?${params.toString()}`);
   };
 
   return (
