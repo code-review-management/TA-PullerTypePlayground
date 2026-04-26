@@ -7,7 +7,7 @@ import {
   processedTimelineEvent,
   processTimeline,
   isReviewState,
-} from "./processTimeline";
+} from "../../_utils/timeline-utils";
 import Image from "next/image";
 import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
@@ -36,6 +36,8 @@ export default function TimelineDisplay({
   if (isError) return <div>Failed to load timeline.</div>;
 
   const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(data);
+
+  console.log(beforeCloseTimeline);
 
   return (
     <div className={styles.timeline}>
@@ -87,6 +89,25 @@ function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
       {
         /** TODO: make custom divider */
       }
+    } else if (event.eventType === "commented") {
+      if (!event.eventObj) return;
+      return (
+        <PRViewComment
+          username={event.actor1 || ""}
+          createdAt={
+            "created_at" in event.eventObj ? event.eventObj.created_at : ""
+          }
+          description={
+            "body" in event.eventObj ? event.eventObj.body || "" : ""
+          }
+          avatarUrl={
+            "user" in event.eventObj
+              ? event.eventObj.user.avatar_url
+              : undefined
+          }
+          inTimeline
+        />
+      );
     } else {
       console.log(`"${event.eventType}" as 'other' display type not supported`); // TODO: REMOVE THIS DEBUG PRINT
       return;
