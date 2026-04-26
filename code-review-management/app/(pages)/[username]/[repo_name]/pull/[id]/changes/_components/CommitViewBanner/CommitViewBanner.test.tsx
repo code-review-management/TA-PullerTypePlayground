@@ -32,7 +32,7 @@ describe("CommitViewBanner", () => {
   const mockSha = "ab102f9301df14";
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     mockUseChangesViewMode.mockReturnValue({
       mode: "single-commit",
     });
