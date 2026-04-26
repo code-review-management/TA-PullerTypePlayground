@@ -56,7 +56,7 @@ describe("CommitViewBanner", () => {
     });
     render(<CommitViewBanner sha={mockSha} />);
     expect(screen.getByTestId("commit-view-banner")).toHaveTextContent(
-      "Commenting disabled \u2014 showing all changes up to commit ab102f9",
+      "Commenting disabled \u2014 viewing changes from merge base to commit ab102f9",
     );
   });
 

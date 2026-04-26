@@ -15,12 +15,12 @@ const VIEW_MODES = [
   {
     isCumulative: false,
     label: "Single",
-    tooltip: "Show only the changes introduced by this commit",
+    tooltip: "View only the changes introduced by this commit",
   },
   {
     isCumulative: true,
     label: "Cumulative",
-    tooltip: "Show all changes up to this commit",
+    tooltip: "View all changes from the merge base to this commit",
   },
 ];
 

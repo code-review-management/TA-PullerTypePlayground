@@ -14,7 +14,7 @@ export default function CommitViewBanner({ sha }: { sha: string }) {
 
   const message =
     mode === "cumulative-commit"
-      ? `showing all changes up to commit `
+      ? `viewing changes from merge base to commit `
       : `viewing commit `;
 
   return (
