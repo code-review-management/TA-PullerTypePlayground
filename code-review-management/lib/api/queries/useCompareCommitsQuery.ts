@@ -3,7 +3,7 @@ import { fetcher } from "../utils/fetcher";
 import { CompareCommits } from "@/types/github.types";
 
 /**
- * Fetches the comparison between two commits in a GitHub repository.
+ * Fetches the comparison between two commits in the same GitHub repository.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.

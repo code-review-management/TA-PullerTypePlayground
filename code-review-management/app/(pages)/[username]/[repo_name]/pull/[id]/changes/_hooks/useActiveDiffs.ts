@@ -1,21 +1,36 @@
+import { useParams } from "next/navigation";
+import { useChangesViewMode } from "./useChangesViewMode";
 import { useCommitDiffsQuery } from "@/lib/api/queries/useCommitDiffsQuery";
+import { useCompareCommitsDiffsQuery } from "@/lib/api/queries/useCompareCommitsDiffsQuery";
 import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
 import { PullParams } from "@/types/routing.types";
-import { useParams, useSearchParams } from "next/navigation";
+import { PullRequest } from "@/types/github.types";
 
-export function useActiveDiffs() {
+export function useActiveDiffs(pull: PullRequest) {
   const { username, repo_name, id } = useParams<PullParams>();
-  const sha = useSearchParams().get("sha");
+  const { sha, mode } = useChangesViewMode();
 
-  const fileDiffs = useFileDiffsQuery(username, repo_name, id, sha === null);
+  const fileDiffs = useFileDiffsQuery(username, repo_name, id, mode === "pr");
   const commitDiffs = useCommitDiffsQuery(
     username,
     repo_name,
     sha ?? "",
-    sha !== null,
+    mode === "commit",
+  );
+  const cumulativeDiffs = useCompareCommitsDiffsQuery(
+    username,
+    repo_name,
+    pull.base?.ref ?? "",
+    sha ?? "",
+    mode === "cumulative" && !!pull.base?.ref,
   );
 
-  const { data, isPending, isError } = sha ? commitDiffs : fileDiffs;
+  const { data, isPending, isError } =
+    mode === "commit"
+      ? commitDiffs
+      : mode === "cumulative"
+        ? cumulativeDiffs
+        : fileDiffs;
 
   return { diffString: data, isPending, isError };
 }

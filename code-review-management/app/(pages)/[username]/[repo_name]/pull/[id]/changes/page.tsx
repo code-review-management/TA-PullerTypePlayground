@@ -63,6 +63,7 @@ export default function Changes() {
             >
               <FileTree fileTree={fileTree} />
               <DiffListView
+                pull={pull!}
                 flatFileTree={flatFileTree}
                 // Use non-null assertion since threads are defined if not in pending/error state.
                 publishedThreads={publishedThreads!}
