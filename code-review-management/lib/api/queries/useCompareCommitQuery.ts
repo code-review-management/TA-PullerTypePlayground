@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "@/lib/api/utils/fetcher";
+import { fetcher } from "../utils/fetcher";
+import { CompareCommits } from "@/types/github.types";
 
 /**
- * Fetches the diff-string of the comparison between two GitHub commits in the
- * same repository.
+ * Fetches the comparison between two commits in a GitHub repository.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
@@ -11,9 +11,9 @@ import { fetcher } from "@/lib/api/utils/fetcher";
  * @param head: Head branch or SHA.
  * @param enabled: Optional flag to disable the query from automatically running
  *                 if set to false.
- * @returns: TanStack query result containing the diff-string.
+ * @returns: TanStack query result containing the commit comparison.
  */
-export function useCompareCommitsDiffsQuery(
+export function useCompareCommitsQuery(
   owner: string,
   repo: string,
   base: string,
@@ -21,10 +21,10 @@ export function useCompareCommitsDiffsQuery(
   enabled = true,
 ) {
   return useQuery({
-    queryKey: ["compare-commits-diffs", owner, repo, base, head],
-    queryFn: async (): Promise<string> =>
+    queryKey: ["compare-commits", owner, repo, base, head],
+    queryFn: async (): Promise<CompareCommits> =>
       fetcher(
-        `/api/v1/${owner}/${repo}/commit/compare/diff?base=${base}&head=${head}`,
+        `/api/v1/${owner}/${repo}/commit/compare?base=${base}&head=${head}`,
       ),
     enabled,
   });
