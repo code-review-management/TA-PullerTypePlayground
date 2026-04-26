@@ -26,11 +26,11 @@ export function useActiveDiffs(pull: PullRequest) {
   );
 
   const { data, isPending, isError } =
-    mode === "commit"
-      ? commitDiffs
-      : mode === "cumulative"
-        ? cumulativeDiffs
-        : fileDiffs;
+    mode === "pr"
+      ? fileDiffs
+      : mode === "commit"
+        ? commitDiffs
+        : cumulativeDiffs;
 
   return { diffString: data, isPending, isError };
 }
