@@ -58,7 +58,7 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
         {isPending ? (
           <div>Loading commits...</div>
         ) : isError ? (
-          <ErrorMessage error={error} />
+          <ErrorMessage error={error} resource="commit list" />
         ) : (
           <>
             <div className={styles.header}>
