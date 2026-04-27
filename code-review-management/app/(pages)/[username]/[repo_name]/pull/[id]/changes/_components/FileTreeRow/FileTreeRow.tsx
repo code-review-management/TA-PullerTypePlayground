@@ -15,6 +15,8 @@ const INDENT_PADDING = 16;
  * @param node: `FileTreeNode` object representing the node to render.
  * @param depth: How many levels deep the row is nested in the file hierarchy.
  *               Defaults to 0. Used for calculating the padding for each row.
+ * @param filters: Set of visible nodes when search is applied; null when search
+ *                 is not applied.
  * @param isResizing: Whether the file-tree is currently being resized or not.
  */
 export default function FileTreeRow({
