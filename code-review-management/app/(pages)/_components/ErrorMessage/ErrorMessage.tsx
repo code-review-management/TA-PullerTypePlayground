@@ -41,10 +41,7 @@ export default function ErrorMessage({
   );
 }
 
-export function getErrorMessageProps(
-  error: StatusError | null,
-  resource: string,
-) {
+function getErrorMessageProps(error: StatusError | null, resource: string) {
   const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
