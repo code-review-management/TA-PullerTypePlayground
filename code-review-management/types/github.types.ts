@@ -41,7 +41,7 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED"] as const;
+const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED", "DISMISSED"] as const;
 const fileDiffStatus = [
   "added",
   "removed",
