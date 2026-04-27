@@ -37,8 +37,6 @@ export default function TimelineDisplay({
 
   const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(data);
 
-  console.log(beforeCloseTimeline);
-
   return (
     <div className={styles.timeline}>
       {afterCloseTimeline.map((event: processedTimelineEvent) => {
