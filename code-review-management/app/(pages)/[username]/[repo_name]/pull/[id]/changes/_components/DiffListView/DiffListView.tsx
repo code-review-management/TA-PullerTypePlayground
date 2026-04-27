@@ -44,6 +44,7 @@ export default function DiffListView({
     diffs,
   );
 
+  // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) {
     return <ErrorMessage {...getErrorMessageProps(error, "diff")} />;

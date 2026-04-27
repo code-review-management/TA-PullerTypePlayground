@@ -29,9 +29,18 @@ export default function ErrorMessage({
 
 export function getErrorMessageProps(
   error: StatusError | null,
-  resource?: "diff",
+  resource: string | null,
 ) {
+  resource = resource ?? "resource";
+  const capitalize = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
   switch (error?.status) {
+    case 404:
+      return {
+        title: `${capitalize(resource)} not found`,
+        description: `This ${resource.toLowerCase()} could not be found.`,
+      };
     case 406:
       if (resource === "diff") {
         return {

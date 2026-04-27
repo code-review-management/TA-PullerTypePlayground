@@ -11,6 +11,9 @@ import CommitViewBanner from "./_components/CommitViewBanner/CommitViewBanner";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
+import ErrorMessage, {
+  getErrorMessageProps,
+} from "@components/ErrorMessage/ErrorMessage";
 import FileTree from "./_components/FileTree/FileTree";
 import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
@@ -31,8 +34,16 @@ function ChangesProviders({ children }: { children: ReactNode }) {
 }
 
 export default function Changes() {
-  const { pull, files, publishedThreads, sha, isPending, isError } =
-    useChangesData();
+  const {
+    pull,
+    files,
+    publishedThreads,
+    sha,
+    isPending,
+    isError,
+    error,
+    errorSource,
+  } = useChangesData();
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
   const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);
@@ -40,44 +51,46 @@ export default function Changes() {
   const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(false);
   const toggleActivityPanel = () => setIsActivityPanelOpen((prev) => !prev);
 
-  /**
-   * TODO: Replace with proper loading/error UI. Move to affected sections
-   * instead of returning at the page-level.
-   */
+  // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading changes...</div>;
-  if (isError) return <div>Failed to load changes.</div>;
 
   return (
     // If SHA query param changes, re-mount entire page.
     <ChangesProviders key={sha}>
       <div className={styles.page}>
-        <div className={styles.pageBody}>
-          <div className={styles.bodyMain}>
-            <PRChangesHeader
-              pull={pull!}
-              isActivityPanelOpen={isActivityPanelOpen}
-              toggleActivityPanel={toggleActivityPanel}
-            />
-            <div
-              className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
-            >
-              <FileTree fileTree={fileTree} />
-              <DiffListView
-                flatFileTree={flatFileTree}
-                // Use non-null assertion since threads are defined if not in pending/error state.
+        {isError ? (
+          <ErrorMessage {...getErrorMessageProps(error, errorSource)} />
+        ) : (
+          <>
+            <div className={styles.pageBody}>
+              <div className={styles.bodyMain}>
+                <PRChangesHeader
+                  pull={pull!}
+                  isActivityPanelOpen={isActivityPanelOpen}
+                  toggleActivityPanel={toggleActivityPanel}
+                />
+                <div
+                  className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
+                >
+                  <FileTree fileTree={fileTree} />
+                  <DiffListView
+                    flatFileTree={flatFileTree}
+                    // Use non-null assertion since threads are defined if not in pending/error state.
+                    publishedThreads={publishedThreads!}
+                    sha={sha}
+                  />
+                </div>
+              </div>
+              <ActivityPanel
                 publishedThreads={publishedThreads!}
-                sha={sha}
+                flatFileTree={flatFileTree}
+                isOpen={isActivityPanelOpen}
+                togglePanel={toggleActivityPanel}
               />
             </div>
-          </div>
-          <ActivityPanel
-            publishedThreads={publishedThreads!}
-            flatFileTree={flatFileTree}
-            isOpen={isActivityPanelOpen}
-            togglePanel={toggleActivityPanel}
-          />
-        </div>
-        {sha && <CommitViewBanner sha={sha} />}
+            {sha && <CommitViewBanner sha={sha} />}
+          </>
+        )}
       </div>
     </ChangesProviders>
   );
