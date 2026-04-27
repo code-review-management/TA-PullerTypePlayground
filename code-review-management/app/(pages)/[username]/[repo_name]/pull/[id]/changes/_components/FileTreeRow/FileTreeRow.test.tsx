@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { ComponentProps } from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import {
   getExampleDirectoryNode1,
   getExampleFileNode1,
@@ -11,6 +11,7 @@ import FileTreeRow from "./FileTreeRow";
 describe("FileTreeRow", () => {
   const mockDirectory = getExampleDirectoryNode1();
   const mockFile = getExampleFileNode1();
+  const mockNestedFile = mockDirectory.children[1];
 
   const getDefaultProps = (
     type: "file" | "directory",
@@ -96,10 +97,10 @@ describe("FileTreeRow", () => {
   });
 
   describe("file nodes", () => {
-    const nestedFile = mockDirectory.children[1];
-
     it("renders the file's basename as its label", () => {
-      render(<FileTreeRow {...getDefaultProps("file")} node={nestedFile} />);
+      render(
+        <FileTreeRow {...getDefaultProps("file")} node={mockNestedFile} />,
+      );
       expect(screen.getByText("utils.ts")).toBeInTheDocument();
     });
 
@@ -111,7 +112,9 @@ describe("FileTreeRow", () => {
     });
 
     it("uses the full file path as the anchor href, not just the basename", () => {
-      render(<FileTreeRow {...getDefaultProps("file")} node={nestedFile} />);
+      render(
+        <FileTreeRow {...getDefaultProps("file")} node={mockNestedFile} />,
+      );
       expect(
         document.querySelector('a[href="#file-src/utils.ts"]'),
       ).toBeInTheDocument();
@@ -129,11 +132,7 @@ describe("FileTreeRow", () => {
   describe("filter visibility", () => {
     it("hides the component when the node is not included in the filter set", () => {
       const { container } = render(
-        <FileTreeRow
-          {...getDefaultProps("file")}
-          node={mockFile}
-          filters={new Set()}
-        />,
+        <FileTreeRow {...getDefaultProps("file")} filters={new Set()} />,
       );
 
       expect(container.firstElementChild).toHaveClass("hidden");
@@ -143,7 +142,6 @@ describe("FileTreeRow", () => {
       const { container } = render(
         <FileTreeRow
           {...getDefaultProps("file")}
-          node={mockFile}
           filters={new Set([mockFile])}
         />,
       );
@@ -152,13 +150,92 @@ describe("FileTreeRow", () => {
 
     it("does not hide the component when the filter set is null", () => {
       const { container } = render(
-        <FileTreeRow
-          {...getDefaultProps("file")}
-          node={mockFile}
-          filters={null}
-        />,
+        <FileTreeRow {...getDefaultProps("file")} filters={null} />,
       );
       expect(container.firstElementChild).not.toHaveClass("hidden");
+    });
+  });
+
+  describe("text overflow tooltip", () => {
+    it("omits tooltip id when there is no overflow", async () => {
+      const { rerender } = render(
+        <FileTreeRow {...getDefaultProps("file")} isResizing={false} />,
+      );
+      const filename = screen.getByText("index.ts");
+
+      // Docs: https://stackoverflow.com/a/68444175
+      Object.defineProperty(filename, "scrollWidth", {
+        configurable: true,
+        value: 200,
+      });
+      Object.defineProperty(filename, "clientWidth", {
+        configurable: true,
+        value: 300,
+      });
+
+      // Rerender with different `isResizing` value to trigger `useEffect`.
+      rerender(<FileTreeRow {...getDefaultProps("file")} isResizing={true} />);
+      await waitFor(() => {
+        expect(filename.closest("[data-tooltip-id]")).not.toBeInTheDocument();
+      });
+    });
+
+    it("includes tooltip id when there is overflow", async () => {
+      const { rerender } = render(
+        <FileTreeRow {...getDefaultProps("file")} isResizing={false} />,
+      );
+      const filename = screen.getByText("index.ts");
+
+      Object.defineProperty(filename, "scrollWidth", {
+        configurable: true,
+        value: 300,
+      });
+      Object.defineProperty(filename, "clientWidth", {
+        configurable: true,
+        value: 200,
+      });
+
+      rerender(<FileTreeRow {...getDefaultProps("file")} isResizing={true} />);
+      await waitFor(() => {
+        expect(filename.closest("[data-tooltip-id]")).toHaveAttribute(
+          "data-tooltip-id",
+          "tooltip-file-tree-row",
+        );
+      });
+    });
+
+    it("uses node label as tooltip content when there is overflow", async () => {
+      const { rerender } = render(
+        <FileTreeRow
+          {...getDefaultProps("file")}
+          node={mockNestedFile}
+          isResizing={false}
+        />,
+      );
+      const filename = screen.getByText("utils.ts");
+
+      Object.defineProperty(filename, "scrollWidth", {
+        configurable: true,
+        value: 300,
+      });
+      Object.defineProperty(filename, "clientWidth", {
+        configurable: true,
+        value: 200,
+      });
+
+      rerender(
+        <FileTreeRow
+          {...getDefaultProps("file")}
+          node={mockNestedFile}
+          isResizing={true}
+        />,
+      );
+      await waitFor(() => {
+        expect(filename.closest("[data-tooltip-content]")).toHaveAttribute(
+          "data-tooltip-content",
+          "utils.ts",
+        );
+      });
     });
   });
 });
