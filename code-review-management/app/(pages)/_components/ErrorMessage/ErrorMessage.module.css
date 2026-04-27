@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacer-8);
+    flex: 1;
+}
+
+.description {
+    color: var(--text-secondary);
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-4);
+    color: var(--color-interactive);
+    cursor: pointer;
+    text-decoration: underline;
+}
