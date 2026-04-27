@@ -225,23 +225,8 @@ function getTimelineEvent(
 
   // TODO: Get correct approval status even when review is stale/dismissed
 
-  const iconName = (() => {
-    if (eventObj.event === "reviewed") {
-      return ICONS[(eventObj.state || "err") as EventType];
-    }
-    return ICONS[eventObj.event as EventType];
-  })();
-
-  const message = (() => {
-    if (eventObj.event === "reviewed") {
-      return MESSAGES[(eventObj.state || "err") as EventType];
-    }
-    // TODO: Add back in "renamed" event when exists on backend
-    // if (eventObj.event === "renamed") {
-    //   return `renamed the pull request to ${eventObj.rename?.to || ""}`;
-    // }
-    return MESSAGES[eventObj.event as EventType];
-  })();
+  const iconName = ICONS[eventType as EventType];
+  const message = MESSAGES[eventType as EventType];
 
   const actor1 = getActor1(eventObj);
   const actor2 = getActor2(eventObj);
