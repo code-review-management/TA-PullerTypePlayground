@@ -6,7 +6,7 @@ import { useCompareCommitQuery } from "@/lib/api/queries/useCompareCommitQuery";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { usePublishedThreads } from "./usePublishedThreads";
-import { useChangesViewMode } from "./useChangesViewMode";
+import { ChangesViewMode, useChangesViewMode } from "./useChangesViewMode";
 
 export function useChangesData() {
   const { username, repo_name, id } = useParams<PullParams>();
@@ -98,7 +98,7 @@ export function useChangesData() {
       isPullError,
       isPublishedThreadsError,
       isActiveFilesError,
-      sha,
+      mode,
     ),
   };
 }
@@ -107,12 +107,12 @@ function getErrorSource(
   isPullError: boolean,
   isPublishedThreadsError: boolean,
   isActiveFilesError: boolean,
-  sha: string | null,
+  mode: ChangesViewMode,
 ): "pull request" | "commit" | null {
   if (isPullError || isPublishedThreadsError) return "pull request";
   // Files in default PR-viewing mode are associated with the pull request
   // resource. Otherwise, files in commit-viewing mode are associated with the
   // commit resource.
-  if (isActiveFilesError) return sha ? "commit" : "pull request";
+  if (isActiveFilesError) return mode === "pr" ? "pull request" : "commit";
   return null;
 }
