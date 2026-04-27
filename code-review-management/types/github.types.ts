@@ -99,6 +99,7 @@ export const BranchSchema = z.object({
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
+  html_url: z.string(),
   repository_url: z.string().optional(),
   repository_name: z.string().optional(),
   repository_owner: z.string().optional(),
@@ -238,6 +239,7 @@ export const ReviewSchema = z.object({
 export const CommitSchema = z.object({
   url: z.string(),
   sha: z.string(),
+  html_url: z.string(),
   commit: z.object({
     message: z.string(),
     author: UserIdentitySchema,
@@ -380,6 +382,7 @@ export const IssueCommentSchema = z.object({
 export const CompareCommitsSchema = z.object({
   base_commit: CommitSchema,
   merge_base_commit: CommitSchema,
+  html_url: z.string(),
   status: z.enum(compareCommitsStatus),
   ahead_by: z.number(),
   behind_by: z.number(),
