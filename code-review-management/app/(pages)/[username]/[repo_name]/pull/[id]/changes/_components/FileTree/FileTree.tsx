@@ -30,7 +30,7 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
       data-testid="file-tree"
       ref={treeRef}
     >
-      <IconTooltip id="file-tree-row-tooltip" positionStrategy="fixed" />
+      <IconTooltip id="tooltip-file-tree-row" positionStrategy="fixed" />
       <FileTreeSearchBar
         searchString={searchString}
         setSearchString={setSearchString}

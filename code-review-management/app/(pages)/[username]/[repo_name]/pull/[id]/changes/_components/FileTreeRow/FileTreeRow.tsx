@@ -98,7 +98,7 @@ function NodeLabel({
       className={styles.row}
       onClick={node.type === "directory" ? onFolderClick : undefined}
       {...(isOverflow && {
-        "data-tooltip-id": "file-tree-row-tooltip",
+        "data-tooltip-id": "tooltip-file-tree-row",
         "data-tooltip-content": node.name,
         "data-tooltip-place": "bottom-end",
         "data-tooltip-delay-show": 100,
