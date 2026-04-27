@@ -1,14 +1,16 @@
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import { useCommitQuery } from "@/lib/api/queries/useCommitQuery";
+import { useCompareCommitQuery } from "@/lib/api/queries/useCompareCommitQuery";
 import { useListFilesQuery } from "@/lib/api/queries/useListFilesQuery";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { usePublishedThreads } from "./usePublishedThreads";
+import { useChangesViewMode } from "./useChangesViewMode";
 
 export function useChangesData() {
-  const sha = useSearchParams().get("sha");
   const { username, repo_name, id } = useParams<PullParams>();
+  const { sha, mode } = useChangesViewMode();
 
   const {
     publishedThreads,
@@ -29,7 +31,7 @@ export function useChangesData() {
     isFetching: isFilesFetching,
     isPending: isFilesPending,
     isError: isFilesError,
-  } = useListFilesQuery(username, repo_name, id, sha === null);
+  } = useListFilesQuery(username, repo_name, id, mode === "pr");
   useAutoFetchAllPages(hasNextFilesPage, isFilesFetching, fetchNextFilesPage);
 
   const {
@@ -39,25 +41,45 @@ export function useChangesData() {
     isFetching: isCommitFetching,
     isPending: isCommitPending,
     isError: isCommitError,
-  } = useCommitQuery(username, repo_name, sha ?? "", sha !== null);
+  } = useCommitQuery(username, repo_name, sha ?? "", mode === "single-commit");
   useAutoFetchAllPages(
     hasNextCommitPage,
     isCommitFetching,
     fetchNextCommitPage,
   );
 
+  const {
+    data: compareCommit,
+    isPending: isCompareCommitPending,
+    isError: isCompareCommitError,
+  } = useCompareCommitQuery(
+    username,
+    repo_name,
+    pull?.base?.sha ?? "",
+    sha ?? "",
+    mode === "cumulative-commit" && !!pull?.base?.sha,
+  );
+
+  let activeFiles = files;
+  let isActiveFilesPending = isFilesPending;
+  let isActiveFilesError = isFilesError;
+
+  if (mode === "single-commit") {
+    activeFiles = commit?.files;
+    isActiveFilesPending = isCommitPending;
+    isActiveFilesError = isCommitError;
+  } else if (mode === "cumulative-commit") {
+    activeFiles = compareCommit?.files;
+    isActiveFilesPending = isCompareCommitPending;
+    isActiveFilesError = isCompareCommitError;
+  }
+
   return {
     pull,
-    files: sha ? commit?.files : files,
+    files: activeFiles,
     publishedThreads,
-    sha,
     isPending:
-      isPullPending ||
-      isPublishedThreadsPending ||
-      (sha ? isCommitPending : isFilesPending),
-    isError:
-      isPullError ||
-      isPublishedThreadsError ||
-      (sha ? isCommitError : isFilesError),
+      isPullPending || isPublishedThreadsPending || isActiveFilesPending,
+    isError: isPullError || isPublishedThreadsError || isActiveFilesError,
   };
 }

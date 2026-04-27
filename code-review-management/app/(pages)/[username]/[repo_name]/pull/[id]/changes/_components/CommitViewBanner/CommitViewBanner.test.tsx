@@ -3,7 +3,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import CommitViewBanner from "./CommitViewBanner";
 
+const mockSetSelectedSha = jest.fn();
 const mockRouterPush = jest.fn();
+const mockUseChangesViewMode = jest.fn();
+
 jest.mock("next/navigation", () => ({
   useParams: () => ({
     username: "owner",
@@ -15,18 +18,24 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
-const mockSetSelectedSha = jest.fn();
 jest.mock("../../../_contexts/CommitPickerContext", () => ({
   useCommitPickerContext: () => ({
     setSelectedSha: mockSetSelectedSha,
   }),
 }));
 
+jest.mock("../../_hooks/useChangesViewMode", () => ({
+  useChangesViewMode: () => mockUseChangesViewMode(),
+}));
+
 describe("CommitViewBanner", () => {
   const mockSha = "ab102f9301df14";
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
+    mockUseChangesViewMode.mockReturnValue({
+      mode: "single-commit",
+    });
   });
 
   it("renders info icon", () => {
@@ -34,10 +43,20 @@ describe("CommitViewBanner", () => {
     expect(screen.getByAltText("Info")).toBeInTheDocument();
   });
 
-  it("renders message with shortened SHA", () => {
+  it("renders correct message for single commit mode", () => {
     render(<CommitViewBanner sha={mockSha} />);
     expect(screen.getByTestId("commit-view-banner")).toHaveTextContent(
-      "Commenting is disabled while viewing commit ab102f9",
+      "Commenting disabled \u2014 viewing commit ab102f9",
+    );
+  });
+
+  it("renders correct message for cumulative commit mode", () => {
+    mockUseChangesViewMode.mockReturnValue({
+      mode: "cumulative-commit",
+    });
+    render(<CommitViewBanner sha={mockSha} />);
+    expect(screen.getByTestId("commit-view-banner")).toHaveTextContent(
+      "Commenting disabled \u2014 viewing changes from merge base to commit ab102f9",
     );
   });
 

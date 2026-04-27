@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
-import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
 import { useActiveDiffs } from "../../_hooks/useActiveDiffs";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
-import { FileDiff } from "@/types/github.types";
+import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
@@ -13,17 +13,19 @@ import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
+  pull,
   flatFileTree,
   publishedThreads,
   sha,
 }: {
+  pull: PullRequest;
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
   sha: string | null;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const { isCommitView } = useCommitPickerContext();
-  const { diffString, isPending, isError } = useActiveDiffs();
+  const { mode } = useChangesViewMode();
+  const { diffString, isPending, isError } = useActiveDiffs(pull);
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
@@ -69,7 +71,7 @@ export default function DiffListView({
               publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
-              isCommitView={isCommitView}
+              isCommitView={mode !== "pr"}
             />
           </div>
         );

@@ -9,9 +9,10 @@ import {
 } from "react";
 
 const CommitPickerContext = createContext<{
-  isCommitView: boolean;
   selectedSha: string | null;
   setSelectedSha: Dispatch<SetStateAction<string | null>>;
+  isCumulative: boolean;
+  setIsCumulative: Dispatch<SetStateAction<boolean>>;
 } | null>(null);
 
 export const useCommitPickerContext = () => {
@@ -29,15 +30,20 @@ export default function CommitPickerProvider({
 }: {
   children: ReactNode;
 }) {
-  const sha = useSearchParams().get("sha");
+  const params = useSearchParams();
+  const sha = params.get("sha");
+  const cumulative = params.get("cumulative");
+
   const [selectedSha, setSelectedSha] = useState<string | null>(sha);
+  const [isCumulative, setIsCumulative] = useState(cumulative !== null);
 
   return (
     <CommitPickerContext
       value={{
-        isCommitView: sha !== null,
         selectedSha,
         setSelectedSha,
+        isCumulative,
+        setIsCumulative,
       }}
     >
       {children}
