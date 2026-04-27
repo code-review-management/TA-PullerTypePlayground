@@ -15,7 +15,7 @@ export function useActiveDiffs() {
     sha !== null,
   );
 
-  const { data, isPending, isError } = sha ? commitDiffs : fileDiffs;
+  const { data, isPending, isError, error } = sha ? commitDiffs : fileDiffs;
 
-  return { diffString: data, isPending, isError };
+  return { diffString: data, isPending, isError, error };
 }
