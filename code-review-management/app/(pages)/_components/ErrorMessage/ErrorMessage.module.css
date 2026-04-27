@@ -5,6 +5,8 @@
     justify-content: center;
     gap: var(--spacer-8);
     flex: 1;
+    padding: var(--spacer-24);
+    text-align: center;
 }
 
 .description {
