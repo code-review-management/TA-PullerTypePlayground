@@ -8,6 +8,7 @@ import { useChangesViewMode } from "./_hooks/useChangesViewMode";
 import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
+import { StatusError } from "@/lib/api/errors/statusError";
 import ActivityPanel from "./_components/ActivityPanel/ActivityPanel";
 import CommitPickerProvider from "../_contexts/CommitPickerContext";
 import CommitViewBanner from "./_components/CommitViewBanner/CommitViewBanner";
@@ -45,7 +46,6 @@ export default function Changes() {
     error,
     errorSource,
   } = useChangesData();
-  const { username, repo_name, id } = useParams<PullParams>();
   const { sha, mode } = useChangesViewMode();
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
@@ -56,12 +56,13 @@ export default function Changes() {
 
   // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading changes...</div>;
-  if (isError && errorSource !== "commit")
+  if (isError) {
     return (
       <div className={styles.page}>
-        <ErrorMessage error={error} resource={errorSource} />
+        <ChangesErrorMessage error={error} errorSource={errorSource} />
       </div>
     );
+  }
 
   return (
     // If SHA query param changes, re-mount entire page.
@@ -78,14 +79,7 @@ export default function Changes() {
               className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
             >
               {isError ? (
-                <ErrorMessage
-                  error={error}
-                  resource={errorSource}
-                  {...(error?.status === 422 && {
-                    internalLabel: "Back to all changes",
-                    internalHref: `/${username}/${repo_name}/pull/${id}/changes`,
-                  })}
-                />
+                <ChangesErrorMessage error={error} errorSource={errorSource} />
               ) : (
                 <>
                   <FileTree fileTree={fileTree} />
@@ -111,5 +105,38 @@ export default function Changes() {
         {!isError && sha && <CommitViewBanner sha={sha} />}
       </div>
     </ChangesProviders>
+  );
+}
+
+function ChangesErrorMessage({
+  error,
+  errorSource,
+}: {
+  error: StatusError | null;
+  errorSource: string | null;
+}) {
+  const { username, repo_name, id } = useParams<PullParams>();
+  return (
+    <>
+      {errorSource !== "commit" ? (
+        <ErrorMessage
+          error={error}
+          resource={errorSource}
+          {...(error?.status === 404 && {
+            internalLabel: "Back to dashboard",
+            internalHref: `/dashboard`,
+          })}
+        />
+      ) : (
+        <ErrorMessage
+          error={error}
+          resource={errorSource}
+          {...(error?.status === 422 && {
+            internalLabel: "Back to all changes",
+            internalHref: `/${username}/${repo_name}/pull/${id}/changes`,
+          })}
+        />
+      )}
+    </>
   );
 }
