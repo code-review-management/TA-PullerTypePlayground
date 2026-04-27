@@ -2,6 +2,7 @@
 
 import { ReactNode, useMemo, useState } from "react";
 import { useChangesData } from "./_hooks/useChangesData";
+import { useChangesViewMode } from "./_hooks/useChangesViewMode";
 import { useDraftReplies } from "./_hooks/useDraftReplies";
 import { useDraftThreads } from "./_hooks/useDraftThreads";
 import { buildFileTree, flattenFileTree } from "./_utils/filetree-utils";
@@ -31,8 +32,9 @@ function ChangesProviders({ children }: { children: ReactNode }) {
 }
 
 export default function Changes() {
-  const { pull, files, publishedThreads, sha, isPending, isError } =
+  const { pull, files, publishedThreads, isPending, isError } =
     useChangesData();
+  const { sha, mode } = useChangesViewMode();
 
   const fileTree = useMemo(() => buildFileTree(files ?? []), [files]);
   const flatFileTree = useMemo(() => flattenFileTree(fileTree), [fileTree]);
@@ -49,7 +51,7 @@ export default function Changes() {
 
   return (
     // If SHA query param changes, re-mount entire page.
-    <ChangesProviders key={sha}>
+    <ChangesProviders key={`${sha}-${mode}`}>
       <div className={styles.page}>
         <div className={styles.pageBody}>
           <div className={styles.bodyMain}>
@@ -63,6 +65,7 @@ export default function Changes() {
             >
               <FileTree fileTree={fileTree} />
               <DiffListView
+                pull={pull!}
                 flatFileTree={flatFileTree}
                 // Use non-null assertion since threads are defined if not in pending/error state.
                 publishedThreads={publishedThreads!}
