@@ -24,6 +24,6 @@
 
 .tree {
     padding: 0 var(--spacer-8) var(--spacer-10) 0;
-    max-height: calc(100vh - var(--page-header-height));
+    max-height: calc(100vh - var(--page-header-height) - var(--file-tree-search-bar-height));
     overflow: auto;
 }
