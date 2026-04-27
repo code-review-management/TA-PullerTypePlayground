@@ -1,11 +1,10 @@
-import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
+import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
-import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { useActiveDiffs } from "../../_hooks/useActiveDiffs";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff } from "@/types/github.types";
-import { PullParams } from "@/types/routing.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
@@ -16,17 +15,15 @@ import styles from "./DiffListView.module.css";
 export default function DiffListView({
   flatFileTree,
   publishedThreads,
+  sha,
 }: {
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
+  sha: string | null;
 }) {
-  const { username, repo_name, id } = useParams<PullParams>();
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const {
-    data: diffString,
-    isPending,
-    isError,
-  } = useFileDiffsQuery(username, repo_name, id);
+  const { isCommitView } = useCommitPickerContext();
+  const { diffString, isPending, isError } = useActiveDiffs();
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
@@ -49,16 +46,22 @@ export default function DiffListView({
   if (isError) return <div>Failed to load diffs.</div>;
 
   return (
-    <div className={styles.diffListView}>
+    <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
       {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
+        const tooltips = (
+          <>
+            <IconTooltip id={`tooltip-collapse-diff-${diffId}`} />
+            <IconTooltip id={`tooltip-file-comment-${diffId}`} />
+            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
+            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
+          </>
+        );
 
         return (
           <div key={diffId}>
-            <IconTooltip id={`collapse-expand-diff-${diffId}`} />
-            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
-            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
+            {tooltips}
             <FileDiffView
               diff={diff}
               fileMeta={fileMeta}
@@ -66,6 +69,7 @@ export default function DiffListView({
               publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
+              isCommitView={isCommitView}
             />
           </div>
         );

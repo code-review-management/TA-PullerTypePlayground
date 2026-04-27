@@ -2,7 +2,7 @@ import styles from "./FileTreeDividers.module.css";
 
 /**
  * Vertical dividers for a file tree row.
- * 
+ *
  * @param depth: How many levels deep the row is nested in the file hierarchy.
  *               One divider is rendered per level.
  * @param basePadding: Fixed left offset in px.
@@ -27,6 +27,7 @@ export default function FileTreeDividers({
           style={{
             left: idx * indentPadding + basePadding,
           }}
+          data-testid="file-tree-divider"
         />
       ))}
     </>

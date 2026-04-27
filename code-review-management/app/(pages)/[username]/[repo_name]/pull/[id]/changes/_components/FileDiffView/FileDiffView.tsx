@@ -14,6 +14,7 @@ import {
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
+import { createDraftThread } from "../../_utils/comment-utils";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
@@ -40,6 +41,7 @@ export default memo(function FileDiffView({
   publishedThreads,
   draftThreadsByLine,
   setDraftThreads,
+  isCommitView,
 }: {
   diff: FileData;
   fileMeta?: FileDiff;
@@ -47,6 +49,7 @@ export default memo(function FileDiffView({
   publishedThreads: PublishedThreadsByScope;
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
+  isCommitView: boolean;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
@@ -55,6 +58,7 @@ export default memo(function FileDiffView({
     activePath,
     fileMeta?.status ?? "",
     setDraftThreads,
+    isCommitView,
   );
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -70,16 +74,21 @@ export default memo(function FileDiffView({
   );
 
   // Use memoization to avoid re-calculations of widgets while highlighting.
-  const widgets = useMemo(
-    () =>
-      getWidgets(
-        activePath,
-        hunks,
-        publishedThreads.lineThreads,
-        draftThreadsByLine ?? {},
-      ),
-    [activePath, hunks, publishedThreads.lineThreads, draftThreadsByLine],
-  );
+  const widgets = useMemo(() => {
+    if (isCommitView) return;
+    return getWidgets(
+      activePath,
+      hunks,
+      publishedThreads.lineThreads,
+      draftThreadsByLine ?? {},
+    );
+  }, [
+    isCommitView,
+    activePath,
+    hunks,
+    publishedThreads.lineThreads,
+    draftThreadsByLine,
+  ]);
 
   const renderGutter = ({ change, side, renderDefault }: GutterOptions) => (
     <Gutter
@@ -87,8 +96,13 @@ export default memo(function FileDiffView({
       side={side}
       renderDefault={renderDefault}
       activeHighlight={activeHighlight}
+      isHighlightDisabled={isCommitView}
     />
   );
+
+  const hasFileLevelThreads =
+    publishedThreads.fileThreads.length > 0 ||
+    draftThreadsByLine?.["file-level"];
 
   return (
     <ClearHighlightContext value={{ clearHighlight }}>
@@ -103,12 +117,23 @@ export default memo(function FileDiffView({
           newPath={newPath}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          isCommitView={isCommitView}
+          createFileDraftThread={() => {
+            setIsExpanded(true);
+            createDraftThread(setDraftThreads, activePath, {
+              oldPath,
+              activePath,
+              fileStatus: fileMeta?.status ?? "",
+              body: "",
+              subjectType: "file",
+            });
+          }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {publishedThreads.fileThreads.length > 0 && (
+          {hasFileLevelThreads && !isCommitView && (
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
-              draftThread={null}
+              draftThread={draftThreadsByLine?.["file-level"]}
             />
           )}
           {hunks.length > 0 ? (

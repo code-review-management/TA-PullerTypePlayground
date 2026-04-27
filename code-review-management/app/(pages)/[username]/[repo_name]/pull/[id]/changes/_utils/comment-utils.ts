@@ -8,13 +8,14 @@ import {
 import {
   DraftThreadItem,
   DraftThreads,
-  getDraftThreadKey,
+  getDraftThreadKeyFromItem,
 } from "../_hooks/useDraftThreads";
 import {
   PublishedThreadItem,
   PublishedThreads,
   PublishedThreadsByLine,
 } from "../_hooks/usePublishedThreads";
+import { FileDiff } from "@/types/github.types";
 
 /**
  * Deletes the given draft thread from the state.
@@ -27,7 +28,7 @@ export function deleteDraftThread(
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
 ) {
   setDraftThreads((prev) => {
-    const key = getDraftThreadKey(draft.end, draft.side);
+    const key = getDraftThreadKeyFromItem(draft);
     const draftThreads = { ...prev };
     const activePathThreads = { ...prev[draft.activePath] };
     delete activePathThreads[key];
@@ -54,6 +55,25 @@ export function deleteDraftReply(
   });
 }
 
+export function createDraftThread(
+  setDraftThreads: Dispatch<SetStateAction<DraftThreads>>,
+  activePath: string,
+  draft: DraftThreadItem,
+) {
+  setDraftThreads((prev) => {
+    const key = getDraftThreadKeyFromItem(draft);
+    if (activePath in prev && key in prev[activePath]) return prev;
+
+    return {
+      ...prev,
+      [activePath]: {
+        ...prev[activePath],
+        [key]: draft,
+      },
+    };
+  });
+}
+
 /**
  * Gets the correct path to pass to the GitHub API when publishing a draft
  * thread. If the file has a "renamed" status, the LHS of the diff is associated
@@ -69,7 +89,7 @@ export function getDraftThreadFilePath(
   oldPath: string,
   activePath: string,
   fileStatus: string,
-  side: Side,
+  side?: Side,
 ) {
   return fileStatus === "renamed" && side === "old" ? oldPath : activePath;
 }
@@ -141,4 +161,84 @@ export function getPublishedThreadsByLine(
  */
 export function getBasename(path: string) {
   return path.split("/").at(-1) ?? path;
+}
+
+/**
+ * Sorts a list of published threads. Used by the activity panel.
+ *
+ * @param threads: Array of published threads.
+ * @param flatFileTree: Flattened file tree that helps define the ordering.
+ */
+export function sortPublishedThreads(
+  threads: PublishedThreadItem[],
+  flatFileTree: FileDiff[],
+) {
+  threads.sort((a, b) => {
+    // Match a thread to its corresponding file in the flat file tree.
+    const indexA = findThreadInFlatFileTree(a, flatFileTree);
+    const indexB = findThreadInFlatFileTree(b, flatFileTree);
+
+    if (indexA === -1 || indexB === -1) {
+      // Put matched files before unmatched files.
+      if (indexA !== indexB) return indexA !== -1 ? -1 : 1;
+
+      // For unmatched files, sort them alphabetically.
+      const pathCompared = a.path.localeCompare(b.path);
+      if (pathCompared !== 0) return pathCompared;
+    } else {
+      // Sort matched files by their position in the flat file tree.
+      if (indexA !== indexB) return indexA - indexB;
+
+      // Executes when indexA === indexB -> refers to same node.
+      const nodeA = flatFileTree.at(indexA);
+      // For renamed files, comments can be associated with either the old
+      // filename or new filename, depending on the side they were made on.
+      // Sort comments associated with the old filename right before comments
+      // with the new filename.
+      if (nodeA?.status === "renamed") {
+        const isPreviousPathA = a.path === nodeA.previous_filename;
+        const isPreviousPathB = b.path === nodeA.previous_filename;
+        if (isPreviousPathA !== isPreviousPathB)
+          return isPreviousPathA ? -1 : 1;
+      }
+    }
+
+    // For a group of threads associated with the same filename, put file-level
+    // comments first.
+    const isFileA = a.subject_type === "file";
+    const isFileB = b.subject_type === "file";
+    if (isFileA !== isFileB) return isFileA ? -1 : 1;
+
+    // For line-level comments, sort by line number, then side.
+    if (!isFileA && !isFileB && a.line && b.line) {
+      if (a.line !== b.line) return a.line - b.line;
+      if (a.side !== b.side) return a.side === "LEFT" ? -1 : 1;
+    }
+
+    // Fallback: sort by creation time.
+    return (
+      new Date(a.comments[0].created_at).getTime() -
+      new Date(b.comments[0].created_at).getTime()
+    );
+  });
+}
+
+/**
+ * Get the index of the file in that flat file tree that a published thread
+ * is associated with.
+ *
+ * @param thread: Published thread item.
+ * @param flatFileTree: Flattened file tree array.
+ * @returns: Index of the matched file; -1 if unmatched.
+ */
+function findThreadInFlatFileTree(
+  thread: PublishedThreadItem,
+  flatFileTree: FileDiff[],
+) {
+  return flatFileTree.findIndex((node) => {
+    const matchActivePath = node.filename === thread.path;
+    const matchPreviousPath =
+      node.status === "renamed" && node.previous_filename === thread.path;
+    return matchActivePath || matchPreviousPath;
+  });
 }

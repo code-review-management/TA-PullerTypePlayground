@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
+import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
+import { sortPublishedThreads } from "../../_utils/comment-utils";
 import Image from "next/image";
 import CancelButton from "@components/CancelButton/CancelButton";
 import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
@@ -15,10 +17,12 @@ export type ActivityPanelTabs = (typeof TABS)[number];
 
 export default function ActivityPanel({
   publishedThreads,
+  flatFileTree,
   isOpen,
   togglePanel,
 }: {
   publishedThreads: PublishedThreads;
+  flatFileTree: FileDiff[];
   isOpen: boolean;
   togglePanel: () => void;
 }) {
@@ -50,7 +54,10 @@ export default function ActivityPanel({
         </div>
         <div className={styles.body}>
           {activeTab === "Comments" ? (
-            <CommentsTab publishedThreads={publishedThreads} />
+            <CommentsTab
+              publishedThreads={publishedThreads}
+              flatFileTree={flatFileTree}
+            />
           ) : (
             <div className={styles.timeline} data-view="activity-panel">
               <TimelineDisplay
@@ -68,8 +75,10 @@ export default function ActivityPanel({
 
 function CommentsTab({
   publishedThreads,
+  flatFileTree,
 }: {
   publishedThreads: PublishedThreads;
+  flatFileTree: FileDiff[];
 }) {
   const allThreads = [...publishedThreads.values()].flatMap((byGroup) => {
     const lineThreads = [...byGroup.lineThreads.values()].flatMap(
@@ -77,6 +86,7 @@ function CommentsTab({
     );
     return [...byGroup.fileThreads, ...lineThreads];
   });
+  sortPublishedThreads(allThreads, flatFileTree);
 
   return (
     <>

@@ -12,9 +12,12 @@
     /* Semantic colors */
     --color-success: #3ca133;
     --color-failure: #e30202;
-    --color-interactive: #1e84de;
-    --color-interactive-transparent: #d8edff80;
     --color-disabled: #919191;
+
+    --color-interactive: #1e84de;
+    --color-interactive-light: #ebf6ff;
+    --color-interactive-transparent: #d8edff80;
+    --color-interactive-border: #c0dcff;
 
     /* Tooltip colors */
     --tooltip-gray: #4c4c4c;
