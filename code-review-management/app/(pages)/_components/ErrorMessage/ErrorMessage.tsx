@@ -1,3 +1,4 @@
+import { StatusError } from "@/lib/api/errors/statusError";
 import Image from "next/image";
 import AlertIcon from "@/public/icons/alert.svg";
 import ExternalLinkIcon from "@/public/icons/external_link.svg";
@@ -24,4 +25,25 @@ export default function ErrorMessage({
       )}
     </div>
   );
+}
+
+export function getErrorMessageProps(
+  error: StatusError | null,
+  resource?: "diff",
+) {
+  switch (error?.status) {
+    case 406:
+      if (resource === "diff") {
+        return {
+          title: "Diff unavailable",
+          description:
+            "This diff may have exceeded the limit of 20,000 lines or 300 files.",
+        };
+      } // Otherwise, continue into default block.
+    default:
+      return {
+        title: "Something went wrong",
+        description: "An unexpected error occurred. Please try again.",
+      };
+  }
 }
