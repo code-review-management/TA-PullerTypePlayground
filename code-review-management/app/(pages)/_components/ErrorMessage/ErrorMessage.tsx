@@ -41,6 +41,14 @@ export function getErrorMessageProps(
         title: `${capitalize(resource)} not found`,
         description: `This ${resource.toLowerCase()} could not be found.`,
       };
+    case 422:
+      if (resource === "commit") {
+        return {
+          title: "Commit not found",
+          description: "This commit could not be found.",
+        };
+      }
+      break;
     case 406:
       if (resource === "diff") {
         return {
@@ -48,11 +56,12 @@ export function getErrorMessageProps(
           description:
             "This diff may have exceeded the limit of 20,000 lines or 300 files.",
         };
-      } // Otherwise, continue into default block.
-    default:
-      return {
-        title: "Something went wrong",
-        description: "An unexpected error occurred. Please try again.",
-      };
+      }
+      break;
   }
+
+  return {
+    title: "Something went wrong",
+    description: "An unexpected error occurred. Please try again.",
+  };
 }
