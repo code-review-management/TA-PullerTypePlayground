@@ -41,7 +41,6 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
     error,
   } = useListCommitsQuery(username, repo_name, id, pull.head?.sha ?? "");
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
-  // TODO: Handle error.
 
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
