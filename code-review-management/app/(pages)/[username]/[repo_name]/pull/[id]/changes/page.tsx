@@ -56,7 +56,7 @@ export default function Changes() {
 
   // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading changes...</div>;
-  if (isError) {
+  if (isError && errorSource !== "commit") {
     return (
       <div className={styles.page}>
         <ChangesErrorMessage error={error} errorSource={errorSource} />
