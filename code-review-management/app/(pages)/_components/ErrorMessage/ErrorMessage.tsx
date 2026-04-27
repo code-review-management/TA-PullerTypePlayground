@@ -20,7 +20,7 @@ export default function ErrorMessage({
   externalHref?: string;
 }) {
   resource = resource ?? "resource";
-  const { title, description } = getErrorMessageProps(error, resource);
+  const { title, description } = getErrorMessageText(error, resource);
 
   return (
     <div className={styles.container}>
@@ -41,7 +41,7 @@ export default function ErrorMessage({
   );
 }
 
-function getErrorMessageProps(error: StatusError | null, resource: string) {
+function getErrorMessageText(error: StatusError | null, resource: string) {
   const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
