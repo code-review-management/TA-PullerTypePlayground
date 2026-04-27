@@ -53,25 +53,27 @@ export default function Changes() {
 
   // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading changes...</div>;
+  if (isError && errorSource !== "commit")
+    return <ErrorMessage {...getErrorMessageProps(error, errorSource)} />;
 
   return (
     // If SHA query param changes, re-mount entire page.
     <ChangesProviders key={sha}>
       <div className={styles.page}>
-        {isError ? (
-          <ErrorMessage {...getErrorMessageProps(error, errorSource)} />
-        ) : (
-          <>
-            <div className={styles.pageBody}>
-              <div className={styles.bodyMain}>
-                <PRChangesHeader
-                  pull={pull!}
-                  isActivityPanelOpen={isActivityPanelOpen}
-                  toggleActivityPanel={toggleActivityPanel}
-                />
-                <div
-                  className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
-                >
+        <div className={styles.pageBody}>
+          <div className={styles.bodyMain}>
+            <PRChangesHeader
+              pull={pull!}
+              isActivityPanelOpen={isActivityPanelOpen}
+              toggleActivityPanel={toggleActivityPanel}
+            />
+            <div
+              className={`${styles.changes} ${isActivityPanelOpen ? styles.changesWithPanel : ""}`}
+            >
+              {isError ? (
+                <ErrorMessage {...getErrorMessageProps(error, errorSource)} />
+              ) : (
+                <>
                   <FileTree fileTree={fileTree} />
                   <DiffListView
                     flatFileTree={flatFileTree}
@@ -79,18 +81,18 @@ export default function Changes() {
                     publishedThreads={publishedThreads!}
                     sha={sha}
                   />
-                </div>
-              </div>
-              <ActivityPanel
-                publishedThreads={publishedThreads!}
-                flatFileTree={flatFileTree}
-                isOpen={isActivityPanelOpen}
-                togglePanel={toggleActivityPanel}
-              />
+                </>
+              )}
             </div>
-            {sha && <CommitViewBanner sha={sha} />}
-          </>
-        )}
+          </div>
+          <ActivityPanel
+            publishedThreads={publishedThreads!}
+            flatFileTree={flatFileTree}
+            isOpen={isActivityPanelOpen}
+            togglePanel={toggleActivityPanel}
+          />
+        </div>
+        {!isError && sha && <CommitViewBanner sha={sha} />}
       </div>
     </ChangesProviders>
   );
