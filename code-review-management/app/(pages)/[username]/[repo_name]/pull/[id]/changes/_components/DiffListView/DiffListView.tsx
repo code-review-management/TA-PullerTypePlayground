@@ -17,14 +17,14 @@ export default function DiffListView({
   pull,
   flatFileTree,
   publishedThreads,
-  externalHref,
   sha,
+  externalHref,
 }: {
   pull: PullRequest;
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
-  externalHref?: string;
   sha: string | null;
+  externalHref?: string;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { mode } = useChangesViewMode();
