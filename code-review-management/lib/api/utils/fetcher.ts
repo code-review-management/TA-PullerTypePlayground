@@ -1,4 +1,4 @@
-import { StatusError } from "../errors/status-error";
+import { StatusError } from "../errors/statusError";
 
 /**
  * Copied from the TanStack documentation to query JSON data from the given

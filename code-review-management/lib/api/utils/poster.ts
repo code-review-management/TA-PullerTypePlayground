@@ -1,4 +1,4 @@
-import { StatusError } from "../errors/status-error";
+import { StatusError } from "../errors/statusError";
 
 /**
  * Makes a POST request to the given route with the provided JSON body. Throws

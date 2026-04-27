@@ -1,5 +1,5 @@
 import "@tanstack/react-query";
-import { StatusError } from "@/lib/api/errors/status-error";
+import { StatusError } from "@/lib/api/errors/statusError";
 
 /**
  * Docs:
