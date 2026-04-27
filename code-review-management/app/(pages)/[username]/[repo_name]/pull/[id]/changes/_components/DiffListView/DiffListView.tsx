@@ -8,9 +8,7 @@ import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
-import ErrorMessage, {
-  getErrorMessageProps,
-} from "@components/ErrorMessage/ErrorMessage";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
@@ -52,10 +50,7 @@ export default function DiffListView({
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) {
     return (
-      <ErrorMessage
-        {...getErrorMessageProps(error, "diff")}
-        externalHref={externalHref}
-      />
+      <ErrorMessage error={error} resource="diff" externalHref={externalHref} />
     );
   }
 

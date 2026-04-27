@@ -14,9 +14,7 @@ import CommitViewBanner from "./_components/CommitViewBanner/CommitViewBanner";
 import DraftRepliesContext from "./_contexts/DraftRepliesContext";
 import DraftThreadsContext from "./_contexts/DraftThreadsContext";
 import DiffListView from "./_components/DiffListView/DiffListView";
-import ErrorMessage, {
-  getErrorMessageProps,
-} from "@components/ErrorMessage/ErrorMessage";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileTree from "./_components/FileTree/FileTree";
 import PRChangesHeader from "./_components/PRChangesHeader/PRChangesHeader";
 import styles from "./page.module.css";
@@ -61,7 +59,7 @@ export default function Changes() {
   if (isError && errorSource !== "commit")
     return (
       <div className={styles.page}>
-        <ErrorMessage {...getErrorMessageProps(error, errorSource)} />
+        <ErrorMessage error={error} resource={errorSource} />
       </div>
     );
 
@@ -81,7 +79,8 @@ export default function Changes() {
             >
               {isError ? (
                 <ErrorMessage
-                  {...getErrorMessageProps(error, errorSource)}
+                  error={error}
+                  resource={errorSource}
                   {...(error?.status === 422 && {
                     internalLabel: "Back to all changes",
                     internalHref: `/${username}/${repo_name}/pull/${id}/changes`,

@@ -7,18 +7,21 @@ import ExternalLinkIcon from "@/public/icons/external_link.svg";
 import styles from "./ErrorMessage.module.css";
 
 export default function ErrorMessage({
-  title,
-  description,
+  error,
+  resource,
   internalLabel,
   internalHref,
   externalHref,
 }: {
-  title: string;
-  description: string;
+  error: StatusError | null;
+  resource?: string | null;
   internalLabel?: string;
   internalHref?: string;
   externalHref?: string;
 }) {
+  resource = resource ?? "resource";
+  const { title, description } = getErrorMessageProps(error, resource);
+
   return (
     <div className={styles.container}>
       <Image src={AlertIcon} alt="Alert" />
@@ -40,9 +43,8 @@ export default function ErrorMessage({
 
 export function getErrorMessageProps(
   error: StatusError | null,
-  resource: string | null,
+  resource: string,
 ) {
-  resource = resource ?? "resource";
   const capitalize = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 

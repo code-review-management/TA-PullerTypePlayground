@@ -6,6 +6,7 @@ import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import { useListCommitsQuery } from "@/lib/api/queries/useListCommitsQuery";
 import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { formatDate } from "../../../_utils/date-utils";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import PopoverContent from "@components/PopoverContent/PopoverContent";
 import SubmitButton from "@components/SubmitButton/SubmitButton";
@@ -36,6 +37,8 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
     fetchNextPage,
     isFetching,
     isPending,
+    isError,
+    error,
   } = useListCommitsQuery(username, repo_name, id, pull.head?.sha ?? "");
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
   // TODO: Handle error.
@@ -55,6 +58,8 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
       <form className={styles.container} onSubmit={handleSubmit}>
         {isPending ? (
           <div>Loading commits...</div>
+        ) : isError ? (
+          <ErrorMessage error={error} />
         ) : (
           <>
             <div className={styles.header}>
