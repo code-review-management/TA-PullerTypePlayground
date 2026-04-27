@@ -134,7 +134,6 @@ describe("FileTreeRow", () => {
       const { container } = render(
         <FileTreeRow {...getDefaultProps("file")} filters={new Set()} />,
       );
-
       expect(container.firstElementChild).toHaveClass("hidden");
     });
 
@@ -173,7 +172,7 @@ describe("FileTreeRow", () => {
         value: 300,
       });
 
-      // Rerender with different `isResizing` value to trigger `useEffect`.
+      // Re-render with different `isResizing` value to trigger `useEffect`.
       rerender(<FileTreeRow {...getDefaultProps("file")} isResizing={true} />);
       await waitFor(() => {
         expect(filename.closest("[data-tooltip-id]")).not.toBeInTheDocument();
