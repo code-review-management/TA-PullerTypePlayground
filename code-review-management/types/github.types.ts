@@ -230,6 +230,7 @@ export const ReviewSchema = z.object({
   id: z.number(),
   user: UserSchema.nullable(),
   body: z.string(),
+  html_url: z.string(),
   state: z.enum(reviewState),
   submitted_at: z.string().optional(),
   author_association: z.enum(authorAssociation),
