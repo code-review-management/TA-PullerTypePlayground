@@ -1,25 +1,36 @@
 import { StatusError } from "@/lib/api/errors/statusError";
 import Image from "next/image";
+import Link from "next/link";
 import AlertIcon from "@/public/icons/alert.svg";
+import ArrowReturnIcon from "@/public/icons/arrow_return.svg";
 import ExternalLinkIcon from "@/public/icons/external_link.svg";
 import styles from "./ErrorMessage.module.css";
 
 export default function ErrorMessage({
   title,
   description,
-  url,
+  internalLabel,
+  internalHref,
+  externalHref,
 }: {
   title: string;
   description: string;
-  url?: string;
+  internalLabel?: string;
+  internalHref?: string;
+  externalHref?: string;
 }) {
   return (
     <div className={styles.container}>
       <Image src={AlertIcon} alt="Alert" />
       <h1>{title}</h1>
       <p className={styles.description}>{description}</p>
-      {url && (
-        <a href={url} className={styles.link}>
+      {internalLabel && internalHref && (
+        <Link href={internalHref} className={styles.link}>
+          {internalLabel} <Image src={ArrowReturnIcon} alt="Arrow return" />
+        </Link>
+      )}
+      {externalHref && (
+        <a href={externalHref} className={styles.link}>
           View on GitHub <Image src={ExternalLinkIcon} alt="External link" />
         </a>
       )}

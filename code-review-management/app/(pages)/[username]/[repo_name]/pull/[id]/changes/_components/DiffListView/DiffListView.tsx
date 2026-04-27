@@ -19,11 +19,13 @@ export default function DiffListView({
   pull,
   flatFileTree,
   publishedThreads,
+  externalHref,
   sha,
 }: {
   pull: PullRequest;
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
+  externalHref?: string;
   sha: string | null;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
@@ -49,7 +51,12 @@ export default function DiffListView({
   // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) {
-    return <ErrorMessage {...getErrorMessageProps(error, "diff")} />;
+    return (
+      <ErrorMessage
+        {...getErrorMessageProps(error, "diff")}
+        externalHref={externalHref}
+      />
+    );
   }
 
   return (

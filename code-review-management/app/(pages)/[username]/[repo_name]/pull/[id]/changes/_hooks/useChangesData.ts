@@ -66,17 +66,20 @@ export function useChangesData() {
   );
 
   let activeFiles = files;
+  let activeExternalHref = pull?.html_url;
   let isActiveFilesPending = isFilesPending;
   let isActiveFilesError = isFilesError;
   let activeFilesError = filesError;
 
   if (mode === "single-commit") {
     activeFiles = commit?.files;
+    activeExternalHref = commit?.html_url;
     isActiveFilesPending = isCommitPending;
     isActiveFilesError = isCommitError;
     activeFilesError = commitError;
   } else if (mode === "cumulative-commit") {
     activeFiles = compareCommit?.files;
+    activeExternalHref = compareCommit?.html_url;
     isActiveFilesPending = isCompareCommitPending;
     isActiveFilesError = isCompareCommitError;
     activeFilesError = compareCommitError;
@@ -85,6 +88,7 @@ export function useChangesData() {
   return {
     pull,
     files: activeFiles,
+    externalHref: activeExternalHref,
     publishedThreads,
     isPending:
       isPullPending || isPublishedThreadsPending || isActiveFilesPending,
