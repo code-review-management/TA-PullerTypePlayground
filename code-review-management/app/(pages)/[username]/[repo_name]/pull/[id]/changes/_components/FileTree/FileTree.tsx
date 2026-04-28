@@ -6,6 +6,7 @@ import {
 } from "../../_utils/filetree-utils";
 import FileTreeRow from "../FileTreeRow/FileTreeRow";
 import FileTreeSearchBar from "../FileTreeSearchBar/FileTreeSearchBar";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./FileTree.module.css";
 
 /**
@@ -29,13 +30,19 @@ export default function FileTree({ fileTree }: { fileTree: FileTreeNode[] }) {
       data-testid="file-tree"
       ref={treeRef}
     >
+      <IconTooltip id="tooltip-file-tree-row" positionStrategy="fixed" />
       <FileTreeSearchBar
         searchString={searchString}
         setSearchString={setSearchString}
       />
       <div className={styles.tree}>
         {fileTree.map((node: FileTreeNode) => (
-          <FileTreeRow key={node.name} node={node} filters={filters} />
+          <FileTreeRow
+            key={node.name}
+            node={node}
+            filters={filters}
+            isResizing={isResizing}
+          />
         ))}
       </div>
     </div>
