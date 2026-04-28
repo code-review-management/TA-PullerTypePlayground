@@ -10,6 +10,8 @@ export type ThreadSuggestionRequest = z.infer<
   typeof ThreadSuggestionRequestSchema
 >;
 export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
+export type SuggestionCommentUpdateRequest = z.infer<typeof SuggestionCommentUpdateRequestSchema>
+export type SuggestionCommitRequest = z.infer<typeof SuggestionCommitRequestShema>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
@@ -110,3 +112,16 @@ export const FileNameParamsSchema = z
   .refine((path) => !path.startsWith("/"), {
     message: "Path must be relative (do not start with a slash)",
   });
+
+export const SuggestionCommentUpdateRequestSchema = z.object({
+  githubCommentId: z.number(),
+  deletionContent: z.string(),
+  additionContent: z.string(),
+  relativeLineLocation: z.number(),
+});
+
+export const SuggestionCommitRequestShema = z.object({
+  filename: z.string(),
+  content: z.string(),
+  suggestionData: SuggestionCommentUpdateRequestSchema,
+})

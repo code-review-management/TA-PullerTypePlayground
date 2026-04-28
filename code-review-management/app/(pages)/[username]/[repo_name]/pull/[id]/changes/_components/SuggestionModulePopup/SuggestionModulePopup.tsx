@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import styles from './SuggestionModulePopup.module.css';
 import { SuggestionDiffEditor } from './MonacoComponents/SuggestionDiffEditor/SuggestionDiffEditor';
+import { SuggestionCommentUpdateRequest } from '@/types/request.types';
+import { useUpdateGeminiSuggestionMutation } from '@/lib/api/mutations/useUpdateGeminiSuggestionMutation';
+import { useParams } from 'next/navigation';
+import { PullParams } from '@/types/routing.types';
+import { useCommitGeminiSuggestionMutation } from '@/lib/api/mutations/useCommitGeminiSuggestionMutation';
 
 export interface SuggestionPopupProp {
+  commentID: number,
+  threadLine: number,
   fullFileCode: string,
   filename: string,
   replaceStartLine: number,
@@ -13,21 +20,25 @@ export interface SuggestionPopupProp {
 }
 
 export function SuggestionModuleContent({
+  commentID,
+  threadLine,
   fullFileCode,
   filename,
-  replaceStartLine, 
-  replaceEndLine, 
+  replaceStartLine,
+  replaceEndLine,
   deletionContent,
   additionContent,
   onXClicked
-} : SuggestionPopupProp) {
-  const [updateChanges, setUpdateChanges] = useState(false);
+}: SuggestionPopupProp) {
+  const { username, repo_name, id } = useParams<PullParams>();
+  const { mutate: updateMutation, isPending: isUpdatePending } = useUpdateGeminiSuggestionMutation(username, repo_name, id);
+  const { mutate: commitMutation, isPending: isCommitPending, isSuccess: isCommitSuccess } = useCommitGeminiSuggestionMutation(username, repo_name, id);
 
-  // 1. LAZY INITIALIZATION: Calculate the regions once when the component mounts
+  const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split('\n');
     let before = lines.slice(0, replaceStartLine - 1).join('\n');
-    
+
     if (before.endsWith('\r\n')) {
       before = before.slice(0, -2);
     } else if (before.endsWith('\n')) {
@@ -47,9 +58,9 @@ export function SuggestionModuleContent({
 
   // 3. Unified callback for both typing AND expanding regions
   const handleEditorChange = (
-    newBeforeCode: string, 
-    newOriginalCode: string, 
-    newModifiedCode: string, 
+    newBeforeCode: string,
+    newOriginalCode: string,
+    newModifiedCode: string,
     newAfterCode: string
   ) => {
     // Check if the user has modified the core suggestion text
@@ -66,38 +77,75 @@ export function SuggestionModuleContent({
     setAfterCode(newAfterCode);
   };
 
-  return(
+  const onUpdateClicked = () => {
+    if (!updateChanges) return;
+
+    const beforeCodeLength: number = beforeCode.split('\n').length;
+    const relativeLineLocation: number = (beforeCodeLength + 1) - threadLine;
+    const suggestionData: SuggestionCommentUpdateRequest = {
+      githubCommentId: commentID,
+      deletionContent: originalCode,
+      additionContent: modifiedCode,
+      relativeLineLocation: relativeLineLocation
+    }
+
+    updateMutation(suggestionData)
+  }
+
+  const onCommitClicked = () => {
+    const beforeCodeLength: number = beforeCode.split('\n').length;
+    const relativeLineLocation: number = (beforeCodeLength + 1) - threadLine;
+    const suggestionData: SuggestionCommentUpdateRequest = {
+      githubCommentId: commentID,
+      deletionContent: originalCode,
+      additionContent: modifiedCode,
+      relativeLineLocation: relativeLineLocation
+    }
+    let fileContent = beforeCode + modifiedCode + afterCode;
+    fileContent = fileContent.replace(/\r\n/g, '\n');
+    
+    commitMutation({
+      filename,
+      content: fileContent,
+      suggestionData
+    }, {
+      onSuccess: () => {
+        onXClicked();
+      },
+    });
+  }
+
+  return (
     <div className={styles.moduleContainer}>
       <div className={styles.popupHeader}>
-          <div className={styles.popupLabel}>{"Suggestion on " + filename}</div>
-          <div className={styles.buttonContainer}>
-            <button className={updateChanges ? styles.updateButtonValid : styles.updateButtonInvalid}>
-              Update
-            </button>
-            <button className={styles.commitButton}>
-              Commit
-            </button>
-            <button 
-              className={styles.closeButton} 
-              onClick={onXClicked}
-              aria-label="Close popup"
-            >
-              ✕
-            </button>
-          </div>
+        <div className={styles.popupLabel}>{"Suggestion on " + filename}</div>
+        <div className={styles.buttonContainer}>
+          <button className={updateChanges ? styles.updateButtonValid : styles.updateButtonInvalid}
+            onClick={onUpdateClicked}>
+            {isUpdatePending ? "Updating..." : "Update"}
+          </button>
+          <button className={styles.commitButton}
+            onClick={onCommitClicked}>
+            {isCommitPending ? "Committing..." : "Commit"}
+          </button>
+          <button
+            className={styles.closeButton}
+            onClick={onXClicked}
+            aria-label="Close popup"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       <div className={styles.editorContainer}>
         <SuggestionDiffEditor
-          // 4. IMPORTANT: Pass the STATE variables here, not the initial props!
           originalCode={originalCode}
           modifiedCode={modifiedCode}
           beforeCode={beforeCode}
           afterCode={afterCode}
           filename={filename}
-          // Note: make sure this prop name matches what you exported in SuggestionDiffEditor.types.ts
-          // (If you renamed it to onExpandRegion in the previous step, use onExpandRegion={handleEditorChange})
-          onCodeChange={handleEditorChange} 
+          onCodeChange={handleEditorChange}
         />
       </div>
     </div>

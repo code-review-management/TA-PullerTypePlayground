@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { formatDate } from "../../../_utils/date-utils";
-import { extractSuggestions } from "../CommentSuggestionEntry/suggestionParser";
+import { extractSuggestions, SuggestiveComment } from "../CommentSuggestionEntry/suggestionParser";
 import { SuggestionReplacementWidget } from "../CommentSuggestionEntry/SuggestionReplacementWidget";
 import MarkdownEditor from "@/app/(pages)/_components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@components/UserIcon/UserIcon";
@@ -31,6 +31,7 @@ export default function InlineCommentEntry({
   defaultContent,
   activePath,
   startLine,
+  commentID,
   editorActions,
   headerActions,
 }: {
@@ -41,16 +42,18 @@ export default function InlineCommentEntry({
   defaultContent?: string;
   activePath?: string;
   startLine?: number;
+  commentID?: number;
   editorActions?: ReactNode;
   headerActions?: ReactNode;
 }) {
-  const suggestiveComment = defaultContent 
+  const suggestiveComment: SuggestiveComment = defaultContent 
     ? extractSuggestions(defaultContent) : 
     { 
       hasSuggestion: false, 
       relativeStartLine: 0,
       deletionContent: "",
-      additionContent: ""
+      additionContent: "",
+      isCommited: false,
     };
   
   if (!activePath) activePath = "";
@@ -61,6 +64,11 @@ export default function InlineCommentEntry({
     }
   } else {
     startLine = 0;
+  }
+
+  if (!commentID) {
+    suggestiveComment.hasSuggestion = false;
+    commentID = 0;
   }
 
   return (
@@ -83,7 +91,8 @@ export default function InlineCommentEntry({
           <SuggestionReplacementWidget
             suggestion={suggestiveComment}
             activePath={activePath}
-            startLine={startLine}  
+            startLine={startLine}
+            commentID = {commentID}  
           />
         ) : (
           <MarkdownEditor

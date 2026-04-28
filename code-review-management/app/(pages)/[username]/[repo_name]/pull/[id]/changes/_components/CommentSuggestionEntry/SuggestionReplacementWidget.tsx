@@ -11,7 +11,8 @@ import { PullParams } from '@/types/routing.types';
 interface SuggestionReplacementWidgetProps {
   suggestion: SuggestiveComment,
   activePath: string,
-  startLine: number
+  startLine: number,
+  commentID: number,
 }
 
 // A raw text node
@@ -26,7 +27,7 @@ export type ASTElementNode = {
   tagName: string;
   properties?: {
     className?: string[];
-    [key: string]: unknown; 
+    [key: string]: unknown;
   };
   children: ASTNode[];
 };
@@ -39,10 +40,10 @@ function renderASTNode(node: ASTNode, i: number): ReactNode {
   }
   if (node.type === 'element') {
     const className = node.properties?.className?.join(' ') || '';
-    
+
     return (
       <span key={i} className={className}>
-        {node.children.map((childNode, childIndex) => 
+        {node.children.map((childNode, childIndex) =>
           renderASTNode(childNode, childIndex)
         )}
       </span>
@@ -52,7 +53,7 @@ function renderASTNode(node: ASTNode, i: number): ReactNode {
   return null;
 }
 
-export function SuggestionReplacementWidget({ suggestion, activePath, startLine }: SuggestionReplacementWidgetProps) {
+export function SuggestionReplacementWidget({ suggestion, activePath, startLine, commentID }: SuggestionReplacementWidgetProps) {
   const language = getLanguage(activePath);
   const { username, repo_name, id } = useParams<PullParams>();
   const [activeTab, setActiveTab] = useState<'replace' | 'insert'>('insert');
@@ -79,91 +80,97 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine 
     isLoading,
     isError,
     error
-   } = useFileContentQuery(username, repo_name, id, activePath);
+  } = useFileContentQuery(username, repo_name, id, activePath);
 
-   const { deletionContent, additionContent } = suggestion;
-   const endLine: number = startLine + deletionContent.split('\n').length;
+  const { deletionContent, additionContent, relativeStartLine } = suggestion;
+  const adjustedStartLine = startLine + relativeStartLine;
+  const endLine: number = startLine + relativeStartLine + deletionContent.split('\n').length;
 
-   console.log("end line: " + endLine);
-return (
-  <>
-    {moduleExpanded && (
-      <div className={styles.modalBackdrop} onClick={() => setModuleExpanded(false)}>
-        <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-          <div className={styles.modalBody}>
-            {/* If loading is true, render this */}
-            {isLoading && (
-              <div className={styles.notificationText}>Loading file content...</div>
-            )}
+  console.log("end line: " + endLine);
+  return (
+    <>
+      {moduleExpanded && (
+        <div className={styles.modalBackdrop} onClick={() => setModuleExpanded(false)}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalBody}>
+              {isLoading && (
+                <div className={styles.notificationText}>Loading file content...</div>
+              )}
+              {isError && (
+                <div className={styles.notificationText}>Failed to load: {error?.message}</div>
+              )}
 
-            {/* If error is true, render this */}
-            {isError && (
-              <div className={styles.notificationText}>Failed to load: {error?.message}</div>
-            )}
+              {/* If NOT loading, NOT an error, and we have content, render the good state */}
+              {!isLoading && !isError && fileContent && (
+                <SuggestionModuleContent
+                  commentID={commentID}
+                  threadLine={startLine}
+                  fullFileCode={fileContent}
+                  filename={activePath}
+                  replaceStartLine={adjustedStartLine}
+                  replaceEndLine={endLine}
+                  deletionContent={deletionContent}
+                  additionContent={additionContent}
+                  onXClicked={() => setModuleExpanded(false)}
+                />
+              )}
+            </div>
 
-            {/* If NOT loading, NOT an error, and we have content, render the good state */}
-            {!isLoading && !isError && fileContent && (
-              <SuggestionModuleContent
-                fullFileCode={fileContent}
-                filename={activePath}
-                replaceStartLine={startLine}
-                replaceEndLine={endLine}
-                deletionContent={deletionContent}
-                additionContent={additionContent}
-                onXClicked={() => setModuleExpanded(false)}
-              />
-            )}
           </div>
-
         </div>
-      </div>
-    )}
-
-
-
-    <div className={styles.container}>
-      
-      {/* 2. The Formal Header with Toggle Buttons */}
-      <div className={styles.formalHeader}>
-        <div className={styles.headerTitle}>Suggested Change</div>
-        
-        <div className={styles.buttonContainer}>
-        <div className={styles.toggleGroup}>
-          <button 
-            className={`${styles.toggleButton} ${activeTab === 'replace' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('replace')}
-          >
-            Original
-          </button>
-          <button 
-            className={`${styles.toggleButton} ${activeTab === 'insert' ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab('insert')}
-          >
-            Suggestion
-          </button>
-          </div>
-          <button
-            className={styles.expandButton} onClick={() => setModuleExpanded(true)}>
-              Expand
-          </button>
-          </div>
-      </div>
-
-      {/* 3. Conditionally render based on the active tab */}
-      {activeTab === 'replace' ? (
-        <pre className={`${styles.codeText} ${styles.deletionText}`}>
-          <code>
-            {deletionNodes.map((node, i) => renderASTNode(node, i))}
-          </code>
-        </pre>
-      ) : (
-        <pre className={`${styles.codeText} ${styles.additionText}`}>
-          <code>
-            {additionNodes.map((node, i) => renderASTNode(node, i))}
-          </code>
-        </pre>
       )}
-    </div>
-  </>
+
+
+
+      <div className={styles.container}>
+
+        {/* 2. The Formal Header with Toggle Buttons */}
+        <div className={styles.formalHeader}>
+          <div className={styles.headerTitle}>
+            Suggested Change {suggestion.isCommited ? "(Commited)" : "(AI can make mistakes)"}
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <div className={styles.toggleGroup}>
+              <button
+                className={`${styles.toggleButton} ${activeTab === 'replace' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('replace')}
+              >
+                Original
+              </button>
+              <button
+                className={`${styles.toggleButton} ${activeTab === 'insert' ? styles.activeTab : ''}`}
+                onClick={() => setActiveTab('insert')}
+              >
+                Suggestion
+              </button>
+            </div>
+            {!suggestion.isCommited && (
+              <button
+                className={styles.expandButton}
+                onClick={() => setModuleExpanded(true)}
+              >
+                Expand
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 3. Conditionally render based on the active tab */}
+        {activeTab === 'replace' ? (
+          <pre className={`${styles.codeText} ${styles.deletionText}`}>
+            <code>
+              {deletionNodes.map((node, i) => renderASTNode(node, i))}
+            </code>
+          </pre>
+        ) : (
+          <pre className={`${styles.codeText} ${styles.additionText}`}>
+            <code>
+              {additionNodes.map((node, i) => renderASTNode(node, i))}
+            </code>
+          </pre>
+        )}
+      </div>
+    </>
   );
 }

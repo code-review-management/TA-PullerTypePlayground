@@ -343,3 +343,27 @@ export const FileContentSchema = z.object({
     html: z.url().nullable().optional(),
   }).optional(),
 });
+
+export const GitHubFileContentSchema = z.object({
+  type: z.string(),
+  encoding: z.string().optional(),
+  size: z.number(),
+  name: z.string(),
+  path: z.string(),
+  content: z.string().optional(),
+  sha: z.string(),
+  url: z.string(),
+  git_url: z.string().nullable(),
+  html_url: z.string().nullable(),
+  download_url: z.string().nullable(),
+  _links: z.object({
+    git: z.string().nullable(),
+    self: z.string(),
+    html: z.string().nullable(),
+  }),
+});
+
+export const GitHubFileDataSchema = z.union([
+  GitHubFileContentSchema,
+  z.array(GitHubFileContentSchema),
+]);

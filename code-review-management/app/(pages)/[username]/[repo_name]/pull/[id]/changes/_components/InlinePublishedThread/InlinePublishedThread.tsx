@@ -56,6 +56,7 @@ export default function InlinePublishedThread({
         {thread.comments.map((comment) => (
             <InlineCommentEntry
             key={comment.id}
+            commentID = {comment.id}
             avatar={comment.user.avatar_url}
             username={comment.user.login}
             created={comment.created_at}

@@ -3,6 +3,7 @@ export interface SuggestiveComment {
   relativeStartLine: number,
   deletionContent: string,
   additionContent: string,
+  isCommited: boolean,
 }
 
 export function extractSuggestions(comment: string): SuggestiveComment {
@@ -11,19 +12,21 @@ export function extractSuggestions(comment: string): SuggestiveComment {
     relativeStartLine: 0,
     deletionContent: "",
     additionContent: "",
+    isCommited: false,
   };
 
-    const match = comment.match(/<!--\[Gemini Suggestion#HLTP]\[(.*?)\]/);
+    const match = comment.match(/<!--\[Gemini Suggestion#HLTP]\[(.*?)\](\[Commited])?-->/);
     if (match) {
       const relativeStartLine = parseInt(match[1]);
       extractedSuggestion.relativeStartLine = relativeStartLine;
+      extractedSuggestion.isCommited = !!match[2];
 
       const deletedMatch = comment.match(
-        /<!--Gemini-Tag \[Code To Be Deleted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Code To Be Inserted]-->/
+        /<!--Gemini-Tag \[Code To Be Deleted]-->\r?\n```diff\r?\n([\s\S]*?)\r?\n```\r?\n<!--Gemini-Tag \[Code To Be Inserted]-->/
       );
 
       const insertedMatch = comment.match(
-        /<!--Gemini-Tag \[Code To Be Inserted]-->\n```diff\n([\s\S]*?)\n```\n<!--Gemini-Tag \[Diff End] -->/
+        /<!--Gemini-Tag \[Code To Be Inserted]-->\r?\n```diff\r?\n([\s\S]*?)\r?\n```\r?\n<!--Gemini-Tag \[Diff End] -->/
       );
 
       if (deletedMatch){
