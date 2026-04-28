@@ -25,10 +25,20 @@ export default function InlineThreadHeader({
     </div>
   );
 
+  const handleAnchorClick = () => {
+    if (window.location.hash === anchorHref) {
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    }
+  };
+
   return (
     <>
       {anchorHref ? (
-        <a href={anchorHref} className={styles.headerAnchor}>
+        <a
+          href={anchorHref}
+          className={styles.headerAnchor}
+          onClick={handleAnchorClick}
+        >
           {threadHeader}
         </a>
       ) : (
