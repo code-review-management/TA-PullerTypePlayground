@@ -102,7 +102,7 @@ function NodeLabel({
       {...(isOverflow && {
         "data-tooltip-id": "tooltip-file-tree-row",
         "data-tooltip-content": node.name,
-        "data-tooltip-place": "bottom-end",
+        "data-tooltip-place": "top-end",
         "data-tooltip-delay-show": 100,
       })}
     >
