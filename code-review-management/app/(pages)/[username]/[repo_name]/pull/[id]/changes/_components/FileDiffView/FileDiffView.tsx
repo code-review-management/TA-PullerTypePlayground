@@ -62,7 +62,7 @@ export default memo(function FileDiffView({
     isCommitView,
   );
   const [isExpanded, setIsExpanded] = useState(true);
-  const { setScrollId } = useScrollToId();
+  const { setScrollId } = useScrollToId(activePath, setIsExpanded);
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
     () =>
