@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 
-type ChangesViewMode = "pr" | "single-commit" | "cumulative-commit";
+export type ChangesViewMode = "pr" | "single-commit" | "cumulative-commit";
 
 export function useChangesViewMode(): {
   sha: string | null;

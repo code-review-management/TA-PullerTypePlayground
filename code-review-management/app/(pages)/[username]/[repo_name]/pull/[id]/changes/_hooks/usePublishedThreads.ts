@@ -62,6 +62,7 @@ export function usePublishedThreads(
     isFetching,
     isPending,
     isError,
+    error,
   } = useReviewCommentsQuery(owner, repo, pullNumber, buildCommentRelations);
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
@@ -69,6 +70,7 @@ export function usePublishedThreads(
     publishedThreads,
     isPending,
     isError,
+    error,
   };
 }
 
