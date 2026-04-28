@@ -7,18 +7,33 @@ import styles from "./InlineThreadHeader.module.css";
  *
  * @param title: Text to display on the header.
  * @param actions: Action components to display on the right-side of the header.
+ * @param anchorHref: Optional URL linking to anchored location.
  */
 export default function InlineThreadHeader({
   title,
   actions,
+  anchorHref,
 }: {
   title: string;
   actions?: ReactNode;
+  anchorHref?: string;
 }) {
-  return (
+  const threadHeader = (
     <div className={styles.header}>
       {title}
       {actions}
     </div>
+  );
+
+  return (
+    <>
+      {anchorHref ? (
+        <a href={anchorHref} className={styles.headerAnchor}>
+          {threadHeader}
+        </a>
+      ) : (
+        threadHeader
+      )}
+    </>
   );
 }

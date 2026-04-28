@@ -3,12 +3,24 @@
   min-height: 100vh;
 }
 
-.repoSideBar {
-  width: 320px;
-  border-right: 1px solid var(--border-gray-secondary); /* TODO: Border shouldn't span entire height */
-}
-
 .pageBody {
   flex: 1;
   padding: var(--spacer-48);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+}
+
+.loadingSpinnerWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.moreButton {
+  border: none;
+  background-color: var(--background-secondary-light);
+  padding: var(--spacer-8);
+  border-radius: 0 0 8px 8px;
+  cursor: pointer;
 }

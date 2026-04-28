@@ -3,7 +3,7 @@
 */
 
 import { Repo, RepoSchema } from "@/types/github.types";
-import { RepoV2 } from "@/types/github.types.v2";
+import { RepoV2 } from "@/types/github.types.wrapper";
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";

@@ -1,14 +1,25 @@
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import styles from "./DashboardGrid.module.css";
-import MOCK_PULLS from "@/mocks/dashboard_pulls.json";
 import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid() {
-  // TODO: Use real data instead of MOCK_PULLS
+export default function DashboardGrid({
+  pulls,
+  searchString,
+  repoSet,
+}: {
+  pulls: PullRequest[];
+  searchString: string;
+  repoSet: Set<string>;
+}) {
+  const filteredPulls = pulls.filter(
+    (pull) =>
+      pull.title.toLowerCase().includes(searchString.toLowerCase()) &&
+      repoSet.has(`${pull.repository_owner}/${pull.repository_name}`),
+  );
 
   return (
     <table className={styles.dashboardGrid}>
@@ -23,8 +34,8 @@ export default function DashboardGrid() {
         </tr>
       </thead>
       <tbody className={styles.gridBody}>
-        {MOCK_PULLS.map((pull) => (
-          <DashboardGridRow pull={pull as PullRequest} key={pull.id} />
+        {filteredPulls.map((pull) => (
+          <DashboardGridRow pull={pull} key={pull.id} />
         ))}
       </tbody>
     </table>
@@ -52,12 +63,12 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
         <Link
           className={styles.rowTitleTop}
-          href={`${pull.base.repo.full_name}/pull/${pull.number}`}
+          href={`${pull.repository_owner}/${pull.repository_name}/pull/${pull.number}`}
         >
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
         </Link>
-        <span className={styles.rowTitleBottom}>{pull.head.repo.name}</span>
+        <span className={styles.rowTitleBottom}>{pull.head?.repo.name}</span>
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />

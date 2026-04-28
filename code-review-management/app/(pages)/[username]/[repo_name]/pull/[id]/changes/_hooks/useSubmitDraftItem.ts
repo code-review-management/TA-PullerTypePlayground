@@ -3,8 +3,8 @@ import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 import { useDraftRepliesContext } from "../_contexts/DraftRepliesContext";
 import { useDraftThreadsContext } from "../_contexts/DraftThreadsContext";
-import { getDraftReplyKey } from "./useDraftReplies";
 import {
+  deleteDraftReply,
   deleteDraftThread,
   getDraftThreadFilePath,
 } from "../_utils/comment-utils";
@@ -36,24 +36,28 @@ export function useSubmitDraftItem(
     draft: Extract<DraftItem, { type: "thread" }>,
     pull: PullRequest,
   ) => {
-    const { oldPath, activePath, fileStatus, start, end, side } = draft.payload;
-    const githubSide = toGitHubSide(side);
+    const { payload } = draft;
+    const { oldPath, activePath, fileStatus, subjectType } = payload;
+    const side = subjectType === "line" ? payload.side : undefined;
     const path = getDraftThreadFilePath(oldPath, activePath, fileStatus, side);
 
     mutate(
       {
         body: editorContent,
-        commit_id: pull.head.sha,
+        commit_id: pull.head?.sha ?? "",
         path,
-        start_side: githubSide,
-        side: githubSide,
-        start_line: start,
-        line: end,
+        subject_type: subjectType,
+        ...(subjectType === "line" && {
+          start_side: toGitHubSide(payload.side),
+          side: toGitHubSide(payload.side),
+          start_line: payload.start,
+          line: payload.end,
+        }),
       },
       {
         // Fires after invalidating the TanStack cache for review comments
         // and refetching them.
-        onSuccess: () => deleteDraftThread(draft.payload, setDraftThreads),
+        onSuccess: () => deleteDraftThread(payload, setDraftThreads),
       },
     );
   };
@@ -65,29 +69,19 @@ export function useSubmitDraftItem(
     mutate(
       {
         body: editorContent,
-        commit_id: pull.head.sha,
+        commit_id: pull.head?.sha ?? "",
         path: draft.payload.filename,
         in_reply_to: draft.payload.parentId,
       },
       {
-        onSuccess: () => {
-          setDraftReplies((prev) => {
-            const key = getDraftReplyKey(
-              draft.payload.filename,
-              draft.payload.parentId,
-            );
-            const draftReplies = { ...prev };
-            delete draftReplies[key];
-            return draftReplies;
-          });
-        },
+        onSuccess: () => deleteDraftReply(draft.payload, setDraftReplies),
       },
     );
   };
 
   const handleSubmit = () => {
     // On pulls pending, button is already disabled. On pulls error, do not
-    // allow submission. TODO: Display toast error message on pulls error.
+    // allow submission.
     if (!pull) return;
     if (draft.type === "thread") {
       submitThread(draft, pull);

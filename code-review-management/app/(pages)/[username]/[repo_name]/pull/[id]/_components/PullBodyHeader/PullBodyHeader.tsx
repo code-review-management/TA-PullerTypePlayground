@@ -29,7 +29,7 @@ export default function PullBodyHeader({
     <div className={styles.pullBodyHeader}>
       <div className={styles.titleLeft}>
         <div className={styles.titleIdentifierHeaders}>
-          <h2 className={styles.repoName}>{pullData.base.repo.name}</h2>
+          <h2 className={styles.repoName}>{pullData.base?.repo.name}</h2>
           <div className={styles.titleAndNum}>
             <h1 className={styles.pullTitle}>
               {pullData.title}{" "}
@@ -48,8 +48,8 @@ export default function PullBodyHeader({
             <p className={styles.user}>{pullData.user?.login}</p>
           </div>
           <BranchDisplay
-            headRef={pullData.head.ref}
-            baseRef={pullData.base.ref}
+            headRef={pullData.head?.ref ?? ""}
+            baseRef={pullData.base?.ref ?? ""}
           />
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function PullBodyHeader({
           <p className={styles.commits}>{pullData.commits} commits</p>
           <p className={styles.files}>{pullData.changed_files} files</p>
           <p className={styles.additions}>+{pullData.additions}</p>
-          <p className={styles.deletions}>+{pullData.deletions}</p>
+          <p className={styles.deletions}>-{pullData.deletions}</p>
         </div>
       </div>
     </div>

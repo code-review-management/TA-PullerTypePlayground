@@ -1,14 +1,16 @@
 import CISectionCollapsible from "../CISectionCollapsible/CISectionCollapsible";
+import Subheader from "../Subheader/Subheader";
 import styles from "./CISection.module.css";
 
 /**
  * The CI section of the PR View page.
  * Includes a header and collapsible sections for passing/failing tests.
+ * CURRENTLY NOT IN USE
  */
 export default function CISection() {
   return (
     <div className={styles.CISection}>
-      <h4>CI checks</h4>
+      <Subheader>CI checks</Subheader>
       <CISectionCollapsible
         iconSrc="/icons/ci_passing.svg"
         headerText="7 passing"

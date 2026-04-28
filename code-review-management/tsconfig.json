@@ -22,7 +22,8 @@
       "@/*": ["./*"],
       "@components/*": ["./app/(pages)/_components/*"],
       "@globals/*": ["./app/(pages)/_globals/*"]
-    }
+    },
+    "types": ["node", "jest"]
   },
   "include": [
     "next-env.d.ts",

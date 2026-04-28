@@ -1,17 +1,21 @@
 import Divider from "@/app/(pages)/_components/Divider/Divider";
 import styles from "./TimelineDisplay.module.css";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { useParams } from "next/navigation";
 import {
   EventType,
   processedTimelineEvent,
   processTimeline,
   isReviewState,
-} from "./processTimeline";
+} from "../../_utils/timeline-utils";
 import Image from "next/image";
+import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
+import { PullParams } from "@/types/routing.types";
 import { ReviewComment } from "@/types/github.types";
+import { useOverflows } from "../../changes/_hooks/useOverflows";
 
 /**
  * Renders the timeline of events.
@@ -77,12 +81,31 @@ function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
   }
   if (event.displayType === "other") {
     if (event.eventType === "committed") {
-      return <TimelineCommit event={event} />;
+      return event.eventObj ? <TimelineCommit event={event} /> : <div />;
     } else if (event.eventType === "closed") {
       return <Divider />;
       {
         /** TODO: make custom divider */
       }
+    } else if (event.eventType === "commented") {
+      if (!event.eventObj) return;
+      return (
+        <PRViewComment
+          username={event.actor1 || ""}
+          createdAt={
+            "created_at" in event.eventObj ? event.eventObj.created_at : ""
+          }
+          description={
+            "body" in event.eventObj ? event.eventObj.body || "" : ""
+          }
+          avatarUrl={
+            "user" in event.eventObj
+              ? event.eventObj.user.avatar_url
+              : undefined
+          }
+          inTimeline
+        />
+      );
     } else {
       console.log(`"${event.eventType}" as 'other' display type not supported`); // TODO: REMOVE THIS DEBUG PRINT
       return;
@@ -115,6 +138,59 @@ function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
   }
 }
 
+function ExpandableCommitText({
+  full_sha,
+  abbr_sha,
+  message,
+}: {
+  full_sha: string;
+  abbr_sha: string;
+  message: string;
+}) {
+  const { username, repo_name, id } = useParams<PullParams>();
+  const isOverflow = useOverflows(abbr_sha);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className={styles.expandableCommitText}>
+      <Link
+        className={styles.commitSha}
+        href={`/${username}/${repo_name}/pull/${id}/changes?sha=${full_sha}`}
+      >
+        #{abbr_sha}
+      </Link>{" "}
+      <p
+        className={styles.commitMessage}
+        id={`commit-${abbr_sha}-message`}
+        style={{
+          ...(!isExpanded
+            ? {
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }
+            : {}),
+        }}
+      >
+        {message}
+      </p>
+      {isOverflow && (
+        <button
+          className={styles.expandButton}
+          onClick={() => setIsExpanded((prev) => !prev)}
+        >
+          <Image
+            src="/icons/action_dots.svg"
+            alt="Expand"
+            width={20}
+            height={10}
+          />
+        </button>
+      )}
+    </div>
+  );
+}
+
 /**
  * Commit event component displayed in timeline.
  * Displays abbreviated SHA, commit message, and user icon.
@@ -127,19 +203,19 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
   if (!event.eventObj) {
     return;
   }
-  const abbr_sha =
-    "sha" in event.eventObj ? event.eventObj.sha?.slice(0, 7) : "";
+
+  const full_sha = "sha" in event.eventObj ? event.eventObj.sha : "";
+  const abbr_sha = full_sha.slice(0, 7);
   const message = "message" in event.eventObj ? event.eventObj.message : "";
+
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
-      <div className={styles.committedLine}>
-        <p className={styles.commitLineText}>
-          {/** TODO: Link to commit on GH */}
-          <a className={styles.commitSha} href={""}>
-            #{abbr_sha}
-          </a>{" "}
-          {message}
-        </p>
+      <div className={styles.timelineCommit}>
+        <ExpandableCommitText
+          full_sha={full_sha}
+          abbr_sha={abbr_sha}
+          message={message}
+        />
         <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
       </div>
     </TimelineEventSmall>
