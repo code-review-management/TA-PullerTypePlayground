@@ -14,7 +14,7 @@ import {
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
-import { useScrollToFileDraft } from "../../_hooks/useScrollToFileDraft";
+import { useScrollToId } from "../../_hooks/useScrollToId";
 import { createDraftThread } from "../../_utils/comment-utils";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
@@ -62,7 +62,7 @@ export default memo(function FileDiffView({
     isCommitView,
   );
   const [isExpanded, setIsExpanded] = useState(true);
-  const { setFileDraftFocusPath } = useScrollToFileDraft();
+  const { setScrollId } = useScrollToId();
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
     () =>
@@ -128,7 +128,7 @@ export default memo(function FileDiffView({
               body: "",
               subjectType: "file",
             });
-            setFileDraftFocusPath(activePath);
+            setScrollId(`file-draft-${activePath}`);
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
