@@ -27,8 +27,8 @@ export default function FileTreeRow({
 }: {
   node: FileTreeNode;
   depth?: number;
-  isResizing: boolean;
   filters: Set<FileTreeNode> | null;
+  isResizing: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const nodeLabel = (
