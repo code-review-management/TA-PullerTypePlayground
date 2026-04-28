@@ -19,9 +19,9 @@ const qParams = {
   draft: ["draft:true", "draft:false"],
   merged: ["is:merged", "is:unmerged"],
   needs_review: ["user-review-requested:@me"],
-  ready_for_review: ["draft:false review:required"],
+  requires_review: ["review:required"],
   approved: ["review:approved"],
-  opened: ["author:@me"],
+  authored: ["author:@me"],
   assigned: ["assignee:@me"],
   reviewed: ["reviewed-by:@me"],
 } as const;
