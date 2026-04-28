@@ -13,7 +13,7 @@ export async function generateSuggestion(
   pull_number: number,
 ): Promise<void> {
   try {
-    const { id, filePath, side, line, comments, sha } = threadVal;
+    const { filePath, line, comments, sha } = threadVal;
     const context = await getFileDiffAndContent(
       ocktokit,
       owner,
