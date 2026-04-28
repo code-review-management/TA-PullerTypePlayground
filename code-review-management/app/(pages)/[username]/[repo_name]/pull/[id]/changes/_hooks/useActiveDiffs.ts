@@ -25,12 +25,12 @@ export function useActiveDiffs(pull: PullRequest) {
     mode === "cumulative-commit" && !!pull.base?.sha,
   );
 
-  const { data, isPending, isError } =
+  const { data, isPending, isError, error } =
     mode === "pr"
       ? fileDiffs
       : mode === "single-commit"
         ? commitDiffs
         : cumulativeDiffs;
 
-  return { diffString: data, isPending, isError };
+  return { diffString: data, isPending, isError, error };
 }

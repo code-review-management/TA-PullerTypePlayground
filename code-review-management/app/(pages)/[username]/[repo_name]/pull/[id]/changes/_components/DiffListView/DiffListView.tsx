@@ -8,6 +8,7 @@ import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
+import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
@@ -17,15 +18,17 @@ export default function DiffListView({
   flatFileTree,
   publishedThreads,
   sha,
+  externalHref,
 }: {
   pull: PullRequest;
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
   sha: string | null;
+  externalHref?: string;
 }) {
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
   const { mode } = useChangesViewMode();
-  const { diffString, isPending, isError } = useActiveDiffs(pull);
+  const { diffString, isPending, isError, error } = useActiveDiffs(pull);
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
@@ -43,9 +46,13 @@ export default function DiffListView({
     diffs,
   );
 
-  // TODO: Replace with proper loading/error UI.
+  // TODO: Replace with proper loading UI.
   if (isPending) return <div>Loading diffs...</div>;
-  if (isError) return <div>Failed to load diffs.</div>;
+  if (isError) {
+    return (
+      <ErrorMessage error={error} resource="diff" externalHref={externalHref} />
+    );
+  }
 
   return (
     <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
