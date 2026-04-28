@@ -12,7 +12,9 @@ export type DraftItem =
 
 /**
  * Renders the action buttons for a draft thread or reply. Displays `EditorSubmitButton`
- * which submits the current draft.
+ * which submits the current draft. The button is disabled when the editor
+ * content is empty, contains only whitespace, or when the pull request data is
+ * still pending.
  *
  * @param draft: `DraftItem` object containing data about the draft thread or reply.
  */

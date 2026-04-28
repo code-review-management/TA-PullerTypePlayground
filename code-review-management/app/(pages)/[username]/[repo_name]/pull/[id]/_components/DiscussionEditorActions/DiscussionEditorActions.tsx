@@ -5,7 +5,9 @@ import EditorSubmitButton from "@/app/(pages)/_components/EditorSubmitButton/Edi
 
 /**
  * Renders the action buttons for a discussion comment. Displays `EditorSubmitButton`
- * which submits the current discussion comment.
+ * which submits the current discussion comment. The button is disabled when the editor
+ * content is empty, contains only whitespace, or when the pull request data is
+ * still pending.
  *
  * @param editorContent: Text content in the editor
  * @param onSuccess: Callback on successful submission.

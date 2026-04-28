@@ -5,9 +5,7 @@ import ArrowUpIcon from "@/public/icons/arrow_up.svg";
 
 /**
  * Renders the action buttons for a text input. Displays a publish
- * button that submits the current text content. The button is disabled when the editor
- * content is empty, contains only whitespace, or when the pull request data is
- * still pending.
+ * button that submits the current text content.
  *
  * @param isSubmitPending Content from this editor is currently being submitted.
  * @param isDisabled Indicates that the button should be visible, but disabled.
