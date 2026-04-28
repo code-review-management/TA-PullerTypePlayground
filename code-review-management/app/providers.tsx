@@ -8,7 +8,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: process.env.NODE_ENV === "production",
-      retry: process.env.NODE_ENV === "production" ? 3 : 0,
+      retry: (failureCount, error) => {
+        if (error.status < 500) return false;
+        return process.env.NODE_ENV === "production" && failureCount < 3;
+      },
     },
   },
 });
