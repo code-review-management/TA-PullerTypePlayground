@@ -21,4 +21,5 @@
     --pr-view-body-header-height: 120px;
     --page-header-height: 52px;
     --file-diff-header-height: 40px;
+    --thread-scroll-margin: calc(var(--file-diff-header-height) * 2.6);
 }

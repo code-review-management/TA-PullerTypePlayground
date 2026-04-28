@@ -9,7 +9,7 @@ export function useScrollToFileDraft() {
     const scrollToFileDraft = () => {
       if (!fileDraftFocusPath) return;
       const draft = document.getElementById(`file-draft-${fileDraftFocusPath}`);
-      draft?.scrollIntoView({ block: "center" });
+      draft?.scrollIntoView({ block: "start" });
       draft?.querySelector<HTMLElement>(".tiptap")?.focus();
       setFileDraftFocusPath(null);
     };
