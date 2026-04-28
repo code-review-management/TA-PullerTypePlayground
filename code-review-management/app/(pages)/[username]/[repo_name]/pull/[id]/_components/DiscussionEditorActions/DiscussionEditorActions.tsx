@@ -4,12 +4,11 @@ import { useSubmitDiscussionItem } from "../../_hooks/useSubmitDiscussionItem";
 import EditorSubmitButton from "@/app/(pages)/_components/EditorSubmitButton/EditorSubmitButton";
 
 /**
- * Renders the action buttons for a discussion comment. Displays a publish
- * button that submits the current discussion comment. The button is disabled when the editor
- * content is empty, contains only whitespace, or when the pull request data is
- * still pending.
+ * Renders the action buttons for a discussion comment. Displays `EditorSubmitButton`
+ * which submits the current discussion comment.
  *
- * @param draft: `DraftItem` object containing data about the draft thread or reply.
+ * @param editorContent: Text content in the editor
+ * @param onSuccess: Callback on successful submission.
  */
 export default function DiscussionEditorActions({
   editorContent,
