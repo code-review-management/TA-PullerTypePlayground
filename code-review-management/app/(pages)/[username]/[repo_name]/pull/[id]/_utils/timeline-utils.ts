@@ -10,6 +10,7 @@ export type EventType =
   | "assigned"
   | "changes_requested"
   | "commented"
+  | "commented_review"
   | "committed"
   | "closed"
   | "dismissed"
@@ -28,7 +29,7 @@ export type EventType =
  */
 const REVIEW_STATES = [
   "approved",
-  "commented",
+  "commented_review",
   "changes_requested",
   "dismissed",
 ];
@@ -41,7 +42,7 @@ export function isReviewState(state: string) {
 const SINGLE_EVENTS = [
   "approved",
   "changes_requested",
-  "commented",
+  "commented_review",
   "dismissed",
   "head_ref_deleted",
   "merged",
@@ -58,7 +59,7 @@ const SINGLE_EVENTS = [
 const DOUBLE_EVENTS = ["assigned", "review_requested"];
 
 // Events that do not follow common "single link" or "double link" structures when rendered
-const OTHER_EVENTS = ["committed", "closed", ...REVIEW_STATES];
+const OTHER_EVENTS = ["committed", "closed", "commented", ...REVIEW_STATES];
 
 /**
  * Raw events returned from API response will be parsed into timelineEvents
@@ -82,7 +83,8 @@ const ICONS: Record<EventType, string> = {
   approved: "approved",
   assigned: "user",
   changes_requested: "changes_requested",
-  commented: "eye",
+  commented: "",
+  commented_review: "eye",
   committed: "commit",
   closed: "",
   dismissed: "eye",
@@ -104,7 +106,8 @@ const MESSAGES: Record<EventType, string> = {
   assigned: "assigned this to",
   changes_requested: "requested changes",
   closed: "",
-  commented: "left a review",
+  commented: "",
+  commented_review: "left a review",
   committed: "",
   dismissed: "previously reviewed",
   err: "Error! Could not fetch event message",
@@ -172,7 +175,7 @@ function getEventKey(eventObj: TimelineEvent) {
   if ("sha" in eventObj) {
     return `${eventObj.event}-${eventObj.sha}`;
   }
-  return null
+  return null;
 }
 
 /**
@@ -197,9 +200,15 @@ function getTimelineEvent(
       actor2: null,
     };
   }
-  const eventType = ((eventObj.event === "reviewed"
-    ? eventObj.state?.toLowerCase()
-    : eventObj.event) || "err") as EventType;
+
+  const eventType = (() => {
+    if (eventObj.event === "reviewed") {
+      if (eventObj.state?.toLowerCase() === "commented")
+        return "commented_review";
+      return eventObj.state?.toLowerCase();
+    }
+    return eventObj.event;
+  })() as EventType;
 
   const displayType = (() => {
     if (OTHER_EVENTS.includes(eventObj.event)) {
@@ -216,23 +225,8 @@ function getTimelineEvent(
 
   // TODO: Get correct approval status even when review is stale/dismissed
 
-  const iconName = (() => {
-    if (eventObj.event === "reviewed") {
-      return ICONS[(eventObj.state || "err") as EventType];
-    }
-    return ICONS[eventObj.event as EventType];
-  })();
-
-  const message = (() => {
-    if (eventObj.event === "reviewed") {
-      return MESSAGES[(eventObj.state || "err") as EventType];
-    }
-    // TODO: Add back in "renamed" event when exists on backend
-    // if (eventObj.event === "renamed") {
-    //   return `renamed the pull request to ${eventObj.rename?.to || ""}`;
-    // }
-    return MESSAGES[eventObj.event as EventType];
-  })();
+  const iconName = ICONS[eventType as EventType];
+  const message = MESSAGES[eventType as EventType];
 
   const actor1 = getActor1(eventObj);
   const actor2 = getActor2(eventObj);

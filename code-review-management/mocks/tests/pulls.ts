@@ -7,6 +7,7 @@ export function getDefaultPull(): PullRequest {
   return {
     url: "",
     id: 0,
+    html_url: "",
     number: 0,
     state: "open",
     locked: false,
@@ -31,6 +32,7 @@ export function getExamplePull1(): PullRequest {
   return {
     url: "",
     id: 0,
+    html_url: "",
     number: 123,
     state: "open",
     locked: false,

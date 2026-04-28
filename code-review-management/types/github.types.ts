@@ -41,7 +41,7 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED"] as const;
+const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED", "DISMISSED"] as const;
 const fileDiffStatus = [
   "added",
   "removed",
@@ -99,6 +99,7 @@ export const BranchSchema = z.object({
 export const PullRequestSchema = z.object({
   url: z.string(),
   id: z.number(),
+  html_url: z.string(),
   repository_url: z.string().optional(),
   repository_name: z.string().optional(),
   repository_owner: z.string().optional(),
@@ -230,6 +231,7 @@ export const ReviewSchema = z.object({
   id: z.number(),
   user: UserSchema.nullable(),
   body: z.string(),
+  html_url: z.string(),
   state: z.enum(reviewState),
   submitted_at: z.string().optional(),
   author_association: z.enum(authorAssociation),
@@ -238,6 +240,7 @@ export const ReviewSchema = z.object({
 export const CommitSchema = z.object({
   url: z.string(),
   sha: z.string(),
+  html_url: z.string(),
   commit: z.object({
     message: z.string(),
     author: UserIdentitySchema,
@@ -380,6 +383,7 @@ export const IssueCommentSchema = z.object({
 export const CompareCommitsSchema = z.object({
   base_commit: CommitSchema,
   merge_base_commit: CommitSchema,
+  html_url: z.string(),
   status: z.enum(compareCommitsStatus),
   ahead_by: z.number(),
   behind_by: z.number(),
