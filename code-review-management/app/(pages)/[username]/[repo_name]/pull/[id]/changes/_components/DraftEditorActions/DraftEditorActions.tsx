@@ -1,21 +1,18 @@
-import Image from "next/image";
-import ArrowUpIcon from "@/public/icons/arrow_up.svg";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { useParams } from "next/navigation";
 import { DraftReplyItem } from "../../_hooks/useDraftReplies";
 import { DraftThreadItem } from "../../_hooks/useDraftThreads";
 import { useSubmitDraftItem } from "../../_hooks/useSubmitDraftItem";
 import { useMarkdownEditorContext } from "@components/MarkdownEditor/MarkdownEditorContext";
 import { PullParams } from "@/types/routing.types";
-import styles from "./DraftEditorActions.module.css";
+import EditorSubmitButton from "@/app/(pages)/_components/EditorSubmitButton/EditorSubmitButton";
 
 export type DraftItem =
   | { type: "thread"; payload: DraftThreadItem }
   | { type: "reply"; payload: DraftReplyItem };
 
 /**
- * Renders the action buttons for a draft thread or reply. Displays a publish
- * button that submits the current draft. The button is disabled when the editor
+ * Renders the action buttons for a draft thread or reply. Displays `EditorSubmitButton`
+ * which submits the current draft. The button is disabled when the editor
  * content is empty, contains only whitespace, or when the pull request data is
  * still pending.
  *
@@ -36,18 +33,10 @@ export default function DraftEditorActions({ draft }: { draft: DraftItem }) {
   // TODO: Display toast error message on submit or pulls error.
 
   return (
-    <>
-      {isSubmitPending ? (
-        <LoadingSpinner />
-      ) : (
-        <button
-          className={`${styles.submit} ${isDisabled ? styles.disabled : ""}`}
-          disabled={isDisabled}
-          onClick={handleSubmit}
-        >
-          <Image src={ArrowUpIcon} alt="Arrow up" />
-        </button>
-      )}
-    </>
+    <EditorSubmitButton
+      isSubmitPending={isSubmitPending}
+      isDisabled={isDisabled}
+      handleSubmit={handleSubmit}
+    />
   );
 }
