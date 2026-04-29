@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./TabFilters.module.css";
-import { FILTERS, Tab } from "../../_utils/filter-utils";
+import { getAllTabFilters, Tab } from "../../_utils/filter-utils";
 
 export default function TabFilters({
   activeTab,
@@ -9,15 +9,17 @@ export default function TabFilters({
   activeTab: string;
   setActiveTab: Dispatch<SetStateAction<Tab>>;
 }) {
+  const filters = getAllTabFilters();
+
   return (
     <div className={styles.tabFilters}>
-      {FILTERS.map((filterName) => (
+      {filters.map((filterObj) => (
         <button
-          key={filterName}
-          className={`${styles.filter} ${filterName === activeTab && styles.selectedFilter}`}
-          onClick={() => setActiveTab(filterName)}
+          key={filterObj.filter_name}
+          className={`${styles.filter} ${filterObj.filter_name === activeTab && styles.selectedFilter}`}
+          onClick={() => setActiveTab(filterObj.filter_name)}
         >
-          {filterName}
+          {filterObj.tab_name}
         </button>
       ))}
     </div>

@@ -14,7 +14,7 @@ import TabFilters from "./_components/TabFilters/TabFilters";
 import { Tab } from "./_utils/filter-utils";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<Tab>("All");
+  const [activeTab, setActiveTab] = useState<Tab>("all");
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     usePullsQuery();
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
