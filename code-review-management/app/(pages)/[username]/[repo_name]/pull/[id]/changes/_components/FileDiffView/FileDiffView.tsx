@@ -1,5 +1,12 @@
 import refractor from "refractor";
-import { Dispatch, memo, SetStateAction, useMemo, useState } from "react";
+import {
+  Dispatch,
+  memo,
+  SetStateAction,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -61,8 +68,11 @@ export default memo(function FileDiffView({
     setDraftThreads,
     isCommitView,
   );
+
   const [isExpanded, setIsExpanded] = useState(true);
-  const { setScrollId } = useScrollToId(activePath, setIsExpanded);
+  const fileDiffRef = useRef<HTMLDivElement>(null);
+  const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
+
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
     () =>
@@ -108,6 +118,7 @@ export default memo(function FileDiffView({
   return (
     <ClearHighlightContext value={{ clearHighlight }}>
       <div
+        ref={fileDiffRef}
         className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""}`}
         id={`file-${activePath}`}
       >
@@ -120,7 +131,6 @@ export default memo(function FileDiffView({
           setIsExpanded={setIsExpanded}
           isCommitView={isCommitView}
           createFileDraftThread={() => {
-            setIsExpanded(true);
             createDraftThread(setDraftThreads, activePath, {
               oldPath,
               activePath,
@@ -128,7 +138,7 @@ export default memo(function FileDiffView({
               body: "",
               subjectType: "file",
             });
-            setScrollId(`file-draft-${activePath}`);
+            scrollToId(`file-draft-${activePath}`);
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>

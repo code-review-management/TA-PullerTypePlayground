@@ -1,8 +1,15 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 export function useScrollToId(
   activePath: string,
   setIsExpanded: Dispatch<SetStateAction<boolean>>,
+  fileDiffRef: RefObject<HTMLDivElement | null>,
 ) {
   const [scrollId, setScrollId] = useState<string | null>(null);
 
@@ -11,8 +18,7 @@ export function useScrollToId(
       const hash = window.location.hash.slice(1);
 
       const target = document.getElementById(hash);
-      const fileDiff = document.getElementById(`file-${activePath}`); // TODO: Consider ref.
-      if (!target || !fileDiff?.contains(target)) return; // TODO: Consider file diff anchors.
+      if (!target || !fileDiffRef.current?.contains(target)) return;
 
       setIsExpanded(true);
       setScrollId(hash);
@@ -20,7 +26,7 @@ export function useScrollToId(
 
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [activePath, setIsExpanded]);
+  }, [activePath, setIsExpanded, fileDiffRef]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,9 +36,13 @@ export function useScrollToId(
       target?.querySelector<HTMLElement>(".tiptap")?.focus();
       setScrollId(null);
     };
-
     handleScroll();
   }, [scrollId]);
 
-  return { setScrollId };
+  return {
+    scrollToId: (id: string) => {
+      setIsExpanded(true);
+      setScrollId(id);
+    },
+  };
 }
