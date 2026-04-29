@@ -11,7 +11,6 @@ import {
   ViewType,
 } from "react-diff-view";
 
-import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
@@ -42,6 +41,7 @@ export default memo(function FileDiffView({
   publishedThreads,
   draftThreadsByLine,
   setDraftThreads,
+  isCommitView,
 }: {
   diff: FileData;
   fileMeta?: FileDiff;
@@ -49,9 +49,9 @@ export default memo(function FileDiffView({
   publishedThreads: PublishedThreadsByScope;
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
+  isCommitView: boolean;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
-  const { isCommitView } = useCommitPickerContext();
   const activePath = getActivePath(diffType, oldPath, newPath);
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
@@ -117,6 +117,7 @@ export default memo(function FileDiffView({
           newPath={newPath}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
+          isCommitView={isCommitView}
           createFileDraftThread={() => {
             setIsExpanded(true);
             createDraftThread(setDraftThreads, activePath, {
@@ -129,7 +130,7 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {hasFileLevelThreads && (
+          {hasFileLevelThreads && !isCommitView && (
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
               draftThread={draftThreadsByLine?.["file-level"]}

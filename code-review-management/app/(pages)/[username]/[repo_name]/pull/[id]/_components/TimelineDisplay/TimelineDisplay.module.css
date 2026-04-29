@@ -23,13 +23,10 @@
 
 .eventSmall {
   display: flex;
+  align-items: center;
   min-width: 0;
   gap: var(--spacer-12);
   color: var(--text-secondary);
-}
-
-[data-view="activity-panel"] .eventSmall > :nth-child(2) {
-  margin-top: 5px;
 }
 
 .userLink {

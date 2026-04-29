@@ -20,6 +20,7 @@ const defaultProps: ComponentProps<typeof FileDiffHeader> = {
   isExpanded: true,
   setIsExpanded: mockSetIsExpanded,
   createFileDraftThread: mockCreateFileDraftThread,
+  isCommitView: false,
 };
 
 describe("FileDiffHeader", () => {
@@ -62,11 +63,18 @@ describe("FileDiffHeader", () => {
   });
 
   describe("file-level comment button", () => {
-    it("renders button", () => {
-      render(<FileDiffHeader {...defaultProps} />);
+    it("renders button if not in commit view", () => {
+      render(<FileDiffHeader {...defaultProps} isCommitView={false} />);
       expect(
         screen.getByRole("button", { name: "File-level comment" }),
       ).toBeInTheDocument();
+    });
+
+    it("does not render button if in commit view", () => {
+      render(<FileDiffHeader {...defaultProps} isCommitView />);
+      expect(
+        screen.queryByRole("button", { name: "File-level comment" }),
+      ).not.toBeInTheDocument();
     });
 
     it("calls createFileDraftThread when button is clicked", async () => {

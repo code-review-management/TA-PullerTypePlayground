@@ -15,6 +15,7 @@ export default function FileDiffHeader({
   newPath,
   isExpanded,
   setIsExpanded,
+  isCommitView,
   createFileDraftThread,
 }: {
   fileMeta?: FileDiff;
@@ -23,6 +24,7 @@ export default function FileDiffHeader({
   newPath: string;
   isExpanded: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  isCommitView: boolean;
   createFileDraftThread: () => void;
 }) {
   const diffId = `${oldPath}-${newPath}`;
@@ -60,16 +62,18 @@ export default function FileDiffHeader({
           </div>
         )}
       </div>
-      <button
-        className={styles.comment}
-        onClick={createFileDraftThread}
-        data-tooltip-id={`tooltip-file-comment-${diffId}`}
-        data-tooltip-content={"Add file comment"}
-        data-tooltip-place="left"
-        data-tooltip-delay-show={100}
-      >
-        <Image src={CommentIcon} alt="File-level comment" />
-      </button>
+      {!isCommitView && (
+        <button
+          className={styles.comment}
+          onClick={createFileDraftThread}
+          data-tooltip-id={`tooltip-file-comment-${diffId}`}
+          data-tooltip-content={"Add file comment"}
+          data-tooltip-place="left"
+          data-tooltip-delay-show={100}
+        >
+          <Image src={CommentIcon} alt="File-level comment" />
+        </button>
+      )}
     </div>
   );
 }
