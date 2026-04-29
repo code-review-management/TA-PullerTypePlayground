@@ -38,6 +38,9 @@ export function useScrollToId(
         target?.querySelector<HTMLElement>(".tiptap")?.focus();
       }
 
+      // Set to null after scroll completes, so we can observe a state change
+      // when we consecutively click the same button multiple times, and this
+      // scroll handler can execute even after the first click.
       setScrollId(null);
     };
     handleScroll();
