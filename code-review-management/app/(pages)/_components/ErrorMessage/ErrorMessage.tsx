@@ -73,7 +73,7 @@ function getErrorMessageText(error: StatusError | null, resource: string) {
 
   if (resource === "cumulative-diff") {
     return {
-      title: "Diff too large",
+      title: "Diff unavailable",
       description:
         "Cumulative commit view is limited to 300 files. Try switching to single mode to view commits individually.",
     };
