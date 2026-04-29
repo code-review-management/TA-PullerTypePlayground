@@ -16,6 +16,10 @@
   cursor: pointer;
 }
 
+.filter:hover {
+  background-color: var(--background-tertiary-light);
+}
+
 .selectedFilter {
   background-color: var(--background-secondary-light);
 }
