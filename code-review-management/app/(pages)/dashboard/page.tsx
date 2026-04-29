@@ -1,5 +1,7 @@
 "use client";
-import { usePullsQuery } from "@/lib/api/queries/usePullsQuery";
+import {
+  usePullsQueries,
+} from "@/lib/api/queries/usePullsQuery";
 import IconTooltip from "../_components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
@@ -11,12 +13,21 @@ import { sortPullsByUpdated } from "./_utils/pulls-utils";
 import { useLocalStorage } from "usehooks-ts";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import TabFilters from "./_components/TabFilters/TabFilters";
-import { Tab } from "./_utils/filter-utils";
+import {
+  createDashboardTabFilter,
+  DashboardTabFilter,
+} from "./_utils/filter-utils";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<Tab>("all");
+  const [activeTab, setActiveTab] = useState<DashboardTabFilter>(
+    createDashboardTabFilter("all"),
+  );
+
+  const pullsQueries = usePullsQueries();
+
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
-    usePullsQuery();
+    pullsQueries.get(activeTab.filter_name);
+
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
   const [searchString, setSearchString] = useState("");

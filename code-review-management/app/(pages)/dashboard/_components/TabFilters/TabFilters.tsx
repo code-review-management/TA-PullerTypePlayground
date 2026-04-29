@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./TabFilters.module.css";
-import { getAllTabFilters, Tab } from "../../_utils/filter-utils";
+import { DashboardTabFilter, getAllTabFilters } from "../../_utils/filter-utils";
 
 export default function TabFilters({
   activeTab,
   setActiveTab,
 }: {
-  activeTab: string;
-  setActiveTab: Dispatch<SetStateAction<Tab>>;
+  activeTab: DashboardTabFilter;
+  setActiveTab: Dispatch<SetStateAction<DashboardTabFilter>>;
 }) {
   const filters = getAllTabFilters();
 
@@ -16,8 +16,8 @@ export default function TabFilters({
       {filters.map((filterObj) => (
         <button
           key={filterObj.filter_name}
-          className={`${styles.filter} ${filterObj.filter_name === activeTab && styles.selectedFilter}`}
-          onClick={() => setActiveTab(filterObj.filter_name)}
+          className={`${styles.filter} ${filterObj.filter_name === activeTab.filter_name && styles.selectedFilter}`}
+          onClick={() => setActiveTab(filterObj)}
         >
           {filterObj.tab_name}
         </button>

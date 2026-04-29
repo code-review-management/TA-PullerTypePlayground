@@ -16,7 +16,6 @@ const TAB_FILTERS: Tab[] = [
   "all",
   "ready_for_review",
   "needs_your_review",
-  "reviewed_by_you",
   "authored",
   "draft",
 ];
@@ -42,23 +41,34 @@ const FILTER_STRINGS: Record<Tab, string[]> = {
   assigned: ["assigned"],
   approved: ["approved"],
   merged: ["merged"],
-  draft: ["draft"],
+  draft: ["open=0", "draft=0"],
 };
 
-type DashboardTabFilter = {
+export type DashboardTabFilter = {
   filter_name: Tab;
   filter_string: string;
   tab_name: string;
 };
 
-function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
+export function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
   return {
     filter_name,
-    filter_string: FILTER_STRINGS[filter_name].join("&"),
+    filter_string: FILTER_STRINGS[filter_name].join(" "),
     tab_name: TAB_NAMES[filter_name],
   };
 }
 
 export function getAllTabFilters() {
-  return TAB_FILTERS.map((filter_name) => createDashboardTabFilter(filter_name));
+  return TAB_FILTERS.map((filter_name) =>
+    createDashboardTabFilter(filter_name),
+  );
+}
+
+export function getAllTabFiltersMapped() {
+  return new Map(
+    TAB_FILTERS.map((filter_name) => [
+      filter_name,
+      createDashboardTabFilter(filter_name),
+    ]),
+  );
 }
