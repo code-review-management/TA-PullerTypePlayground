@@ -1,10 +1,15 @@
-import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  UseInfiniteQueryResult,
+} from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
 import {
+  DashboardTabFilter,
   getAllTabFiltersMapped,
 } from "@/app/(pages)/dashboard/_utils/filter-utils";
-import { PullRequest } from "@/types/github.types";
+import { Tab } from "@/app/(pages)/dashboard/_utils/filter-utils";
 
 /**
  * Fetches list of pull requests relevant to the requesting user.
@@ -12,7 +17,9 @@ import { PullRequest } from "@/types/github.types";
  * @param queryType:
  * @returns: TanStack query result containing the pull request data.
  */
-export function usePullsQuery(filterString?: string) {
+type PullsQueryResult = UseInfiniteQueryResult<InfiniteData<PullRequestV2>>;
+
+export function usePullsQuery(filterString?: string, enabled = true) {
   return useInfiniteQuery({
     queryKey: ["pulls", filterString],
     queryFn: async ({ pageParam }): Promise<PullRequestV2> =>
@@ -22,29 +29,40 @@ export function usePullsQuery(filterString?: string) {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
     getPreviousPageParam: (firstPage) => firstPage.prev,
+    enabled,
   });
 }
 
-export function usePullsQueries(): Map<string, UseInfiniteQueryResult<InfiniteData<PullRequest>>> {
+export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
   const filters = getAllTabFiltersMapped();
-  const pullsQueries = new Map();
-  pullsQueries.set("all", usePullsQuery());
-  pullsQueries.set(
-    "ready_for_review",
-    usePullsQuery(filters.get("ready_for_review").filter_string),
-  );
-  pullsQueries.set(
-    "needs_your_review",
-    usePullsQuery(filters.get("needs_your_review").filter_string),
-  );
-  pullsQueries.set(
-    "authored",
-    usePullsQuery(filters.get("authored").filter_string),
-  );
-  pullsQueries.set(
-    "draft",
-    usePullsQuery(filters.get("draft").filter_string),
-  );
+  const getFilter = (tab: Tab): DashboardTabFilter => {
+    const filter = filters.get(tab);
+    if (!filter) {
+      throw new Error(`Missing dashboard filter for tab: ${tab}`);
+    }
+    return filter;
+  };
 
-  return pullsQueries;
+  return new Map<Tab, PullsQueryResult>([
+    ["all", usePullsQuery(undefined, activeTab === "all")],
+    [
+      "ready_for_review",
+      usePullsQuery(
+        getFilter("ready_for_review").filter_string,
+        activeTab === "ready_for_review",
+      ),
+    ],
+    [
+      "needs_your_review",
+      usePullsQuery(
+        getFilter("needs_your_review").filter_string,
+        activeTab === "needs_your_review",
+      ),
+    ],
+    [
+      "authored",
+      usePullsQuery(getFilter("authored").filter_string, activeTab === "authored"),
+    ],
+    ["draft", usePullsQuery(getFilter("draft").filter_string, activeTab === "draft")],
+  ]);
 }

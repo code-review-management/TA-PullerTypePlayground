@@ -21,10 +21,15 @@ export default function Dashboard() {
     createDashboardTabFilter("all"),
   );
 
-  const pullsQueries = usePullsQueries();
+  const pullsQueries = usePullsQueries(activeTab.filter_name);
+
+  const activePullsQuery = pullsQueries.get(activeTab.filter_name);
+  if (!activePullsQuery) {
+    throw new Error(`Missing pulls query for tab: ${activeTab.filter_name}`);
+  }
 
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
-    pullsQueries.get(activeTab.filter_name);
+    activePullsQuery;
 
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 

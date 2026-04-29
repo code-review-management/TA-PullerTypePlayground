@@ -1,6 +1,6 @@
 import styles from "./TabFilter.module.css";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
-import { DashboardTabFilter } from "../../_utils/filter-utils";
+import { DashboardTabFilter, Tab } from "../../_utils/filter-utils";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
 import { filterPulls } from "../../_utils/pulls-utils";
 
@@ -14,10 +14,10 @@ export default function TabFilter({
   onClick: () => void;
   filterObj: DashboardTabFilter;
   activeTab: DashboardTabFilter;
-  pullsQueries: Map<string, UseInfiniteQueryResult<InfiniteData<PullRequestV2>>>;
+  pullsQueries: Map<Tab, UseInfiniteQueryResult<InfiniteData<PullRequestV2>>>;
   repoSet: Set<string>;
 }) {
-  if (!pullsQueries || !pullsQueries.has(filterObj.filter_name)) return;
+  if (!pullsQueries || !pullsQueries.has(filterObj.filter_name)) return null;
 
   const pullQuery = pullsQueries.get(filterObj.filter_name)!;
 
