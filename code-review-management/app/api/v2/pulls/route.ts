@@ -44,9 +44,7 @@ export async function GET(req: Request) {
   const page = Number(params.get("page"));
 
   // When count_only is provided, query only 1 item because data will not be returned
-  const countOnlyParam = Number(params.get("count_only"));
-  const countOnly =
-    countOnlyParam !== null && !isNaN(countOnlyParam) && countOnlyParam >= 0;
+  const countOnly = params.get("count_only") !== null;
 
   // Validate parameters
   if (isNaN(page) || page < 1) {
