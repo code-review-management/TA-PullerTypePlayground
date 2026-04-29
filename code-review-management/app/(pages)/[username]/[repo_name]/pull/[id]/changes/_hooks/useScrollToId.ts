@@ -32,8 +32,12 @@ export function useScrollToId(
     const handleScroll = () => {
       if (!scrollId) return;
       const target = document.getElementById(scrollId);
+
       target?.scrollIntoView({ block: "start" });
-      target?.querySelector<HTMLElement>(".tiptap")?.focus();
+      if (scrollId.startsWith("file-draft-")) {
+        target?.querySelector<HTMLElement>(".tiptap")?.focus();
+      }
+
       setScrollId(null);
     };
     handleScroll();
