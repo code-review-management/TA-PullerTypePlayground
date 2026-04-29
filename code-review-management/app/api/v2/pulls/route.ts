@@ -43,6 +43,11 @@ export async function GET(req: Request) {
   const { searchParams: params } = new URL(req.url);
   const page = Number(params.get("page"));
 
+  // When count_only is provided, query only 1 item because data will not be returned
+  const countOnlyParam = Number(params.get("count_only"));
+  const countOnly =
+    countOnlyParam !== null && !isNaN(countOnlyParam) && countOnlyParam >= 0;
+
   // Validate parameters
   if (isNaN(page) || page < 1) {
     return Response.json(
@@ -69,25 +74,29 @@ export async function GET(req: Request) {
     const data = await octokit.request("GET /search/issues", {
       q: query,
       page: page,
-      per_page: 100,
+      per_page: countOnly ? 1 : 100,
     });
 
     // Filter response
-    const filteredResponse: PullRequest[] = data.data.items.map((item) => {
-      const rv: PullRequest = PullRequestSchema.parse(item);
+    const filteredResponse: PullRequest[] = countOnly
+      ? []
+      : data.data.items.map((item) => {
+          const rv: PullRequest = PullRequestSchema.parse(item);
 
-      if (rv.repository_url) {
-        // Populate repo name
-        const repoUrlArray = rv.repository_url.split("/");
-        const index = repoUrlArray.findIndex((element) => element == "repos");
-        rv.repository_name = repoUrlArray.slice(index + 2).join("/");
+          if (rv.repository_url) {
+            // Populate repo name
+            const repoUrlArray = rv.repository_url.split("/");
+            const index = repoUrlArray.findIndex(
+              (element) => element == "repos",
+            );
+            rv.repository_name = repoUrlArray.slice(index + 2).join("/");
 
-        // Populate repo owner
-        rv.repository_owner = repoUrlArray[index + 1];
-      }
+            // Populate repo owner
+            rv.repository_owner = repoUrlArray[index + 1];
+          }
 
-      return rv;
-    });
+          return rv;
+        });
 
     const linkHeaders = parse(data.headers.link);
 
