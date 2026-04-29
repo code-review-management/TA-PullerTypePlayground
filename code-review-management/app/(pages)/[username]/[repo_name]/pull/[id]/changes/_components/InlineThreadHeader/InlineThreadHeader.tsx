@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import styles from "./InlineThreadHeader.module.css";
 
 /**
@@ -19,8 +18,6 @@ export default function InlineThreadHeader({
   actions?: ReactNode;
   anchorHref?: string;
 }) {
-  const { mode } = useChangesViewMode();
-
   const threadHeader = (
     <div className={styles.header}>
       {title}
@@ -33,7 +30,7 @@ export default function InlineThreadHeader({
     // same thread header, the hash will not change and no scroll will be
     // triggered. Thus, manually dispatch a hash change event.
     // Docs: https://stackoverflow.com/a/15212106
-    if (mode === "pr" && window.location.hash === anchorHref) {
+    if (window.location.hash === anchorHref) {
       window.dispatchEvent(new HashChangeEvent("hashchange"));
     }
   };
