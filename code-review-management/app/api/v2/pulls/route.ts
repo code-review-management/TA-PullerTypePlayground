@@ -64,6 +64,7 @@ export async function GET(req: Request) {
     query += value[index] + " ";
   });
   query = query.slice(0, -1);
+  console.log("query:", query)
 
   try {
     const data = await octokit.request("GET /search/issues", {

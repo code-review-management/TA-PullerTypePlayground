@@ -1,7 +1,5 @@
 "use client";
-import {
-  usePullsQueries,
-} from "@/lib/api/queries/usePullsQuery";
+import { usePullsQueries } from "@/lib/api/queries/usePullsQuery";
 import IconTooltip from "../_components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
@@ -9,10 +7,10 @@ import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
 import { useState } from "react";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
 import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
-import { sortPullsByUpdated } from "./_utils/pulls-utils";
+import { processPulls } from "./_utils/pulls-utils";
 import { useLocalStorage } from "usehooks-ts";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import TabFilters from "./_components/TabFilters/TabFilters";
+import TabFilterRow from "./_components/TabFilterRow/TabFilterRow";
 import {
   createDashboardTabFilter,
   DashboardTabFilter,
@@ -39,7 +37,7 @@ export default function Dashboard() {
   const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   const pulls = data?.pages.flatMap((page) => page.data) ?? [];
-  const sortedPulls = sortPullsByUpdated(pulls);
+  const processedPulls = processPulls(pulls, searchString, repoSet);
 
   return (
     <div className={styles.page}>
@@ -52,7 +50,12 @@ export default function Dashboard() {
         "Loading dashboard..."
       ) : (
         <div className={styles.pageBody}>
-          <TabFilters activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabFilterRow
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            pullsQueries={pullsQueries}
+            repoSet={repoSet}
+          />
           <DashboardSearchBar
             searchString={searchString}
             setSearchString={setSearchString}
@@ -60,9 +63,7 @@ export default function Dashboard() {
             setAppliedSearchString={setAppliedSearchString}
           />
           <DashboardGrid
-            pulls={sortedPulls}
-            searchString={appliedSearchString}
-            repoSet={repoSet}
+            pulls={processedPulls}
           />
           {hasNextPage &&
             (isFetching ? (

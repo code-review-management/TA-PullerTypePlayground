@@ -29,19 +29,19 @@ const TAB_NAMES: Record<Tab, string> = {
   assigned: "Assigned to you",
   approved: "Approved",
   merged: "Merged",
-  draft: "Draft",
+  draft: "Your drafts",
 };
 
 const FILTER_STRINGS: Record<Tab, string[]> = {
   all: [""],
-  ready_for_review: ["draft=1", "requires_review"],
-  needs_your_review: ["needs_review"],
+  ready_for_review: ["open", "draft=1", "requires_review"],
+  needs_your_review: ["open", "draft=1", "needs_review"],
   reviewed_by_you: ["reviewed"],
   authored: ["authored"],
   assigned: ["assigned"],
   approved: ["approved"],
   merged: ["merged"],
-  draft: ["open=0", "draft=0"],
+  draft: ["open", "draft"],
 };
 
 export type DashboardTabFilter = {
@@ -53,7 +53,7 @@ export type DashboardTabFilter = {
 export function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
   return {
     filter_name,
-    filter_string: FILTER_STRINGS[filter_name].join(" "),
+    filter_string: FILTER_STRINGS[filter_name].join("&"),
     tab_name: TAB_NAMES[filter_name],
   };
 }

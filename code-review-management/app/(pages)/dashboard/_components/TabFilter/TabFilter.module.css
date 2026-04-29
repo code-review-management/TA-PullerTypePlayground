@@ -1,8 +1,3 @@
-.tabFilters {
-  display: flex;
-  gap: var(--spacer-20);
-}
-
 .filter {
   height: 32px;
   padding: var(--spacer-6) var(--spacer-12);

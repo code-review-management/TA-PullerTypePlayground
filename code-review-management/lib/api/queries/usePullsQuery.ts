@@ -1,10 +1,10 @@
-import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import { InfiniteData, useInfiniteQuery, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
 import {
-  getAllTabFilters,
   getAllTabFiltersMapped,
 } from "@/app/(pages)/dashboard/_utils/filter-utils";
+import { PullRequest } from "@/types/github.types";
 
 /**
  * Fetches list of pull requests relevant to the requesting user.
@@ -25,7 +25,7 @@ export function usePullsQuery(filterString?: string) {
   });
 }
 
-export function usePullsQueries() {
+export function usePullsQueries(): Map<string, UseInfiniteQueryResult<InfiniteData<PullRequest>>> {
   const filters = getAllTabFiltersMapped();
   const pullsQueries = new Map();
   pullsQueries.set("all", usePullsQuery());

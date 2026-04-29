@@ -12,3 +12,23 @@ export function sortPullsByUpdated(pulls: PullRequest[]) {
       new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
   );
 }
+
+export function filterPulls(
+  pulls: PullRequest[],
+  searchString: string,
+  repoSet: Set<string>,
+) {
+  return pulls.filter(
+    (pull) =>
+      pull.title.toLowerCase().includes(searchString.toLowerCase()) &&
+      repoSet.has(`${pull.repository_owner}/${pull.repository_name}`),
+  );
+}
+
+export function processPulls(
+  pulls: PullRequest[],
+  searchString: string,
+  repoSet: Set<string>,
+) {
+  return filterPulls(sortPullsByUpdated(pulls), searchString, repoSet);
+}
