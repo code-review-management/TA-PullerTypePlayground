@@ -22,6 +22,7 @@ export default function SignIn() {
             "use server";
             await signIn("github", { redirectTo: "/dashboard" });
           }}
+          data-testid="sign-in-form"
         >
           <button type="submit" className={styles.signInButton}>
             <Image src={GitHubIcon} alt="GitHub" />
