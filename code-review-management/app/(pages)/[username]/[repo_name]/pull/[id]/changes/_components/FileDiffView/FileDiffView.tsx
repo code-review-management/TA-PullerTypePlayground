@@ -31,6 +31,7 @@ import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
+import LoadRemovedFile from "../LoadRemovedFile/LoadRemovedFile";
 
 import styles from "./FileDiffView.module.css";
 import "prism-color-variables/variables.css";
@@ -72,6 +73,7 @@ export default memo(function FileDiffView({
   );
 
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
+  const [isLoaded, setIsLoaded] = useState(fileMeta?.status !== "removed");
   const fileDiffRef = useRef<HTMLDivElement>(null);
   const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
 
@@ -144,33 +146,39 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {hasFileLevelThreads && !isCommitView && (
-            <ThreadList
-              publishedThreads={publishedThreads.fileThreads}
-              draftThread={draftThreadsByLine?.["file-level"]}
-            />
-          )}
-          {hunks.length > 0 ? (
-            <Diff
-              viewType={viewType}
-              diffType={diffType}
-              hunks={hunks}
-              tokens={tokens}
-              widgets={widgets}
-              renderGutter={renderGutter}
-              gutterEvents={highlightEvents}
-            >
-              {(hunks) =>
-                hunks.map((hunk) => (
-                  <Fragment key={hunk.content}>
-                    <Decoration>{hunk.content}</Decoration>
-                    <Hunk hunk={hunk} />
-                  </Fragment>
-                ))
-              }
-            </Diff>
+          {isLoaded ? (
+            <>
+              {hasFileLevelThreads && !isCommitView && (
+                <ThreadList
+                  publishedThreads={publishedThreads.fileThreads}
+                  draftThread={draftThreadsByLine?.["file-level"]}
+                />
+              )}
+              {hunks.length > 0 ? (
+                <Diff
+                  viewType={viewType}
+                  diffType={diffType}
+                  hunks={hunks}
+                  tokens={tokens}
+                  widgets={widgets}
+                  renderGutter={renderGutter}
+                  gutterEvents={highlightEvents}
+                >
+                  {(hunks) =>
+                    hunks.map((hunk) => (
+                      <Fragment key={hunk.content}>
+                        <Decoration>{hunk.content}</Decoration>
+                        <Hunk hunk={hunk} />
+                      </Fragment>
+                    ))
+                  }
+                </Diff>
+              ) : (
+                <EmptyDiff diff={diff} fileMeta={fileMeta} />
+              )}
+            </>
           ) : (
-            <EmptyDiff diff={diff} fileMeta={fileMeta} />
+            <LoadRemovedFile setIsLoaded={setIsLoaded} />
           )}
         </div>
       </div>
