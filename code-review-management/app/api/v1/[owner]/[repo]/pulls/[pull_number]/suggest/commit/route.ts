@@ -44,6 +44,7 @@ export async function POST(req: Request, context: RouteContext) {
   try {
     const { filename, content, suggestionData } = reqArgs.data;
     const encodedContent = Buffer.from(content).toString('base64');
+    console.log("Contains r: " + content.indexOf('\r'));
 
     const octokit = new Octokit({ auth: token.accessToken });
     const pullRequestResponse = await octokit.rest.pulls.get({

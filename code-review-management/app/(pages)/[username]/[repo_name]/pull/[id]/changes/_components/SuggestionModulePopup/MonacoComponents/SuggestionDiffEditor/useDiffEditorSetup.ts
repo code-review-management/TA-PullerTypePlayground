@@ -4,6 +4,7 @@ import { DiffOnMount } from '@monaco-editor/react';
 import { SuggestionDiffEditorProps, RegionData } from './SuggestionDiffEditor';
 import { getLineCount, calculateExpandedRegions, getLanguageIdFromFilename, vsCodeLightPlus } from './mountUtils';
 import styles from './SuggestionDiffEditor.module.css';
+import { before } from 'node:test';
 
 export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
   const {
@@ -13,6 +14,21 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
     afterCode,
     onCodeChange
   } = props;
+
+  let hasCarriageReturn;
+
+  // Some would wonder, why go through such lengths to determine who gets to see if there is a carriage return?
+  // Basically, I am scared that even though there is supposed to be a \r, Gemini suggestion didn't add it, so 
+  // the existing code, which may not exist, should determine it
+  if (beforeCode.length > 0){
+    hasCarriageReturn = beforeCode.indexOf('\r') != -1;
+  } else if (afterCode.length > 0){
+    hasCarriageReturn = afterCode.indexOf('\r') != -1;
+  } else if (originalCode.length > 0){
+    hasCarriageReturn = originalCode.indexOf('\r') != -1;
+  } else {
+    hasCarriageReturn = modifiedCode.indexOf('\r') != -1;
+  }
 
   const diffEditorRef = useRef<editor.IStandaloneDiffEditor | null>(null);
   const hoveredLineRef = useRef<number | null>(null);
@@ -68,12 +84,14 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
     
     if (originalModel) {
       monaco.editor.setModelLanguage(originalModel, languageId);
-      originalModel.setEOL(monaco.editor.EndOfLineSequence.LF); 
+      if (hasCarriageReturn) originalModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
+      else originalModel.setEOL(monaco.editor.EndOfLineSequence.LF); 
     }
     
     if (modifiedModel) {
       monaco.editor.setModelLanguage(modifiedModel, languageId);
-      modifiedModel.setEOL(monaco.editor.EndOfLineSequence.LF);
+      if (hasCarriageReturn) modifiedModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
+      else modifiedModel.setEOL(monaco.editor.EndOfLineSequence.LF);
     }
 
     const modifiedDecorations = modifiedEditor.createDecorationsCollection();
@@ -273,7 +291,7 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
             const endColumn = model.getLineMaxColumn(end);
             extractedCode = model.getValueInRange(
               new monaco.Range(start, 1, end, endColumn)
-            ).replace(/\r\n/g, '\n');
+            );
           }
 
           const { beforeCode, originalCode, afterCode } = latestPropsRef.current;

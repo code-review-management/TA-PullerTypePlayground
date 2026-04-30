@@ -57,7 +57,7 @@ function convertIntoMarkdownSuggestion(
   insertionBlock: string,
   taken: boolean = false,
 ): string {
-  const header: string = "Gemini Suggestion ( " + (taken ? "Commited" : "AI can make mistakes") + ")";
+  const header: string = "Gemini Suggestion (" + (taken ? "Commited" : "AI can make mistakes") + ")";
   const formatDiffLines = (text: string, prefix: string): string => {
     return text
       .trimEnd()

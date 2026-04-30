@@ -85,8 +85,6 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const { deletionContent, additionContent, relativeStartLine } = suggestion;
   const adjustedStartLine = startLine + relativeStartLine;
   const endLine: number = startLine + relativeStartLine + deletionContent.split('\n').length;
-
-  console.log("end line: " + endLine);
   return (
     <>
       {moduleExpanded && (
