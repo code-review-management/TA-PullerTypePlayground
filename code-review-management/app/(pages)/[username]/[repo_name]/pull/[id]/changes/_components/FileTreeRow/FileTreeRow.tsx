@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { handleAnchorClick } from "../../_utils/scroll-utils";
 import { FileTreeNode } from "../../_utils/filetree-utils";
 import FileTreeDividers from "../FileTreeDividers/FileTreeDividers";
 import FileTreeIcon from "../FileTreeIcon/FileTreeIcon";
@@ -41,13 +42,19 @@ export default function FileTreeRow({
     />
   );
   const isFilteredOut = filters && !filters.has(node);
+  const fileAnchorHref =
+    node.type === "file" ? `#file-${node.fileDiff.filename}` : "";
 
   return (
     <div className={isFilteredOut ? styles.hidden : ""}>
       {node.type === "directory" ? (
         nodeLabel
       ) : (
-        <a href={`#file-${node.fileDiff.filename}`} className={styles.anchor}>
+        <a
+          href={fileAnchorHref}
+          className={styles.anchor}
+          onClick={() => handleAnchorClick(fileAnchorHref)}
+        >
           {nodeLabel}
         </a>
       )}
