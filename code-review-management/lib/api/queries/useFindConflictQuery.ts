@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
-import { MergeOutputSchema } from "@merge-conflict/utils/merge-github.types";
+import { MergeOutputSchema } from "@/app/api/v1/[owner]/[repo]/pulls/[pull_number]/conflicts/_utils/merge-github.types";
 
 /**
  * Fetches merge conflict resolution data for a specific pull request.

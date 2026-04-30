@@ -35,14 +35,14 @@ export const MergeCommitPayloadSchema = z.object({
 });
 
 export const MergeFileOutputSchema = z.object({
-    filename: z.string(),
-    hasConflict: z.boolean(),
-    contents: z.string(),
+  filename: z.string(),
+  hasConflict: z.boolean(),
+  contents: z.string(),
 });
 
 export const MergeOutputSchema = z.object({
-    targetShaAtMerge: z.string(),
-    mergedFiles: z.array(MergeFileOutputSchema),
+  targetShaAtMerge: z.string(),
+  mergedFiles: z.array(MergeFileOutputSchema),
 });
 
 export const GitHubContentSchema = z.object({
@@ -51,7 +51,7 @@ export const GitHubContentSchema = z.object({
   size: z.number(),
   name: z.string(),
   path: z.string(),
-  content: z.string().optional(), 
+  content: z.string().optional(),
   sha: z.string(),
   url: z.string(),
   git_url: z.string().nullable(),
@@ -62,13 +62,13 @@ export const GitHubContentSchema = z.object({
 export const FileChangeSchema = z.object({
   filename: z.string(),
   status: z.enum([
-    'added', 
-    'removed', 
-    'modified', 
-    'renamed', 
-    'copied', 
-    'changed', 
-    'unchanged'
+    "added",
+    "removed",
+    "modified",
+    "renamed",
+    "copied",
+    "changed",
+    "unchanged",
   ]),
 });
 
