@@ -50,6 +50,7 @@ export default memo(function FileDiffView({
   draftThreadsByLine,
   setDraftThreads,
   isCommitView,
+  isExpandedDefault,
 }: {
   diff: FileData;
   fileMeta?: FileDiff;
@@ -58,6 +59,7 @@ export default memo(function FileDiffView({
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
   isCommitView: boolean;
+  isExpandedDefault: boolean;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
@@ -69,7 +71,7 @@ export default memo(function FileDiffView({
     isCommitView,
   );
 
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
   const fileDiffRef = useRef<HTMLDivElement>(null);
   const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
 

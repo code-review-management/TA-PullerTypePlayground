@@ -13,6 +13,8 @@ import FileDiffView from "../FileDiffView/FileDiffView";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
+const MAX_EXPANDED_DIFFS_ON_LOAD = 30;
+
 export default function DiffListView({
   pull,
   flatFileTree,
@@ -56,7 +58,7 @@ export default function DiffListView({
 
   return (
     <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
-      {diffs.map(({ diff, fileMeta }) => {
+      {diffs.map(({ diff, fileMeta }, idx) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
         const tooltips = (
@@ -79,6 +81,7 @@ export default function DiffListView({
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
               isCommitView={mode !== "pr"}
+              isExpandedDefault={idx < MAX_EXPANDED_DIFFS_ON_LOAD}
             />
           </div>
         );
