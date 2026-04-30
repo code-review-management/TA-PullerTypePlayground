@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { poster } from "../utils/poster";
 import { CreateReviewRequest } from "@/types/request.types";
+import PendingReviewError from "@components/PendingReviewError/PendingReviewError";
 import toast from "react-hot-toast";
 
 /**
@@ -17,6 +18,7 @@ export function useCreateReviewMutation(
   repo: string,
   pullNumber: string,
   resetReview: () => void,
+  externalUrl?: string,
 ) {
   const queryClient = useQueryClient();
 
@@ -38,7 +40,12 @@ export function useCreateReviewMutation(
       resetReview();
     },
     onError: () => {
-      toast.error("Failed to submit review.");
+      toast.error(
+        PendingReviewError({
+          message: "Failed to submit review.",
+          externalUrl,
+        }),
+      );
     },
   });
 }

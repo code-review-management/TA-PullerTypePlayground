@@ -7,6 +7,7 @@ import { poster } from "../utils/poster";
 import { CommentCreateRequest } from "@/types/request.types";
 // TODO: Refactor to use a shared types file so we don't have to import from a UI component.
 import { DraftItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
+import PendingReviewError from "@components/PendingReviewError/PendingReviewError";
 import toast from "react-hot-toast";
 
 /**
@@ -23,6 +24,7 @@ export function useCreateReviewCommentMutation(
   repo: string,
   pullNumber: string,
   draftItem: DraftItem,
+  externalUrl?: string,
 ) {
   const queryClient = useQueryClient();
 
@@ -39,7 +41,12 @@ export function useCreateReviewCommentMutation(
       });
     },
     onError: () => {
-      toast.error("Failed to post comment.");
+      toast.error(
+        PendingReviewError({
+          message: "Failed to post comment.",
+          externalUrl,
+        }),
+      );
     },
   });
 }

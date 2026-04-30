@@ -38,7 +38,13 @@ export default function AddReviewPopover({
 }) {
   const { username, repo_name, id } = useParams<PullParams>();
   const { reviewBody, setReviewBody, reviewType, setReviewType, resetKey, resetReview } = useReviewContext();
-  const { mutate } = useCreateReviewMutation(username, repo_name, id, resetReview);
+  const { mutate } = useCreateReviewMutation(
+    username,
+    repo_name,
+    id,
+    resetReview,
+    pull.html_url,
+  );
   const { data: session } = useSession();
 
   const handleSubmit = () => {
