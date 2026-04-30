@@ -50,4 +50,5 @@
 
 .link {
   color: var(--color-interactive);
+  font-weight: 450;
 }
