@@ -9,6 +9,7 @@ export interface SuggestionDiffEditorProps {
   modifiedCode: string;
   beforeCode: string;
   afterCode: string;
+  hasCarriageReturn: boolean;
   filename: string;
   onCodeChange: (
     newBeforeCode: string, 
@@ -26,7 +27,7 @@ export interface RegionData {
 }
 
 export function SuggestionDiffEditor(props: SuggestionDiffEditorProps) {
-  const { beforeCode, originalCode, modifiedCode, afterCode, filename } = props;
+  const { beforeCode, originalCode, modifiedCode, afterCode, hasCarriageReturn, filename } = props;
   const { handleEditorMount } = useDiffEditorSetup(props);
 
   const buildFullCode = (before: string, middle: string, after: string) => {

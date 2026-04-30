@@ -1,38 +1,24 @@
-import { useRef, useEffect } from 'react';
-import type { editor } from 'monaco-editor';
-import { DiffOnMount } from '@monaco-editor/react';
-import { SuggestionDiffEditorProps, RegionData } from './SuggestionDiffEditor';
-import { getLineCount, calculateExpandedRegions, getLanguageIdFromFilename, vsCodeLightPlus } from './mountUtils';
-import styles from './SuggestionDiffEditor.module.css';
-import { before } from 'node:test';
+import { useRef, useEffect } from "react";
+import type { editor } from "monaco-editor";
+import { DiffOnMount } from "@monaco-editor/react";
+import { SuggestionDiffEditorProps, RegionData } from "./SuggestionDiffEditor";
+import {
+  getLineCount,
+  calculateExpandedRegions,
+  getLanguageIdFromFilename,
+  vsCodeLightPlus,
+} from "./mountUtils";
+import styles from "./SuggestionDiffEditor.module.css";
+import { before } from "node:test";
 
 export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
-  const {
-    beforeCode,
-    originalCode,
-    modifiedCode,
-    afterCode,
-    onCodeChange
-  } = props;
-
-  let hasCarriageReturn;
-
-  // Some would wonder, why go through such lengths to determine who gets to see if there is a carriage return?
-  // Basically, I am scared that even though there is supposed to be a \r, Gemini suggestion didn't add it, so 
-  // the existing code, which may not exist, should determine it
-  if (beforeCode.length > 0){
-    hasCarriageReturn = beforeCode.indexOf('\r') != -1;
-  } else if (afterCode.length > 0){
-    hasCarriageReturn = afterCode.indexOf('\r') != -1;
-  } else if (originalCode.length > 0){
-    hasCarriageReturn = originalCode.indexOf('\r') != -1;
-  } else {
-    hasCarriageReturn = modifiedCode.indexOf('\r') != -1;
-  }
+  const { beforeCode, originalCode, modifiedCode, afterCode, hasCarriageReturn, onCodeChange } =
+    props;
 
   const diffEditorRef = useRef<editor.IStandaloneDiffEditor | null>(null);
   const hoveredLineRef = useRef<number | null>(null);
-  const hoverDecorationsRef = useRef<editor.IEditorDecorationsCollection | null>(null);
+  const hoverDecorationsRef =
+    useRef<editor.IEditorDecorationsCollection | null>(null);
 
   // 1. Store the updater function so React can trigger Monaco to redraw
   const updateDecorationsRef = useRef<(() => void) | null>(null);
@@ -42,14 +28,23 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
     start: 1,
     end: 1,
     originalEnd: 1,
-    afterLines: 0
+    afterLines: 0,
   });
 
-  const latestPropsRef = useRef<RegionData>({ beforeCode, originalCode, modifiedCode, afterCode });
+  const latestPropsRef = useRef<RegionData>({
+    beforeCode,
+    originalCode,
+    modifiedCode,
+    afterCode,
+  });
 
-  // 3. REACT TO PROP CHANGES: Update refs and force Monaco to redraw decorations
   useEffect(() => {
-    latestPropsRef.current = { beforeCode, originalCode, modifiedCode, afterCode };
+    latestPropsRef.current = {
+      beforeCode,
+      originalCode,
+      modifiedCode,
+      afterCode,
+    };
 
     const beforeLines = getLineCount(beforeCode);
     const afterLines = getLineCount(afterCode);
@@ -59,18 +54,17 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       start: startLine,
       end: startLine + getLineCount(modifiedCode) - 1,
       originalEnd: startLine + getLineCount(originalCode) - 1,
-      afterLines: afterLines
+      afterLines: afterLines,
     };
 
-    // If Monaco is mounted, immediately move the visual boundaries
     if (updateDecorationsRef.current) {
       updateDecorationsRef.current();
     }
   }, [beforeCode, originalCode, modifiedCode, afterCode]);
 
   const handleEditorMount: DiffOnMount = (editorInstance, monaco) => {
-    monaco.editor.defineTheme('vs-light-plus', vsCodeLightPlus);
-    monaco.editor.setTheme('vs-light-plus');
+    monaco.editor.defineTheme("vs-light-plus", vsCodeLightPlus);
+    monaco.editor.setTheme("vs-light-plus");
 
     diffEditorRef.current = editorInstance;
 
@@ -81,22 +75,26 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
 
     const originalModel = originalEditor.getModel();
     const modifiedModel = modifiedEditor.getModel();
-    
+
     if (originalModel) {
       monaco.editor.setModelLanguage(originalModel, languageId);
-      if (hasCarriageReturn) originalModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
-      else originalModel.setEOL(monaco.editor.EndOfLineSequence.LF); 
+      if (hasCarriageReturn)
+        originalModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
+      else originalModel.setEOL(monaco.editor.EndOfLineSequence.LF);
     }
-    
+
     if (modifiedModel) {
       monaco.editor.setModelLanguage(modifiedModel, languageId);
-      if (hasCarriageReturn) modifiedModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
+      if (hasCarriageReturn)
+        modifiedModel.setEOL(monaco.editor.EndOfLineSequence.CRLF);
       else modifiedModel.setEOL(monaco.editor.EndOfLineSequence.LF);
     }
 
     const modifiedDecorations = modifiedEditor.createDecorationsCollection();
     const originalDecorations = originalEditor.createDecorationsCollection();
-    hoverDecorationsRef.current = modifiedEditor.createDecorationsCollection([]);
+    hoverDecorationsRef.current = modifiedEditor.createDecorationsCollection(
+      [],
+    );
 
     // 4. Update decorations using the DYNAMIC boundaries in the ref
     const updateDecorations = () => {
@@ -107,8 +105,8 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
 
       const dimOptions = {
         isWholeLine: true,
-        inlineClassName: 'readOnlyTextDim',
-        className: 'readOnlyBackgroundDim',
+        inlineClassName: "readOnlyTextDim",
+        className: "readOnlyBackgroundDim",
       };
 
       const newModifiedDecorations = [];
@@ -124,11 +122,11 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       if (afterLines > 0) {
         newModifiedDecorations.push({
           range: new monaco.Range(end + 1, 1, modifiedTotalLines, 1),
-          options: dimOptions
+          options: dimOptions,
         });
         newOriginalDecorations.push({
           range: new monaco.Range(originalEnd + 1, 1, originalTotalLines, 1),
-          options: dimOptions
+          options: dimOptions,
         });
       }
 
@@ -136,31 +134,30 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       if (end >= start) {
         newModifiedDecorations.push({
           range: new monaco.Range(start, 1, end, 1),
-          options: { isWholeLine: true, className: 'modifiedBlockBg' }
+          options: { isWholeLine: true, className: "modifiedBlockBg" },
         });
         newModifiedDecorations.push({
           range: new monaco.Range(start, 1, start, 1),
-          options: { isWholeLine: true, className: 'modifiedBlockTop' }
+          options: { isWholeLine: true, className: "modifiedBlockTop" },
         });
         newModifiedDecorations.push({
           range: new monaco.Range(end, 1, end, 1),
-          options: { isWholeLine: true, className: 'modifiedBlockBottom' }
+          options: { isWholeLine: true, className: "modifiedBlockBottom" },
         });
       }
 
-      // BORDERS - Original (Left)
       if (originalEnd >= start) {
         newOriginalDecorations.push({
           range: new monaco.Range(start, 1, originalEnd, 1),
-          options: { isWholeLine: true, className: 'originalBlockBg' }
+          options: { isWholeLine: true, className: "originalBlockBg" },
         });
         newOriginalDecorations.push({
           range: new monaco.Range(start, 1, start, 1),
-          options: { isWholeLine: true, className: 'originalBlockTop' }
+          options: { isWholeLine: true, className: "originalBlockTop" },
         });
         newOriginalDecorations.push({
           range: new monaco.Range(originalEnd, 1, originalEnd, 1),
-          options: { isWholeLine: true, className: 'originalBlockBottom' }
+          options: { isWholeLine: true, className: "originalBlockBottom" },
         });
       }
 
@@ -168,18 +165,19 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       originalDecorations.set(newOriginalDecorations);
     };
 
-    // Save it to the ref so React can call it on prop updates
     updateDecorationsRef.current = updateDecorations;
 
     const handleExpandRegionClick = (clickedLine: number) => {
-      const newRegions = calculateExpandedRegions(clickedLine, latestPropsRef.current);
+      const newRegions = calculateExpandedRegions(
+        clickedLine,
+        latestPropsRef.current,
+      );
       if (newRegions) {
-        // Trigger React State Update (which will trigger the useEffect above)
         onCodeChange(
           newRegions.beforeCode,
           newRegions.originalCode,
           newRegions.modifiedCode,
-          newRegions.afterCode
+          newRegions.afterCode,
         );
       }
     };
@@ -236,7 +234,10 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       const position = target.position;
 
       // Ensure we are hovering over the gutter line numbers specifically
-      if (!position || target.type !== monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
+      if (
+        !position ||
+        target.type !== monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS
+      ) {
         clearHover();
         return;
       }
@@ -251,15 +252,17 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
         hoveredLineRef.current = currentLine;
 
         if (isExpandable) {
-          hoverDecorationsRef.current?.set([{
-            range: new monaco.Range(currentLine, 1, currentLine, 1),
-            options: {
-              isWholeLine: true,
-              className: styles['monaco-hover-line-yellow'],
-              // New specific class for the plus button
-              marginClassName: styles['monaco-expand-plus-btn']
-            }
-          }]);
+          hoverDecorationsRef.current?.set([
+            {
+              range: new monaco.Range(currentLine, 1, currentLine, 1),
+              options: {
+                isWholeLine: true,
+                className: styles["monaco-hover-line-yellow"],
+                // New specific class for the plus button
+                marginClassName: styles["monaco-expand-plus-btn"],
+              },
+            },
+          ]);
         } else {
           clearHover(); // Clear it if they hover inside the editable zone
         }
@@ -290,16 +293,16 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
           if (end >= start) {
             const endColumn = model.getLineMaxColumn(end);
             extractedCode = model.getValueInRange(
-              new monaco.Range(start, 1, end, endColumn)
+              new monaco.Range(start, 1, end, endColumn),
             );
           }
 
-          const { beforeCode, originalCode, afterCode } = latestPropsRef.current;
+          const { beforeCode, originalCode, afterCode } =
+            latestPropsRef.current;
           onCodeChange(beforeCode, originalCode, extractedCode, afterCode);
         }
       }
     });
-
 
     updateDecorations();
     const startLine = boundariesRef.current.start;

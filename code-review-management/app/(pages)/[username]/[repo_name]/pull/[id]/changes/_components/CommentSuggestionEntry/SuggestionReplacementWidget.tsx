@@ -83,8 +83,8 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   } = useFileContentQuery(username, repo_name, id, activePath);
 
   const { deletionContent, additionContent, relativeStartLine } = suggestion;
-  const adjustedStartLine = startLine + relativeStartLine;
-  const endLine: number = startLine + relativeStartLine + deletionContent.split('\n').length;
+  const adjustedStartLine = startLine + relativeStartLine - 1;
+  const endLine: number = adjustedStartLine + deletionContent.split('\n').length;
   return (
     <>
       {moduleExpanded && (

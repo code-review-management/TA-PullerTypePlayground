@@ -42,7 +42,7 @@ export function SuggestionModuleContent({
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split("\n");
-    let before = lines.slice(0, replaceStartLine - 1).join("\n");
+    let before = lines.slice(0, replaceStartLine).join("\n");
     return before;
   });
 
@@ -51,9 +51,10 @@ export function SuggestionModuleContent({
     return lines.slice(replaceEndLine).join("\n");
   });
 
-  // 2. Initialize the original/modified states with the incoming props
   const [originalCode, setOriginalCode] = useState(deletionContent);
   const [modifiedCode, setModifiedCode] = useState(additionContent);
+
+  const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") == -1;
 
   // 3. Unified callback for both typing AND expanding regions
   const handleEditorChange = (
@@ -84,10 +85,19 @@ export function SuggestionModuleContent({
 
     const beforeCodeLength: number = beforeCode.split("\n").length;
     const relativeLineLocation: number = beforeCodeLength + 1 - threadLine;
+
+    const cleanedOriginalCode = hasCarriageReturn
+      ? originalCode.replace(/\r?\n/g, "\r\n")
+      : originalCode.replace(/\r/g, "");
+
+    const cleanedModifiedCode = hasCarriageReturn
+      ? modifiedCode.replace(/\r?\n/g, "\r\n")
+      : modifiedCode.replace(/\r/g, "");
+
     const suggestionData: SuggestionCommentUpdateRequest = {
       githubCommentId: commentID,
-      deletionContent: originalCode,
-      additionContent: modifiedCode,
+      deletionContent: cleanedOriginalCode,
+      additionContent: cleanedModifiedCode,
       relativeLineLocation: relativeLineLocation,
     };
 
@@ -97,13 +107,30 @@ export function SuggestionModuleContent({
   const onCommitClicked = () => {
     const beforeCodeLength: number = beforeCode.split("\n").length;
     const relativeLineLocation: number = beforeCodeLength + 1 - threadLine;
+
+    const cleanedOriginalCode = hasCarriageReturn
+      ? originalCode.replace(/\r?\n/g, "\r\n")
+      : originalCode.replace(/\r/g, "");
+
+    const cleanedModifiedCode = hasCarriageReturn
+      ? modifiedCode.replace(/\r?\n/g, "\r\n")
+      : modifiedCode.replace(/\r/g, "");
+
+    const cleanedBeforeCode = hasCarriageReturn
+      ? beforeCode.replace(/\r?\n/g, "\r\n")
+      : beforeCode.replace(/\r/g, "");
+
+    const cleanedAfterCode = hasCarriageReturn
+      ? afterCode.replace(/\r?\n/g, "\r\n")
+      : afterCode.replace(/\r/g, "");
+
     const suggestionData: SuggestionCommentUpdateRequest = {
       githubCommentId: commentID,
-      deletionContent: originalCode,
-      additionContent: modifiedCode,
+      deletionContent: cleanedOriginalCode,
+      additionContent: cleanedModifiedCode,
       relativeLineLocation: relativeLineLocation,
     };
-    const fileContent = beforeCode + modifiedCode + afterCode;
+    const fileContent = cleanedBeforeCode + cleanedModifiedCode + cleanedAfterCode;
 
     commitMutation(
       {
@@ -151,6 +178,7 @@ export function SuggestionModuleContent({
           modifiedCode={modifiedCode}
           beforeCode={beforeCode}
           afterCode={afterCode}
+          hasCarriageReturn={hasCarriageReturn}
           filename={filename}
           onCodeChange={handleEditorChange}
         />
