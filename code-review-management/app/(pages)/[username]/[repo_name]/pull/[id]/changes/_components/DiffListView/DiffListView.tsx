@@ -56,6 +56,19 @@ export default function DiffListView({
     );
   }
 
+  // Compare two commits API returns a maximum of 300 file objects. This is a
+  // limitation that can break the UI, so show an error if react-diff-view
+  // parses more than 300 files from the diff-string.
+  if (mode === "cumulative-commit" && diffs.length > 300) {
+    return (
+      <ErrorMessage
+        error={null}
+        resource="cumulative-diff"
+        externalHref={externalHref}
+      />
+    );
+  }
+
   return (
     <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
       {diffs.map(({ diff, fileMeta }, idx) => {
