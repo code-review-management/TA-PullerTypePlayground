@@ -6,7 +6,7 @@ import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
-import { getActivePath } from "../../_utils/diff-utils";
+import { getActivePath, fixParsedDiffPaths } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
@@ -33,7 +33,10 @@ export default function DiffListView({
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
+
+    fixParsedDiffPaths(diffString, parsedDiffs);
     orderParsedDiffs(parsedDiffs, flatFileTree);
+
     // Ordered `parsedDiffs` array has 1-1 matching with ordered `flatFileTree` array.
     return parsedDiffs.map((diff, index) => ({
       diff,
