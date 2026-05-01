@@ -13,12 +13,10 @@ export default function TabFilterRow({
   activeTab,
   setActiveTab,
   pullsQueries,
-  repoSet,
 }: {
   activeTab: DashboardTabFilter;
   setActiveTab: Dispatch<SetStateAction<DashboardTabFilter>>;
   pullsQueries: Map<Tab, UseInfiniteQueryResult<InfiniteData<PullRequestV2>>>;
-  repoSet: Set<string>;
 }) {
   const filters = getAllTabFilters();
 
@@ -27,11 +25,10 @@ export default function TabFilterRow({
       {filters.map((filterObj) => (
         <TabFilter
           key={filterObj.filter_name}
-          activeTab={activeTab}
-          filterObj={filterObj}
-          pullsQueries={pullsQueries}
           onClick={() => setActiveTab(filterObj)}
-          repoSet={repoSet}
+          filterObj={filterObj}
+          activeTab={activeTab}
+          pullsQueries={pullsQueries}
         />
       ))}
     </div>

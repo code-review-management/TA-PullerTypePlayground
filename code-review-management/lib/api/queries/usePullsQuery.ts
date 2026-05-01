@@ -61,8 +61,28 @@ export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
     ],
     [
       "authored",
-      usePullsQuery(getFilter("authored").filter_string, activeTab === "authored"),
+      usePullsQuery(
+        getFilter("authored").filter_string,
+        activeTab === "authored",
+      ),
     ],
-    ["draft", usePullsQuery(getFilter("draft").filter_string, activeTab === "draft")],
+    [
+      "assigned",
+      usePullsQuery(
+        getFilter("assigned").filter_string,
+        activeTab === "assigned",
+      ),
+    ],
+    [
+      "merged",
+      usePullsQuery(
+        getFilter("merged").filter_string,
+        activeTab === "merged",
+      ),
+    ],
+    [
+      "draft",
+      usePullsQuery(getFilter("draft").filter_string, activeTab === "draft"),
+    ],
   ]);
 }

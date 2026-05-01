@@ -51,40 +51,33 @@ export default function Dashboard() {
         selectedRepos={selectedRepos}
         setSelectedRepos={setSelectedRepos}
       />
-      {isPending ? (
-        "Loading dashboard..."
-      ) : (
-        <div className={styles.pageBody}>
-          <TabFilterRow
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            pullsQueries={pullsQueries}
-            repoSet={repoSet}
-          />
-          <DashboardSearchBar
-            searchString={searchString}
-            setSearchString={setSearchString}
-            appliedSearchString={appliedSearchString}
-            setAppliedSearchString={setAppliedSearchString}
-          />
-          <DashboardGrid
-            pulls={processedPulls}
-          />
-          {hasNextPage &&
-            (isFetching ? (
-              <div className={styles.loadingSpinnerWrapper}>
-                <LoadingSpinner />
-              </div>
-            ) : (
-              <button
-                onClick={() => fetchNextPage()}
-                className={styles.moreButton}
-              >
-                Load more
-              </button>
-            ))}
-        </div>
-      )}
+      <div className={styles.pageBody}>
+        <TabFilterRow
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          pullsQueries={pullsQueries}
+        />
+        <DashboardSearchBar
+          searchString={searchString}
+          setSearchString={setSearchString}
+          appliedSearchString={appliedSearchString}
+          setAppliedSearchString={setAppliedSearchString}
+        />
+        <DashboardGrid pulls={processedPulls} />
+        {(isPending || hasNextPage) &&
+          (isFetching ? (
+            <div className={styles.loadingSpinnerWrapper}>
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <button
+              onClick={() => fetchNextPage()}
+              className={styles.moreButton}
+            >
+              Load more
+            </button>
+          ))}
+      </div>
     </div>
   );
 }

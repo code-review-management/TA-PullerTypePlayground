@@ -17,6 +17,8 @@ const TAB_FILTERS: Tab[] = [
   "ready_for_review",
   "needs_your_review",
   "authored",
+  "assigned",
+  "merged",
   "draft",
 ];
 
