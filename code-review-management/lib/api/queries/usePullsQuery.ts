@@ -46,10 +46,10 @@ export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
   return new Map<Tab, PullsQueryResult>([
     ["all", usePullsQuery(undefined, activeTab === "all")],
     [
-      "ready_for_review",
+      "requires_review",
       usePullsQuery(
-        getFilter("ready_for_review").filter_string,
-        activeTab === "ready_for_review",
+        getFilter("requires_review").filter_string,
+        activeTab === "requires_review",
       ),
     ],
     [

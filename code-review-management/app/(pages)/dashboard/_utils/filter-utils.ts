@@ -1,6 +1,6 @@
 export const FILTERS = [
   "all",
-  "ready_for_review",
+  "requires_review",
   "needs_your_review",
   "reviewed_by_you",
   "authored",
@@ -14,7 +14,7 @@ export type Tab = (typeof FILTERS)[number];
 
 const TAB_FILTERS: Tab[] = [
   "all",
-  "ready_for_review",
+  "requires_review",
   "needs_your_review",
   "authored",
   "assigned",
@@ -24,7 +24,7 @@ const TAB_FILTERS: Tab[] = [
 
 const TAB_NAMES: Record<Tab, string> = {
   all: "All",
-  ready_for_review: "Ready for review",
+  requires_review: "Requires review",
   needs_your_review: "Needs your review",
   reviewed_by_you: "Reviewed by you",
   authored: "Opened by you",
@@ -36,7 +36,7 @@ const TAB_NAMES: Record<Tab, string> = {
 
 const FILTER_STRINGS: Record<Tab, string[]> = {
   all: [""],
-  ready_for_review: ["open", "draft=1", "requires_review"],
+  requires_review: ["open", "draft=1", "requires_review"],
   needs_your_review: ["open", "draft=1", "needs_review"],
   reviewed_by_you: ["reviewed"],
   authored: ["authored"],
