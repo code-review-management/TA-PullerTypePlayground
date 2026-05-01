@@ -12,8 +12,14 @@ import styles from "./SuggestionDiffEditor.module.css";
 import { before } from "node:test";
 
 export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
-  const { beforeCode, originalCode, modifiedCode, afterCode, hasCarriageReturn, onCodeChange } =
-    props;
+  const {
+    beforeCode,
+    originalCode,
+    modifiedCode,
+    afterCode,
+    hasCarriageReturn,
+    onCodeChange,
+  } = props;
 
   const diffEditorRef = useRef<editor.IStandaloneDiffEditor | null>(null);
   const hoveredLineRef = useRef<number | null>(null);
@@ -192,28 +198,55 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       }
     });
 
-    // 5. Use the REF for read-only boundary checks instead of static closures
     modifiedEditor.onKeyDown((e) => {
-      const position = modifiedEditor.getPosition();
-      if (!position) return;
       const { start, end } = boundariesRef.current;
+      const selections = modifiedEditor.getSelections();
+      const position = modifiedEditor.getPosition();
 
-      if (
-        e.keyCode === monaco.KeyCode.Backspace &&
-        position.lineNumber === start &&
-        position.column === 1
-      ) {
-        e.preventDefault();
-        e.stopPropagation();
+      if (!selections || !position) return;
+      const isSelectionCrossingBoundaries = selections.some((selection) => {
+        return (
+          selection.startLineNumber < start || selection.endLineNumber > end
+        );
+      });
+
+      const isSelectionEmpty = selections.every((sel) => sel.isEmpty());
+      if (!isSelectionEmpty && isSelectionCrossingBoundaries) {
+        const isModifyingKey =
+          e.keyCode === monaco.KeyCode.Backspace ||
+          e.keyCode === monaco.KeyCode.Delete ||
+          e.keyCode === monaco.KeyCode.Enter ||
+          e.keyCode === monaco.KeyCode.Space ||
+          (e.keyCode >= monaco.KeyCode.KeyA &&
+            e.keyCode <= monaco.KeyCode.KeyZ) ||
+          (e.keyCode >= monaco.KeyCode.Digit0 &&
+            e.keyCode <= monaco.KeyCode.Digit9);
+
+        if (isModifyingKey) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
       }
 
-      if (
-        e.keyCode === monaco.KeyCode.Delete &&
-        position.lineNumber === end &&
-        position.column === modifiedEditor.getModel()?.getLineMaxColumn(end)
-      ) {
-        e.preventDefault();
-        e.stopPropagation();
+      if (isSelectionEmpty) {
+        if (
+          e.keyCode === monaco.KeyCode.Backspace &&
+          position.lineNumber === start &&
+          position.column === 1
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+
+        if (
+          e.keyCode === monaco.KeyCode.Delete &&
+          position.lineNumber === end &&
+          position.column === modifiedEditor.getModel()?.getLineMaxColumn(end)
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
       }
     });
 

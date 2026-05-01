@@ -25,34 +25,37 @@
     background-color: green;
 }
 
-/* Container for the new header */
 .formalHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: var(--spacer-12);
   padding: var(--spacer-8) var(--spacer-12);
-  background-color: var(--background-secondary-light); /* Light GitHub-style gray */
+  background-color: var(--background-secondary-light);
   border-bottom: 1px solid var(--border-gray);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   font-size: var(--font-size-label);
+  flex-wrap: wrap; /* Allows items to wrap nicely on extremely tiny screens */
 }
 
 .headerTitle {
   font-weight: 600;
   font-size: 14px;
   color: #24292f;
+  white-space: nowrap;
 }
 
 .buttonContainer{
-  width: 40%;
   display: flex;
+  align-items: center;
+  gap: var(--spacer-12);
+  margin-left: auto; 
 }
 
 /* The Segmented Control Toggle */
 .toggleGroup {
-  margin-left: auto;
-  margin-right: var(--spacer-12);
+  /* Removed complex auto margins */
+  margin: 0;
   display: flex;
   background-color: #ebecf0;
   border-radius: 6px;
@@ -69,17 +72,17 @@
   color: #57606a;
   border-radius: var(--border-radius);
   transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
 }
 
 .toggleButton:hover {
   color: #24292f;
 }
 
-/* The active state for the clicked button */
 .toggleButton.activeTab {
   background-color: #ffffff;
   color: #24292f;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Gives it a popped-out look */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .expandButton {
@@ -89,8 +92,9 @@
   border: 1px solid var(--border-gray);
   background-color: var(--background-light);
   padding: var(--spacer-4) var(--spacer-8);
-  margin-right: auto;
-  margin-left: var(--spacer-12)
+  /* Removed margins, handled by parent gap */
+  margin: 0;
+  white-space: nowrap;
 }
 
 .modalBackdrop {
@@ -124,4 +128,30 @@
 
 .modalBody {
   overflow: hidden;
+}
+
+.commitedContainer {
+  margin: 0; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--spacer-16);
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+  padding: 2px var(--spacer-8);
+  font-size: var(--font-size-label);
+  white-space: nowrap;
+}
+
+.outdatedContainer {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--spacer-16);
+  border: 1px solid var(--color-outdated);
+  color: var(--color-outdated);
+  padding: 2px var(--spacer-8);
+  font-size: var(--font-size-label);
+  white-space: nowrap;
 }

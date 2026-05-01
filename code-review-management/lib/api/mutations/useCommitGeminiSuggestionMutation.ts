@@ -25,11 +25,11 @@ export function useCommitGeminiSuggestionMutation(
         `/api/v1/${owner}/${repo}/pulls/${pullNumber}/suggest/commit`,
         JSON.stringify(suggestionData),
       ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ["review-comments", owner, repo, pullNumber],
       });
-      toast.success("Suggestion successfully commited!.");
+      toast.success("Suggestion successfully commited!");
     },
     onError: () => {
       toast.error("Failed to commit suggestion.");

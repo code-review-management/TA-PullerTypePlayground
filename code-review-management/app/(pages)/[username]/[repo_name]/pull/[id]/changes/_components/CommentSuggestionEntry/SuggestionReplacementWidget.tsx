@@ -1,6 +1,7 @@
-import React, { ReactNode, useMemo, Fragment, useState } from 'react';
+import React, { ReactNode, useMemo, Fragment, useState, useEffect } from 'react';
 import refractor from 'refractor';
 import { SuggestiveComment } from "./suggestionParser";
+import { IsSuggestionOutdated } from './suggestionValidator';
 import { SuggestionModuleContent } from '../SuggestionModulePopup/SuggestionModulePopup';
 import styles from "./SuggestionReplacementWidget.module.css"
 import { getLanguage } from '../../_utils/diff-utils';
@@ -58,6 +59,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const { username, repo_name, id } = useParams<PullParams>();
   const [activeTab, setActiveTab] = useState<'replace' | 'insert'>('insert');
   const [moduleExpanded, setModuleExpanded] = useState(false);
+  const [outdated, setOutdated] = useState(false);
 
   const deletionNodes = useMemo<ASTNode[]>(() => {
     try {
@@ -77,6 +79,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
 
   const {
     data: fileContent,
+    isSuccess,
     isLoading,
     isError,
     error
@@ -85,6 +88,12 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const { deletionContent, additionContent, relativeStartLine } = suggestion;
   const adjustedStartLine = startLine + relativeStartLine - 1;
   const endLine: number = adjustedStartLine + deletionContent.split('\n').length;
+
+  useEffect(() => {
+    if (isSuccess && fileContent) {
+      setOutdated(IsSuggestionOutdated(fileContent, suggestion.deletionContent, adjustedStartLine,));
+    }
+  }, [isSuccess, fileContent]);
   return (
     <>
       {moduleExpanded && (
@@ -125,8 +134,20 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
         {/* 2. The Formal Header with Toggle Buttons */}
         <div className={styles.formalHeader}>
           <div className={styles.headerTitle}>
-            Suggested Change {suggestion.isCommited ? "(Commited)" : "(AI can make mistakes)"}
+            Suggested Change {(!suggestion.isCommited && !outdated) && "(AI can make mistakes)"}
           </div>
+          
+          {suggestion.isCommited && (
+            <div className={styles.commitedContainer}>
+              Commited
+            </div>
+          )}
+
+          {(!suggestion.isCommited && outdated) && (
+            <div className={styles.outdatedContainer}>
+              Outdated
+            </div>
+          )}
 
           <div className={styles.buttonContainer}>
             <div className={styles.toggleGroup}>
