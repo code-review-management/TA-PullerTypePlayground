@@ -28,7 +28,7 @@ export async function generateSuggestion(
       systemPrompt,
       userPrompt,
     );
-    commentGeminiSuggestion(
+    await commentGeminiSuggestion(
       ocktokit,
       owner,
       repo,
