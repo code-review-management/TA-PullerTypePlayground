@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { handleAnchorClick } from "../../_utils/scroll-utils";
 import styles from "./InlineThreadHeader.module.css";
 
 /**
@@ -28,7 +29,11 @@ export default function InlineThreadHeader({
   return (
     <>
       {anchorHref ? (
-        <a href={anchorHref} className={styles.headerAnchor}>
+        <a
+          href={anchorHref}
+          className={styles.headerAnchor}
+          onClick={() => handleAnchorClick(anchorHref)}
+        >
           {threadHeader}
         </a>
       ) : (
