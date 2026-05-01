@@ -30,11 +30,7 @@ export async function commentGeminiSuggestion(
   const relativeDiff = deleteRange.minInclusiveLine - thread.line;
   const tag = `<!--[Gemini Suggestion#HLTP][${relativeDiff}]-->`;
   const { insertionCode } = additionBlock;
-  const body = convertIntoMarkdownSuggestion(
-    tag,
-    deletionBlock,
-    insertionCode,
-  );
+  const body = convertIntoMarkdownSuggestion(tag, deletionBlock, insertionCode);
 
   try {
     const response = await octokit.rest.pulls.createReplyForReviewComment({
@@ -57,7 +53,8 @@ function convertIntoMarkdownSuggestion(
   insertionBlock: string,
   taken: boolean = false,
 ): string {
-  const header: string = "Gemini Suggestion (" + (taken ? "Commited" : "AI can make mistakes") + ")";
+  const header: string =
+    "Gemini Suggestion (" + (taken ? "Commited" : "AI can make mistakes") + ")";
   const formatDiffLines = (text: string, prefix: string): string => {
     return text
       .trimEnd()
@@ -89,26 +86,35 @@ export async function updateGeminiComment(
   repo: string,
   suggestionData: SuggestionCommentUpdateRequest,
   taken?: boolean,
-): Promise<Comment | null>
-{
-  const { githubCommentId, deletionContent, additionContent, relativeLineLocation} = suggestionData;
+): Promise<Comment | null> {
+  const {
+    githubCommentId,
+    deletionContent,
+    additionContent,
+    relativeLineLocation,
+  } = suggestionData;
   if (!taken) taken = false;
   const takenTag = taken ? "[Commited]" : "";
   const tag = `<!--[Gemini Suggestion#HLTP][${relativeLineLocation}]${takenTag}-->`;
-  const body = convertIntoMarkdownSuggestion(tag, deletionContent, additionContent, taken);
+  const body = convertIntoMarkdownSuggestion(
+    tag,
+    deletionContent,
+    additionContent,
+    taken,
+  );
 
   try {
-    const { data: contents} = await octokit.rest.pulls.updateReviewComment({
+    const { data: contents } = await octokit.rest.pulls.updateReviewComment({
       owner: owner,
       repo: repo,
       comment_id: githubCommentId,
-      body: body
+      body: body,
     });
 
     const filteredResponse: Comment = CommentSchema.parse(contents);
     return filteredResponse;
   } catch (error) {
     console.log("Error occured when updating gemini suggestion: " + error);
-    return null
+    return null;
   }
 }

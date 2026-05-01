@@ -12,10 +12,14 @@ export type ThreadSuggestionRequest = z.infer<
 export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
 export type SuggestionCommentUpdateRequest = z.infer<typeof SuggestionCommentUpdateRequestSchema>
 export type SuggestionCommitRequest = z.infer<typeof SuggestionCommitRequestShema>;
+export type CreateIssueCommentRequest = z.infer<
+  typeof CreateIssueCommentRequestSchema
+>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
 const reviewEvent = ["APPROVE", "REQUEST_CHANGES", "COMMENT"] as const;
+const subjectType = ["line", "file"] as const;
 
 export const CommentCreateRequestSchema = z
   .object({
@@ -27,6 +31,7 @@ export const CommentCreateRequestSchema = z
     start_line: z.number().optional(),
     start_side: z.enum(side).optional(),
     in_reply_to: z.number().optional(),
+    subject_type: z.enum(subjectType).optional(),
   })
   .refine(
     (data) =>
@@ -34,15 +39,16 @@ export const CommentCreateRequestSchema = z
         data.line != null &&
         data.start_line != null &&
         data.start_side != null &&
-        data.in_reply_to == null) ||
+        data.in_reply_to == null &&
+        data.subject_type == "line") ||
       (data.side == null &&
         data.line == null &&
         data.start_line == null &&
         data.start_side == null &&
-        data.in_reply_to != null),
+        (data.in_reply_to != null || data.subject_type == "file")),
     {
       message:
-        "Must provide either comment location information OR an in reply to ID.",
+        "Must provide either comment location information OR an in reply to ID. Do not provide comment location information if subject type is file.",
     },
   );
 
@@ -125,3 +131,6 @@ export const SuggestionCommitRequestShema = z.object({
   content: z.string(),
   suggestionData: SuggestionCommentUpdateRequestSchema,
 })
+export const CreateIssueCommentRequestSchema = z.object({
+  body: z.string(),
+});

@@ -9,12 +9,16 @@ import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[i
 export default function DashboardGrid({
   pulls,
   searchString,
+  repoSet,
 }: {
   pulls: PullRequest[];
   searchString: string;
+  repoSet: Set<string>;
 }) {
-  const filteredPulls = pulls.filter((pull) =>
-    pull.title.toLowerCase().includes(searchString.toLowerCase()),
+  const filteredPulls = pulls.filter(
+    (pull) =>
+      pull.title.toLowerCase().includes(searchString.toLowerCase()) &&
+      repoSet.has(`${pull.repository_owner}/${pull.repository_name}`),
   );
 
   return (
@@ -59,7 +63,7 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
       <td className={`${styles.rowTitle} ${styles.titleWidth}`}>
         <Link
           className={styles.rowTitleTop}
-          href={`${pull.base?.repo.full_name}/pull/${pull.number}`}
+          href={`${pull.repository_owner}/${pull.repository_name}/pull/${pull.number}`}
         >
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>

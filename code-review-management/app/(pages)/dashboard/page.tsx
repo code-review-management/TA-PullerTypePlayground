@@ -4,29 +4,36 @@ import IconTooltip from "../_components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
 import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
-import { useEffect, useState } from "react";
-import { PullRequest } from "@/types/github.types";
+import { useState } from "react";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
+import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
+import { sortPullsByUpdated } from "./_utils/pulls-utils";
+import { useLocalStorage } from "usehooks-ts";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 
 export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     usePullsQuery();
+  useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
+
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
+  const [selectedRepos, setSelectedRepos] = useLocalStorage<string[]>(
+    "selectedRepos",
+    [],
+  );
+  const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
-  const pulls = data?.pages.flatMap((page) => page.data) as PullRequest[];
-
-  // Auto fetch all remaining pulls if a search string is applied
-  useEffect(() => {
-    if (appliedSearchString.length !== 0 && hasNextPage && !isFetching) {
-      fetchNextPage();
-    }
-  }, [appliedSearchString, hasNextPage, isFetching, fetchNextPage]);
+  const pulls = data?.pages.flatMap((page) => page.data) ?? [];
+  const sortedPulls = sortPullsByUpdated(pulls);
 
   return (
     <div className={styles.page}>
       <IconTooltip id="user-icon-tooltip" />
-      <div className={styles.repoSideBar} />
+      <DashboardSidebar
+        selectedRepos={selectedRepos}
+        setSelectedRepos={setSelectedRepos}
+      />
       {isPending ? (
         "Loading dashboard..."
       ) : (
@@ -37,7 +44,11 @@ export default function Dashboard() {
             appliedSearchString={appliedSearchString}
             setAppliedSearchString={setAppliedSearchString}
           />
-          <DashboardGrid pulls={pulls} searchString={appliedSearchString} />
+          <DashboardGrid
+            pulls={sortedPulls}
+            searchString={appliedSearchString}
+            repoSet={repoSet}
+          />
           {hasNextPage &&
             (isFetching ? (
               <div className={styles.loadingSpinnerWrapper}>

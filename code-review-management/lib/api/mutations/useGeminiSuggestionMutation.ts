@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { poster } from "@/lib/api/utils/poster";
 import { ThreadSuggestionRequest } from "@/types/request.types";
+import toast from "react-hot-toast";
 
 /**
  * Triggers a Gemini pull request suggestion.
@@ -30,6 +31,9 @@ export function useGeminiSuggestionMutation(
       await queryClient.invalidateQueries({
         queryKey: ["review-comments", owner, repo, pullNumber],
       });
+    },
+    onError: () => {
+      toast.error("Failed to post comment.");
     },
   });
 }

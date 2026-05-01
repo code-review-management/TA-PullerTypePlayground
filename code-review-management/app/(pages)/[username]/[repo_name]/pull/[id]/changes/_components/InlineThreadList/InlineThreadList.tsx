@@ -26,10 +26,9 @@ export default function InlineThreadList({
 }: {
   change: ChangeData;
   publishedThreadsBySide: { left: PublishedThreadItem[]; right: PublishedThreadItem[] };
-  draftThreadsBySide: { left: DraftThreadItem | null; right: DraftThreadItem | null };
+  draftThreadsBySide: { left?: DraftThreadItem | null; right?: DraftThreadItem | null };
   activePath: string;
-}) {  
-  console.log("Inside thread inline: " + change.type)
+}) {
   if (change.type === "delete") {
     return (
       <ThreadList
@@ -84,7 +83,7 @@ export function ThreadList({
   activePath,
 }: {
   publishedThreads: PublishedThreadItem[];
-  draftThread: DraftThreadItem | null;
+  draftThread?: DraftThreadItem | null;
   activePath: string;
 }) {
   console.log("Inside thread list. Published thread items");

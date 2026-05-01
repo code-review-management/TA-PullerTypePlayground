@@ -19,9 +19,11 @@ const INDENT_PADDING = 16;
 export default function FileTreeRow({
   node,
   depth = 0,
+  filters,
 }: {
   node: FileTreeNode;
   depth?: number;
+  filters: Set<FileTreeNode> | null;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   const nodeLabel = (
@@ -32,9 +34,10 @@ export default function FileTreeRow({
       onFolderClick={() => setIsExpanded((prev) => !prev)}
     />
   );
+  const isFilteredOut = filters && !filters.has(node);
 
   return (
-    <>
+    <div className={isFilteredOut ? styles.hidden : ""}>
       {node.type === "directory" ? (
         nodeLabel
       ) : (
@@ -44,11 +47,15 @@ export default function FileTreeRow({
       )}
       {node.type === "directory" &&
         node.children.map((child) => (
-          <div key={child.name} className={!isExpanded ? styles.collapsed : ""}>
-            <FileTreeRow node={child} depth={depth + 1} />
+          <div
+            key={child.name}
+            className={!isExpanded ? styles.collapsed : ""}
+            data-testid="directory-child"
+          >
+            <FileTreeRow node={child} depth={depth + 1} filters={filters} />
           </div>
         ))}
-    </>
+    </div>
   );
 }
 

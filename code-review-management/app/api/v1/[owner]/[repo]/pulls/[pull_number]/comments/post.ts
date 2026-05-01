@@ -30,7 +30,7 @@ export async function _post(
 
   // Validate token
   if (token == null || token.accessToken == null || token.githubId == null) {
-    console.log("Unauthorized request at ${new Date()}");
+    console.log(`Unauthorized request at ${new Date()}`);
     return new Response(null, { status: 401 });
   }
 
@@ -51,6 +51,7 @@ export async function _post(
     start_line,
     start_side,
     in_reply_to,
+    subject_type,
   } = reqArgs.data;
 
   const octokit: Octokit = new Octokit({ auth: token.accessToken });
@@ -68,6 +69,7 @@ export async function _post(
       start_line: start_line,
       start_side: start_side,
       in_reply_to: in_reply_to,
+      subject_type: subject_type == "file" ? "file" : undefined,
     });
 
     // Filter response

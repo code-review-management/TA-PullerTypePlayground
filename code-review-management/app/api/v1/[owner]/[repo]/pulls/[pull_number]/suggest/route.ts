@@ -58,8 +58,11 @@ export async function POST(req: Request, context: RouteContext) {
       castedPullNumber,
     );
 
-    return new Response("", {
+    return new Response(JSON.stringify({ message: "Success" }), {
       status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   } catch (error) {
     if (error instanceof RequestError && error.status) {

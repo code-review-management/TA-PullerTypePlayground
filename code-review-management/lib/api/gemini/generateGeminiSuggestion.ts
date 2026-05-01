@@ -4,7 +4,10 @@ import {
   CodeEditResponseSchema,
 } from "@/types/request.types";
 
-//We use gemini schema instead of zod because I swear zod is broken. The outputs were not consistent
+//Our gemAI model. It gets initialized using the API key. We cache it so we don't need to initialize it every call
+let genAI: GoogleGenerativeAI;
+
+// Gemini Schema. This is the output gemini is required to send (in theory, I am not sure how strict it adheres to this lol)
 const geminiCodeEditSchema: Schema = {
   type: SchemaType.OBJECT,
   properties: {
@@ -27,6 +30,12 @@ const geminiCodeEditSchema: Schema = {
   required: ["deleteRange", "additionBlock"],
 };
 
+/**
+ * Function calls the model with the aproprotate system and user prompt
+ * @param systemPrompt 
+ * @param userPrompt 
+ * @returns returns the suggestion with the specified schema. Noteably, it requires a range for deletion and the full code for insertion
+ */
 export async function callGeminiToGenerateSuggestion(
   systemPrompt: string,
   userPrompt: string,

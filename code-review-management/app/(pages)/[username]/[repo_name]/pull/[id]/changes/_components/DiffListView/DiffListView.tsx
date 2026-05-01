@@ -1,11 +1,10 @@
-import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { parseDiff } from "react-diff-view";
 import { useDraftThreadsContext } from "../../_contexts/DraftThreadsContext";
-import { useFileDiffsQuery } from "@/lib/api/queries/useFileDiffsQuery";
+import { useActiveDiffs } from "../../_hooks/useActiveDiffs";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
-import { FileDiff } from "@/types/github.types";
-import { PullParams } from "@/types/routing.types";
+import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath } from "../../_utils/diff-utils";
 import { orderParsedDiffs } from "../../_utils/filetree-utils";
@@ -14,19 +13,19 @@ import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
 
 export default function DiffListView({
+  pull,
   flatFileTree,
   publishedThreads,
+  sha,
 }: {
+  pull: PullRequest;
   flatFileTree: FileDiff[];
   publishedThreads: PublishedThreads;
+  sha: string | null;
 }) {
-  const { username, repo_name, id } = useParams<PullParams>();
   const { draftThreads, setDraftThreads } = useDraftThreadsContext();
-  const {
-    data: diffString,
-    isPending,
-    isError,
-  } = useFileDiffsQuery(username, repo_name, id);
+  const { mode } = useChangesViewMode();
+  const { diffString, isPending, isError } = useActiveDiffs(pull);
 
   const diffs = useMemo(() => {
     if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
@@ -48,18 +47,23 @@ export default function DiffListView({
   if (isPending) return <div>Loading diffs...</div>;
   if (isError) return <div>Failed to load diffs.</div>;
 
-return (
-    <div className={styles.diffListView}>
-      {/* 1. Add 'index' to the map callback */}
-      {diffs.map(({ diff, fileMeta }, index) => {
+  return (
+    <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
+      {diffs.map(({ diff, fileMeta }) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
         const diffId = diff.oldPath + "-" + diff.newPath;
+        const tooltips = (
+          <>
+            <IconTooltip id={`tooltip-collapse-diff-${diffId}`} />
+            <IconTooltip id={`tooltip-file-comment-${diffId}`} />
+            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
+            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
+          </>
+        );
 
         return (
           <div key={diffId}>
-            <IconTooltip id={`collapse-expand-diff-${diffId}`} />
-            <IconTooltip id={`tooltip-copy-${diff.oldPath}`} />
-            <IconTooltip id={`tooltip-copy-${diff.newPath}`} />
+            {tooltips}
             <FileDiffView
               diff={diff}
               fileMeta={fileMeta}
@@ -67,6 +71,7 @@ return (
               publishedThreads={publishedThreadsByDiff[activePath]}
               draftThreadsByLine={draftThreads[activePath]}
               setDraftThreads={setDraftThreads}
+              isCommitView={mode !== "pr"}
             />
           </div>
         );
