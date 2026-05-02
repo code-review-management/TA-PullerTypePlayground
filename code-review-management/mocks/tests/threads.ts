@@ -1,4 +1,4 @@
-import { PublishedThreadItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
+import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
 
 export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
