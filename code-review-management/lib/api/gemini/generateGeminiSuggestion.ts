@@ -14,7 +14,7 @@ const geminiCodeEditSchema: Schema = {
     deleteRange: {
       type: SchemaType.OBJECT,
       properties: {
-        minInclusiveLine: { type: SchemaType.INTEGER }, 
+        minInclusiveLine: { type: SchemaType.INTEGER },
         maxExclusiveLine: { type: SchemaType.INTEGER },
       },
       required: ["minInclusiveLine", "maxExclusiveLine"],
@@ -32,8 +32,8 @@ const geminiCodeEditSchema: Schema = {
 
 /**
  * Function calls the model with the aproprotate system and user prompt
- * @param systemPrompt 
- * @param userPrompt 
+ * @param systemPrompt
+ * @param userPrompt
  * @returns returns the suggestion with the specified schema. Noteably, it requires a range for deletion and the full code for insertion
  */
 export async function callGeminiToGenerateSuggestion(
@@ -61,7 +61,9 @@ export async function callGeminiToGenerateSuggestion(
   try {
     const result = await model.generateContent(userPrompt);
     const parsedData = JSON.parse(result.response.text());
-    const dataToValidate = Array.isArray(parsedData) ? parsedData[0] : parsedData;
+    const dataToValidate = Array.isArray(parsedData)
+      ? parsedData[0]
+      : parsedData;
     return CodeEditResponseSchema.parse(dataToValidate);
   } catch (error) {
     console.log("Error when calling gemini: " + error);
