@@ -1,5 +1,5 @@
 /*
-/api/v1/{owner}/{repo}/{username}/permission
+/api/v1/{owner}/{repo}/permission
 
 *NOT TO BE POLLED*
 */
@@ -16,7 +16,6 @@ type RouteContext = {
   params: Promise<{
     owner: string;
     repo: string;
-    username: string;
   }>;
 };
 
@@ -24,7 +23,7 @@ const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
 export async function GET(req: Request, context: RouteContext) {
-  const { owner, repo, username } = await context.params;
+  const { owner, repo } = await context.params;
   const token = await getToken({
     req: req,
     secret: secret,
@@ -38,7 +37,7 @@ export async function GET(req: Request, context: RouteContext) {
   }
 
   // Validate required parameters
-  if (!owner || !repo || !username) {
+  if (!owner || !repo) {
     return Response.json(
       { error: "Missing required parameters" },
       { status: 400 },
@@ -52,7 +51,7 @@ export async function GET(req: Request, context: RouteContext) {
       await octokit.rest.repos.getCollaboratorPermissionLevel({
         owner: owner,
         repo: repo,
-        username: username,
+        username: token.githubLogin,
       });
 
     // Filter response
