@@ -21,7 +21,8 @@
 }
 
 .logo {
-    padding: var(--spacer-2) 0;
+    /* Align divider with page header. Account for navbar padding and group gap. */
+    height: calc(var(--page-header-height) - var(--spacer-12) - var(--spacer-6));
 }
 
 .divider {

@@ -34,8 +34,8 @@ export default function Navbar() {
             <Image
               src={PullerTypeIcon}
               alt="PullerType"
-              width={BASE_ICON_SIZE + 6}
-              height={BASE_ICON_SIZE + 6}
+              width={BASE_ICON_SIZE + 8}
+              height={BASE_ICON_SIZE + 8}
             />
           </div>
           <div className={styles.divider}>
