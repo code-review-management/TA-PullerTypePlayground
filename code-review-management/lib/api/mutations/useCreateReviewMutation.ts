@@ -39,13 +39,18 @@ export function useCreateReviewMutation(
       toast.success("Review successfully created.");
       resetReview();
     },
-    onError: () => {
-      toast.error(
-        PendingReviewError({
-          message: "Failed to submit review.",
-          externalUrl,
-        }),
-      );
+    onError: (error) => {
+      const message = "Failed to submit review.";
+      if (error.status === 422) {
+        toast.error(
+          PendingReviewError({
+            message,
+            externalUrl,
+          }),
+        );
+      } else {
+        toast.error(message);
+      }
     },
   });
 }

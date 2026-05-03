@@ -40,13 +40,18 @@ export function useCreateReviewCommentMutation(
         queryKey: ["review-comments", owner, repo, pullNumber],
       });
     },
-    onError: () => {
-      toast.error(
-        PendingReviewError({
-          message: "Failed to post comment.",
-          externalUrl,
-        }),
-      );
+    onError: (error) => {
+      const message = "Failed to post comment.";
+      if (error.status === 422) {
+        toast.error(
+          PendingReviewError({
+            message,
+            externalUrl,
+          }),
+        );
+      } else {
+        toast.error(message);
+      }
     },
   });
 }
