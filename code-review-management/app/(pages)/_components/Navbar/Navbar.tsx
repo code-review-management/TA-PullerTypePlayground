@@ -12,7 +12,7 @@ import UserIcon from "../UserIcon/UserIcon";
 import styles from "./Navbar.module.css";
 
 const TOOLTIP_ID = "tooltip-navbar";
-const ICON_SIZE = 18;
+const ICON_SIZE = 20;
 
 const getTooltipProps = (content: string) => ({
   "data-tooltip-id": TOOLTIP_ID,
@@ -80,7 +80,7 @@ export default function Navbar() {
             <UserIcon
               username={session.user.githubLogin}
               avatarUrl={session.user.image}
-              size={ICON_SIZE}
+              size={ICON_SIZE + 6}
             />
           )}
         </div>

@@ -8,7 +8,7 @@
     justify-content: space-between;
     align-items: center;
 
-    padding: var(--spacer-10) var(--spacer-6);
+    padding: var(--spacer-10) var(--spacer-8);
     border-right: var(--border-normal-width) solid var(--border-gray);
     background-color: var(--background-secondary-light);
 }
@@ -17,11 +17,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacer-6);
+    gap: var(--spacer-8);
 }
 
 .logo {
-    padding-bottom: var(--spacer-6);
+    padding-bottom: var(--spacer-8);
     border-bottom: var(--border-normal-width) solid var(--border-gray-secondary);
 }
 
@@ -37,7 +37,7 @@
 }
 
 .link, .button {
-    padding: var(--spacer-4);
+    padding: var(--spacer-6);
     border-radius: var(--border-radius);
 }
 
