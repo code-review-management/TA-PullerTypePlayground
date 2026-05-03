@@ -13,7 +13,7 @@ import UserIcon from "../UserIcon/UserIcon";
 import styles from "./Navbar.module.css";
 
 const TOOLTIP_ID = "tooltip-navbar";
-const ICON_SIZE = 20;
+const BASE_ICON_SIZE = 20;
 
 const getTooltipProps = (content: string) => ({
   "data-tooltip-id": TOOLTIP_ID,
@@ -33,8 +33,8 @@ export default function Navbar() {
             <Image
               src={PullerTypeIcon}
               alt="PullerType"
-              width={ICON_SIZE + 4}
-              height={ICON_SIZE + 4}
+              width={BASE_ICON_SIZE + 4}
+              height={BASE_ICON_SIZE + 4}
             />
           </div>
           <Link
@@ -45,8 +45,8 @@ export default function Navbar() {
             <Image
               src={InboxIcon}
               alt="Inbox"
-              width={ICON_SIZE}
-              height={ICON_SIZE}
+              width={BASE_ICON_SIZE}
+              height={BASE_ICON_SIZE}
             />
           </Link>
           <a
@@ -59,8 +59,8 @@ export default function Navbar() {
             <Image
               src={GitHubIcon}
               alt="GitHub"
-              width={ICON_SIZE}
-              height={ICON_SIZE}
+              width={BASE_ICON_SIZE}
+              height={BASE_ICON_SIZE}
             />
           </a>
         </div>
@@ -73,8 +73,8 @@ export default function Navbar() {
             <Image
               src={SignOutIcon}
               alt="Sign out"
-              width={ICON_SIZE}
-              height={ICON_SIZE}
+              width={BASE_ICON_SIZE}
+              height={BASE_ICON_SIZE}
             />
           </button>
           <div className={styles.userIcon}>
@@ -82,7 +82,7 @@ export default function Navbar() {
               <UserIcon
                 username={session.user.githubLogin}
                 avatarUrl={session.user.image}
-                size={ICON_SIZE + 6}
+                size={BASE_ICON_SIZE + 6}
               />
             )}
           </div>
