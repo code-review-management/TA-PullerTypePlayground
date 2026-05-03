@@ -22,7 +22,7 @@ export function useActiveDiffs(pull: PullRequest) {
     repo_name,
     pull.base?.sha ?? "",
     sha ?? "",
-    mode === "cumulative-commit" && !!pull.base?.sha,
+    mode === "cumulative-commit",
   );
 
   const { data, isPending, isError, error } =

@@ -54,8 +54,6 @@ export default function Changes() {
   const [isActivityPanelOpen, setIsActivityPanelOpen] = useState(false);
   const toggleActivityPanel = () => setIsActivityPanelOpen((prev) => !prev);
 
-  // TODO: Replace with proper loading UI.
-  if (isPending) return <div>Loading changes...</div>;
   if (isError && errorSource !== "commit") {
     return (
       <div className={styles.page}>
@@ -63,6 +61,13 @@ export default function Changes() {
       </div>
     );
   }
+  // TODO: Replace with proper loading UI.
+  // Keep pending check below error check since `useChangesData` conditionally
+  // calls APIs (e.g., Compare commit query is disabled until pull.base.sha is
+  // defined. However, if the pull request query fails, then the compare commit
+  // query is never enabled and will be endlessly pending, so the error message
+  // would never show).
+  else if (isPending) return <div>Loading changes...</div>;
 
   return (
     // If SHA query param changes, re-mount entire page.
@@ -131,7 +136,7 @@ function ChangesErrorMessage({
         <ErrorMessage
           error={error}
           resource={errorSource}
-          {...(error?.status === 422 && {
+          {...((error?.status === 422 || error?.status === 404) && {
             internalLabel: "Back to all changes",
             internalHref: `/${username}/${repo_name}/pull/${id}/changes`,
           })}
