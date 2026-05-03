@@ -44,10 +44,7 @@ export function useCreateReviewMutation(
       const message = "Failed to submit review.";
       if (error.status === 422) {
         toast.error(
-          PendingReviewError({
-            message,
-            externalUrl,
-          }),
+          <PendingReviewError message={message} externalUrl={externalUrl} />,
         );
       } else {
         toast.error(message);

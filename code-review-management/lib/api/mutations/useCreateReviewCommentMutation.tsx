@@ -45,10 +45,7 @@ export function useCreateReviewCommentMutation(
       const message = "Failed to post comment.";
       if (error.status === 422) {
         toast.error(
-          PendingReviewError({
-            message,
-            externalUrl,
-          }),
+          <PendingReviewError message={message} externalUrl={externalUrl} />,
         );
       } else {
         toast.error(message);
