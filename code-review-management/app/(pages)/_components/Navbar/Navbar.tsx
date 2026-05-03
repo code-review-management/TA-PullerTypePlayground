@@ -82,15 +82,15 @@ export default function Navbar() {
               height={BASE_ICON_SIZE}
             />
           </button>
-          <div className={styles.userIcon}>
-            {session?.user.image && (
+          {session?.user.image && (
+            <div className={styles.userIcon}>
               <UserIcon
                 username={session.user.githubLogin}
                 avatarUrl={session.user.image}
                 size={BASE_ICON_SIZE + 6}
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
       <IconTooltip id={TOOLTIP_ID} positionStrategy="fixed" />
