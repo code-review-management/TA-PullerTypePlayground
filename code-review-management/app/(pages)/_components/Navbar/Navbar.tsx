@@ -19,7 +19,7 @@ const BASE_ICON_SIZE = 20;
 const getTooltipProps = (content: string) => ({
   "data-tooltip-id": TOOLTIP_ID,
   "data-tooltip-content": content,
-  "data-tooltip-place": "right" as const,
+  "data-tooltip-place": "right" as const, // Docs: https://www.reddit.com/r/typescript/comments/iy8b7t/why_does_setting_as_const_allow_a_string_to_match/
   "data-tooltip-delay-show": 100,
 });
 
@@ -56,6 +56,7 @@ export default function Navbar() {
           <a
             className={styles.link}
             href={EXTERNAL_LINKS.GITHUB_APP_INSTALLATION}
+            // Docs: https://stackoverflow.com/a/15551842
             target="_blank"
             rel="noopener noreferrer"
             {...getTooltipProps("Install GitHub App")}
