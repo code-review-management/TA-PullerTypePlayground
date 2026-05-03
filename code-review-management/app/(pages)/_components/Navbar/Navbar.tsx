@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
+import { EXTERNAL_LINKS } from "@/lib/links";
 import Image from "next/image";
 import Link from "next/link";
 import GitHubIcon from "@/public/icons/navbar/github.svg";
@@ -50,7 +51,7 @@ export default function Navbar() {
           </Link>
           <a
             className={styles.link}
-            href="https://github.com/apps/code-review-management/installations/select_target"
+            href={EXTERNAL_LINKS.GITHUB_APP_INSTALLATION}
             target="_blank"
             rel="noopener noreferrer"
             {...getTooltipProps("Install GitHub App")}
