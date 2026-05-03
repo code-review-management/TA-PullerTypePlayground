@@ -8,6 +8,7 @@ import GitHubIcon from "@/public/icons/navbar/github.svg";
 import InboxIcon from "@/public/icons/navbar/inbox.svg";
 import PullerTypeIcon from "@/public/icons/navbar/pullertype.svg";
 import SignOutIcon from "@/public/icons/navbar/sign_out.svg";
+import Divider from "../Divider/Divider";
 import IconTooltip from "../IconTooltip/IconTooltip";
 import UserIcon from "../UserIcon/UserIcon";
 import styles from "./Navbar.module.css";
@@ -33,9 +34,12 @@ export default function Navbar() {
             <Image
               src={PullerTypeIcon}
               alt="PullerType"
-              width={BASE_ICON_SIZE + 4}
-              height={BASE_ICON_SIZE + 4}
+              width={BASE_ICON_SIZE + 6}
+              height={BASE_ICON_SIZE + 6}
             />
+          </div>
+          <div className={styles.divider}>
+            <Divider />
           </div>
           <Link
             className={styles.link}
