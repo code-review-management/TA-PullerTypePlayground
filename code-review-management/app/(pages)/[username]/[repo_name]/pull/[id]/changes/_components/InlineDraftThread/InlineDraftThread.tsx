@@ -45,7 +45,12 @@ export default function InlineDraftThread({
   });
 
   return (
-    <div className={styles.thread}>
+    <div
+      className={styles.thread}
+      {...(draft.subjectType === "file" && {
+        id: `file-draft-${draft.activePath}`,
+      })}
+    >
       <InlineThreadHeader
         title={getThreadTitle(draft)}
         actions={

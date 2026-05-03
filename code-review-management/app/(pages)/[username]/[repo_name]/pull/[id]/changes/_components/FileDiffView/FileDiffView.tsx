@@ -1,5 +1,12 @@
 import refractor from "refractor";
-import { Dispatch, memo, SetStateAction, useMemo, useState } from "react";
+import {
+  Dispatch,
+  memo,
+  SetStateAction,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Fragment } from "react/jsx-runtime";
 import {
   Decoration,
@@ -14,6 +21,7 @@ import {
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
+import { useScrollToId } from "../../_hooks/useScrollToId";
 import { createDraftThread } from "../../_utils/comment-utils";
 import { getActivePath, getLanguage } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
@@ -42,6 +50,7 @@ export default memo(function FileDiffView({
   draftThreadsByLine,
   setDraftThreads,
   isCommitView,
+  isExpandedDefault,
 }: {
   diff: FileData;
   fileMeta?: FileDiff;
@@ -50,6 +59,7 @@ export default memo(function FileDiffView({
   draftThreadsByLine: DraftThreadsByLine | undefined; // Undefined when there are no draft threads in the current file.
   setDraftThreads: Dispatch<SetStateAction<DraftThreads>>;
   isCommitView: boolean;
+  isExpandedDefault: boolean;
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
@@ -60,7 +70,10 @@ export default memo(function FileDiffView({
     setDraftThreads,
     isCommitView,
   );
-  const [isExpanded, setIsExpanded] = useState(true);
+
+  const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
+  const fileDiffRef = useRef<HTMLDivElement>(null);
+  const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
 
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
@@ -107,6 +120,7 @@ export default memo(function FileDiffView({
   return (
     <ClearHighlightContext value={{ clearHighlight }}>
       <div
+        ref={fileDiffRef}
         className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""}`}
         id={`file-${activePath}`}
       >
@@ -119,7 +133,6 @@ export default memo(function FileDiffView({
           setIsExpanded={setIsExpanded}
           isCommitView={isCommitView}
           createFileDraftThread={() => {
-            setIsExpanded(true);
             createDraftThread(setDraftThreads, activePath, {
               oldPath,
               activePath,
@@ -127,6 +140,7 @@ export default memo(function FileDiffView({
               body: "",
               subjectType: "file",
             });
+            scrollToId(`file-draft-${activePath}`);
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
