@@ -1,15 +1,18 @@
 import Navbar from "../_components/Navbar/Navbar";
+import ProtectedLayout from "../_components/ProtectedLayout/ProtectedLayout";
 import styles from "./layout.module.css";
 
-export default function ProtectedLayout({
+export default function AuthenticatedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className={styles.layout}>
-      <Navbar />
-      <div className={styles.main}>{children}</div>
-    </div>
+    <ProtectedLayout>
+      <div className={styles.layout}>
+        <Navbar />
+        <div className={styles.main}>{children}</div>
+      </div>
+    </ProtectedLayout>
   );
 }
