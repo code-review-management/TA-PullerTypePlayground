@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 
     padding: var(--spacer-10);
     border-right: var(--border-normal-width) solid var(--border-gray);
@@ -15,11 +16,18 @@
 .group {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--spacer-12);
 }
 
-.signOutButton {
+.logo {
+    padding-bottom: var(--spacer-8);
+    border-bottom: var(--border-normal-width) solid var(--border-gray-secondary);
+}
+
+.button {
     display: flex;
     border: none;
     cursor: pointer;
+    background-color: inherit;
 }
