@@ -29,12 +29,7 @@
     width: 100%;
 }
 
-.link {
-    display: flex;
-}
-
 .button {
-    display: flex;
     border: none;
     cursor: pointer;
     background-color: inherit;
@@ -42,6 +37,7 @@
 
 .link,
 .button {
+    display: flex;
     padding: var(--spacer-6);
     border-radius: var(--border-radius);
 }
