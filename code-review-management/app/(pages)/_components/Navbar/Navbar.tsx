@@ -33,8 +33,8 @@ export default function Navbar() {
             <Image
               src={PullerTypeIcon}
               alt="PullerType"
-              width={ICON_SIZE}
-              height={ICON_SIZE}
+              width={ICON_SIZE + 4}
+              height={ICON_SIZE + 4}
             />
           </div>
           <Link
@@ -77,13 +77,15 @@ export default function Navbar() {
               height={ICON_SIZE}
             />
           </button>
-          {session?.user.image && (
-            <UserIcon
-              username={session.user.githubLogin}
-              avatarUrl={session.user.image}
-              size={ICON_SIZE + 6}
-            />
-          )}
+          <div className={styles.userIcon}>
+            {session?.user.image && (
+              <UserIcon
+                username={session.user.githubLogin}
+                avatarUrl={session.user.image}
+                size={ICON_SIZE + 6}
+              />
+            )}
+          </div>
         </div>
       </div>
       <IconTooltip id={TOOLTIP_ID} positionStrategy="fixed" />
