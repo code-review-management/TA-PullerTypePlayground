@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
  * @param draftItem: `DraftItem` representing the review comment to create.
+ * @param externalUrl: GitHub URL for the pull request. Used for toast error messages.
  * @returns: TanStack query result containing the newly created comment.
  */
 export function useCreateReviewCommentMutation(

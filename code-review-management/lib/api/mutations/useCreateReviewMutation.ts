@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
  * @param resetReview: Reset function for review state, declared in ReviewContext.
+ * @param externalUrl: GitHub URL for the pull request. Used for toast error messages.
  * @returns: TanStack query result containing the review result.
  */
 export function useCreateReviewMutation(
