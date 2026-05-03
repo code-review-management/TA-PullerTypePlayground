@@ -36,7 +36,11 @@ export default function Navbar() {
               height={ICON_SIZE}
             />
           </div>
-          <Link href="/dashboard" {...getTooltipProps("Dashboard")}>
+          <Link
+            className={styles.link}
+            href="/dashboard"
+            {...getTooltipProps("Dashboard")}
+          >
             <Image
               src={InboxIcon}
               alt="Inbox"
@@ -45,6 +49,7 @@ export default function Navbar() {
             />
           </Link>
           <a
+            className={styles.link}
             href="https://github.com/apps/code-review-management/installations/select_target"
             target="_blank"
             rel="noopener noreferrer"
