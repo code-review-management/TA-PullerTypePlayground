@@ -93,3 +93,15 @@
 .timeline :not(:global(.tiptap *)) {
     font-size: var(--font-size-diff-code);
 }
+
+.commitCommentsNotice {
+    padding: var(--spacer-16) var(--spacer-20);
+    border: var(--border-thin-width) solid var(--color-warning);
+    border-left-width: var(--spacer-4);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    margin-bottom: var(--spacer-16);
+    box-shadow: var(--box-shadow-soft);
+    background-color: var(--color-warning-light);
+    color: var(--text-secondary);
+    font-size: var(--font-size-label);
+}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
@@ -80,6 +81,7 @@ function CommentsTab({
   publishedThreads: PublishedThreads;
   flatFileTree: FileDiff[];
 }) {
+  const { mode } = useChangesViewMode();
   const allThreads = [...publishedThreads.values()].flatMap((byGroup) => {
     const lineThreads = [...byGroup.lineThreads.values()].flatMap(
       ({ left, right }) => [...left, ...right],
@@ -102,6 +104,7 @@ function CommentsTab({
         </div>
       ) : (
         <>
+          {mode !== "pr" && <CommitCommentsNotice />}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
               <InlinePublishedThread thread={thread} viewType="panel" />
@@ -110,5 +113,14 @@ function CommentsTab({
         </>
       )}
     </>
+  );
+}
+
+function CommitCommentsNotice() {
+  return (
+    <div className={styles.commitCommentsNotice}>
+      These comments are visible on the latest version of the PR. Exit
+      commit-view to see them inline.
+    </div>
   );
 }
