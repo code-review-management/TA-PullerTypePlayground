@@ -8,6 +8,10 @@ import {
 import userEvent from "@testing-library/user-event";
 import FileTreeRow from "./FileTreeRow";
 
+jest.mock("../../_utils/scroll-utils", () => ({
+  handleAnchorClick: () => {},
+}));
+
 describe("FileTreeRow", () => {
   const mockDirectory = getExampleDirectoryNode1();
   const mockFile = getExampleFileNode1();

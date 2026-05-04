@@ -2,6 +2,10 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import InlineThreadHeader from "./InlineThreadHeader";
 
+jest.mock("../../_utils/scroll-utils", () => ({
+  handleAnchorClick: () => {},
+}));
+
 describe("InlineThreadHeader", () => {
   it("renders the title", () => {
     render(<InlineThreadHeader title="example-title" />);
