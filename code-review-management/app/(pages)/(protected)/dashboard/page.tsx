@@ -1,9 +1,9 @@
 "use client";
 import { usePullsQuery } from "@/lib/api/queries/usePullsQuery";
-import IconTooltip from "../_components/IconTooltip/IconTooltip";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import DashboardGrid from "./_components/DashboardGrid/DashboardGrid";
 import styles from "./page.module.css";
-import LoadingSpinner from "../_components/LoadingSpinner/LoadingSpinner";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
 import { useState } from "react";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
 import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
