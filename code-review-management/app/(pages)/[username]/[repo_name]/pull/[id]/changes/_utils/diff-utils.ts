@@ -61,3 +61,16 @@ export function fixParsedDiffPaths(
     parsed.newPath = newPath;
   });
 }
+
+/**
+ * Creates the ID for a file-diff by URL encoding the spaces. Required for the
+ * edge case when there are multiple files whose paths only differ by the
+ * amounts of trailing whitespace at the end.
+ *
+ * Docs: https://stackoverflow.com/a/72073207
+ *
+ * @param path: Active path of file-diff.
+ */
+export function createFileDiffId(activePath: string) {
+  return `file-${activePath.replace(/\s/g, "%20")}`;
+}
