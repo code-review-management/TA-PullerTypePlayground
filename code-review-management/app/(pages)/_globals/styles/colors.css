@@ -27,6 +27,7 @@
 
     /* Icon colors */
     --icon-hover-gray: #efefef;
+    --icon-hover-gray-secondary: #e1e1e1; /* Darker hover */
 
     /* Border colors */
     --border-gray: #e2e2e2;

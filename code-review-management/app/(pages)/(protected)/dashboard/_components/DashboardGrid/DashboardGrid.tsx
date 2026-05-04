@@ -3,8 +3,8 @@ import styles from "./DashboardGrid.module.css";
 import { PullRequest, User } from "@/types/github.types";
 import Link from "next/link";
 import StatusIcon from "../StatusIcon/StatusIcon";
-import { getPullState } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/pull-utils";
-import { formatRelativeDate } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/_utils/date-utils";
+import { getPullState } from "../../../[username]/[repo_name]/pull/[id]/_utils/pull-utils";
+import { formatRelativeDate } from "../../../[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
 export default function DashboardGrid({
   pulls,

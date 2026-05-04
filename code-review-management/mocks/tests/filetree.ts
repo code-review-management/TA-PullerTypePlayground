@@ -1,6 +1,6 @@
 import { FileData } from "react-diff-view";
 import { FileDiff } from "@/types/github.types";
-import { FileTreeNode } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_utils/filetree-utils";
+import { FileTreeNode } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_utils/filetree-utils";
 
 // Helper function to create an array of GitHub `FileDiff` objects.
 export function createFileMeta(filenames: string[]): FileDiff[] {
