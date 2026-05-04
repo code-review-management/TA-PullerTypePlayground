@@ -6,7 +6,7 @@ import {
 import { poster } from "../utils/poster";
 import { CommentCreateRequest } from "@/types/request.types";
 // TODO: Refactor to use a shared types file so we don't have to import from a UI component.
-import { DraftItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
+import { DraftItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
 import toast from "react-hot-toast";
 
 /**
