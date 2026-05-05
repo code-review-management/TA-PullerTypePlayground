@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useParams } from "next/navigation";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { sortPublishedThreads } from "../../_utils/comment-utils";
 import Image from "next/image";
+import AlertBanner from "@components/AlertBanner/AlertBanner";
 import CancelButton from "@components/CancelButton/CancelButton";
 import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
 import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
@@ -80,6 +82,7 @@ function CommentsTab({
   publishedThreads: PublishedThreads;
   flatFileTree: FileDiff[];
 }) {
+  const { mode } = useChangesViewMode();
   const allThreads = [...publishedThreads.values()].flatMap((byGroup) => {
     const lineThreads = [...byGroup.lineThreads.values()].flatMap(
       ({ left, right }) => [...left, ...right],
@@ -102,6 +105,14 @@ function CommentsTab({
         </div>
       ) : (
         <>
+          {mode !== "pr" && (
+            <div className={styles.commitCommentsAlert}>
+              <AlertBanner>
+                These comments are visible on the latest version of the PR. Exit
+                commit view to see them inline.
+              </AlertBanner>
+            </div>
+          )}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
               <InlinePublishedThread thread={thread} viewType="panel" />
