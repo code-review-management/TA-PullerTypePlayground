@@ -67,7 +67,7 @@ describe("fixParsedDiffPaths", () => {
       expect(parsedDiffs[0].newPath).toBe("a b/ a/ b.txt");
     });
 
-    it("handles diff-string with multiple files including paths with varying number of spaces", () => {
+    it("handles diff-string with multiple files, including paths with varying number of spaces", () => {
       const cases = [
         "diff --git a/src/file.txt b/src/file.txt",
         "diff --git a/src/file 1.txt b/src/file 1.txt",
@@ -94,7 +94,7 @@ describe("fixParsedDiffPaths", () => {
 
   describe("does not override paths", () => {
     it("does not override paths for renamed files", () => {
-      const diffString = "diff --git a/file.txt b/file..txt";
+      const diffString = "diff --git a/file.txt b/file.txt";
       const parsedDiffs = [
         createDiff({
           oldPath: "old-path",
@@ -131,7 +131,7 @@ describe("fixParsedDiffPaths", () => {
     });
 
     it("does not override paths if the split does not occur at a space", () => {
-      const diffString = "diff --git a/file1.txt file.txt";
+      const diffString = "diff --git a/index1.tsx b/file.txt"; // Split occurs at char 'x'
       const parsedDiffs = [
         createDiff({ oldPath: "old-path", newPath: "new-path" }),
       ];
@@ -158,7 +158,7 @@ describe("fixParsedDiffPaths", () => {
         "diff --git a/src/file 1.txt b/src/file 1.txt",
         "diff --git a/b.txt b/c.txt", // Mismatch in filenames
         "diff --git a/a    b   c.txt b/a    b   c.txt",
-        "diff --git a/file1.txt file.txt", // Missing "b/" prefix
+        "diff --git a/file.txt file.txt", // Missing "b/" prefix
       ];
       const diffString = cases.join("\n");
       const parsedDiffs = cases.map(() =>
@@ -186,7 +186,7 @@ describe("fixParsedDiffPaths", () => {
 });
 
 describe("createFileDiffId", () => {
-  it("produces ID with 'file-' prefix followed by filename", () => {
+  it("produces id with 'file-' prefix followed by filename", () => {
     const activePath = "a.txt";
     expect(createFileDiffId(activePath)).toBe("file-a.txt");
   });
