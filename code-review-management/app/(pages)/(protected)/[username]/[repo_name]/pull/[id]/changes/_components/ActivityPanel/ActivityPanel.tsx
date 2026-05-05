@@ -6,11 +6,11 @@ import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import { sortPublishedThreads } from "../../_utils/comment-utils";
 import Image from "next/image";
+import AlertBanner from "@components/AlertBanner/AlertBanner";
 import CancelButton from "@components/CancelButton/CancelButton";
 import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
 import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import TimelineDisplay from "../../../_components/TimelineDisplay/TimelineDisplay";
-import WarningBanner from "@components/WarningBanner/WarningBanner";
 import styles from "./ActivityPanel.module.css";
 
 // Docs: https://stackoverflow.com/a/62900613
@@ -106,10 +106,10 @@ function CommentsTab({
       ) : (
         <>
           {mode !== "pr" && (
-            <WarningBanner>
+            <AlertBanner>
               These comments are visible on the latest version of the PR. Exit
               commit-view to see them inline.
-            </WarningBanner>
+            </AlertBanner>
           )}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
