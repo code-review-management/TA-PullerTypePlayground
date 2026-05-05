@@ -7,12 +7,7 @@ Method: POST
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import {
-  CommentSchema,
-  Comment,
-  PullRequest,
-  PullRequestSchema,
-} from "@/types/github.types";
+import { PullRequest, PullRequestSchema } from "@/types/github.types";
 import { ReviewersRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
