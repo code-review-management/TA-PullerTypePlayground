@@ -13,6 +13,14 @@ export function sortPullsByUpdated(pulls: PullRequest[]) {
   );
 }
 
+/**
+ * Filters a list of plull requests by a set of repo filters and a search string.
+ *
+ * @param pulls Array of `PullRequest` objects.
+ * @param searchString String to filter pull request titles for.
+ * @param repoSet `Set` of repos indicating which repos' pull requests to filter for.
+ * @returns
+ */
 export function filterPulls(
   pulls: PullRequest[],
   searchString: string,
@@ -25,6 +33,14 @@ export function filterPulls(
   );
 }
 
+/**
+ * Sort and filter pull requests.
+ *
+ * @param pulls Array of `PullRequest` objects.
+ * @param searchString String to filter pull request titles for.
+ * @param repoSet `Set` of repos indicating which repos' pull requests to filter for.
+ * @returns
+ */
 export function processPulls(
   pulls: PullRequest[],
   searchString: string,
