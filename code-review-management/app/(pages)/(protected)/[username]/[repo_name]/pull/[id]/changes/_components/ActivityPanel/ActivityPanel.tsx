@@ -109,7 +109,7 @@ function CommentsTab({
             <div className={styles.commitCommentsAlert}>
               <AlertBanner>
                 These comments are visible on the latest version of the PR. Exit
-                commit-view to see them inline.
+                commit view to see them inline.
               </AlertBanner>
             </div>
           )}
