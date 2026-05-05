@@ -1,4 +1,7 @@
 .banner {
+    display: flex;
+    gap: var(--spacer-12);
+    align-items: start;
     padding: var(--spacer-16) var(--spacer-20);
     border: var(--border-thin-width) solid var(--color-warning);
     border-left-width: var(--spacer-4);
@@ -6,4 +9,5 @@
     box-shadow: var(--box-shadow-soft);
     background-color: var(--color-warning-light);
     font-size: var(--font-size-label);
+    color: var(--text-secondary);
 }
