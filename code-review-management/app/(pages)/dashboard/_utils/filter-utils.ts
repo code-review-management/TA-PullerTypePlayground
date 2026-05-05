@@ -1,3 +1,4 @@
+// Filter names
 export const FILTERS = [
   "all",
   "requires_review",
@@ -12,6 +13,7 @@ export const FILTERS = [
 
 export type Filter = (typeof FILTERS)[number];
 
+// Map filter names to tab names (displayed on tab filter UI)
 const TAB_NAMES: Record<Filter, string> = {
   all: "All",
   requires_review: "Requires review",
@@ -24,6 +26,7 @@ const TAB_NAMES: Record<Filter, string> = {
   draft: "Your drafts",
 };
 
+// Map filter names to query parameters for `usePullsQuery`
 const FILTER_STRINGS: Record<Filter, string[]> = {
   all: [""],
   requires_review: ["open", "draft=1", "requires_review"],
@@ -42,7 +45,9 @@ export type DashboardTabFilter = {
   tab_name: string;
 };
 
-export function createDashboardTabFilter(filter_name: Filter): DashboardTabFilter {
+export function createDashboardTabFilter(
+  filter_name: Filter,
+): DashboardTabFilter {
   return {
     filter_name,
     filter_string: FILTER_STRINGS[filter_name].join("&"),
@@ -50,6 +55,12 @@ export function createDashboardTabFilter(filter_name: Filter): DashboardTabFilte
   };
 }
 
+/**
+ * Returns information about all currently available filter types
+ * in a Map format.
+ *
+ * @returns Map of filter names to `DashboardTabFilter` objects.
+ */
 export function getAllFiltersMap(): Map<Filter, DashboardTabFilter> {
   return new Map(
     FILTERS.map((filter_name) => [

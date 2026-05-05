@@ -11,14 +11,17 @@ import {
 } from "@/app/(pages)/dashboard/_utils/filter-utils";
 import { Filter } from "@/app/(pages)/dashboard/_utils/filter-utils";
 
+// Result of `usePullsQuery`
+export type PullsQueryResult = UseInfiniteQueryResult<
+  InfiniteData<PullRequestV2>
+>;
+
 /**
- * Fetches list of pull requests relevant to the requesting user.
+ * Fetches list of pull requests relevant to the requesting user. Supports pagination.
  *
  * @param queryType:
  * @returns: TanStack query result containing the pull request data.
  */
-type PullsQueryResult = UseInfiniteQueryResult<InfiniteData<PullRequestV2>>;
-
 export function usePullsQuery(filterString?: string, enabled = true) {
   return useInfiniteQuery({
     queryKey: ["pulls", filterString],
@@ -33,7 +36,21 @@ export function usePullsQuery(filterString?: string, enabled = true) {
   });
 }
 
-export function usePullsQueries(activeTab: Filter): Map<Filter, PullsQueryResult> {
+/**
+ * Uses usePullsQuery and saves results to a Map
+ * mapping filter name to a `PullsQueryResult`.
+ * Used on dashboard page to access queries for all tab filters.
+ *
+ * Adding to the return value of this function will add another tab filter on the page.
+ * Make sure to check `app/(pages)/dashboard/_utils/filter-utils.ts` to ensure
+ * relevant info for newly added tab filters is available before adding a tab filter here.
+ *
+ * @param activeTab The filter name of the tab that is currently selected.
+ * @returns
+ */
+export function usePullsQueries(
+  activeTab: Filter,
+): Map<Filter, PullsQueryResult> {
   const filters = getAllFiltersMap();
   const getFilter = (tab: Filter): DashboardTabFilter => {
     const filter = filters.get(tab);
