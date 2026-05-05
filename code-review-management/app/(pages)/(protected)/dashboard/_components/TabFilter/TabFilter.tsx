@@ -1,5 +1,5 @@
 import styles from "./TabFilter.module.css";
-import { DashboardTabFilter } from "../../../../../../lib/filter-utils";
+import { DashboardTabFilter } from "@/lib/filter-utils";
 
 export default function TabFilter({
   onClick,
