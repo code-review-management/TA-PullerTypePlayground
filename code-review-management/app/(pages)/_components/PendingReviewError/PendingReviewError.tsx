@@ -14,7 +14,7 @@ export default function PendingReviewError({
         <>
           {" "}
           <a
-            href={externalUrl}
+            href={`${externalUrl}/changes`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.link}
