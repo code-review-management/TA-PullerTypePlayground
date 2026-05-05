@@ -3,7 +3,6 @@ import styles from "./TabFilterRow.module.css";
 import {
   createDashboardTabFilter,
   DashboardTabFilter,
-  getAllFiltersMap,
   Filter,
 } from "@/lib/filter-utils";
 import TabFilter from "../TabFilter/TabFilter";
@@ -27,21 +26,15 @@ export default function TabFilterRow({
   pullsQueries: Map<Filter, PullsQueryResult>;
 }) {
   const tabFilterList = pullsQueries.keys().toArray();
-  const filtersMap = getAllFiltersMap();
 
   return (
     <div className={styles.tabFilters}>
       {tabFilterList.map((filterName: Filter) => (
         <TabFilter
           key={filterName}
-          onClick={() =>
-            setActiveTab(
-              filtersMap.get(filterName) || createDashboardTabFilter("all"),
-            )
-          }
-          filterObj={filtersMap.get(filterName)}
+          onClick={() => setActiveTab(createDashboardTabFilter(filterName))}
+          filterObj={createDashboardTabFilter(filterName)}
           activeTab={activeTab}
-          pullsQueries={pullsQueries}
         />
       ))}
     </div>
