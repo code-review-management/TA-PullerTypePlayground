@@ -155,20 +155,22 @@ describe("fixParsedDiffPaths", () => {
 
     it("handles diff-string with multiple files, some of which should not be overridden", () => {
       const cases = [
-        "diff --git a/src/file.txt b/src/file.txt",
+        "diff --git a/src/file.txt b/src/file.txt", // Renamed file (manually set in diff object)
         "diff --git a/src/file 1.txt b/src/file 1.txt",
-        "diff --git a/b.txt b/c.txt",
+        "diff --git a/b.txt b/c.txt", // Mismatch in filenames
         "diff --git a/a    b   c.txt b/a    b   c.txt",
-        "diff --git a/file1.txt file.txt",
+        "diff --git a/file1.txt file.txt", // Missing "b/" prefix
       ];
       const diffString = cases.join("\n");
       const parsedDiffs = cases.map(() =>
         createDiff({ oldPath: "old-path", newPath: "new-path" }),
       );
+      parsedDiffs[0].type = "rename";
+
       fixParsedDiffPaths(diffString, parsedDiffs);
 
-      expect(parsedDiffs[0].oldPath).toBe("src/file.txt");
-      expect(parsedDiffs[0].newPath).toBe("src/file.txt");
+      expect(parsedDiffs[0].oldPath).toBe("old-path");
+      expect(parsedDiffs[0].newPath).toBe("new-path");
 
       expect(parsedDiffs[1].oldPath).toBe("src/file 1.txt");
       expect(parsedDiffs[1].newPath).toBe("src/file 1.txt");
