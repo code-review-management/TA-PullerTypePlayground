@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
+import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
@@ -29,6 +30,7 @@ export default function InlinePublishedThread({
   thread: PublishedThreadItem;
   viewType: ThreadViewType;
 }) {
+  const { mode } = useChangesViewMode();
   const { draftReplies, setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
@@ -44,7 +46,8 @@ export default function InlinePublishedThread({
     >
       <InlineThreadHeader
         title={getThreadTitle(thread, viewType)}
-        {...(viewType === "panel" && { anchorHref: `#thread-${thread.id}` })}
+        {...(viewType === "panel" &&
+          mode === "pr" && { anchorHref: `#thread-${thread.id}` })}
       />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
