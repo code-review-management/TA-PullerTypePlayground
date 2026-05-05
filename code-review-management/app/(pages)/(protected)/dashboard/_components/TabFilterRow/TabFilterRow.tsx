@@ -1,10 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./TabFilterRow.module.css";
-import {
-  createDashboardTabFilter,
-  DashboardTabFilter,
-  Filter,
-} from "@/lib/filter-utils";
+import { getFilterObj, DashboardTabFilter, Filter } from "@/lib/filter-utils";
 import TabFilter from "../TabFilter/TabFilter";
 import { PullsQueryResult } from "@/lib/api/queries/usePullsQuery";
 
@@ -32,8 +28,8 @@ export default function TabFilterRow({
       {tabFilterList.map((filterName: Filter) => (
         <TabFilter
           key={filterName}
-          onClick={() => setActiveTab(createDashboardTabFilter(filterName))}
-          filterObj={createDashboardTabFilter(filterName)}
+          onClick={() => setActiveTab(getFilterObj(filterName))}
+          filterObj={getFilterObj(filterName)}
           activeTab={activeTab}
         />
       ))}

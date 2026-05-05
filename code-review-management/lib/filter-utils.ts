@@ -45,9 +45,7 @@ export type DashboardTabFilter = {
   tab_name: string;
 };
 
-export function createDashboardTabFilter(
-  filter_name: Filter,
-): DashboardTabFilter {
+export function getFilterObj(filter_name: Filter): DashboardTabFilter {
   return {
     filter_name,
     filter_string: FILTER_STRINGS[filter_name].join("&"),
@@ -63,9 +61,6 @@ export function createDashboardTabFilter(
  */
 export function getAllFiltersMap(): Map<Filter, DashboardTabFilter> {
   return new Map(
-    FILTERS.map((filter_name) => [
-      filter_name,
-      createDashboardTabFilter(filter_name),
-    ]),
+    FILTERS.map((filter_name) => [filter_name, getFilterObj(filter_name)]),
   );
 }

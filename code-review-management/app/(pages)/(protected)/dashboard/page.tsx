@@ -11,15 +11,12 @@ import { processPulls } from "./_utils/pulls-utils";
 import { useLocalStorage } from "usehooks-ts";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import TabFilterRow from "./_components/TabFilterRow/TabFilterRow";
-import {
-  createDashboardTabFilter,
-  DashboardTabFilter,
-} from "@/lib/filter-utils";
+import { getFilterObj, DashboardTabFilter } from "@/lib/filter-utils";
 
 // Dashboard page at /dashboard
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<DashboardTabFilter>(
-    createDashboardTabFilter("all"),
+    getFilterObj("all"),
   );
 
   const pullsQueries = usePullsQueries(activeTab.filter_name);
