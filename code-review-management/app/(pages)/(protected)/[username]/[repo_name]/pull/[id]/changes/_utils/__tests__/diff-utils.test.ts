@@ -66,6 +66,82 @@ describe("fixParsedDiffPaths", () => {
     expect(parsedDiffs[0].oldPath).toBe("a b/ a/ b.txt");
     expect(parsedDiffs[0].newPath).toBe("a b/ a/ b.txt");
   });
+
+  it("handles diff-string with multiple files", () => {
+    const diffString = [
+      "diff --git a/src/file.txt b/src/file.txt",
+      "diff --git a/src/file 1.txt b/src/file 1.txt",
+      "diff --git a/a b c d.txt b/a b c d.txt",
+      "diff --git a/a    b   c.txt b/a    b   c.txt",
+      "diff --git a/a b/ a/ b.txt b/a b/ a/ b.txt",
+    ].join("\n");
+    const parsedDiffs = [
+      createDiff({}),
+      createDiff({}),
+      createDiff({}),
+      createDiff({}),
+      createDiff({}),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("src/file.txt");
+    expect(parsedDiffs[0].newPath).toBe("src/file.txt");
+  });
+
+  it("does not override paths for renamed files", () => {
+    const diffString = "diff --git a/file.txt b/file..txt";
+    const parsedDiffs = [
+      createDiff({ oldPath: "old-path", newPath: "new-path", type: "rename" }),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("old-path");
+    expect(parsedDiffs[0].newPath).toBe("new-path");
+  });
+
+  it("does not override paths for copied files", () => {
+    const diffString = "diff --git a/file.txt b/file.txt";
+    const parsedDiffs = [
+      createDiff({ oldPath: "old-path", newPath: "new-path", type: "copy" }),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("old-path");
+    expect(parsedDiffs[0].newPath).toBe("new-path");
+  });
+
+  it("does not override paths if the 'a/' or 'b/' prefix are missing", () => {
+    const diffString = "diff --git file.txt file.txt";
+    const parsedDiffs = [
+      createDiff({ oldPath: "old-path", newPath: "new-path" }),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("old-path");
+    expect(parsedDiffs[0].newPath).toBe("new-path");
+  });
+
+  it("does not override paths if the split does not occur at a space", () => {
+    const diffString = "diff --git a/file1.txt file.txt";
+    const parsedDiffs = [
+      createDiff({ oldPath: "old-path", newPath: "new-path" }),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("old-path");
+    expect(parsedDiffs[0].newPath).toBe("new-path");
+  });
+
+  it("does not override paths if the filenames do not match", () => {
+    const diffString = "diff --git a/b.txt b/c.txt";
+    const parsedDiffs = [
+      createDiff({ oldPath: "old-path", newPath: "new-path" }),
+    ];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("old-path");
+    expect(parsedDiffs[0].newPath).toBe("new-path");
+  });
 });
 
 describe("createFileDiffId", () => {
