@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacer-8);
+    flex: 1;
+    padding: var(--spacer-24);
+    text-align: center;
+}
+
+.description {
+    color: var(--text-secondary);
+}
+
+.link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-4);
+    color: var(--color-interactive);
+    cursor: pointer;
+    text-decoration: underline;
+}
