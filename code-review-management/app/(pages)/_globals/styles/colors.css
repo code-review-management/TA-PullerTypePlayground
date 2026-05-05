@@ -14,6 +14,9 @@
     --color-failure: #e30202;
     --color-disabled: #919191;
 
+    --color-warning: #f8bc07;
+    --color-warning-light: #fffbe8;
+
     --color-interactive: #1e84de;
     --color-interactive-light: #ebf6ff;
     --color-interactive-transparent: #d8edff80;
