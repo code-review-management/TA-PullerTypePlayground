@@ -34,7 +34,7 @@ export function filterPulls(
 }
 
 /**
- * Sort and filter pull requests.
+ * Filter and sort pull requests.
  *
  * @param pulls Array of `PullRequest` objects.
  * @param searchString String to filter pull request titles for.
@@ -46,5 +46,5 @@ export function processPulls(
   searchString: string,
   repoSet: Set<string>,
 ) {
-  return filterPulls(sortPullsByUpdated(pulls), searchString, repoSet);
+  return sortPullsByUpdated(filterPulls(pulls, searchString, repoSet));
 }
