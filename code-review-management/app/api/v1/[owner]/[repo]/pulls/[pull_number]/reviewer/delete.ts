@@ -47,12 +47,13 @@ export async function _delete(
   const octokit: Octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const { data: contents } = await octokit.rest.pulls.removeRequestedReviewers({
-      owner: owner,
-      repo: repo,
-      pull_number: Number(pull_number),
-      reviewers: reviewers,
-    });
+    const { data: contents } =
+      await octokit.rest.pulls.removeRequestedReviewers({
+        owner: owner,
+        repo: repo,
+        pull_number: Number(pull_number),
+        reviewers: reviewers,
+      });
 
     // Filter response
     const filteredResponse: PullRequest = PullRequestSchema.parse(contents);
