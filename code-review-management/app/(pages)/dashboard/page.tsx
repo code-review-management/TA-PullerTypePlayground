@@ -31,7 +31,7 @@ export default function Dashboard() {
   const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
     activePullsQuery;
 
-  console.log(data);
+  
 
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 

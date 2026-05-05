@@ -12,16 +12,6 @@ export const FILTERS = [
 
 export type Tab = (typeof FILTERS)[number];
 
-const TAB_FILTERS: Tab[] = [
-  "all",
-  "requires_review",
-  "needs_your_review",
-  "authored",
-  "assigned",
-  "merged",
-  "draft",
-];
-
 const TAB_NAMES: Record<Tab, string> = {
   all: "All",
   requires_review: "Requires review",
@@ -60,15 +50,9 @@ export function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
   };
 }
 
-export function getAllTabFilters() {
-  return TAB_FILTERS.map((filter_name) =>
-    createDashboardTabFilter(filter_name),
-  );
-}
-
-export function getAllTabFiltersMapped() {
+export function getAllFiltersMap(): Map<Tab, DashboardTabFilter> {
   return new Map(
-    TAB_FILTERS.map((filter_name) => [
+    FILTERS.map((filter_name) => [
       filter_name,
       createDashboardTabFilter(filter_name),
     ]),

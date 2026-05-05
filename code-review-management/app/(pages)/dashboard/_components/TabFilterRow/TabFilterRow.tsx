@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./TabFilterRow.module.css";
 import {
+  createDashboardTabFilter,
   DashboardTabFilter,
-  getAllTabFilters,
+  getAllFiltersMap,
   Tab,
 } from "../../_utils/filter-utils";
 import { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
@@ -18,15 +19,20 @@ export default function TabFilterRow({
   setActiveTab: Dispatch<SetStateAction<DashboardTabFilter>>;
   pullsQueries: Map<Tab, UseInfiniteQueryResult<InfiniteData<PullRequestV2>>>;
 }) {
-  const filters = getAllTabFilters();
+  const tabFilterList = pullsQueries.keys().toArray();
+  const filtersMap = getAllFiltersMap();
 
   return (
     <div className={styles.tabFilters}>
-      {filters.map((filterObj) => (
+      {tabFilterList.map((filterName: Tab) => (
         <TabFilter
-          key={filterObj.filter_name}
-          onClick={() => setActiveTab(filterObj)}
-          filterObj={filterObj}
+          key={filterName}
+          onClick={() =>
+            setActiveTab(
+              filtersMap.get(filterName) || createDashboardTabFilter("all"),
+            )
+          }
+          filterObj={filtersMap.get(filterName)}
           activeTab={activeTab}
           pullsQueries={pullsQueries}
         />

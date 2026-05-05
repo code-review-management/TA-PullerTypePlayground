@@ -10,11 +10,12 @@ export default function TabFilter({
   pullsQueries,
 }: {
   onClick: () => void;
-  filterObj: DashboardTabFilter;
+  filterObj?: DashboardTabFilter;
   activeTab: DashboardTabFilter;
   pullsQueries: Map<Tab, UseInfiniteQueryResult<InfiniteData<PullRequestV2>>>;
 }) {
-  if (!pullsQueries || !pullsQueries.has(filterObj.filter_name)) return null;
+  if (!pullsQueries || !filterObj || !pullsQueries.has(filterObj.filter_name))
+    return null;
 
   return (
     <button

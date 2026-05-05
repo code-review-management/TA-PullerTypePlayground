@@ -7,7 +7,7 @@ import { fetcher } from "@/lib/api/utils/fetcher";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
 import {
   DashboardTabFilter,
-  getAllTabFiltersMapped,
+  getAllFiltersMap,
 } from "@/app/(pages)/dashboard/_utils/filter-utils";
 import { Tab } from "@/app/(pages)/dashboard/_utils/filter-utils";
 
@@ -34,7 +34,7 @@ export function usePullsQuery(filterString?: string, enabled = true) {
 }
 
 export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
-  const filters = getAllTabFiltersMapped();
+  const filters = getAllFiltersMap();
   const getFilter = (tab: Tab): DashboardTabFilter => {
     const filter = filters.get(tab);
     if (!filter) {
@@ -75,10 +75,7 @@ export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
     ],
     [
       "merged",
-      usePullsQuery(
-        getFilter("merged").filter_string,
-        activeTab === "merged",
-      ),
+      usePullsQuery(getFilter("merged").filter_string, activeTab === "merged"),
     ],
     [
       "draft",
