@@ -42,10 +42,10 @@ export function toGitHubSide(side: Side) {
  * from separate headers that start with "rename from..." and "rename to...".
  *
  * To parse the filenames from the "diff --git " lines, we extract the string
- * "a/file1 b/file2" and split it exactly in half since those filenames are the
- * same. To ensure correctness, we will only override the paths if our results
- * are as expected (the split occurs at a space, the two split strings start
- * with "a/" and "b/", and "file1" is equal to "file2").
+ * "a/file1 b/file2" and split it exactly in half since it should be symmetric.
+ * To ensure correctness, we will only override the paths if our results are as
+ * expected (the split occurs at a space, the two split strings start with "a/"
+ * and "b/", and "file1" is equal to "file2").
  *
  * Docs: https://git-scm.com/docs/diff-format#generate_patch_text_with_p
  *
@@ -57,9 +57,10 @@ export function fixParsedDiffPaths(
   parsedDiffs: FileData[],
 ) {
   const DIFF_GIT_PREFIX = "diff --git ";
-  // Match all lines that start with "diff --git".
+  // Match all lines that start with "diff --git ".
   const diffGitLines = diffString.match(/^diff --git .*/gm) ?? [];
 
+  if (diffGitLines.length !== parsedDiffs.length) return;
   diffGitLines.forEach((line, i) => {
     const parsed = parsedDiffs[i];
     if (!parsed || parsed.type === "rename" || parsed.type === "copy") return;
@@ -82,8 +83,8 @@ export function fixParsedDiffPaths(
 }
 
 /**
- * Creates the ID for a file-diff by URL encoding the spaces. Required for the
- * edge case when there are multiple files whose paths only differ by the
+ * Creates a unique ID for a file-diff. URL encodes the spaces – required for
+ * the edge case when there are multiple files whose paths only differ by the
  * amounts of trailing whitespace at the end.
  *
  * Docs: https://stackoverflow.com/a/72073207
