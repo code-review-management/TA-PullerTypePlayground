@@ -3,8 +3,9 @@ import { PullRequest } from "@/types/github.types";
 /**
  * Sorts an array of PullRequests by update time (updated_at),
  * with the most recent pull requests first.
- * @param pulls Array of PullRequest objects
- * @returns Sorted array of PullRequest objects
+ * 
+ * @param pulls Array of PullRequest objects.
+ * @returns Sorted array of `PullRequest` objects.
  */
 export function sortPullsByUpdated(pulls: PullRequest[]) {
   return pulls.toSorted(
@@ -19,7 +20,7 @@ export function sortPullsByUpdated(pulls: PullRequest[]) {
  * @param pulls Array of `PullRequest` objects.
  * @param searchString String to filter pull request titles for.
  * @param repoSet `Set` of repos indicating which repos' pull requests to filter for.
- * @returns
+ * @returns Filtered array of `PullRequest` objects.
  */
 export function filterPulls(
   pulls: PullRequest[],
@@ -39,7 +40,7 @@ export function filterPulls(
  * @param pulls Array of `PullRequest` objects.
  * @param searchString String to filter pull request titles for.
  * @param repoSet `Set` of repos indicating which repos' pull requests to filter for.
- * @returns
+ * @returns Filtered and sorted array of `PullRequest` objects.
  */
 export function processPulls(
   pulls: PullRequest[],

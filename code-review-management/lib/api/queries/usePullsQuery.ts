@@ -16,7 +16,9 @@ export type PullsQueryResult = UseInfiniteQueryResult<
 /**
  * Fetches list of pull requests relevant to the requesting user. Supports pagination.
  *
- * @param queryType:
+ * @param filterString String to pass as query params to request filtered results.
+ * @param enabled: Optional flag to disable the query from automatically running
+ *                 if set to false.
  * @returns: TanStack query result containing the pull request data.
  */
 export function usePullsQuery(filterString?: string, enabled = true) {
@@ -43,7 +45,7 @@ export function usePullsQuery(filterString?: string, enabled = true) {
  * relevant info for newly added tab filters is available before adding a tab filter here.
  *
  * @param activeTab The filter name of the tab that is currently selected.
- * @returns
+ * @returns Map<Filter, PullsQueryResult>: maps filter names to corresponding queries.
  */
 export function usePullsQueries(
   activeTab: Filter,

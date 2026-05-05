@@ -10,7 +10,6 @@ import { PullsQueryResult } from "@/lib/api/queries/usePullsQuery";
  * @param activeTab Currently selected tab
  * @param setActiveTab Setter for currently selected tab
  * @param pullsQueries Map of filter names to their corresponding Tanstack query.
- * @returns
  */
 export default function TabFilterRow({
   activeTab,

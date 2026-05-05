@@ -6,7 +6,6 @@ import { DashboardTabFilter } from "@/lib/filter-utils";
  * @param onClick Callback for button press
  * @param filterObj `DashboardTabFilter` of this tab
  * @param activeTab `DashboardTabFilter` of currently selected tab
- * @returns
  */
 export default function TabFilter({
   onClick,
