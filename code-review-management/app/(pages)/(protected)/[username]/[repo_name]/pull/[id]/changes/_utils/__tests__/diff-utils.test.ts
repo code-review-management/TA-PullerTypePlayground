@@ -1,12 +1,10 @@
 import { createDiff } from "@/mocks/tests/filetree";
-import { fixParsedDiffPaths } from "../diff-utils";
+import { createFileDiffId, fixParsedDiffPaths } from "../diff-utils";
 
 describe("fixParsedDiffPaths", () => {
-  const mockEmptyDiff = createDiff({});
-
   it("handles paths without spaces", () => {
     const diffString = "diff --git a/src/file.txt b/src/file.txt";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
 
     fixParsedDiffPaths(diffString, parsedDiffs);
 
@@ -16,7 +14,7 @@ describe("fixParsedDiffPaths", () => {
 
   it("handles paths with one space", () => {
     const diffString = "diff --git a/src/file 1.txt b/src/file 1.txt";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
     fixParsedDiffPaths(diffString, parsedDiffs);
 
     expect(parsedDiffs[0].oldPath).toBe("src/file 1.txt");
@@ -25,7 +23,7 @@ describe("fixParsedDiffPaths", () => {
 
   it("handles paths with multiple non-consecutive spaces", () => {
     const diffString = "diff --git a/a b c d.txt b/a b c d.txt";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
     fixParsedDiffPaths(diffString, parsedDiffs);
 
     expect(parsedDiffs[0].oldPath).toBe("a b c d.txt");
@@ -34,7 +32,7 @@ describe("fixParsedDiffPaths", () => {
 
   it("handles paths with multiple consecutive spaces", () => {
     const diffString = "diff --git a/a    b   c.txt b/a    b   c.txt";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
     fixParsedDiffPaths(diffString, parsedDiffs);
 
     expect(parsedDiffs[0].oldPath).toBe("a    b   c.txt");
@@ -43,19 +41,53 @@ describe("fixParsedDiffPaths", () => {
 
   it("handles paths with multiple non-consecutive spaces and trailing spaces", () => {
     const diffString = "diff --git a/a b c d.txt       b/a b c d.txt      ";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
     fixParsedDiffPaths(diffString, parsedDiffs);
 
     expect(parsedDiffs[0].oldPath).toBe("a b c d.txt      ");
     expect(parsedDiffs[0].newPath).toBe("a b c d.txt      ");
   });
 
+  it("handles paths with multiple consecutive spaces and trailing spaces", () => {
+    const diffString =
+      "diff --git a/a    b   c  d.txt       b/a    b   c  d.txt      ";
+    const parsedDiffs = [createDiff({})];
+    fixParsedDiffPaths(diffString, parsedDiffs);
+
+    expect(parsedDiffs[0].oldPath).toBe("a    b   c  d.txt      ");
+    expect(parsedDiffs[0].newPath).toBe("a    b   c  d.txt      ");
+  });
+
   it("handles paths containing 'a/' and 'b/' as substrings", () => {
     const diffString = "diff --git a/a b/ a/ b.txt b/a b/ a/ b.txt";
-    const parsedDiffs = [mockEmptyDiff];
+    const parsedDiffs = [createDiff({})];
     fixParsedDiffPaths(diffString, parsedDiffs);
 
     expect(parsedDiffs[0].oldPath).toBe("a b/ a/ b.txt");
     expect(parsedDiffs[0].newPath).toBe("a b/ a/ b.txt");
+  });
+});
+
+describe("createFileDiffId", () => {
+  it("produces ID with 'file-' prefix followed by filename", () => {
+    const activePath = "a.txt";
+    expect(createFileDiffId(activePath)).toBe("file-a.txt");
+  });
+
+  it("encodes multiple non-consecutive spaces", () => {
+    const activePath = "a b c d .txt";
+    expect(createFileDiffId(activePath)).toBe("file-a%20b%20c%20d%20.txt");
+  });
+
+  it("encodes multiple consecutive spaces", () => {
+    const activePath = "a   b  c d .txt";
+    expect(createFileDiffId(activePath)).toBe(
+      "file-a%20%20%20b%20%20c%20d%20.txt",
+    );
+  });
+
+  it("encodes trailing spaces", () => {
+    const activePath = "a.txt   ";
+    expect(createFileDiffId(activePath)).toBe("file-a.txt%20%20%20");
   });
 });
