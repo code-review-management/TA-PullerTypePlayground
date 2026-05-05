@@ -3,8 +3,6 @@ import path from "path";
 import { ChangeData, FileData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
 
-const DIFF_GIT_PREFIX = "diff --git ";
-
 export function getLineNumber(change: ChangeData, side: Side) {
   if (change.type === "delete" || change.type === "insert") {
     return change.lineNumber;
@@ -35,15 +33,36 @@ export function toGitHubSide(side: Side) {
   return side === "old" ? "LEFT" : "RIGHT";
 }
 
+/**
+ * Overrides filenames extracted by react-diff-view by parsing the diff-string
+ * ourselves. In the diff-string, each file-diff begins with a header that looks
+ * like "diff --git a/file1 b/file2". According to git docs, "a/" and "b/"
+ * filenames are the same unless rename/copy is involved. react-diff-view
+ * already handles rename/copy correctly since they extract those filenames
+ * from separate headers that start with "rename from..." and "rename to...".
+ *
+ * To parse the filenames from the "diff --git " lines, we extract the string
+ * "a/file1 b/file2" and split it exactly in half since those filenames are the
+ * same. To ensure correctness, we will only override the paths if our results
+ * are as expected (the split occurs at a space, the two split strings start
+ * with "a/" and "b/", and "file1" is equal to "file2").
+ *
+ * Docs: https://git-scm.com/docs/diff-format#generate_patch_text_with_p
+ *
+ * @param diffString: The raw diff-string.
+ * @param parsedDiffs: The diff-string data parsed by react-diff-view.
+ */
 export function fixParsedDiffPaths(
   diffString: string,
   parsedDiffs: FileData[],
 ) {
+  const DIFF_GIT_PREFIX = "diff --git ";
+  // Match all lines that start with "diff --git".
   const diffGitLines = diffString.match(/^diff --git .*/gm) ?? [];
 
   diffGitLines.forEach((line, i) => {
     const parsed = parsedDiffs[i];
-    if (!parsed) return;
+    if (!parsed || parsed.type === "rename" || parsed.type === "copy") return;
 
     const paths = line.slice(DIFF_GIT_PREFIX.length);
     const mid = Math.floor(paths.length / 2);
