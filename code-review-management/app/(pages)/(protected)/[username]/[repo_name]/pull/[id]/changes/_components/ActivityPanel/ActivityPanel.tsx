@@ -10,6 +10,7 @@ import CancelButton from "@components/CancelButton/CancelButton";
 import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
 import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import TimelineDisplay from "../../../_components/TimelineDisplay/TimelineDisplay";
+import WarningBanner from "@components/WarningBanner/WarningBanner";
 import styles from "./ActivityPanel.module.css";
 
 // Docs: https://stackoverflow.com/a/62900613
@@ -104,7 +105,12 @@ function CommentsTab({
         </div>
       ) : (
         <>
-          {mode !== "pr" && <CommitCommentsNotice />}
+          {mode !== "pr" && (
+            <WarningBanner>
+              These comments are visible on the latest version of the PR. Exit
+              commit-view to see them inline.
+            </WarningBanner>
+          )}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
               <InlinePublishedThread thread={thread} viewType="panel" />
@@ -113,14 +119,5 @@ function CommentsTab({
         </>
       )}
     </>
-  );
-}
-
-function CommitCommentsNotice() {
-  return (
-    <div className={styles.commitCommentsNotice}>
-      These comments are visible on the latest version of the PR. Exit
-      commit-view to see them inline.
-    </div>
   );
 }
