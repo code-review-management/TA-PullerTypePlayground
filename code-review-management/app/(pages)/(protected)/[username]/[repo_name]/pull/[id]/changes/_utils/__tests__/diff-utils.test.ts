@@ -6,7 +6,6 @@ describe("fixParsedDiffPaths", () => {
     it("handles paths without spaces", () => {
       const diffString = "diff --git a/src/file.txt b/src/file.txt";
       const parsedDiffs = [createDiff({})];
-
       fixParsedDiffPaths(diffString, parsedDiffs);
 
       expect(parsedDiffs[0].oldPath).toBe("src/file.txt");
@@ -166,7 +165,6 @@ describe("fixParsedDiffPaths", () => {
         createDiff({ oldPath: "old-path", newPath: "new-path" }),
       );
       parsedDiffs[0].type = "rename";
-
       fixParsedDiffPaths(diffString, parsedDiffs);
 
       expect(parsedDiffs[0].oldPath).toBe("old-path");
