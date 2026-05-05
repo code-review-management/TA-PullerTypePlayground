@@ -1,6 +1,13 @@
 import styles from "./TabFilter.module.css";
 import { DashboardTabFilter } from "@/lib/filter-utils";
 
+/**
+ * Tab filter button.
+ * @param onClick Callback for button press
+ * @param filterObj `DashboardTabFilter` of this tab
+ * @param activeTab `DashboardTabFilter` of currently selected tab
+ * @returns
+ */
 export default function TabFilter({
   onClick,
   filterObj,
