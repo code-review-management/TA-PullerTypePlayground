@@ -9,7 +9,7 @@ import {
   DashboardTabFilter,
   getAllFiltersMap,
 } from "@/app/(pages)/dashboard/_utils/filter-utils";
-import { Tab } from "@/app/(pages)/dashboard/_utils/filter-utils";
+import { Filter } from "@/app/(pages)/dashboard/_utils/filter-utils";
 
 /**
  * Fetches list of pull requests relevant to the requesting user.
@@ -33,9 +33,9 @@ export function usePullsQuery(filterString?: string, enabled = true) {
   });
 }
 
-export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
+export function usePullsQueries(activeTab: Filter): Map<Filter, PullsQueryResult> {
   const filters = getAllFiltersMap();
-  const getFilter = (tab: Tab): DashboardTabFilter => {
+  const getFilter = (tab: Filter): DashboardTabFilter => {
     const filter = filters.get(tab);
     if (!filter) {
       throw new Error(`Missing dashboard filter for tab: ${tab}`);
@@ -43,7 +43,7 @@ export function usePullsQueries(activeTab: Tab): Map<Tab, PullsQueryResult> {
     return filter;
   };
 
-  return new Map<Tab, PullsQueryResult>([
+  return new Map<Filter, PullsQueryResult>([
     ["all", usePullsQuery(undefined, activeTab === "all")],
     [
       "requires_review",

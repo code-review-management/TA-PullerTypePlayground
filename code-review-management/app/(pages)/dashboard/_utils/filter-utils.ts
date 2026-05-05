@@ -10,9 +10,9 @@ export const FILTERS = [
   "draft",
 ] as const;
 
-export type Tab = (typeof FILTERS)[number];
+export type Filter = (typeof FILTERS)[number];
 
-const TAB_NAMES: Record<Tab, string> = {
+const TAB_NAMES: Record<Filter, string> = {
   all: "All",
   requires_review: "Requires review",
   needs_your_review: "Needs your review",
@@ -24,7 +24,7 @@ const TAB_NAMES: Record<Tab, string> = {
   draft: "Your drafts",
 };
 
-const FILTER_STRINGS: Record<Tab, string[]> = {
+const FILTER_STRINGS: Record<Filter, string[]> = {
   all: [""],
   requires_review: ["open", "draft=1", "requires_review"],
   needs_your_review: ["open", "draft=1", "needs_review"],
@@ -37,12 +37,12 @@ const FILTER_STRINGS: Record<Tab, string[]> = {
 };
 
 export type DashboardTabFilter = {
-  filter_name: Tab;
+  filter_name: Filter;
   filter_string: string;
   tab_name: string;
 };
 
-export function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
+export function createDashboardTabFilter(filter_name: Filter): DashboardTabFilter {
   return {
     filter_name,
     filter_string: FILTER_STRINGS[filter_name].join("&"),
@@ -50,7 +50,7 @@ export function createDashboardTabFilter(filter_name: Tab): DashboardTabFilter {
   };
 }
 
-export function getAllFiltersMap(): Map<Tab, DashboardTabFilter> {
+export function getAllFiltersMap(): Map<Filter, DashboardTabFilter> {
   return new Map(
     FILTERS.map((filter_name) => [
       filter_name,
