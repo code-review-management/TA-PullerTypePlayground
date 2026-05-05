@@ -3,8 +3,13 @@ import { PullRequest } from "@/types/github.types";
 /**
  * Sorts an array of PullRequests by update time (updated_at),
  * with the most recent pull requests first.
+<<<<<<< HEAD
  * @param pulls Array of PullRequest objects
  * @returns Sorted array of PullRequest objects
+=======
+ * @param pulls Array of PullRequest objects.
+ * @returns Sorted array of `PullRequest` objects.
+>>>>>>> 448df1ad1f32b600dfeec07ff685fe72c2605c6c
  */
 export function sortPullsByUpdated(pulls: PullRequest[]) {
   return pulls.toSorted(
