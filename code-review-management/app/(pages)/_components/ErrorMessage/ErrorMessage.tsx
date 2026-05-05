@@ -34,7 +34,8 @@ export default function ErrorMessage({
       )}
       {externalHref && (
         <a href={externalHref} className={styles.link}>
-          View on GitHub <Image src={ExternalLinkIcon} alt="External link" />
+          View on GitHub instead{" "}
+          <Image src={ExternalLinkIcon} alt="External link" />
         </a>
       )}
     </div>
@@ -68,6 +69,14 @@ function getErrorMessageText(error: StatusError | null, resource: string) {
         };
       }
       break;
+  }
+
+  if (resource === "cumulative-diff") {
+    return {
+      title: "Diff unavailable",
+      description:
+        "Cumulative commit view is limited to 300 files. Try switching to single mode to view commits individually.",
+    };
   }
 
   return {

@@ -5,11 +5,8 @@ import {
 } from "@tanstack/react-query";
 import { fetcher } from "@/lib/api/utils/fetcher";
 import { PullRequestV2 } from "@/types/github.types.wrapper";
-import {
-  DashboardTabFilter,
-  getAllFiltersMap,
-} from "@/app/(pages)/dashboard/_utils/filter-utils";
-import { Filter } from "@/app/(pages)/dashboard/_utils/filter-utils";
+import { DashboardTabFilter, getAllFiltersMap } from "@/lib/filter-utils";
+import { Filter } from "@/lib/filter-utils";
 
 // Result of `usePullsQuery`
 export type PullsQueryResult = UseInfiniteQueryResult<
