@@ -105,14 +105,14 @@ function CommentsTab({
         </div>
       ) : (
         <>
-          <div className={styles.commitCommentsAlert}>
-            {mode !== "pr" && (
+          {mode !== "pr" && (
+            <div className={styles.commitCommentsAlert}>
               <AlertBanner>
                 These comments are visible on the latest version of the PR. Exit
                 commit-view to see them inline.
               </AlertBanner>
-            )}
-          </div>
+            </div>
+          )}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
               <InlinePublishedThread thread={thread} viewType="panel" />
