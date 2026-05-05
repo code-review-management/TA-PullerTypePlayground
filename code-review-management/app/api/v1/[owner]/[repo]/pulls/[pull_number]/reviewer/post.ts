@@ -74,6 +74,7 @@ export async function _post(
       return new Response(error.message, { status: error.status });
     } else {
       // Parsing/other error
+      console.log(error);
       return new Response("Server error", { status: 500 });
     }
   }
