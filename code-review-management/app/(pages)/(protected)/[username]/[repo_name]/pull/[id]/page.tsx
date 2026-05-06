@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
+
 // Pull Request View page.
 export default function Pull() {
   const params = useParams<PullParams>();
