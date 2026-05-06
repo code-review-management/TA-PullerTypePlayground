@@ -1,14 +1,29 @@
 import { Review, User } from "@/types/github.types";
+import ReviewApprove from "@/public/icons/review_approve.svg";
+import ReviewRequestChanges from "@/public/icons/review_request_changes.svg";
+import ReviewComment from "@/public/icons/review_comment.svg";
+import ReviewWaiting from "@/public/icons/review_waiting.svg";
+
+type listedUserState =
+  | "APPROVED"
+  | "CHANGES_REQUESTED"
+  | "COMMENTED"
+  | "DISMISSED"
+  | "REQUESTED"
+  | "ASSIGNED";
 
 export type listedUser = {
-  state:
-    | "APPROVED"
-    | "CHANGES_REQUESTED"
-    | "COMMENTED"
-    | "DISMISSED"
-    | "REQUESTED"
-    | "ASSIGNED";
+  state: listedUserState;
   user: User;
+};
+
+const LISTED_USER_STATE_ICONS: Record<listedUserState, string | null> = {
+  APPROVED: ReviewApprove,
+  CHANGES_REQUESTED: ReviewRequestChanges,
+  COMMENTED: ReviewComment,
+  DISMISSED: null,
+  REQUESTED: ReviewWaiting,
+  ASSIGNED: null,
 };
 
 function sortUserList(userList: listedUser[]) {
@@ -49,4 +64,8 @@ export function buildAssigneeList(assignees: User[]): listedUser[] {
       user: assignee,
     })),
   );
+}
+
+export function getListedUserIcon(user: listedUser) {
+  return LISTED_USER_STATE_ICONS[user.state];
 }
