@@ -23,6 +23,7 @@ import styles from "./InlineCommentEntry.module.css";
  * @param activePath: Path of the file being commented on. Used to highlight llm suggestions
  * @param startLine: Line that the comment is on, if it exists at all. Suggestive comments all have this.
  *                    We use this to render the bounds of each suggestion
+ * @param commentID: This is the github ID of the comment. We pass this in to update the suggestion comment
  * @param editorActions: Action buttons to render below the editor content when
  *                       it is editable (e.g., publish buttons).
  * @param headerActions: Action buttons to render on the right-side of the

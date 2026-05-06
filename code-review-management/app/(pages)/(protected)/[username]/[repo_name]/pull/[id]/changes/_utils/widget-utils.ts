@@ -22,7 +22,7 @@ function getThreadsBySide(
   filename: string,
   change: ChangeData,
   publishedThreads: PublishedThreadsByLine,
-  draftThreads: DraftThreadsByLine
+  draftThreads: DraftThreadsByLine,
 ) {
   if (change.type === "normal") {
     return {
@@ -102,7 +102,7 @@ export function getWidgets(
         change,
         publishedThreadsBySide,
         draftThreadsBySide,
-        activePath: filename
+        activePath: filename,
       });
     }
   });

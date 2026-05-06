@@ -16,7 +16,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: var(--font-roboto)
+  font-family: var(--font-roboto);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,16 +25,21 @@
   }
 }
 
-/* =========================================
-   DIMMED READ-ONLY ZONES
-   ========================================= */
+/*
+  Monaco editor styling can be difficult to work with, and especially to overwrite
+  it seems like in order for monaco to find the styling overrides, they need to be in our global css file
+*/
+
+/*
+  This is the override for the read only dim region
+*/
 .monaco-editor .view-overlays .readOnlyBackgroundDim.readOnlyBackgroundDim {
-  background-color: rgba(128, 128, 128, .2) !important;
+  background-color: rgba(128, 128, 128, 0.2) !important;
 }
 
-/* =========================================
-   RIGHT SIDE: MODIFIED (GREEN)
-   ========================================= */
+/*
+  This is the override for the modified suggestion code (right side)
+*/
 .monaco-editor .view-overlays .modifiedBlockBg.modifiedBlockBg {
   background-color: rgba(46, 160, 67, 0.12) !important;
 }
@@ -47,9 +52,9 @@
   border-bottom: 4px solid rgba(46, 160, 67, 1) !important;
 }
 
-/* =========================================
-   LEFT SIDE: ORIGINAL (RED)
-   ========================================= */
+/*
+  This is the override for the original code to be deleted (left side)
+*/
 .monaco-editor .view-overlays .originalBlockBg.originalBlockBg {
   background-color: rgba(248, 81, 73, 0.12) !important;
 }

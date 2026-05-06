@@ -9,6 +9,7 @@ import { updateGeminiComment } from "@/lib/api/gemini/geminiCommentor";
 import { SuggestionCommentUpdateRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import { treeifyError } from "zod";
 
 type RouteContext = {
   params: Promise<{
@@ -22,9 +23,6 @@ const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
 export async function POST(req: Request, context: RouteContext) {
-  const { owner, repo, pull_number } = await context.params;
-  const reqBody = await req.json();
-  const reqArgs = SuggestionCommentUpdateRequestSchema.safeParse(reqBody);
   const token = await getToken({
     req: req,
     secret: secret,
@@ -37,6 +35,10 @@ export async function POST(req: Request, context: RouteContext) {
     return new Response(null, { status: 401 });
   }
 
+  const { owner, repo, pull_number } = await context.params;
+  const reqBody = await req.json();
+  const reqArgs = SuggestionCommentUpdateRequestSchema.safeParse(reqBody);
+
   // Validate required parameters
   if (!owner || !repo || !pull_number) {
     return Response.json(
@@ -47,8 +49,13 @@ export async function POST(req: Request, context: RouteContext) {
 
   // Validate request parameters
   if (!reqArgs.success) {
-    const error = JSON.parse(reqArgs.error.message);
-    return Response.json({ error: error[0]["message"] }, { status: 400 });
+    return Response.json(
+      {
+        error: "Invalid query parameters",
+        details: treeifyError(reqArgs.error),
+      },
+      { status: 400 },
+    );
   }
 
   const suggestionUpdateData = reqArgs.data;
@@ -56,9 +63,14 @@ export async function POST(req: Request, context: RouteContext) {
   const octokit = new Octokit({ auth: token.accessToken });
 
   try {
-    const response = await updateGeminiComment(octokit, owner, repo, suggestionUpdateData);
+    const response = await updateGeminiComment(
+      octokit,
+      owner,
+      repo,
+      suggestionUpdateData,
+    );
     if (response === null) {
-        throw new Error("Error occured in update function, it returned null");
+      throw new Error("Error occured in update function, it returned null");
     }
 
     return new Response(JSON.stringify(response, null, 2), {
