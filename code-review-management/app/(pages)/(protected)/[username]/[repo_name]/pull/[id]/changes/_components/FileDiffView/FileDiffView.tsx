@@ -73,7 +73,9 @@ export default memo(function FileDiffView({
   );
 
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
-  const [isLoaded, setIsLoaded] = useState(fileMeta?.status !== "removed");
+  const [isDiffLoaded, setIsDiffLoaded] = useState(
+    fileMeta?.status !== "removed",
+  );
   const fileDiffRef = useRef<HTMLDivElement>(null);
   const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
 
@@ -146,7 +148,7 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {isLoaded ? (
+          {isDiffLoaded ? (
             <>
               {hasFileLevelThreads && !isCommitView && (
                 <ThreadList
@@ -178,7 +180,7 @@ export default memo(function FileDiffView({
               )}
             </>
           ) : (
-            <LoadRemovedFile setIsLoaded={setIsLoaded} />
+            <LoadRemovedFile setIsDiffLoaded={setIsDiffLoaded} />
           )}
         </div>
       </div>
