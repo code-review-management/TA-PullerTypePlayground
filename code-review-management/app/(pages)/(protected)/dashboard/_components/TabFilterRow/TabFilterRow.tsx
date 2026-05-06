@@ -20,7 +20,7 @@ export default function TabFilterRow({
   setActiveTab: Dispatch<SetStateAction<DashboardTabFilter>>;
   pullsQueries: Map<Filter, PullsQueryResult>;
 }) {
-  const tabFilterList = pullsQueries.keys().toArray();
+  const tabFilterList = Array.from(pullsQueries.keys());
 
   return (
     <div className={styles.tabFilters}>
