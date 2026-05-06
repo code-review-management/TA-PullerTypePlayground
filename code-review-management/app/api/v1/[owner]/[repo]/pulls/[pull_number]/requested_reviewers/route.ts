@@ -1,5 +1,5 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/reviewer
+/api/v1/{owner}/{repo}/pulls/{pull_number}/requested_reviewers
 */
 
 import { _get } from "./get";
