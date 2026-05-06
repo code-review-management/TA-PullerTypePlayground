@@ -47,6 +47,9 @@ export function toGitHubSide(side: Side) {
  * expected (the split occurs at a space, the two split strings start with "a/"
  * and "b/", and "file1" is equal to "file2").
  *
+ * We process the diff string from top-to-bottom since the react-diff-view
+ * parser processes it in the same order and pushes it into an array.
+ *
  * Docs: https://git-scm.com/docs/diff-format#generate_patch_text_with_p
  *
  * @param diffString: The raw diff-string.
