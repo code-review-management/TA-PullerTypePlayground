@@ -7,9 +7,7 @@ import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDif
 import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { getActivePath, fixParsedDiffPaths } from "../../_utils/diff-utils";
-import { orderParsedDiffs } from "../../_utils/filetree-utils";
-import AlertBanner from "@components/AlertBanner/AlertBanner";
-import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
+import { orderParsedDiffs } from "../../_utils/filetree-utils";import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
 import IconTooltip from "@components/IconTooltip/IconTooltip";
 import styles from "./DiffListView.module.css";
