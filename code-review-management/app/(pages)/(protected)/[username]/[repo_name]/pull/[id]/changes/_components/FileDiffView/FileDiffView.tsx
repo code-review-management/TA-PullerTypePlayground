@@ -27,6 +27,7 @@ import {
   createFileDiffId,
   getActivePath,
   getLanguage,
+  getLoadDiffReason,
 } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
@@ -35,7 +36,7 @@ import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
-import LoadRemovedFile from "../LoadRemovedFile/LoadRemovedFile";
+import LoadDiffPrompt from "../LoadDiffPrompt/LoadDiffPrompt";
 
 import styles from "./FileDiffView.module.css";
 import "prism-color-variables/variables.css";
@@ -75,11 +76,10 @@ export default memo(function FileDiffView({
     setDraftThreads,
     isCommitView,
   );
-
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
-  const [isDiffLoaded, setIsDiffLoaded] = useState(
-    fileMeta?.status !== "removed",
-  );
+  const loadDiffReason = getLoadDiffReason(hunks, fileMeta);
+  const [isDiffLoaded, setIsDiffLoaded] = useState(loadDiffReason === null);
+
   const fileDiffRef = useRef<HTMLDivElement>(null);
   const { scrollToId } = useScrollToId(
     activePath,
@@ -158,7 +158,10 @@ export default memo(function FileDiffView({
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
           {!isDiffLoaded && (
-            <LoadRemovedFile setIsDiffLoaded={setIsDiffLoaded} />
+            <LoadDiffPrompt
+              setIsDiffLoaded={setIsDiffLoaded}
+              reason={loadDiffReason}
+            />
           )}
           {/* Do not unmount if not loaded so scroll still works. */}
           <div className={!isDiffLoaded ? styles.unloaded : ""}>

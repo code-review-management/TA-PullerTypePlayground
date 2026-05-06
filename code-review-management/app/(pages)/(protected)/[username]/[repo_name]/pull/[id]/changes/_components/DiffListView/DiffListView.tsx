@@ -112,7 +112,8 @@ function OptimizationBanner() {
   return (
     <AlertBanner>
       To optimize performance for large diffs, only the first{" "}
-      {MAX_EXPANDED_DIFFS_ON_LOAD} files are expanded by default.
+      {MAX_EXPANDED_DIFFS_ON_LOAD} files are expanded by default. Large or
+      removed files must be loaded manually.
     </AlertBanner>
   );
 }

@@ -5,6 +5,7 @@
     align-items: center;
     gap: var(--spacer-4);
     padding: var(--spacer-16);
+    text-align: center;
 }
 
 .load {
@@ -16,7 +17,7 @@
     font-weight: 600;
 }
 
-.description {
+.reason {
     color: var(--text-secondary);
     font-size: 0.875rem;
 }
