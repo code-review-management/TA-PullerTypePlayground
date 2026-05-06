@@ -1,3 +1,5 @@
+import { StatusError } from "../errors/statusError";
+
 /**
  * Copied from the TanStack documentation to query JSON data from the given
  * route. Throws an error if the response is not ok (response status outside the
@@ -14,7 +16,10 @@
 export async function fetcher(route: string) {
   const response = await fetch(route);
   if (!response.ok) {
-    throw new Error("Network GET response was unsuccessful.");
+    throw new StatusError(
+      response.status,
+      "Network GET response was unsuccessful.",
+    );
   }
   return response.json();
 }

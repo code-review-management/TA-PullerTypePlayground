@@ -17,6 +17,7 @@ export type Review = z.infer<typeof ReviewSchema>;
 export type FileContent = z.infer<typeof FileContentSchema>;
 export type IssueComment = z.infer<typeof IssueCommentSchema>;
 export type CompareCommits = z.infer<typeof CompareCommitsSchema>;
+export type CollaboratorPerms = z.infer<typeof CollaboratorPermsSchema>;
 
 // Timeline sub-types
 export type ReviewRequestEvent = z.infer<typeof ReviewRequestEventSchema>;
@@ -42,7 +43,12 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED", "DISMISSED"] as const;
+const reviewState = [
+  "APPROVED",
+  "CHANGES_REQUESTED",
+  "COMMENTED",
+  "DISMISSED",
+] as const;
 const fileDiffStatus = [
   "added",
   "removed",
@@ -63,6 +69,15 @@ export const UserSchema = z.object({
   login: z.string(),
   id: z.number(),
   avatar_url: z.string(),
+  permissions: z
+    .object({
+      pull: z.boolean(),
+      push: z.boolean(),
+      admin: z.boolean(),
+      triage: z.boolean().optional(),
+      maintain: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 export const UserIdentitySchema = z.object({
@@ -432,4 +447,10 @@ export const CompareCommitsSchema = z.object({
   behind_by: z.number(),
   total_commits: z.number(),
   files: z.array(FileDiffSchema),
+});
+
+export const CollaboratorPermsSchema = z.object({
+  permission: z.string(),
+  role_name: z.string(),
+  user: UserSchema.nullable(),
 });

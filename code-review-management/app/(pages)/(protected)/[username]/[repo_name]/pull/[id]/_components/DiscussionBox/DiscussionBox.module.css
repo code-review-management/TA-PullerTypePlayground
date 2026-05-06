@@ -1,0 +1,15 @@
+.discussionBox > :first-child {
+  min-height: 80px;
+  width: 100%;
+  resize: vertical;
+
+  border-radius: 8px;
+  padding: var(--spacer-12) var(--spacer-16);
+  border: 1px solid var(--border-gray-secondary);
+  font-size: 1rem;
+  color: var(--text-primary);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
