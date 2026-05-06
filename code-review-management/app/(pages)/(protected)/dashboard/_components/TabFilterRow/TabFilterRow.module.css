@@ -1,0 +1,4 @@
+.tabFilters {
+  display: flex;
+  gap: var(--spacer-20);
+}
