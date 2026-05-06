@@ -1,8 +1,8 @@
 import Image from "next/image";
 import styles from "./UserLister.module.css";
-import { User } from "@/types/github.types";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import Subheader from "../Subheader/Subheader";
+import { listedUser } from "../../_utils/userlist-utils";
 
 export type UserListType = "reviewers" | "assignees";
 
@@ -39,7 +39,7 @@ export default function UserLister({
   userList,
 }: {
   listType: UserListType;
-  userList: User[];
+  userList: listedUser[];
 }) {
   const headerDisplay = `${listType[0].toUpperCase()}${listType.slice(1)}`;
 
@@ -56,11 +56,11 @@ export default function UserLister({
         />
       </div>
       <div className={styles.listedUsers}>
-        {userList.map((user) => (
+        {userList.map((listedUser) => (
           <UserListerRow
-            username={user.login}
-            imageSrc={user.avatar_url}
-            key={user.login}
+            username={listedUser.user.login}
+            imageSrc={listedUser.user.avatar_url}
+            key={listedUser.user.login}
           />
         ))}
       </div>

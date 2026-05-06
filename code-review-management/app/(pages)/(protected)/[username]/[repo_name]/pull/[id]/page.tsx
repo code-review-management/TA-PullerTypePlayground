@@ -11,7 +11,6 @@ import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
-
 // Pull Request View page.
 export default function Pull() {
   const params = useParams<PullParams>();
@@ -40,7 +39,7 @@ export default function Pull() {
         <div className={styles.infoColumn}>
           <StatusSection pullData={data} />
           <Divider />
-          <Reviewers reviewers={data.requested_reviewers || []} />
+          <Reviewers requested_reviewers={data.requested_reviewers || []} />
           <Divider />
           <Assignees assignees={data.assignees || []} />
           <Divider />
