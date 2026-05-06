@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { poster } from "../utils/poster";
 import { CreateReviewRequest } from "@/types/request.types";
+import PendingReviewError from "@components/PendingReviewError/PendingReviewError";
 import toast from "react-hot-toast";
 
 /**
@@ -10,6 +11,7 @@ import toast from "react-hot-toast";
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
  * @param resetReview: Reset function for review state, declared in ReviewContext.
+ * @param externalUrl: GitHub URL for the pull request. Used for toast error messages.
  * @returns: TanStack query result containing the review result.
  */
 export function useCreateReviewMutation(
@@ -17,6 +19,7 @@ export function useCreateReviewMutation(
   repo: string,
   pullNumber: string,
   resetReview: () => void,
+  externalUrl?: string,
 ) {
   const queryClient = useQueryClient();
 
@@ -37,8 +40,15 @@ export function useCreateReviewMutation(
       toast.success("Review successfully created.");
       resetReview();
     },
-    onError: () => {
-      toast.error("Failed to submit review.");
+    onError: (error) => {
+      const message = "Failed to submit review.";
+      if (error.status === 422) {
+        toast.error(
+          <PendingReviewError message={message} externalUrl={externalUrl} />,
+        );
+      } else {
+        toast.error(message);
+      }
     },
   });
 }
