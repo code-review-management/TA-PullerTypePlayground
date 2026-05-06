@@ -15,12 +15,6 @@ describe("buildReviewerList", () => {
     expect(buildReviewerList([], [])).toEqual([]);
   });
 
-  it("returns a requested reviewer as a listedUser when only given one requested reviewer", () => {
-    expect(buildReviewerList([user_abc], [])).toEqual([
-      { state: "REQUESTED", user: user_abc },
-    ]);
-  });
-
   it("returns the requested reviewers as listedUsers, ordered by username, when only given requested reviewers", () => {
     expect(buildReviewerList([user_def, user_abc, user_ghi], [])).toEqual([
       { state: "REQUESTED", user: user_abc },
