@@ -27,7 +27,7 @@
   flex-shrink: 0;
 }
 
-.buttonContainer{
+.buttonContainer {
   display: flex;
   align-items: center;
 }
@@ -48,7 +48,7 @@
   font-weight: bold;
 }
 
-.popupLabel{
+.popupLabel {
   color: var(--text-primary);
   font-size: 20px;
   font-weight: 500;
@@ -56,7 +56,7 @@
   align-items: center;
 }
 
-.updateButtonBase {
+.updateButtonInvalid {
   width: fit-content;
   height: fit-content;
   border-radius: var(--spacer-16);
@@ -64,17 +64,19 @@
   font-weight: 600;
   padding: var(--spacer-4) var(--spacer-16);
   margin-right: var(--spacer-16);
-}
-
-.updateButtonInvalid {
-  composes: updateButtonBase;
   background-color: var(--color-interactive-disabled);
   color: var(--background-secondary-light);
   cursor: not-allowed;
 }
 
 .updateButtonValid {
-  composes: updateButtonBase;
+  width: fit-content;
+  height: fit-content;
+  border-radius: var(--spacer-16);
+  border: 1px solid var(--border-gray);
+  font-weight: 600;
+  padding: var(--spacer-4) var(--spacer-16);
+  margin-right: var(--spacer-16);
   background-color: var(--color-interactive);
   color: var(--background-light);
   cursor: pointer;

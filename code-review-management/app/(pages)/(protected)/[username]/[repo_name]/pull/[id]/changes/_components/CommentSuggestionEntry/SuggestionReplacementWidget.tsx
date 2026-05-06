@@ -22,7 +22,6 @@ export type ASTTextNode = {
   value: string;
 };
 
-// An HTML element node (like a span containing tokenized code)
 export type ASTElementNode = {
   type: 'element';
   tagName: string;

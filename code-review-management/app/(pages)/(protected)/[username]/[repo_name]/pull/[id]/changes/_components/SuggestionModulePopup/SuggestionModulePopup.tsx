@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./SuggestionModulePopup.module.css";
 import { SuggestionDiffEditor } from "./MonacoComponents/SuggestionDiffEditor/SuggestionDiffEditor";
 import { SuggestionCommentUpdateRequest } from "@/types/request.types";
@@ -33,11 +33,8 @@ export function SuggestionModuleContent({
   const { username, repo_name, id } = useParams<PullParams>();
   const { mutate: updateMutation, isPending: isUpdatePending } =
     useUpdateGeminiSuggestionMutation(username, repo_name, id);
-  const {
-    mutate: commitMutation,
-    isPending: isCommitPending,
-    isSuccess: isCommitSuccess,
-  } = useCommitGeminiSuggestionMutation(username, repo_name, id);
+  const { mutate: commitMutation, isPending: isCommitPending } =
+    useCommitGeminiSuggestionMutation(username, repo_name, id);
 
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
@@ -56,14 +53,16 @@ export function SuggestionModuleContent({
 
   const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") == -1;
 
-  // 3. Unified callback for both typing AND expanding regions
+  /**
+   *  This is the function we send to components to report back to this component
+   *  if a change was made. It updates the code regions (bound changes also effect code)
+   */
   const handleEditorChange = (
     newBeforeCode: string,
     newOriginalCode: string,
     newModifiedCode: string,
     newAfterCode: string,
   ) => {
-    // Check if the user has modified the core suggestion text
     if (
       newModifiedCode !== additionContent ||
       newOriginalCode !== deletionContent
@@ -73,13 +72,17 @@ export function SuggestionModuleContent({
       setUpdateChanges(false);
     }
 
-    // Update all 4 states so the editor re-renders with the new boundaries
     setBeforeCode(newBeforeCode);
     setOriginalCode(newOriginalCode);
     setModifiedCode(newModifiedCode);
     setAfterCode(newAfterCode);
   };
 
+  /**
+   *  Function call when update button is clicked
+   *  For redundency, we handle the carriage return
+   *  We then use a mutation to request our backend to update the comment
+   */
   const onUpdateClicked = () => {
     if (!updateChanges) return;
 
@@ -104,6 +107,11 @@ export function SuggestionModuleContent({
     updateMutation(suggestionData);
   };
 
+  /**
+   * This function is called when commit button is clicked
+   * It cleans the code and handles carriage return
+   * It sends the combined regions to commit
+   */
   const onCommitClicked = () => {
     const beforeCodeLength: number = beforeCode.split("\n").length;
     const relativeLineLocation: number = beforeCodeLength + 1 - threadLine;
@@ -130,8 +138,14 @@ export function SuggestionModuleContent({
       additionContent: cleanedModifiedCode,
       relativeLineLocation: relativeLineLocation,
     };
-    const fileContent = cleanedBeforeCode + cleanedModifiedCode + cleanedAfterCode;
 
+    const fileContent =
+      cleanedBeforeCode + cleanedModifiedCode + cleanedAfterCode;
+
+    /**
+     * Function applied after success in commit suggestion
+     * It closes the window if the suggestion is taken
+     */
     commitMutation(
       {
         filename,

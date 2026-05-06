@@ -9,9 +9,18 @@ import {
   vsCodeLightPlus,
 } from "./mountUtils";
 import styles from "./SuggestionDiffEditor.module.css";
-import { before } from "node:test";
 
-export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
+/**
+ * This function orchestrates the initialization of each editor. This is how we add the properties of each editor from user interactions.
+ * This includes the decorative regions, line gutter clicking, bounds enforcing, and code change
+ * This also intiliazes style choises of the editor such as themeing and language
+ * @param props Contians information about the suggestion, mostly the code regions, file information,
+ *              and a function to update regions
+ * @returns It returns the function that will be run on the mount of the editor
+ */
+export function useDiffEditorSetup(
+  props: SuggestionDiffEditorProps,
+): DiffOnMount {
   const {
     beforeCode,
     originalCode,
@@ -26,10 +35,9 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
   const hoverDecorationsRef =
     useRef<editor.IEditorDecorationsCollection | null>(null);
 
-  // 1. Store the updater function so React can trigger Monaco to redraw
+  // We store the updater function so React can trigger Monaco to redraw
   const updateDecorationsRef = useRef<(() => void) | null>(null);
 
-  // 2. Track boundaries in a ref so event listeners always have the latest coordinates
   const boundariesRef = useRef({
     start: 1,
     end: 1,
@@ -69,6 +77,7 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
   }, [beforeCode, originalCode, modifiedCode, afterCode]);
 
   const handleEditorMount: DiffOnMount = (editorInstance, monaco) => {
+    // This section is how we theme and language set, as well as handle carriage returns
     monaco.editor.defineTheme("vs-light-plus", vsCodeLightPlus);
     monaco.editor.setTheme("vs-light-plus");
 
@@ -102,7 +111,8 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       [],
     );
 
-    // 4. Update decorations using the DYNAMIC boundaries in the ref
+    // We update the decorations dynamically, decorations are the heart of how this works
+    // We use decorations to determine regions, enforce editability, and style our regions
     const updateDecorations = () => {
       const { start, end, originalEnd, afterLines } = boundariesRef.current;
 
@@ -118,7 +128,7 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       const newModifiedDecorations = [];
       const newOriginalDecorations = [];
 
-      // DIMMING
+      // We attach dimming here (to distinguish between editable regions)
       if (start > 1) {
         const topRange = new monaco.Range(1, 1, start - 1, 1);
         newModifiedDecorations.push({ range: topRange, options: dimOptions });
@@ -136,7 +146,7 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
         });
       }
 
-      // BORDERS - Modified (Right)
+      // We add the modified content styling here
       if (end >= start) {
         newModifiedDecorations.push({
           range: new monaco.Range(start, 1, end, 1),
@@ -152,6 +162,7 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
         });
       }
 
+      // We add the deleted content styling here
       if (originalEnd >= start) {
         newOriginalDecorations.push({
           range: new monaco.Range(start, 1, originalEnd, 1),
@@ -173,31 +184,21 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
 
     updateDecorationsRef.current = updateDecorations;
 
-    const handleExpandRegionClick = (clickedLine: number) => {
-      const newRegions = calculateExpandedRegions(
-        clickedLine,
-        latestPropsRef.current,
-      );
-      if (newRegions) {
-        onCodeChange(
-          newRegions.beforeCode,
-          newRegions.originalCode,
-          newRegions.modifiedCode,
-          newRegions.afterCode,
-        );
-      }
-    };
+    // This is used to enforce region editability by toggling.
+    // This is the primary method to enforce editability rules
+    modifiedEditor.onDidChangeCursorPosition((e) => {
+      const currentLine = e.position.lineNumber;
+      const { start, end } = boundariesRef.current;
 
-    // --- CLICK LOGIC ---
-    modifiedEditor.onMouseDown((e) => {
-      if (e.target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
-        const clickedLine = e.target.position?.lineNumber;
-        if (clickedLine && clickedLine === hoveredLineRef.current) {
-          handleExpandRegionClick(clickedLine);
-        }
+      if (currentLine < start || currentLine > end) {
+        modifiedEditor.updateOptions({ readOnly: true });
+      } else {
+        modifiedEditor.updateOptions({ readOnly: false });
       }
     });
 
+    // This is our second line of defense for editability.
+    // We check to make sure that no keydown is both crossing a section and modifing content
     modifiedEditor.onKeyDown((e) => {
       const { start, end } = boundariesRef.current;
       const selections = modifiedEditor.getSelections();
@@ -250,23 +251,38 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       }
     });
 
-    modifiedEditor.onDidChangeCursorPosition((e) => {
-      const currentLine = e.position.lineNumber;
-      const { start, end } = boundariesRef.current;
+    // On click, it will determine the new text content related to the regional change
+    // It then tells the parents the new code content of the regions
+    const handleExpandRegionClick = (clickedLine: number) => {
+      const newRegions = calculateExpandedRegions(
+        clickedLine,
+        latestPropsRef.current,
+      );
+      if (newRegions) {
+        onCodeChange(
+          newRegions.beforeCode,
+          newRegions.originalCode,
+          newRegions.modifiedCode,
+          newRegions.afterCode,
+        );
+      }
+    };
 
-      if (currentLine < start || currentLine > end) {
-        modifiedEditor.updateOptions({ readOnly: true });
-      } else {
-        modifiedEditor.updateOptions({ readOnly: false });
+    // This is the line gutter click handling, it expands the region
+    modifiedEditor.onMouseDown((e) => {
+      if (e.target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
+        const clickedLine = e.target.position?.lineNumber;
+        if (clickedLine && clickedLine === hoveredLineRef.current) {
+          handleExpandRegionClick(clickedLine);
+        }
       }
     });
 
-    // --- HOVER LOGIC ---
+    // This is the hover logic, this is used for region expansion styling
     modifiedEditor.onMouseMove((e) => {
       const target = e.target;
       const position = target.position;
 
-      // Ensure we are hovering over the gutter line numbers specifically
       if (
         !position ||
         target.type !== monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS
@@ -277,8 +293,6 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
 
       const currentLine = position.lineNumber;
       const { start, end } = boundariesRef.current;
-
-      // Only show the plus hover effect IF it's outside the editable zone
       const isExpandable = currentLine < start || currentLine > end;
 
       if (currentLine !== hoveredLineRef.current) {
@@ -291,13 +305,13 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
               options: {
                 isWholeLine: true,
                 className: styles["monaco-hover-line-yellow"],
-                // New specific class for the plus button
+                // This is the class we use to make the plus button you see in gutters
                 marginClassName: styles["monaco-expand-plus-btn"],
               },
             },
           ]);
         } else {
-          clearHover(); // Clear it if they hover inside the editable zone
+          clearHover();
         }
       }
     });
@@ -311,9 +325,10 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
       }
     }
 
+    // This function handles model content change. It updates the bounds with the new line count
+    // It then fires the function to let the parent component know
     modifiedEditor.onDidChangeModelContent(() => {
       const totalLines = modifiedEditor.getModel()?.getLineCount() || 0;
-      // Adjust the end line dynamically if they type/delete inside the editor
       boundariesRef.current.end = totalLines - boundariesRef.current.afterLines;
       updateDecorations();
 
@@ -344,5 +359,5 @@ export function useDiffEditorSetup(props: SuggestionDiffEditorProps) {
     }, 50);
   };
 
-  return { handleEditorMount };
+  return handleEditorMount;
 }

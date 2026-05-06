@@ -37,7 +37,6 @@ import "prism-color-variables/variables.css";
 import "react-diff-view/style/index.css";
 import "./ReactDiffView.css";
 
-
 /**
  * Docs:
  * 1. https://github.com/otakustay/react-diff-view?tab=readme-ov-file#render-diff-hunks

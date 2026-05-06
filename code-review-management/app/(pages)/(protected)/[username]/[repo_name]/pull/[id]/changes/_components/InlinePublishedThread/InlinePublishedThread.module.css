@@ -1,24 +1,24 @@
 .thread {
-    border: var(--border-normal-width) solid var(--border-gray);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--box-shadow-soft);
-    scroll-margin-top: var(--thread-scroll-margin-top);
+  border: var(--border-normal-width) solid var(--border-gray);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow-soft);
+  scroll-margin-top: var(--thread-scroll-margin-top);
 }
 
 .thread:target {
-    outline: var(--border-thick-width) solid var(--color-interactive);
+  outline: var(--border-thick-width) solid var(--color-interactive);
 }
 
 .comments {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-12);
-    padding: var(--spacer-12);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-12);
+  padding: var(--spacer-12);
 }
 
 .notificationText {
-    font-size:  22px;
-    color: var(--text-primary);
-    font-family: var(--font-roboto);
+  font-size: 22px;
+  color: var(--text-primary);
+  font-family: var(--font-roboto);
 }

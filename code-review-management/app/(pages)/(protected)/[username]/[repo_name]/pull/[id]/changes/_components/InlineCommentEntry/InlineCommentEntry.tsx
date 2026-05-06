@@ -1,6 +1,9 @@
 import { ReactNode } from "react";
 import { formatDate } from "../../../_utils/date-utils";
-import { extractSuggestions, SuggestiveComment } from "../CommentSuggestionEntry/suggestionParser";
+import {
+  extractSuggestions,
+  SuggestiveComment,
+} from "../CommentSuggestionEntry/suggestionParser";
 import { SuggestionReplacementWidget } from "../CommentSuggestionEntry/SuggestionReplacementWidget";
 import MarkdownEditor from "@components/MarkdownEditor/MarkdownEditor";
 import UserIcon from "@components/UserIcon/UserIcon";
@@ -18,6 +21,8 @@ import styles from "./InlineCommentEntry.module.css";
  * @param defaultContent: Contents of the comment. Can be empty for newly
  *                        created drafts.
  * @param activePath: Path of the file being commented on. Used to highlight llm suggestions
+ * @param startLine: Line that the comment is on, if it exists at all. Suggestive comments all have this.
+ *                    We use this to render the bounds of each suggestion
  * @param editorActions: Action buttons to render below the editor content when
  *                       it is editable (e.g., publish buttons).
  * @param headerActions: Action buttons to render on the right-side of the
@@ -46,19 +51,19 @@ export default function InlineCommentEntry({
   editorActions?: ReactNode;
   headerActions?: ReactNode;
 }) {
-  const suggestiveComment: SuggestiveComment = defaultContent 
-    ? extractSuggestions(defaultContent) : 
-    { 
-      hasSuggestion: false, 
-      relativeStartLine: 0,
-      deletionContent: "",
-      additionContent: "",
-      isCommited: false,
-    };
-  
+  const suggestiveComment: SuggestiveComment = defaultContent
+    ? extractSuggestions(defaultContent)
+    : {
+        hasSuggestion: false,
+        relativeStartLine: 0,
+        deletionContent: "",
+        additionContent: "",
+        isCommited: false,
+      };
+
   if (!activePath) activePath = "";
-  if (suggestiveComment.hasSuggestion){
-    if (!startLine){
+  if (suggestiveComment.hasSuggestion) {
+    if (!startLine) {
       suggestiveComment.hasSuggestion = false;
       startLine = 0;
     }
@@ -86,13 +91,13 @@ export default function InlineCommentEntry({
           </div>
           {headerActions}
         </div>
-        
+
         {suggestiveComment.hasSuggestion ? (
           <SuggestionReplacementWidget
             suggestion={suggestiveComment}
             activePath={activePath}
             startLine={startLine}
-            commentID = {commentID}  
+            commentID={commentID}
           />
         ) : (
           <MarkdownEditor

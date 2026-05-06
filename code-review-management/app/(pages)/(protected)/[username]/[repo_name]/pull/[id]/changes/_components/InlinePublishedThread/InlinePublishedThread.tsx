@@ -27,7 +27,7 @@ type ThreadViewType = "inline" | "panel";
 export default function InlinePublishedThread({
   thread,
   viewType,
-  activePath
+  activePath,
 }: {
   thread: PublishedThreadItem;
   activePath: string;
@@ -57,9 +57,9 @@ export default function InlinePublishedThread({
       />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
-            <InlineCommentEntry
+          <InlineCommentEntry
             key={comment.id}
-            commentID = {comment.id}
+            commentID={comment.id}
             avatar={comment.user.avatar_url}
             username={comment.user.login}
             created={comment.created_at}
@@ -67,7 +67,7 @@ export default function InlinePublishedThread({
             defaultContent={comment.body}
             activePath={activePath}
             startLine={startLine}
-            />
+          />
         ))}
         {viewType === "inline" && ( // Reply option currently supported only for inline threads.
           <>

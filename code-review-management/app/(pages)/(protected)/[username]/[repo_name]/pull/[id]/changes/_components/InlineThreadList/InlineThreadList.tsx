@@ -22,11 +22,17 @@ export default function InlineThreadList({
   change,
   publishedThreadsBySide,
   draftThreadsBySide,
-  activePath
+  activePath,
 }: {
   change: ChangeData;
-  publishedThreadsBySide: { left: PublishedThreadItem[]; right: PublishedThreadItem[] };
-  draftThreadsBySide: { left?: DraftThreadItem | null; right?: DraftThreadItem | null };
+  publishedThreadsBySide: {
+    left: PublishedThreadItem[];
+    right: PublishedThreadItem[];
+  };
+  draftThreadsBySide: {
+    left?: DraftThreadItem | null;
+    right?: DraftThreadItem | null;
+  };
   activePath: string;
 }) {
   if (change.type === "delete") {
@@ -38,7 +44,7 @@ export default function InlineThreadList({
       />
     );
   } else if (change.type === "insert") {
-    console.log("Inside thread inline: " + publishedThreadsBySide.right.length)
+    console.log("Inside thread inline: " + publishedThreadsBySide.right.length);
     return (
       <ThreadList
         publishedThreads={publishedThreadsBySide.right}
@@ -86,11 +92,10 @@ export function ThreadList({
   draftThread?: DraftThreadItem | null;
   activePath: string;
 }) {
-  console.log("Inside thread list. Published thread items");
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => {
-        console.log("published thread!")
+        console.log("published thread!");
         return (
           <InlinePublishedThread
             key={publishedThread.id}
@@ -98,7 +103,7 @@ export function ThreadList({
             viewType="inline"
             activePath={activePath}
           />
-        )
+        );
       })}
       {draftThread && <InlineDraftThread draft={draftThread} />}
     </div>
