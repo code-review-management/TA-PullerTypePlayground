@@ -1,5 +1,5 @@
 import { createExampleUser } from "@/mocks/tests/users";
-import { buildReviewerList } from "../userlist-utils";
+import { buildAssigneeList, buildReviewerList } from "../userlist-utils";
 import { createExampleReview } from "@/mocks/tests/reviews";
 
 describe("buildReviewerList", () => {
@@ -64,6 +64,24 @@ describe("buildReviewerList", () => {
       { state: "REQUESTED", user: user_def },
       { state: "APPROVED", user: user_abc },
       { state: "APPROVED", user: user_ghi },
+    ]);
+  });
+});
+
+describe("buildAssigneeList", () => {
+  const user_abc = createExampleUser("abc", 1);
+  const user_def = createExampleUser("def", 2);
+  const user_ghi = createExampleUser("ghi", 3);
+
+  it("returns an empty array when given no assignees", () => {
+    expect(buildAssigneeList([])).toEqual([]);
+  });
+
+  it("returns the assignees as listedUsers, sorted", () => {
+    expect(buildAssigneeList([user_def, user_abc, user_ghi])).toEqual([
+      { state: "ASSIGNED", user: user_abc },
+      { state: "ASSIGNED", user: user_def },
+      { state: "ASSIGNED", user: user_ghi },
     ]);
   });
 });
