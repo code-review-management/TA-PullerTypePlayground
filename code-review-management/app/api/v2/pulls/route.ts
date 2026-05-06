@@ -14,6 +14,18 @@ import parse from "parse-link-header";
 const secret = process.env.AUTH_SECRET;
 const cookie = getCookieName();
 
+const qParams = {
+  open: ["state:open", "state:closed"],
+  draft: ["draft:true", "draft:false"],
+  merged: ["is:merged", "is:unmerged"],
+  needs_review: ["user-review-requested:@me"],
+  requires_review: ["review:required"],
+  approved: ["review:approved"],
+  authored: ["author:@me"],
+  assigned: ["assignee:@me"],
+  reviewed: ["reviewed-by:@me"],
+} as const;
+
 export async function GET(req: Request) {
   const token = await getToken({
     req: req,
@@ -30,9 +42,9 @@ export async function GET(req: Request) {
   // Get query parameters
   const { searchParams: params } = new URL(req.url);
   const page = Number(params.get("page"));
-  const open = params.get("open");
-  const draft = params.get("draft");
-  const merged = params.get("merged");
+
+  // When count_only is provided, query only 1 item because data will not be returned
+  const countOnly = params.get("count_only") !== null;
 
   // Validate parameters
   if (isNaN(page) || page < 1) {
@@ -44,25 +56,45 @@ export async function GET(req: Request) {
 
   const octokit = new Octokit({ auth: token.accessToken });
 
-  try {
-    let query = "is:pr involves:@me ";
-    query +=
-      open != null ? (open == "true" ? "state:open " : "state:closed ") : "";
-    query +=
-      draft != null ? (draft == "true" ? "draft:true " : "draft:false ") : "";
-    query +=
-      merged != null ? (merged == "true" ? "is:merged " : "is:unmerged ") : "";
+  // Assemble query string
+  let query = "is:pr involves:@me ";
+  Object.entries(qParams).forEach(([key, value]) => {
+    const param = params.get(key);
+    const index = Number(param);
+    if (param == null || isNaN(index) || index < 0 || index >= value.length)
+      return;
 
+    query += value[index] + " ";
+  });
+  query = query.slice(0, -1);
+
+  try {
     const data = await octokit.request("GET /search/issues", {
       q: query,
       page: page,
-      per_page: 100,
+      per_page: countOnly ? 1 : 100,
     });
 
     // Filter response
-    const filteredResponse: PullRequest[] = data.data.items.map((item) => {
-      return PullRequestSchema.parse(item);
-    });
+    const filteredResponse: PullRequest[] = countOnly
+      ? []
+      : data.data.items.map((item) => {
+          const rv: PullRequest = PullRequestSchema.parse(item);
+
+          if (rv.repository_url) {
+            // Populate repo name
+            const repoUrlArray = rv.repository_url.split("/");
+            const index = repoUrlArray.findIndex(
+              (element) => element == "repos",
+            );
+            rv.repository_name = repoUrlArray.slice(index + 2).join("/");
+
+            // Populate repo owner
+            rv.repository_owner = repoUrlArray[index + 1];
+          }
+
+          return rv;
+        });
 
     const linkHeaders = parse(data.headers.link);
 

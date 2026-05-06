@@ -1,0 +1,53 @@
+import { Dispatch, SetStateAction, useRef } from "react";
+import Image from "next/image";
+import CancelSearchIcon from "@/public/icons/cancel_search.svg";
+import SearchIcon from "@/public/icons/search.svg";
+import styles from "./FileTreeSearchBar.module.css";
+
+export default function FileTreeSearchBar({
+  searchString,
+  setSearchString,
+}: {
+  searchString: string;
+  setSearchString: Dispatch<SetStateAction<string>>;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const clearSearch = () => setSearchString("");
+  const focusOnInput = () => {
+    // Without this, clicking on the magnifier does not focus on the input.
+    if (inputRef.current) inputRef.current.focus();
+  };
+
+  return (
+    <div className={styles.searchContainer}>
+      <div className={styles.searchInputWrapper}>
+        <Image
+          className={styles.searchMagnifierIcon}
+          src={SearchIcon}
+          alt="Search"
+          height={20}
+          width={20}
+          onClick={focusOnInput}
+        />
+        <input
+          className={styles.searchInput}
+          value={searchString}
+          onChange={(e) => setSearchString(e.target.value)}
+          placeholder="Search files"
+          spellCheck={false}
+          ref={inputRef}
+        />
+        {searchString.length > 0 && (
+          <button className={styles.searchCancelIcon} onClick={clearSearch}>
+            <Image
+              src={CancelSearchIcon}
+              alt="Cancel search"
+              height={20}
+              width={20}
+            />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

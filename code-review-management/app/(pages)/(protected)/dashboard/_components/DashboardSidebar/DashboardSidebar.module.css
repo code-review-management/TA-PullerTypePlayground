@@ -1,0 +1,30 @@
+.dashboardSidebar {
+  width: 320px;
+  display: flex;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebarContent {
+  flex: 1;
+  overflow-x: hidden;
+  padding: var(--spacer-20);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-16);
+}
+
+.sidebarHeader {
+  font-weight: 500;
+}
+
+.sideBorder {
+  position: sticky;
+  top: 24px;
+  height: calc(100vh - 2 * var(--spacer-24));
+  border-right: 1px solid var(--border-gray-secondary);
+}

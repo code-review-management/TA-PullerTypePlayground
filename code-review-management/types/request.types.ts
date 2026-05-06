@@ -1,14 +1,23 @@
 import * as z from "zod";
+import { CommentSchema } from "./github.types";
 
 export type CommentCreateRequest = z.infer<typeof CommentCreateRequestSchema>;
 export type CommentPatchRequest = z.infer<typeof CommentPatchRequestSchema>;
 export type CommentDeleteRequest = z.infer<typeof CommentDeleteRequestSchema>;
 export type PRMergeRequest = z.infer<typeof PRMergeRequestSchema>;
 export type CreateReviewRequest = z.infer<typeof CreateReviewRequestSchema>;
+export type ThreadSuggestionRequest = z.infer<
+  typeof ThreadSuggestionRequestSchema
+>;
+export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
+export type CreateIssueCommentRequest = z.infer<
+  typeof CreateIssueCommentRequestSchema
+>;
 
 const side = ["LEFT", "RIGHT"] as const;
 const mergeMethod = ["merge", "squash", "rebase"] as const;
 const reviewEvent = ["APPROVE", "REQUEST_CHANGES", "COMMENT"] as const;
+const subjectType = ["line", "file"] as const;
 
 export const CommentCreateRequestSchema = z
   .object({
@@ -20,6 +29,7 @@ export const CommentCreateRequestSchema = z
     start_line: z.number().optional(),
     start_side: z.enum(side).optional(),
     in_reply_to: z.number().optional(),
+    subject_type: z.enum(subjectType).optional(),
   })
   .refine(
     (data) =>
@@ -27,15 +37,16 @@ export const CommentCreateRequestSchema = z
         data.line != null &&
         data.start_line != null &&
         data.start_side != null &&
-        data.in_reply_to == null) ||
+        data.in_reply_to == null &&
+        data.subject_type == "line") ||
       (data.side == null &&
         data.line == null &&
         data.start_line == null &&
         data.start_side == null &&
-        data.in_reply_to != null),
+        (data.in_reply_to != null || data.subject_type == "file")),
     {
       message:
-        "Must provide either comment location information OR an in reply to ID.",
+        "Must provide either comment location information OR an in reply to ID. Do not provide comment location information if subject type is file.",
     },
   );
 
@@ -71,3 +82,29 @@ export const CreateReviewRequestSchema = z
       message: "Must provide body if event is REQUEST_CHANGES or COMMENT",
     },
   );
+
+export const ThreadSuggestionRequestSchema = z.object({
+  id: z.number(),
+  filePath: z.string(),
+  side: z.enum(side),
+  line: z.number(),
+  sha: z.string(),
+  comments: z.array(CommentSchema),
+});
+
+const DeleteRangeSchema = z.object({
+  minInclusiveLine: z.number(),
+  maxExclusiveLine: z.number(),
+});
+
+const AdditionBlockSchema = z.object({
+  insertionCode: z.string(),
+});
+
+export const CodeEditResponseSchema = z.object({
+  deleteRange: DeleteRangeSchema,
+  additionBlock: AdditionBlockSchema,
+});
+export const CreateIssueCommentRequestSchema = z.object({
+  body: z.string(),
+});

@@ -1,0 +1,39 @@
+.repoListSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-8);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacer-4);
+  cursor: pointer;
+}
+
+.ownerName {
+  font-size: 1rem;
+  font-weight: 500;
+  user-select: none;
+}
+
+.repoList {
+  display: none;
+  margin-left: var(--spacer-20);
+}
+
+.repoListExpanded {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-10);
+}
+
+.repoListEntry {
+  display: flex;
+  gap: var(--spacer-8);
+  user-select: none;
+}
+
+.repoName {
+  cursor: pointer;
+}
