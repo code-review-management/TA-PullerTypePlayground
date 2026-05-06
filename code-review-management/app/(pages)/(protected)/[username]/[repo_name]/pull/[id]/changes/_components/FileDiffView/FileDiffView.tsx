@@ -23,7 +23,11 @@ import { useHighlight } from "../../_hooks/useHighlight";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
 import { useScrollToId } from "../../_hooks/useScrollToId";
 import { createDraftThread } from "../../_utils/comment-utils";
-import { getActivePath, getLanguage } from "../../_utils/diff-utils";
+import {
+  createFileDiffId,
+  getActivePath,
+  getLanguage,
+} from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
 import { ThreadList } from "../InlineThreadList/InlineThreadList";
@@ -131,7 +135,7 @@ export default memo(function FileDiffView({
       <div
         ref={fileDiffRef}
         className={`${styles.fileDiffView} ${activeHighlight.isHighlighting ? styles.isHighlighting : ""}`}
-        id={`file-${activePath}`}
+        id={createFileDiffId(activePath)}
       >
         <FileDiffHeader
           fileMeta={fileMeta}
