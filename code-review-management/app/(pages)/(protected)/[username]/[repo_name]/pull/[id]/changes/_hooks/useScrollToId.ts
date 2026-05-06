@@ -8,6 +8,7 @@ import {
 
 export function useScrollToId(
   activePath: string,
+  setIsDiffLoaded: Dispatch<SetStateAction<boolean>>,
   setIsExpanded: Dispatch<SetStateAction<boolean>>,
   fileDiffRef: RefObject<HTMLDivElement | null>,
 ) {
@@ -20,13 +21,14 @@ export function useScrollToId(
       const target = document.getElementById(hash);
       if (!target || !fileDiffRef.current?.contains(target)) return;
 
+      setIsDiffLoaded(true);
       setIsExpanded(true);
       setScrollId(hash);
     };
 
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, [activePath, setIsExpanded, fileDiffRef]);
+  }, [activePath, setIsDiffLoaded, setIsExpanded, fileDiffRef]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +50,7 @@ export function useScrollToId(
 
   return {
     scrollToId: (id: string) => {
+      setIsDiffLoaded(true);
       setIsExpanded(true);
       setScrollId(id);
     },

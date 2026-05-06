@@ -77,7 +77,12 @@ export default memo(function FileDiffView({
     fileMeta?.status !== "removed",
   );
   const fileDiffRef = useRef<HTMLDivElement>(null);
-  const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
+  const { scrollToId } = useScrollToId(
+    activePath,
+    setIsDiffLoaded,
+    setIsExpanded,
+    fileDiffRef,
+  );
 
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
@@ -148,40 +153,40 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
-          {isDiffLoaded ? (
-            <>
-              {hasFileLevelThreads && !isCommitView && (
-                <ThreadList
-                  publishedThreads={publishedThreads.fileThreads}
-                  draftThread={draftThreadsByLine?.["file-level"]}
-                />
-              )}
-              {hunks.length > 0 ? (
-                <Diff
-                  viewType={viewType}
-                  diffType={diffType}
-                  hunks={hunks}
-                  tokens={tokens}
-                  widgets={widgets}
-                  renderGutter={renderGutter}
-                  gutterEvents={highlightEvents}
-                >
-                  {(hunks) =>
-                    hunks.map((hunk) => (
-                      <Fragment key={hunk.content}>
-                        <Decoration>{hunk.content}</Decoration>
-                        <Hunk hunk={hunk} />
-                      </Fragment>
-                    ))
-                  }
-                </Diff>
-              ) : (
-                <EmptyDiff diff={diff} fileMeta={fileMeta} />
-              )}
-            </>
-          ) : (
+          {!isDiffLoaded && (
             <LoadRemovedFile setIsDiffLoaded={setIsDiffLoaded} />
           )}
+          {/* Do not unmount if not loaded so scroll still works. */}
+          <div className={!isDiffLoaded ? styles.unloaded : ""}>
+            {hasFileLevelThreads && !isCommitView && (
+              <ThreadList
+                publishedThreads={publishedThreads.fileThreads}
+                draftThread={draftThreadsByLine?.["file-level"]}
+              />
+            )}
+            {hunks.length > 0 ? (
+              <Diff
+                viewType={viewType}
+                diffType={diffType}
+                hunks={hunks}
+                tokens={tokens}
+                widgets={widgets}
+                renderGutter={renderGutter}
+                gutterEvents={highlightEvents}
+              >
+                {(hunks) =>
+                  hunks.map((hunk) => (
+                    <Fragment key={hunk.content}>
+                      <Decoration>{hunk.content}</Decoration>
+                      <Hunk hunk={hunk} />
+                    </Fragment>
+                  ))
+                }
+              </Diff>
+            ) : (
+              <EmptyDiff diff={diff} fileMeta={fileMeta} />
+            )}
+          </div>
         </div>
       </div>
     </ClearHighlightContext>
