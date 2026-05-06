@@ -10,8 +10,12 @@ export type ThreadSuggestionRequest = z.infer<
   typeof ThreadSuggestionRequestSchema
 >;
 export type CodeEditResponse = z.infer<typeof CodeEditResponseSchema>;
-export type SuggestionCommentUpdateRequest = z.infer<typeof SuggestionCommentUpdateRequestSchema>
-export type SuggestionCommitRequest = z.infer<typeof SuggestionCommitRequestShema>;
+export type SuggestionCommentUpdateRequest = z.infer<
+  typeof SuggestionCommentUpdateRequestSchema
+>;
+export type SuggestionCommitRequest = z.infer<
+  typeof SuggestionCommitRequestShema
+>;
 export type CreateIssueCommentRequest = z.infer<
   typeof CreateIssueCommentRequestSchema
 >;
@@ -130,7 +134,7 @@ export const SuggestionCommitRequestShema = z.object({
   filename: z.string(),
   content: z.string(),
   suggestionData: SuggestionCommentUpdateRequestSchema,
-})
+});
 export const CreateIssueCommentRequestSchema = z.object({
   body: z.string(),
 });

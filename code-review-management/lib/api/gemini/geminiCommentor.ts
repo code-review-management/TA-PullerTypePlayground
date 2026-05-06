@@ -33,15 +33,13 @@ export async function commentGeminiSuggestion(
   const body = convertIntoMarkdownSuggestion(tag, deletionBlock, insertionCode);
 
   try {
-    const response = await octokit.rest.pulls.createReplyForReviewComment({
+    await octokit.rest.pulls.createReplyForReviewComment({
       owner,
       repo,
       pull_number,
       comment_id: thread.id,
       body,
     });
-
-    console.log(`Threaded reply created! URL: ${response.data.html_url}`);
   } catch (error) {
     console.error("Failed to reply to review comment:", error);
   }

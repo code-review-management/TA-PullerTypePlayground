@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 
 /**
  * updates a gemini comment.
- *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.

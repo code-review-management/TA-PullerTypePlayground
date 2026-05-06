@@ -398,11 +398,13 @@ export const FileContentSchema = z.object({
   git_url: z.url().nullable().optional(),
   html_url: z.url().nullable().optional(),
   download_url: z.string().url().nullable().optional(),
-  _links: z.object({
-    git: z.url().nullable().optional(),
-    self: z.url(),
-    html: z.url().nullable().optional(),
-  }).optional(),
+  _links: z
+    .object({
+      git: z.url().nullable().optional(),
+      self: z.url(),
+      html: z.url().nullable().optional(),
+    })
+    .optional(),
 });
 
 export const GitHubFileContentSchema = z.object({
