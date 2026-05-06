@@ -31,7 +31,7 @@ export function useListCommitsQuery(
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.next,
     select: useCallback((data: InfiniteData<CommitV2, number>) => {
-      return data.pages.flatMap((page) => page.data);
+      return data.pages.flatMap((page) => page.data).reverse();
     }, []),
     enabled,
   });

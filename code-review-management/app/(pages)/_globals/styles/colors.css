@@ -2,6 +2,7 @@
     /* Component background colors */
     --background-light: #ffffff;
     --background-secondary-light: #f2f2f2;
+    --background-tertiary-light: #f9f9f9;
 
     /* Component text colors */
     --text-primary: #49454f;
@@ -14,6 +15,9 @@
     --color-failure: #e30202;
     --color-disabled: #919191;
 
+    --color-warning: #f8bc07;
+    --color-warning-light: #fffbe8;
+
     --color-interactive: #1e84de;
     --color-interactive-light: #ebf6ff;
     --color-interactive-transparent: #d8edff80;
@@ -24,6 +28,7 @@
 
     /* Icon colors */
     --icon-hover-gray: #efefef;
+    --icon-hover-gray-secondary: #e1e1e1; /* Darker hover */
 
     /* Border colors */
     --border-gray: #e2e2e2;

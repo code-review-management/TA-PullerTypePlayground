@@ -4,7 +4,9 @@ import {
   FileDiffSchema,
   PullRequestSchema,
   RepoSchema,
+  ReviewSchema,
   TimelineEventSchema,
+  UserSchema,
 } from "@/types/github.types";
 import * as z from "zod";
 
@@ -14,6 +16,8 @@ export type CommentV2 = z.infer<typeof CommentSchemaV2>;
 export type TimelineEventV2 = z.infer<typeof TimelineEventSchemaV2>;
 export type FileDiffV2 = z.infer<typeof FileDiffSchemaV2>;
 export type CommitV2 = z.infer<typeof CommitSchemaV2>;
+export type ReviewV2 = z.infer<typeof ReviewSchemaV2>;
+export type UserV2 = z.infer<typeof UserSchemaV2>;
 
 export const RepoSchemaV2 = z.object({
   data: z.array(RepoSchema),
@@ -58,6 +62,22 @@ export const FileDiffSchemaV2 = z.object({
 
 export const CommitSchemaV2 = z.object({
   data: z.array(CommitSchema),
+  prev: z.number().optional(),
+  next: z.number().optional(),
+  first: z.number().optional(),
+  last: z.number().optional(),
+});
+
+export const ReviewSchemaV2 = z.object({
+  data: z.array(ReviewSchema),
+  prev: z.number().optional(),
+  next: z.number().optional(),
+  first: z.number().optional(),
+  last: z.number().optional(),
+});
+
+export const UserSchemaV2 = z.object({
+  data: z.array(UserSchema),
   prev: z.number().optional(),
   next: z.number().optional(),
   first: z.number().optional(),

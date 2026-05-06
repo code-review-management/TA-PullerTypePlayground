@@ -1,0 +1,11 @@
+.thread {
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-soft);
+    scroll-margin-top: var(--thread-scroll-margin-top);
+}
+
+.comment {
+    padding: var(--spacer-12);
+}
