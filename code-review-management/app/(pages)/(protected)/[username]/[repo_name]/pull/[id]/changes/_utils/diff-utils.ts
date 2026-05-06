@@ -56,6 +56,9 @@ export function fixParsedDiffPaths(
   diffString: string,
   parsedDiffs: FileData[],
 ) {
+  const stripTrailingTab = (path: string) =>
+    path.endsWith("\t") ? path.slice(0, -1) : path;
+
   const DIFF_GIT_PREFIX = "diff --git ";
   // Match all lines that start with "diff --git ".
   const diffGitLines = diffString.match(/^diff --git .*/gm) ?? [];
@@ -65,12 +68,16 @@ export function fixParsedDiffPaths(
     const parsed = parsedDiffs[i];
     if (!parsed || parsed.type === "rename" || parsed.type === "copy") return;
 
+    parsed.oldPath = stripTrailingTab(parsed.oldPath);
+    parsed.newPath = stripTrailingTab(parsed.newPath);
+
     const paths = line.slice(DIFF_GIT_PREFIX.length);
     const mid = Math.floor(paths.length / 2);
     if (paths[mid] !== " ") return;
 
     const aPrefixed = paths.slice(0, mid);
     const bPrefixed = paths.slice(mid + 1);
+
     if (!aPrefixed.startsWith("a/") || !bPrefixed.startsWith("b/")) return;
 
     const oldPath = aPrefixed.slice(2);
