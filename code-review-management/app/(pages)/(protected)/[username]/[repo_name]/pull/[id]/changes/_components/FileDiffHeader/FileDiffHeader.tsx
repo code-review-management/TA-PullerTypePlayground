@@ -104,7 +104,7 @@ function TruncatedPath({ path }: { path: string }) {
   };
 
   return (
-    <p
+    <div
       className={styles.path}
       onClick={handleCopy}
       data-tooltip-id={`tooltip-copy-${path}`}
@@ -113,7 +113,7 @@ function TruncatedPath({ path }: { path: string }) {
       data-tooltip-delay-show={100}
       onMouseLeave={() => setTimeout(() => setCopied(false), 200)} // Reset after fade-out to avoid briefly showing "Copy"
     >
-      <span className={styles.pathText}>{path}</span>
-    </p>
+      <pre className={styles.pathText}>{path}</pre>
+    </div>
   );
 }
