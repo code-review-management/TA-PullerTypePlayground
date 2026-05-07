@@ -1,15 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./LoadDiffPrompt.module.css";
 
-export type LoadDiffReason = {
-  removed: boolean;
-  size: "size-limit" | "line-limit" | null;
-};
-
-const SIZE_PHRASE = {
-  "size-limit": "exceeds 1MB",
-  "line-limit": "exceeds 500 lines",
-};
+export type LoadDiffReason = "size-limit" | "line-limit" | "removed";
 
 export default function LoadDiffPrompt({
   setIsDiffLoaded,
@@ -27,10 +19,12 @@ export default function LoadDiffPrompt({
     </div>
   );
 }
-function getDescription({ removed, size }: LoadDiffReason): string {
-  if (removed && size) {
-    return `This file was removed and ${SIZE_PHRASE[size]}. Expanding may reduce performance.`;
-  }
-  if (removed) return "This file was removed.";
-  return `This diff ${SIZE_PHRASE[size!]}. Expanding may reduce performance.`;
+function getDescription(reason: LoadDiffReason): string {
+  const SIZE_PHRASE = {
+    "size-limit": "exceeds 1MB",
+    "line-limit": "exceeds 500 lines",
+  };
+
+  if (reason === "removed") return "This file was removed";
+  return `Large diffs ${SIZE_PHRASE[reason]} are not rendered by default.`;
 }

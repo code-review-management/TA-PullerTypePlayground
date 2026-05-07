@@ -111,16 +111,12 @@ export function getLoadDiffReason(
   hunks: HunkData[],
   fileMeta?: FileDiff,
 ): LoadDiffReason | null {
-  const removed = fileMeta?.status === "removed";
-  const size = isDiffAtLeast1MB(hunks)
-    ? "size-limit"
-    : isDiffOver500Lines(hunks)
-      ? "line-limit"
-      : null;
-
-  if (!removed && !size) return null;
-  return { removed, size };
+  if (fileMeta?.status === "removed") return "removed";
+  if (isDiffAtLeast1MB(hunks)) return "size-limit";
+  if (isDiffOver500Lines(hunks)) return "line-limit";
+  return null;
 }
+
 function isDiffAtLeast1MB(hunks: HunkData[]) {
   const encoder = new TextEncoder();
   let bytes = 0;
