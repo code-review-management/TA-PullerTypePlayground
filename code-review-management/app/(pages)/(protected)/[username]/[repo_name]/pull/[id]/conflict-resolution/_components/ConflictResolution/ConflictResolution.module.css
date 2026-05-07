@@ -1,13 +1,10 @@
-/* ========================================
-   THEME VARIABLES
-   ======================================== */
+/* Variables we use for window themeing */
 .conflictResolution {
   display: flex;
   flex-direction: column;
   height: 100vh;
 
-  /* LIGHT THEME (Background is lighter, Active Tab/Pane is darker) */
-  --frame-bg: #ffffff;
+  --frame-bg: var(--background-light);
   --tab-inactive-hover: #f1f3f4;
   --tab-text-inactive: #5f6368;
 
@@ -19,8 +16,8 @@
   --pane-header-color: #202124;
 }
 
+/* Dark theme is not avaiable for now */
 .conflictResolution[data-theme="dark"] {
-  /* DARK THEME (Background is lighter grey, Active Tab/Pane is darker) */
   --frame-bg: #2d2d2d;
   --tab-inactive-hover: #333333;
   --tab-text-inactive: #9aa0a6;

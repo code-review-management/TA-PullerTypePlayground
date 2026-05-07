@@ -33,8 +33,7 @@ export async function POST(req: Request) {
     return Response.json(result.error, { status: 400 });
   }
 
-  const mergeCommitData = result.data.mergeCommitData;
-  const mergeContent = result.data.mergeContent;
+  const { mergeContent, mergeCommitData } = result.data;
 
   const octokit = new Octokit({ auth: token.accessToken });
 

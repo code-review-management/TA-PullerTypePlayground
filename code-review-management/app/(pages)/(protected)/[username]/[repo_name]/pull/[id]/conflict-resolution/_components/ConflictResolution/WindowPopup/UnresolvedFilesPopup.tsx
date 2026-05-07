@@ -25,9 +25,8 @@ const UnresolvedFilesPopup: React.FC<UnresolvedFilesPopupProps> = ({
   const popupClass = `${styles.popupContainer} ${isDarkMode ? styles.darkTheme : ""}`;
 
   return (
-    // The overlay handles the "click outside" to close
+    // The overlay handles the outer-region clicking to close
     <div className={styles.overlay} onClick={onClose}>
-      {/* stopPropagation prevents the overlay click from firing if you click inside the box */}
       <div className={popupClass} onClick={(e) => e.stopPropagation()}>
         <div className={styles.icon}>⚠️</div>
         <h2 className={styles.title}>Caution</h2>

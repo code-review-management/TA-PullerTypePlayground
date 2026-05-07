@@ -33,8 +33,6 @@ const MergeSuccessPopup: React.FC<MergeAlertPopupProps> = ({
         <p className={styles.message}>
           {featureBranch} is up to date with {targetBranch}.
         </p>
-
-        {/* This is where your custom button will appear */}
         <div className={styles.actionContainer}>{children}</div>
       </div>
     </div>
