@@ -112,18 +112,18 @@ export function getLoadDiffReason(
   fileMeta?: FileDiff,
 ): LoadDiffReason | null {
   if (fileMeta?.status === "removed") return "removed";
-  if (isDiffAtLeast1MB(hunks)) return "size-limit";
+  if (isDiffAtLeast100KB(hunks)) return "size-limit";
   if (isDiffOver500Lines(hunks)) return "line-limit";
   return null;
 }
 
-function isDiffAtLeast1MB(hunks: HunkData[]) {
+function isDiffAtLeast100KB(hunks: HunkData[]) {
   const encoder = new TextEncoder();
   let bytes = 0;
   for (const hunk of hunks) {
     for (const change of hunk.changes) {
       bytes += encoder.encode(change.content).length;
-      if (bytes >= 1024 * 1024) return true;
+      if (bytes >= 100 * 1024) return true;
     }
   }
   return false;
