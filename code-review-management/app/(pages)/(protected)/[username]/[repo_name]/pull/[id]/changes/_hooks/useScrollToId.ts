@@ -21,7 +21,7 @@ export function useScrollToId(
       const target = document.getElementById(hash);
       if (!target || !fileDiffRef.current?.contains(target)) return;
 
-      // Only automatically expand for side panel thread hash change
+      // Only automatically expand for side panel thread hash-change
       if (hash.startsWith("thread")) {
         setIsDiffLoaded(true);
       }
