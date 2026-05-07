@@ -157,6 +157,12 @@ export default memo(function FileDiffView({
           }}
         />
         <div className={!isExpanded ? styles.collapsed : ""}>
+          {hasFileLevelThreads && !isCommitView && (
+            <ThreadList
+              publishedThreads={publishedThreads.fileThreads}
+              draftThread={draftThreadsByLine?.["file-level"]}
+            />
+          )}
           {!isDiffLoaded && (
             <LoadDiffPrompt
               setIsDiffLoaded={setIsDiffLoaded}
@@ -165,12 +171,6 @@ export default memo(function FileDiffView({
           )}
           {/* Do not unmount if not loaded so scroll still works. */}
           <div className={!isDiffLoaded ? styles.unloaded : ""}>
-            {hasFileLevelThreads && !isCommitView && (
-              <ThreadList
-                publishedThreads={publishedThreads.fileThreads}
-                draftThread={draftThreadsByLine?.["file-level"]}
-              />
-            )}
             {hunks.length > 0 ? (
               <Diff
                 viewType={viewType}

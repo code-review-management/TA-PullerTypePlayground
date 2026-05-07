@@ -21,7 +21,10 @@ export function useScrollToId(
       const target = document.getElementById(hash);
       if (!target || !fileDiffRef.current?.contains(target)) return;
 
-      setIsDiffLoaded(true);
+      // Only automatically expand for side panel thread hash change
+      if (hash.startsWith("thread")) {
+        setIsDiffLoaded(true);
+      }
       setIsExpanded(true);
       setScrollId(hash);
     };
@@ -50,7 +53,6 @@ export function useScrollToId(
 
   return {
     scrollToId: (id: string) => {
-      setIsDiffLoaded(true);
       setIsExpanded(true);
       setScrollId(id);
     },
