@@ -1,10 +1,20 @@
 .page {
+  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  gap: var(--landing-page-padding);
 }
 
 .onboardingButton {
   padding: 4px;
   margin: 8px;
+}
+
+.pageBody {
+  padding: var(--landing-page-padding);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-page-padding);
 }
