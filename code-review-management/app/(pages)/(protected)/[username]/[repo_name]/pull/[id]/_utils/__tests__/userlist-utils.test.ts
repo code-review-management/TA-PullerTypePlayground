@@ -1,6 +1,73 @@
 import { createExampleUser } from "@/mocks/tests/users";
-import { buildAssigneeList, buildReviewerList } from "../userlist-utils";
+import {
+  buildAssigneeList,
+  buildReviewerList,
+  listedUser,
+  sortUserList,
+} from "../userlist-utils";
 import { createExampleReview } from "@/mocks/tests/reviews";
+
+describe("sortUserList", () => {
+  const user_abc: listedUser = {
+    state: "REQUESTED",
+    user: createExampleUser("abc", 1),
+  };
+  const user_def: listedUser = {
+    state: "APPROVED",
+    user: createExampleUser("def", 1),
+  };
+  const user_ghi: listedUser = {
+    state: "REQUESTED",
+    user: createExampleUser("ghi", 1),
+  };
+  const user_jkl: listedUser = {
+    state: "APPROVED",
+    user: createExampleUser("jkl", 1),
+  };
+  const user_mno: listedUser = {
+    state: "CHANGES_REQUESTED",
+    user: createExampleUser("mno", 1),
+  };
+  const user_pqr: listedUser = {
+    state: "REQUESTED",
+    user: createExampleUser("pqr", 1),
+  };
+
+  it("returns an empty array when given no users", () => {
+    expect(buildAssigneeList([])).toEqual([]);
+  });
+
+  it("returns an array with just one user when given that user", () => {
+    expect(sortUserList([user_abc])).toEqual([user_abc]);
+  });
+
+  it("sorts an array of users with the same level of prioritization by username", () => {
+    expect(sortUserList([user_ghi, user_abc, user_pqr])).toEqual([
+      user_abc,
+      user_ghi,
+      user_pqr,
+    ]);
+
+    expect(sortUserList([user_jkl, user_mno, user_def])).toEqual([
+      user_def,
+      user_jkl,
+      user_mno,
+    ]);
+  });
+
+  it("sorts users with different levels of prioritization first by prioritized states, then by username", () => {
+    expect(
+      sortUserList([
+        user_pqr,
+        user_abc,
+        user_mno,
+        user_def,
+        user_ghi,
+        user_jkl,
+      ]),
+    ).toEqual([user_abc, user_ghi, user_pqr, user_def, user_jkl, user_mno]);
+  });
+});
 
 describe("buildReviewerList", () => {
   const user_abc = createExampleUser("abc", 1);

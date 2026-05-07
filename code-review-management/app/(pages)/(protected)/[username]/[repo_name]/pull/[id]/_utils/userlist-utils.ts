@@ -17,7 +17,7 @@ export type listedUser = {
   user: User;
 };
 
-function sortUserList(userList: listedUser[]) {
+export function sortUserList(userList: listedUser[]) {
   return userList.sort((userA, userB) => {
     if (userA.state === "REQUESTED" && userB.state !== "REQUESTED") return -1;
     if (userB.state === "REQUESTED" && userA.state !== "REQUESTED") return 1;
