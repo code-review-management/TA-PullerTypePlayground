@@ -76,6 +76,7 @@ export default memo(function FileDiffView({
     setDraftThreads,
     isCommitView,
   );
+
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
   const loadDiffReason = getLoadDiffReason(hunks, fileMeta);
   const [isDiffLoaded, setIsDiffLoaded] = useState(loadDiffReason === null);
