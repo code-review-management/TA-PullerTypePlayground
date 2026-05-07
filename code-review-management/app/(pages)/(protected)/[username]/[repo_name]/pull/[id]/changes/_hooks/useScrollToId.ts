@@ -22,7 +22,7 @@ export function useScrollToId(
       if (!target || !fileDiffRef.current?.contains(target)) return;
 
       // Automatically load diff only when jumping to an inline thread.
-      if (hash.startsWith("thread")) {
+      if (hash.startsWith("inline-thread")) {
         setIsDiffLoaded(true);
       }
       setIsExpanded(true);

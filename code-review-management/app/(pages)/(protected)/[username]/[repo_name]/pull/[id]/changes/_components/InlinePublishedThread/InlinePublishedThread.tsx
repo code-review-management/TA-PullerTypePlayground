@@ -39,15 +39,20 @@ export default function InlinePublishedThread({
     deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
   };
 
+  const anchorHref =
+    thread.subject_type === "file"
+      ? `file-thread-${thread.id}`
+      : `inline-thread-${thread.id}`;
+
   return (
     <div
       className={styles.thread}
-      {...(viewType === "inline" && { id: `thread-${thread.id}` })}
+      {...(viewType === "inline" && { id: anchorHref })}
     >
       <InlineThreadHeader
         title={getThreadTitle(thread, viewType)}
         {...(viewType === "panel" &&
-          mode === "pr" && { anchorHref: `#thread-${thread.id}` })}
+          mode === "pr" && { anchorHref: `#${anchorHref}` })}
       />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
