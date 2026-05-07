@@ -25,6 +25,6 @@ function getDescription(reason: LoadDiffReason): string {
     "line-limit": "exceeds 500 lines",
   };
 
-  if (reason === "removed") return "This file was removed";
+  if (reason === "removed") return "This file was removed.";
   return `Large diffs ${SIZE_PHRASE[reason]} are not rendered by default.`;
 }
