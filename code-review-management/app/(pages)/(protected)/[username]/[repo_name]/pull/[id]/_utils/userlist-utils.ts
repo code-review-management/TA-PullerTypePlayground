@@ -57,9 +57,30 @@ export function buildAssigneeList(assignees: User[]): listedUser[] {
   );
 }
 
+function getUserIconTooltipText(user: listedUser) {
+  const state = user.state;
+  const username = user.user.login;
+  return (() => {
+    switch (state) {
+      case "APPROVED":
+        return `${username} approved these changes`;
+      case "CHANGES_REQUESTED":
+        return `${username} requested changes`;
+      case "COMMENTED":
+        return `${username} left review comments`;
+      case "REQUESTED":
+        return `Awaiting requested review from ${username}`;
+      default:
+        return "";
+    }
+  })();
+}
+
+type listedUserStateIcon = { src: string; size: number; tooltip?: string };
+
 const LISTED_USER_STATE_ICONS: Record<
   listedUserState,
-  { src: string; size: number } | null
+  listedUserStateIcon | null
 > = {
   APPROVED: { src: ReviewApprove, size: 18 },
   CHANGES_REQUESTED: { src: ReviewRequestChanges, size: 18 },
@@ -70,5 +91,6 @@ const LISTED_USER_STATE_ICONS: Record<
 };
 
 export function getListedUserIcon(user: listedUser) {
-  return LISTED_USER_STATE_ICONS[user.state];
+  const tooltip = getUserIconTooltipText(user);
+  return { ...LISTED_USER_STATE_ICONS[user.state], tooltip };
 }

@@ -8,12 +8,20 @@ export type UserListType = "reviewers" | "assignees";
 
 function UserListerStateIcon({ listedUser }: { listedUser: listedUser }) {
   const iconProps = getListedUserIcon(listedUser);
-  if (!iconProps) return;
+  if (!iconProps || !iconProps.src) return;
 
-  const { src, size } = iconProps;
+  const { src, size, tooltip } = iconProps;
 
   return (
-    <div className={styles.iconWrapper}>
+    <div
+      className={styles.iconWrapper}
+      {...(tooltip && {
+        "data-tooltip-id": "userlister-icon",
+        "data-tooltip-content": tooltip,
+        "data-tooltip-place": "top-end",
+        "data-tooltip-delay-show": 100,
+      })}
+    >
       <Image src={src} alt={src} width={size} height={size} />
     </div>
   );
