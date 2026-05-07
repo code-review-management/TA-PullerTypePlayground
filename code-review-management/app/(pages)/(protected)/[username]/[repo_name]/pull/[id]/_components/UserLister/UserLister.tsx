@@ -2,26 +2,38 @@ import Image from "next/image";
 import styles from "./UserLister.module.css";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import Subheader from "../Subheader/Subheader";
-import { listedUser } from "../../_utils/userlist-utils";
+import { getListedUserIcon, listedUser } from "../../_utils/userlist-utils";
 
 export type UserListType = "reviewers" | "assignees";
+
+function UserListerStateIcon({ listedUser }: { listedUser: listedUser }) {
+  const iconProps = getListedUserIcon(listedUser);
+  if (!iconProps) return;
+
+  const { src, size } = iconProps;
+
+  return (
+    <div className={styles.stateIconContainer}>
+      <Image src={src} alt={src} width={size} height={size} />
+    </div>
+  );
+}
 
 /**
  * A row of the user list in the UserLister representing 1 user in the list.
  * @param username: Username of the listed user
  * @param imageSrc: String for the image source for the icon of the listed user.
  */
-function UserListerRow({
-  username,
-  imageSrc,
-}: {
-  username: string;
-  imageSrc: string;
-}) {
+function UserListerRow({ listedUser }: { listedUser: listedUser }) {
+  const { login, avatar_url } = listedUser.user;
+
   return (
     <div className={styles.userListerRow}>
-      <UserIcon avatarUrl={imageSrc} username={username} size={25} />
-      <h5 className={styles.username}>{username}</h5>
+      <div className={styles.userListerUser}>
+        <UserIcon avatarUrl={avatar_url} username={login} size={25} />
+        <h5 className={styles.username}>{login}</h5>
+      </div>
+      <UserListerStateIcon listedUser={listedUser} />
     </div>
   );
 }
@@ -57,11 +69,7 @@ export default function UserLister({
       </div>
       <div className={styles.listedUsers}>
         {userList.map((listedUser) => (
-          <UserListerRow
-            username={listedUser.user.login}
-            imageSrc={listedUser.user.avatar_url}
-            key={listedUser.user.login}
-          />
+          <UserListerRow listedUser={listedUser} key={listedUser.user.login} />
         ))}
       </div>
     </div>
