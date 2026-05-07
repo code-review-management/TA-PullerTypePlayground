@@ -53,7 +53,7 @@ export function buildReviewerList(
   reviews.forEach((review) => {
     if (!review.user) return;
     reviewerIdMapping.set(review.user.id, {
-      state: review.state,
+      state: review.state as listedUserState,
       user: review.user,
     });
   });
