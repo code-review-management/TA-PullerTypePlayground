@@ -118,6 +118,7 @@ export function getLoadDiffReason(
 }
 
 function isDiffAtLeast100KB(hunks: HunkData[]) {
+  // Docs: https://stackoverflow.com/a/57899756
   const encoder = new TextEncoder();
   let bytes = 0;
   for (const hunk of hunks) {
