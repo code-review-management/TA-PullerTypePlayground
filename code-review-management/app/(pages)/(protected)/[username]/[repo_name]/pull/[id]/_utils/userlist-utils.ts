@@ -68,6 +68,8 @@ function getUserIconTooltipText(user: listedUser) {
         return `${username} requested changes`;
       case "COMMENTED":
         return `${username} left review comments`;
+      case "DISMISSED":
+        return `${username} previously left a review`;
       case "REQUESTED":
         return `Awaiting requested review from ${username}`;
       default:
@@ -85,7 +87,7 @@ const LISTED_USER_STATE_ICONS: Record<
   APPROVED: { src: ReviewApprove, size: 18 },
   CHANGES_REQUESTED: { src: ReviewRequestChanges, size: 18 },
   COMMENTED: { src: ReviewComment, size: 18 },
-  DISMISSED: null,
+  DISMISSED: { src: ReviewComment, size: 18 },
   REQUESTED: { src: ReviewWaiting, size: 8 },
   ASSIGNED: null,
 };
