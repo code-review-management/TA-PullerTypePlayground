@@ -13,7 +13,7 @@ function UserListerStateIcon({ listedUser }: { listedUser: listedUser }) {
   const { src, size } = iconProps;
 
   return (
-    <div className={styles.stateIconContainer}>
+    <div className={styles.iconWrapper}>
       <Image src={src} alt={src} width={size} height={size} />
     </div>
   );
@@ -59,13 +59,15 @@ export default function UserLister({
     <div className={styles.userLister}>
       <div className={styles.headerRow}>
         <Subheader>{headerDisplay}</Subheader>
-        <Image
-          className={styles.plusIcon}
-          src="/icons/plus.svg"
-          alt="Plus icon"
-          height={12}
-          width={12}
-        />
+        <div className={styles.iconWrapper}>
+          <Image
+            className={styles.plusIcon}
+            src="/icons/plus.svg"
+            alt="Plus icon"
+            height={12}
+            width={12}
+          />
+        </div>
       </div>
       <div className={styles.listedUsers}>
         {userList.map((listedUser) => (
