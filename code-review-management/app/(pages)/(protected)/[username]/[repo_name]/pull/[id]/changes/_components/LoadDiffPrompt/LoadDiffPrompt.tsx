@@ -18,11 +18,12 @@ export default function LoadDiffPrompt({
       <button className={styles.load} onClick={() => setIsDiffLoaded(true)}>
         Load diff
       </button>
-      {reason && <p className={styles.reason}>{getDescription(reason)}</p>}
+      {reason && <p className={styles.description}>{getDescription(reason)}</p>}
     </div>
   );
 }
+
 function getDescription(reason: LoadDiffReason): string {
   if (reason === "removed") return "This file was removed.";
-  return `Large diffs are not rendered by default.`;
+  return "Large diffs are not rendered by default.";
 }
