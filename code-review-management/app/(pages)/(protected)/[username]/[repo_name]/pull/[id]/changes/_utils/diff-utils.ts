@@ -1,7 +1,9 @@
 import refractor from "refractor";
 import path from "path";
-import { ChangeData, FileData } from "react-diff-view";
+import { ChangeData, FileData, HunkData } from "react-diff-view";
 import { Side } from "react-diff-view/types/interface";
+import { FileDiff } from "@/types/github.types";
+import { LoadDiffReason } from "../_components/LoadDiffPrompt/LoadDiffPrompt";
 
 export function getLineNumber(change: ChangeData, side: Side) {
   if (change.type === "delete" || change.type === "insert") {
@@ -103,4 +105,31 @@ export function fixParsedDiffPaths(
  */
 export function createFileDiffId(activePath: string) {
   return `file-${activePath.replace(/\s/g, "%20")}`;
+}
+
+export function getLoadDiffReason(
+  hunks: HunkData[],
+  fileMeta?: FileDiff,
+): LoadDiffReason | null {
+  if (fileMeta?.status === "removed") return "removed";
+  if (isDiffAtLeast100KB(hunks)) return "size-limit";
+  if (isDiffOver500Lines(hunks)) return "line-limit";
+  return null;
+}
+
+function isDiffAtLeast100KB(hunks: HunkData[]) {
+  // Docs: https://stackoverflow.com/a/57899756
+  const encoder = new TextEncoder();
+  let bytes = 0;
+  for (const hunk of hunks) {
+    for (const change of hunk.changes) {
+      bytes += encoder.encode(change.content).length;
+      if (bytes >= 100 * 1024) return true;
+    }
+  }
+  return false;
+}
+
+function isDiffOver500Lines(hunks: HunkData[]) {
+  return hunks.reduce((sum, hunk) => sum + hunk.changes.length, 0) > 500;
 }

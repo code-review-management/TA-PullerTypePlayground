@@ -27,6 +27,7 @@ import {
   createFileDiffId,
   getActivePath,
   getLanguage,
+  getLoadDiffReason,
 } from "../../_utils/diff-utils";
 import { getWidgets } from "../../_utils/widget-utils";
 import { FileDiff } from "@/types/github.types";
@@ -35,6 +36,7 @@ import ClearHighlightContext from "../../_contexts/ClearHighlightContext";
 import EmptyDiff from "../EmptyDiff/EmptyDiff";
 import FileDiffHeader from "../FileDiffHeader/FileDiffHeader";
 import Gutter from "../Gutter/Gutter";
+import LoadDiffPrompt from "../LoadDiffPrompt/LoadDiffPrompt";
 
 import styles from "./FileDiffView.module.css";
 import "prism-color-variables/variables.css";
@@ -76,8 +78,16 @@ export default memo(function FileDiffView({
   );
 
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
+  const loadDiffReason = getLoadDiffReason(hunks, fileMeta);
+  const [isDiffLoaded, setIsDiffLoaded] = useState(loadDiffReason === null);
+
   const fileDiffRef = useRef<HTMLDivElement>(null);
-  const { scrollToId } = useScrollToId(activePath, setIsExpanded, fileDiffRef);
+  const { scrollToId } = useScrollToId(
+    activePath,
+    setIsDiffLoaded,
+    setIsExpanded,
+    fileDiffRef,
+  );
 
   // Use memoization to reduce lag while highlighting.
   const tokens = useMemo(
@@ -154,28 +164,37 @@ export default memo(function FileDiffView({
               draftThread={draftThreadsByLine?.["file-level"]}
             />
           )}
-          {hunks.length > 0 ? (
-            <Diff
-              viewType={viewType}
-              diffType={diffType}
-              hunks={hunks}
-              tokens={tokens}
-              widgets={widgets}
-              renderGutter={renderGutter}
-              gutterEvents={highlightEvents}
-            >
-              {(hunks) =>
-                hunks.map((hunk) => (
-                  <Fragment key={hunk.content}>
-                    <Decoration>{hunk.content}</Decoration>
-                    <Hunk hunk={hunk} />
-                  </Fragment>
-                ))
-              }
-            </Diff>
-          ) : (
-            <EmptyDiff diff={diff} fileMeta={fileMeta} />
+          {!isDiffLoaded && (
+            <LoadDiffPrompt
+              setIsDiffLoaded={setIsDiffLoaded}
+              reason={loadDiffReason}
+            />
           )}
+          {/* Do not unmount if not loaded so scroll still works. */}
+          <div className={!isDiffLoaded ? styles.unloaded : ""}>
+            {hunks.length > 0 ? (
+              <Diff
+                viewType={viewType}
+                diffType={diffType}
+                hunks={hunks}
+                tokens={tokens}
+                widgets={widgets}
+                renderGutter={renderGutter}
+                gutterEvents={highlightEvents}
+              >
+                {(hunks) =>
+                  hunks.map((hunk) => (
+                    <Fragment key={hunk.content}>
+                      <Decoration>{hunk.content}</Decoration>
+                      <Hunk hunk={hunk} />
+                    </Fragment>
+                  ))
+                }
+              </Diff>
+            ) : (
+              <EmptyDiff diff={diff} fileMeta={fileMeta} />
+            )}
+          </div>
         </div>
       </div>
     </ClearHighlightContext>
