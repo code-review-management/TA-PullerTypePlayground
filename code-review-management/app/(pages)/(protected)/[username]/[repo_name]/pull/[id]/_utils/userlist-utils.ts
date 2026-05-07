@@ -4,6 +4,7 @@ import ReviewRequestChanges from "@/public/icons/userList/review_request_changes
 import ReviewComment from "@/public/icons/userList/review_comment.svg";
 import ReviewWaiting from "@/public/icons/userList/review_waiting.svg";
 
+// Combines states from review state with "REQUESTED" and "ASSIGNED"
 type listedUserState =
   | "APPROVED"
   | "CHANGES_REQUESTED"
@@ -17,6 +18,13 @@ export type listedUser = {
   user: User;
 };
 
+/**
+ * Sorts list of `listedUser`s, first prioritizing users with REQUESTED status
+ * and then sorting by username.
+ *
+ * @param userList Array of `listedUser` objects
+ * @returns Sorted array of `listedUser` objects
+ */
 export function sortUserList(userList: listedUser[]) {
   return userList.sort((userA, userB) => {
     if (userA.state === "REQUESTED" && userB.state !== "REQUESTED") return -1;
@@ -26,6 +34,14 @@ export function sortUserList(userList: listedUser[]) {
   });
 }
 
+/**
+ * Given a list of requested reviewers and reviews left of the PR,
+ * aggregated into a single list of sorted `listedReviewer` objects
+ *
+ * @param requested_reviewers List of requested users (`User` objects returned by API)
+ * @param reviews List of reviews (`Review` objects returned by API)
+ * @returns Array of `listedReviewer` objects with assigned state, sorted
+ */
 export function buildReviewerList(
   requested_reviewers: User[],
   reviews: Review[],
@@ -48,6 +64,12 @@ export function buildReviewerList(
   return sortUserList(Array.from(reviewerIdMapping.values()));
 }
 
+/**
+ * Given a list of users, give them the ASSIGNED state as `listedUser` and sort them.
+ *
+ * @param assignees Array of `User` objects
+ * @returns Array of `listedUser` objects
+ */
 export function buildAssigneeList(assignees: User[]): listedUser[] {
   return sortUserList(
     assignees.flatMap((assignee) => ({
@@ -57,6 +79,12 @@ export function buildAssigneeList(assignees: User[]): listedUser[] {
   );
 }
 
+/**
+ * Given a `listedUser` object, return appropriate icon tooltip text.
+ *
+ * @param user `listedUser`
+ * @returns Tooltip text
+ */
 function getUserIconTooltipText(user: listedUser) {
   const state = user.state;
   const username = user.user.login;
@@ -80,6 +108,7 @@ function getUserIconTooltipText(user: listedUser) {
 
 type listedUserStateIcon = { src: string; size: number; tooltip?: string };
 
+// Map `listedUserState` to an icon and icon size
 const LISTED_USER_STATE_ICONS: Record<
   listedUserState,
   listedUserStateIcon | null
@@ -92,6 +121,13 @@ const LISTED_USER_STATE_ICONS: Record<
   ASSIGNED: null,
 };
 
+/**
+ * Given a `listedUser` object, return image props including
+ * src, size, and tooltip text.
+ *
+ * @param user `listedUser` object
+ * @returns `listedUserStateIcon` to use as props for image
+ */
 export function getListedUserIcon(user: listedUser) {
   const tooltip = getUserIconTooltipText(user);
   return { ...LISTED_USER_STATE_ICONS[user.state], tooltip };

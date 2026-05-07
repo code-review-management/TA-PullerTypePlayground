@@ -7,6 +7,8 @@ import { buildReviewerList } from "../../_utils/userlist-utils";
 
 /**
  * Reviewers section of the PR view page.
+ * 
+ * @param requested_reviewers List of `User` objects of requested reviewers.
  */
 export default function Reviewers({
   requested_reviewers,

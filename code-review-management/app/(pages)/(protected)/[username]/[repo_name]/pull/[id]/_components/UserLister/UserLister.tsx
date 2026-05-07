@@ -6,6 +6,13 @@ import { getListedUserIcon, listedUser } from "../../_utils/userlist-utils";
 
 export type UserListType = "reviewers" | "assignees";
 
+/**
+ * The icon displayed for the state of a review. For assignees, this will not display anything
+ * because there is no icon src for state `ASSIGNED`.
+ *
+ * @param listedUser The `listedUser` object this icon will be used to represent state for.
+ * @returns
+ */
 function UserListerStateIcon({ listedUser }: { listedUser: listedUser }) {
   const iconProps = getListedUserIcon(listedUser);
   if (!iconProps || !iconProps.src) return;
@@ -29,8 +36,8 @@ function UserListerStateIcon({ listedUser }: { listedUser: listedUser }) {
 
 /**
  * A row of the user list in the UserLister representing 1 user in the list.
- * @param username: Username of the listed user
- * @param imageSrc: String for the image source for the icon of the listed user.
+ *
+ * @param listedUser `listedUser` object this row represents.
  */
 function UserListerRow({ listedUser }: { listedUser: listedUser }) {
   const { login, avatar_url } = listedUser.user;
@@ -49,10 +56,10 @@ function UserListerRow({ listedUser }: { listedUser: listedUser }) {
 /**
  * A section of the PR view page where users can be dynamically added and the current list is displayed.
  * Used for the reviewers and assignees section of the PR view page.
- * @param listType: reviewers or assignees
- * @param userList: A list of users. Currently a user is defined as type { username: string; imageSrc: string; }
+ *
+ * @param listType "reviewers" or "assignees"
+ * @param userList An array of `listedUser` objects.
  * TODO: Add "add" functionality
- * TODO: Use correct type for userList
  */
 export default function UserLister({
   listType,
