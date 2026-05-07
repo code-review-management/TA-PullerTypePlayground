@@ -27,9 +27,11 @@ export type listedUser = {
  */
 export function sortUserList(userList: listedUser[]) {
   return userList.sort((userA, userB) => {
+    // Prioritize REQUESTED state objects
     if (userA.state === "REQUESTED" && userB.state !== "REQUESTED") return -1;
     if (userB.state === "REQUESTED" && userA.state !== "REQUESTED") return 1;
 
+    // Alphabetical sort
     return userA.user.login.localeCompare(userB.user.login);
   });
 }
