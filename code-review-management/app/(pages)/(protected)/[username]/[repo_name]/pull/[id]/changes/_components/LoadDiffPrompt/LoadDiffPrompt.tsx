@@ -1,6 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import styles from "./LoadDiffPrompt.module.css";
 
+// "size-limit" and "line-limit" currently display the same description.
+// Instead of combining them, keep them as separate types for flexibility in
+// case we want to be more detailed in the description.
 export type LoadDiffReason = "size-limit" | "line-limit" | "removed";
 
 export default function LoadDiffPrompt({
@@ -20,11 +23,6 @@ export default function LoadDiffPrompt({
   );
 }
 function getDescription(reason: LoadDiffReason): string {
-  const SIZE_PHRASE = {
-    "size-limit": "exceeds 1MB",
-    "line-limit": "exceeds 500 lines",
-  };
-
   if (reason === "removed") return "This file was removed.";
-  return `Large diffs ${SIZE_PHRASE[reason]} are not rendered by default.`;
+  return `Large diffs are not rendered by default.`;
 }
