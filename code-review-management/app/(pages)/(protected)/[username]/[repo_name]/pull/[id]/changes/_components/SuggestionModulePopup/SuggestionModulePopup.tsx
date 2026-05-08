@@ -39,7 +39,7 @@ export function SuggestionModuleContent({
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split("\n");
-    const before = lines.slice(0, replaceStartLine).join("\n");
+    const before = lines.slice(0, replaceStartLine).join("\n") + '\n';
     return before;
   });
 
@@ -51,7 +51,7 @@ export function SuggestionModuleContent({
   const [originalCode, setOriginalCode] = useState(deletionContent);
   const [modifiedCode, setModifiedCode] = useState(additionContent);
 
-  const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") == -1;
+  const hasCarriageReturn: boolean = fullFileCode.indexOf('\r') !== -1;
 
   /**
    *  This is the function we send to components to report back to this component
