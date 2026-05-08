@@ -36,22 +36,23 @@ export function SuggestionModuleContent({
   const { mutate: commitMutation, isPending: isCommitPending } =
     useCommitGeminiSuggestionMutation(username, repo_name, id);
 
+  const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") !== -1;
+  const joinToken: string = hasCarriageReturn ? "\r\n" : "\n";
+
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
-    const lines = fullFileCode.split("\n");
-    const before = lines.slice(0, replaceStartLine).join("\n");
+    const lines = fullFileCode.split(/\r?\n/);
+    const before = lines.slice(0, replaceStartLine).join(joinToken);
     return before;
   });
 
   const [afterCode, setAfterCode] = useState(() => {
-    const lines = fullFileCode.split("\n");
-    return lines.slice(replaceEndLine).join("\n");
+    const lines = fullFileCode.split(/\r?\n/);
+    return lines.slice(replaceEndLine).join(joinToken);
   });
 
   const [originalCode, setOriginalCode] = useState(deletionContent);
   const [modifiedCode, setModifiedCode] = useState(additionContent);
-
-  const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") == -1;
 
   /**
    *  This is the function we send to components to report back to this component
