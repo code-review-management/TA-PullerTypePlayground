@@ -4,14 +4,16 @@ import styles from "./page.module.css";
 import Header from "./_components/Header/Header";
 import Hero from "./_components/Hero/Hero";
 import Blurb from "./_components/Blurb/Blurb";
+import CardSection from "./_components/CardSection/CardSection";
 
 export default function Home() {
   return (
     <div className={styles.page}>
-      <Header/>
+      <Header />
       <div className={styles.pageBody}>
         <Hero />
         <Blurb />
+        <CardSection />
       </div>
     </div>
   );
