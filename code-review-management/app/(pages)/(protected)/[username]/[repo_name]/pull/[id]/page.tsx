@@ -11,6 +11,7 @@ import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { usePullQuery } from "@/lib/api/queries/usePullQuery";
 import PRViewTimeline from "./_components/PRViewTimeline/PRViewTimeline";
+import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 
 // Pull Request View page.
 export default function Pull() {
@@ -40,12 +41,13 @@ export default function Pull() {
         <div className={styles.infoColumn}>
           <StatusSection pullData={data} />
           <Divider />
-          <Reviewers reviewers={data.requested_reviewers || []} />
+          <Reviewers requested_reviewers={data.requested_reviewers || []} />
           <Divider />
           <Assignees assignees={data.assignees || []} />
           <Divider />
         </div>
       </div>
+      <IconTooltip id={"userlister-icon"} positionStrategy="fixed" />
     </div>
   );
 }
