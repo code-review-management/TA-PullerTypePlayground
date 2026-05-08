@@ -6,6 +6,7 @@ import Hero from "./_components/Hero/Hero";
 import Blurb from "./_components/Blurb/Blurb";
 import CardSection from "./_components/CardSection/CardSection";
 import PageEndCta from "./_components/PageEndCta/PageEndCta";
+import Footer from "./_components/Footer/Footer";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <CardSection />
         <PageEndCta />
       </div>
+      <Footer />
     </div>
   );
 }

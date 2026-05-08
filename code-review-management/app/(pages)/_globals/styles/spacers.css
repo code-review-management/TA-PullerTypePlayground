@@ -25,5 +25,6 @@
     --thread-scroll-margin-top: calc(var(--file-diff-header-height) * 2.6);
 
     --landing-page-header-height: 100px;
+    --landing-page-footer-height: 130px;
     --landing-page-padding: 140px;
 }
