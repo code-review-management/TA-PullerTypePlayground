@@ -5,6 +5,7 @@ import Header from "./_components/Header/Header";
 import Hero from "./_components/Hero/Hero";
 import Blurb from "./_components/Blurb/Blurb";
 import CardSection from "./_components/CardSection/CardSection";
+import PageEndCta from "./_components/PageEndCta/PageEndCta";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <Blurb />
         <CardSection />
+        <PageEndCta />
       </div>
     </div>
   );
