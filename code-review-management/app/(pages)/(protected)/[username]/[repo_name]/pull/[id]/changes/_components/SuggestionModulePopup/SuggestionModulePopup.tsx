@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./SuggestionModulePopup.module.css";
-import { SuggestionDiffEditor } from "./MonacoComponents/SuggestionDiffEditor/SuggestionDiffEditor";
+import { SuggestionDiffEditor } from "./_components/SuggestionDiffEditor";
 import { SuggestionCommentUpdateRequest } from "@/types/request.types";
 import { useUpdateGeminiSuggestionMutation } from "@/lib/api/mutations/useUpdateGeminiSuggestionMutation";
 import { useParams } from "next/navigation";
@@ -39,7 +39,7 @@ export function SuggestionModuleContent({
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split("\n");
-    let before = lines.slice(0, replaceStartLine).join("\n");
+    const before = lines.slice(0, replaceStartLine).join("\n");
     return before;
   });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
 import styles from "./SuggestionDiffEditor.module.css";
 import { useDiffEditorSetup } from "./useDiffEditorSetup";
