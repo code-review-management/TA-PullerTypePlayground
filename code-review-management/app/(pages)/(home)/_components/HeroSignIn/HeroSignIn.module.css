@@ -7,5 +7,6 @@
   font-weight: 500;
   border: none;
   border-radius: 5px;
+  box-shadow: var(--box-shadow-button);
   cursor: pointer;
 }
