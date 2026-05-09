@@ -13,6 +13,9 @@ jest.mock("next/navigation", () => ({
     repo_name: "repo",
     id: "1",
   }),
+}));
+
+jest.mock("@bprogress/next/app", () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
