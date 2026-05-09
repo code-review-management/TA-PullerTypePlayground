@@ -15,7 +15,7 @@ type RouteContext = {
   params: Promise<{
     owner: string;
     repo: string;
-    pull_number: number;
+    pull_number: string;
   }>;
 };
 
@@ -59,11 +59,12 @@ export async function GET(req: Request, context: RouteContext) {
   }
 
   try {
+    const castedPullNumber: number = Number(pull_number);
     const octokit = new Octokit({ auth: token.accessToken });
     const pullRequestResponse = await octokit.rest.pulls.get({
       owner,
       repo,
-      pull_number,
+      pull_number: castedPullNumber,
     });
 
     const pullRequest = PullRequestSchema.parse(pullRequestResponse.data);
