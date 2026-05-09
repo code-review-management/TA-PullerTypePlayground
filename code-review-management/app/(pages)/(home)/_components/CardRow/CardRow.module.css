@@ -2,6 +2,7 @@
   display: flex;
   gap: 140px;
   align-items: center;
+  justify-content: center;
 }
 
 .cardRowReversed {
@@ -22,6 +23,7 @@
 
 .textContent {
   flex: 1;
+  max-width: 400px;
 
   display: flex;
   flex-direction: column;
