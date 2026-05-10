@@ -13,6 +13,11 @@
     margin-bottom: .75rem;
 }
 
+/* Links */
+.tiptap a {
+    color: var(--color-interactive);
+}
+
 /* Paragraphs */
 .tiptap p {
     margin-bottom: 1rem;
