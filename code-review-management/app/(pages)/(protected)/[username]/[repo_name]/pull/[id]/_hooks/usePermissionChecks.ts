@@ -13,25 +13,18 @@ type AccessType = "implicit-read" | "explicit-read" | "write";
  */
 export function usePermissionChecks() {
   const { username, repo_name } = useParams<PullParams>();
-  const {
-    data: permission,
-    error,
-    isSuccess,
-  } = usePermissionQuery(username, repo_name);
+  const { data: permission, error } = usePermissionQuery(username, repo_name);
 
   let accessType: AccessType | null = null;
 
-  if (isSuccess) {
-    accessType = permission?.user?.permissions?.push
-      ? "write"
-      : "explicit-read";
-  }
-
-  if (error?.status === 403) {
-    if (error.message.includes("Must have push access"))
+  if (permission) {
+    accessType = permission.user?.permissions?.push ? "write" : "explicit-read";
+  } else if (error?.status === 403) {
+    if (error.message.includes("Must have push access")) {
       accessType = "explicit-read";
-    if (error.message.includes("Resource not accessible"))
+    } else if (error.message.includes("Resource not accessible")) {
       accessType = "implicit-read";
+    }
   }
 
   return {
