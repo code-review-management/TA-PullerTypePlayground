@@ -39,6 +39,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacer-16);
+  min-width: 0;
 }
 
 .userInfo {
@@ -80,4 +81,24 @@
 
 .deletions {
   color: var(--color-failure);
+}
+
+@media screen and (max-width: 1000px) {
+  .pullBodyHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .repoName {
+    font-size: 1.25rem;
+  }
+
+  .pullTitle {
+    font-size: 1.5rem;
+  }
+
+  .titleRight {
+    gap: var(--spacer-4);
+    align-items: flex-start;
+  }
 }
