@@ -19,13 +19,25 @@ export function usePermissionChecks() {
     isSuccess,
   } = usePermissionQuery(username, repo_name);
 
-  let accessType: AccessType = "implicit-read";
-  if (isSuccess && permission.user?.permissions?.push) accessType = "write";
-  if (error?.status === 403 && error.message.includes("push access"))
-    accessType = "explicit-read";
+  let accessType: AccessType | null = null;
+
+  if (isSuccess) {
+    accessType = permission?.user?.permissions?.push
+      ? "write"
+      : "explicit-read";
+  }
+
+  if (error?.status === 403) {
+    if (error.message.includes("Must have push access"))
+      accessType = "explicit-read";
+    if (error.message.includes("Resource not accessible"))
+      accessType = "implicit-read";
+  }
 
   return {
-    hasCommentPermission: accessType !== "implicit-read",
+    accessType,
+    hasCommentPermission:
+      accessType === "explicit-read" || accessType === "write",
     hasWritePermission: accessType === "write",
   };
 }
