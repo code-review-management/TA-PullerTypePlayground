@@ -9,8 +9,13 @@
 
 /* Headings */
 .tiptap :is(h1, h2, h3, h4, h5, h6) {
-    margin-top: .75rem;
-    margin-bottom: .75rem;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.tiptap :is(h1, h2) {
+    padding-bottom: 0.5rem;
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
 }
 
 /* Links */
