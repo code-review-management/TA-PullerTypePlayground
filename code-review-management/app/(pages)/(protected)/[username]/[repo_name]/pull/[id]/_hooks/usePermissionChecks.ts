@@ -1,6 +1,4 @@
-import { useParams } from "next/navigation";
-import { usePermissionQuery } from "@/lib/api/queries/usePermissionQuery";
-import { PullParams } from "@/types/routing.types";
+import { usePermissionContext } from "../_contexts/PermissionContext";
 
 type AccessType = "implicit-read" | "explicit-read" | "write";
 
@@ -12,13 +10,11 @@ type AccessType = "implicit-read" | "explicit-read" | "write";
  * access: "Must have push access to view collaborator permission" (403 status)
  */
 export function usePermissionChecks() {
-  const { username, repo_name } = useParams<PullParams>();
-  const { data: permission, error } = usePermissionQuery(username, repo_name);
-
+  const { data, error } = usePermissionContext();
   let accessType: AccessType | null = null;
 
-  if (permission) {
-    accessType = permission.user?.permissions?.push ? "write" : "explicit-read";
+  if (data) {
+    accessType = data.user?.permissions?.push ? "write" : "explicit-read";
   } else if (error?.status === 403) {
     if (error.message.includes("Must have push access")) {
       accessType = "explicit-read";
