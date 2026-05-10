@@ -9,8 +9,7 @@
 
 /* Headings */
 .tiptap :is(h1, h2, h3, h4, h5, h6) {
-    margin-top: 1rem;
-    margin-bottom: 0.75rem;
+    margin: 1rem 0;
 }
 
 .tiptap :is(h1, h2) {
@@ -24,7 +23,7 @@
 }
 
 /* Paragraphs */
-.tiptap p {
+.tiptap p:not(:last-child) {
     margin-bottom: 1rem;
 }
 
@@ -35,5 +34,13 @@
 
 /* Code */
 .tiptap code {
+    padding: 0 var(--spacer-4);
+    border-radius: var(--spacer-4);
+    background-color: var(--background-secondary-light);
     font-family: var(--font-roboto-mono);
+    font-size: 0.9375em;
+}
+
+.tiptap strong code {
+    font-weight: 600;
 }
