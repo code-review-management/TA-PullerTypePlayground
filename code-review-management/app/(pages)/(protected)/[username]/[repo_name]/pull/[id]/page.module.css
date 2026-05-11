@@ -26,11 +26,12 @@
   min-width: 0;
 }
 
-.bodyUpperRight {
+.infoColumnTop {
   flex: 1;
   max-width: 350px;
   display: flex;
   flex-direction: column;
+  gap: var(--spacer-24);
 }
 
 .bodyLower {
@@ -56,4 +57,31 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacer-24);
+}
+
+.infoColumnTopSmallScreen {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  .bodyUpperRight {
+    display: none;
+  }
+
+  .bodyLower {
+    flex-direction: column;
+  }
+
+  .infoColumn {
+    max-width: none;
+  }
+
+  .infoColumnTop {
+    display: none;
+    max-width: none;
+  }
+
+  .infoColumnTopSmallScreen {
+    display: flex;
+  }
 }

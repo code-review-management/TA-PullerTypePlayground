@@ -32,7 +32,7 @@ export default function Pull() {
             <PullBodyHeader pullData={data} />
             <Divider />
           </div>
-          <div className={styles.bodyUpperRight}>
+          <div className={styles.infoColumnTop}>
             <StatusSection pullData={data} />
             <Divider />
           </div>
@@ -48,6 +48,10 @@ export default function Pull() {
             <PRViewTimeline username={username} repoName={repo_name} id={id} />
           </div>
           <div className={styles.infoColumn}>
+            <div className={`${styles.infoColumnTop} ${styles.infoColumnTopSmallScreen}`}>
+              <StatusSection pullData={data} />
+              <Divider />
+            </div>
             <Reviewers requested_reviewers={data.requested_reviewers || []} />
             <Divider />
             <Assignees assignees={data.assignees || []} />
