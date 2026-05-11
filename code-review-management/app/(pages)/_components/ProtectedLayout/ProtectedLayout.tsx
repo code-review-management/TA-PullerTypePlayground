@@ -16,11 +16,17 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (
-      session?.error === "AccessTokenExpired" ||
-      status === "unauthenticated"
-    ) {
+    if (session?.error === "AccessTokenExpired") {
       signIn();
+    }
+
+    // If status is unauthenticated for 2 second, then sign-out. Used by other
+    // open tabs when a sign-out is initiated in one tab.
+    if (status === "unauthenticated") {
+      const signInTimeout = setTimeout(() => {
+        signIn();
+      }, 2000);
+      return () => clearTimeout(signInTimeout);
     }
   }, [session?.error, status]);
 
