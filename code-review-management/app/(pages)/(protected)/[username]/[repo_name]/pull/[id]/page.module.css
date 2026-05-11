@@ -28,7 +28,7 @@
 
 .infoColumnTop {
   flex: 1;
-  max-width: 350px;
+  max-width: var(--pr-view-info-column-max-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-24);
@@ -53,7 +53,7 @@
 
 .infoColumn {
   flex: 1;
-  max-width: 350px;
+  max-width: var(--pr-view-info-column-max-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-24);
