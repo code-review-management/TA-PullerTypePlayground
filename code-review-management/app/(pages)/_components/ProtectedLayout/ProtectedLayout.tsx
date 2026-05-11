@@ -22,8 +22,8 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     if (redirected.current) return;
 
     if (session?.error === "AccessTokenExpired") {
-      signIn();
       redirected.current = true;
+      signIn();
     }
     // If another tab signs out, then this tab will see "unauthenticated". Wait
     // for three seconds before directing the user to the sign-in page. The
@@ -31,8 +31,10 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     // that is quickly resolved to "authenticated" (e.g., solving runtime
     // errors).
     else if (status === "unauthenticated") {
-      const signInTimeout = setTimeout(signIn, 3000);
-      redirected.current = true;
+      const signInTimeout = setTimeout(() => {
+        redirected.current = true;
+        signIn();
+      }, 3000);
       return () => clearTimeout(signInTimeout);
     }
   }, [session?.error, status]);
