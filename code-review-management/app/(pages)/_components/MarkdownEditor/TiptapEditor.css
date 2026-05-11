@@ -23,8 +23,12 @@
 }
 
 /* Paragraphs */
-.tiptap p:not(:last-child) {
+.tiptap[contenteditable="false"] p:not(:last-child) {
     margin-bottom: 1rem;
+}
+
+.tiptap[contenteditable="false"] p:has(> br.ProseMirror-trailingBreak:only-child) {
+    display: none;
 }
 
 /* Lists */
@@ -34,13 +38,24 @@
 
 /* Code */
 .tiptap code {
-    padding: 0 var(--spacer-4);
-    border-radius: var(--spacer-4);
-    background-color: var(--background-secondary-light);
     font-family: var(--font-roboto-mono);
     font-size: 0.9375em;
 }
 
+/* Inline code */
+.tiptap :not(pre)>code {
+    padding: 0 var(--spacer-4);
+    border-radius: var(--border-radius);
+    background-color: var(--background-secondary-light);
+}
+
 .tiptap strong code {
     font-weight: 600;
+}
+
+/* Code blocks */
+.tiptap pre {
+    background-color: var(--background-secondary-light);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
 }
