@@ -29,7 +29,7 @@ const queryClient = new QueryClient({
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <ProgressProvider
-      height="1.75px"
+      height="1px"
       color="var(--text-accent)"
       options={{ showSpinner: false }}
     >
