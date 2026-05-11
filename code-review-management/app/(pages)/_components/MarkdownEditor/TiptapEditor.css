@@ -17,7 +17,7 @@
     margin-bottom: 0;
 }
 
-.tiptap>p:has(> br.ProseMirror-trailingBreak:only-child):last-child {
+.tiptap[contenteditable="false"]>p:has(> br.ProseMirror-trailingBreak:only-child):last-child {
     /* Do not display last empty line to minimize whitespace. */
     display: none;
 }
