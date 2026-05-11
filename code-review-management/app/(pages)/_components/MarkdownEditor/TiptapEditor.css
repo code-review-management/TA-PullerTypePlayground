@@ -3,16 +3,18 @@
 }
 
 .tiptap> :first-child {
-    /* Do not show top-margin of first Markdown line */
+    /* Do not show top-margin of first Markdown line. */
     margin-top: 0;
 }
 
-.tiptap[contenteditable="false"]>*:not(:last-child):not(:has(+ p:last-child > br.ProseMirror-trailingBreak:only-child)) {
+.tiptap>*:not(:last-child) {
+    /* Add margin between consecutive elements. */
     margin-bottom: 1rem;
 }
 
-.tiptap[contenteditable="false"] p:has(> br.ProseMirror-trailingBreak:only-child) {
-    display: none;
+.tiptap>p:has(> br.ProseMirror-trailingBreak:only-child) {
+    /* Remove margin from empty lines. */
+    margin-bottom: 0;
 }
 
 /* Headings */
