@@ -7,6 +7,14 @@
     margin-top: 0;
 }
 
+.tiptap[contenteditable="false"]>*:not(:last-child):not(:has(+ p:last-child > br.ProseMirror-trailingBreak:only-child)) {
+    margin-bottom: 1rem;
+}
+
+.tiptap[contenteditable="false"] p:has(> br.ProseMirror-trailingBreak:only-child) {
+    display: none;
+}
+
 /* Headings */
 .tiptap :is(h1, h2, h3, h4, h5, h6) {
     margin: 1rem 0;
@@ -22,18 +30,13 @@
     color: var(--color-interactive);
 }
 
-/* Paragraphs */
-.tiptap[contenteditable="false"] p:not(:last-child) {
-    margin-bottom: 1rem;
-}
-
-.tiptap[contenteditable="false"] p:has(> br.ProseMirror-trailingBreak:only-child) {
-    display: none;
-}
-
 /* Lists */
-.tiptap li p {
-    margin-bottom: 0;
+.tiptap :is(ul, ol) {
+    padding-left: 1.75rem;
+}
+
+.tiptap li {
+    margin-bottom: 0.25rem;
 }
 
 /* Code */
