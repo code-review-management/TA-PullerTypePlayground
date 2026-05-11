@@ -16,8 +16,10 @@ import { StatusError } from "../errors/statusError";
 export async function fetcher(route: string) {
   const response = await fetch(route);
   if (!response.ok) {
-    const message = await response.text().catch(() => response.statusText);
-    throw new StatusError(response.status, message);
+    throw new StatusError(
+      response.status,
+      "Network GET response was unsuccessful.",
+    );
   }
   return response.json();
 }
