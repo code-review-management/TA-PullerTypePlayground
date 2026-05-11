@@ -28,6 +28,10 @@
     margin-bottom: 1rem;
 }
 
+.tiptap :is(h1, h2, h3, h4, h5, h6):first-child {
+    margin-top: 0.25rem;
+}
+
 .tiptap :is(h1, h2) {
     padding-bottom: 0.5rem;
     border-bottom: var(--border-normal-width) solid var(--border-gray);
