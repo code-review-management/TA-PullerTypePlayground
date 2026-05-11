@@ -7,14 +7,14 @@
     margin-top: 0;
 }
 
-.tiptap>*:not(:last-child) {
+.tiptap>*+* {
     /* Add margin between consecutive elements. */
-    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
-.tiptap>p:has(> br.ProseMirror-trailingBreak:only-child) {
-    /* Remove margin from empty lines. */
-    margin-bottom: 0;
+.tiptap[contenteditable="false"]>p:has(> br.ProseMirror-trailingBreak:only-child) {
+    /* Remove margin from empty lines to minimize whitespace. */
+    margin-top: 0;
 }
 
 .tiptap[contenteditable="false"]>p:has(> br.ProseMirror-trailingBreak:only-child):last-child {
