@@ -2,6 +2,7 @@
     display: flex;
     align-items: start;
     gap: var(--spacer-8);
+    max-width: 185px;
 }
 
 .lock {

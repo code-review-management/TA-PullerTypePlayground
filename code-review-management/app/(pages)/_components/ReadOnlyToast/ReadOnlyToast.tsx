@@ -8,7 +8,9 @@ export default function ReadOnlyToast() {
       <Image src={LockIcon} alt="Lock" width={14} className={styles.lock} />
       <div className={styles.text}>
         Read-only mode
-        <div className={styles.description}>GitHub App not installed</div>
+        <div className={styles.description}>
+          Requires GitHub App installation and push access to write.
+        </div>
       </div>
     </div>
   );
