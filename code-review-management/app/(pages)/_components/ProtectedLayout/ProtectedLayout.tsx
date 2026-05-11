@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 /**
  * If the user's GitHub personal access token is expired or their session is
@@ -11,14 +11,19 @@ import { ReactNode, useEffect } from "react";
  * Docs:
  * 1. https://authjs.dev/guides/refresh-token-rotation#error-handling
  * Followed this technique in the Auth.js docs.
+ *
+ * 2. https://github.com/nextauthjs/next-auth/issues/9177#issuecomment-1919066154
  */
 export default function ProtectedLayout({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
+  const redirected = useRef(false);
 
   useEffect(() => {
-    console.log(status);
+    if (redirected.current) return;
+
     if (session?.error === "AccessTokenExpired") {
       signIn();
+      redirected.current = true;
     }
     // If another tab signs out, then this tab will see "unauthenticated". Wait
     // for three seconds before directing the user to the sign-in page. The
@@ -27,6 +32,7 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     // errors).
     else if (status === "unauthenticated") {
       const signInTimeout = setTimeout(signIn, 3000);
+      redirected.current = true;
       return () => clearTimeout(signInTimeout);
     }
   }, [session?.error, status]);
