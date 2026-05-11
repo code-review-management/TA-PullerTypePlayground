@@ -12,7 +12,8 @@ type AccessType = "implicit-read" | "explicit-read" | "write";
  *   outside the GitHub App. When requesting through the GitHub App in this
  *   scenario, we get the "Resource not accessible by integration" message
  *   instead. I will still keep the logic for this message check, but as far
- *   as I know, I do not know a scenario where it is being applied.
+ *   as I know, I do not know a scenario where it is being applied. This means
+ *   the access type "explicit-read" will likely be unused.
  */
 export function usePermissionChecks() {
   const { data, error } = usePermissionContext();
