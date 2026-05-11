@@ -7,7 +7,12 @@ type AccessType = "implicit-read" | "explicit-read" | "write";
  * by integration" (403 status)
  *
  * API error message when GitHub App is installed but user does not have push
- * access: "Must have push access to view collaborator permission" (403 status)
+ * access: "Must have push access to view collaborator permission" (403 status).
+ * - Note: It seems like this API error message only appears if requesting from
+ *   outside the GitHub App. When requesting through the GitHub App in this
+ *   scenario, we get the "Resource not accessible by integration" message
+ *   instead. I will still keep the logic for this message check, but as far
+ *   as I know, I do not know a scenario where it is being applied.
  */
 export function usePermissionChecks() {
   const { data, error } = usePermissionContext();
