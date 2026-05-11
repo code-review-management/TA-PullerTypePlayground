@@ -16,17 +16,25 @@ type AccessType = "implicit-read" | "explicit-read" | "write";
  *   the access type "explicit-read" will likely be unused.
  */
 export function usePermissionChecks() {
-  const { data, error } = usePermissionContext();
+  const { data, error, isPending } = usePermissionContext();
   let accessType: AccessType | null = null;
 
-  if (data) {
-    accessType = data.user?.permissions?.push ? "write" : "explicit-read";
-  } else if (error?.status === 403) {
-    if (error.message.includes("Must have push access")) {
-      accessType = "explicit-read";
-    } else if (error.message.includes("Resource not accessible")) {
-      accessType = "implicit-read";
-    }
+  if (
+    // Note: Data is only returned for users with write-access to the repo.
+    data?.user?.permissions?.push ||
+    data?.permission === "write" ||
+    data?.permission === "admin"
+  ) {
+    accessType = "write";
+  } else if (
+    error?.status === 403 &&
+    error.message.includes("Must have push access")
+  ) {
+    accessType = "explicit-read";
+  } else if (!isPending) {
+    // Only assign fallback after request finishes pending so toast message does
+    // not temporarily show for repos with write access.
+    accessType = "implicit-read";
   }
 
   return {

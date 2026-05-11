@@ -8,6 +8,7 @@ import { PullParams } from "@/types/routing.types";
 const PermissionContext = createContext<{
   data: CollaboratorPerms | undefined;
   error: StatusError | null;
+  isPending: boolean;
 } | null>(null);
 
 export const usePermissionContext = () => {
@@ -26,13 +27,14 @@ export default function PermissionContextProvider({
   children: ReactNode;
 }) {
   const { username, repo_name } = useParams<PullParams>();
-  const { data, error } = usePermissionQuery(username, repo_name);
+  const { data, error, isPending } = usePermissionQuery(username, repo_name);
 
   return (
     <PermissionContext
       value={{
         data,
         error,
+        isPending,
       }}
     >
       {children}
