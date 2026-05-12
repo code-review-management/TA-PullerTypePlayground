@@ -81,6 +81,7 @@ export default function DashboardSidebar({
               data-tooltip-id="expand-all"
               data-tooltip-content="Expand all"
               data-tooltip-delay-show={100}
+              data-tooltip-place="bottom"
             >
               <Image
                 src={ExpandIcon}
@@ -95,6 +96,7 @@ export default function DashboardSidebar({
               data-tooltip-id="collapse-all"
               data-tooltip-content="Collapse all"
               data-tooltip-delay-show={100}
+              data-tooltip-place="bottom"
             >
               <Image
                 src={CollapseIcon}
@@ -122,8 +124,8 @@ export default function DashboardSidebar({
         {(isPending || (hasNextPage && isFetching)) && <LoadingSpinner />}
       </div>
       <div className={styles.sideBorder} />
-      <IconTooltip id="expand-all" />
-      <IconTooltip id="collapse-all" />
+      <IconTooltip id="expand-all" positionStrategy="fixed" />
+      <IconTooltip id="collapse-all" positionStrategy="fixed" />
     </div>
   );
 }
