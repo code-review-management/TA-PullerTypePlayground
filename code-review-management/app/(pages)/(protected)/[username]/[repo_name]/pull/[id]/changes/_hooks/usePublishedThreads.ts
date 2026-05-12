@@ -24,6 +24,7 @@ type LineNumber = number;
 export type PublishedThreadsByScope = {
   lineThreads: PublishedThreadsByLine;
   fileThreads: PublishedThreadItem[];
+  outdatedThreads: PublishedThreadItem[];
 };
 
 export type PublishedThreads = Map<FileName, PublishedThreadsByScope>;
@@ -82,6 +83,7 @@ function buildCommentRelations(comments: Comment[]) {
     publishedThreads.set(filename, {
       lineThreads: groupThreadsByLineAndSide(threads),
       fileThreads: threads.filter((thread) => thread.subject_type === "file"),
+      outdatedThreads: threads.filter((thread) => thread.line === null),
     });
   }
 

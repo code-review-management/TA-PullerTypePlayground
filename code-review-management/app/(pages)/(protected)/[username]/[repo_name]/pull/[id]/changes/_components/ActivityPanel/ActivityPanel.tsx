@@ -87,7 +87,7 @@ function CommentsTab({
     const lineThreads = [...byGroup.lineThreads.values()].flatMap(
       ({ left, right }) => [...left, ...right],
     );
-    return [...byGroup.fileThreads, ...lineThreads];
+    return [...byGroup.fileThreads, ...byGroup.outdatedThreads, ...lineThreads];
   });
   sortPublishedThreads(allThreads, flatFileTree);
 
