@@ -1,7 +1,11 @@
 import styles from "./DashboardSidebar.module.css";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
-import { sortReposByOrg } from "../../_utils/repo-utils";
+import {
+  getOrgSetFromRepoNameList,
+  sortReposByOrg,
+  splitRepoName,
+} from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
@@ -40,6 +44,10 @@ export default function DashboardSidebar({
   const expandedSet = new Set(
     Array.isArray(expandedOwners) ? expandedOwners : [],
   );
+  const orgSet = useMemo(
+    () => getOrgSetFromRepoNameList(selectedRepos),
+    [selectedRepos],
+  );
 
   const onCheckboxChange = (name: string, isChecked: boolean) => {
     if (isChecked && !repoSet.has(name)) {
@@ -57,7 +65,8 @@ export default function DashboardSidebar({
       setExpandedOwners(allOwners.filter((item) => item !== owner));
       setExpansionState("other");
     } else if (expansionState === "collapse") {
-      const newCollapsedOwners = [owner];
+      const newCollapsedOwners = Array.from(orgSet);
+      if (!orgSet.has(owner)) newCollapsedOwners.push(owner);
       setExpandedOwners(newCollapsedOwners);
       setExpansionState("other");
     } else if (isCollapsed && !expandedSet.has(owner)) {
@@ -75,6 +84,14 @@ export default function DashboardSidebar({
     } else {
       setExpansionState(state);
     }
+  };
+
+  const categoryIsExpanded = (owner: string) => {
+    return (
+      expansionState === "expand" ||
+      (expandedSet.has(owner) &&
+        !(expansionState === "collapse" && !orgSet.has(owner)))
+    );
   };
 
   return (
@@ -122,10 +139,7 @@ export default function DashboardSidebar({
             mappedRepoList={mappedRepoList}
             onCheckboxChange={onCheckboxChange}
             selectedRepos={repoSet}
-            isExpanded={
-              expansionState === "expand" ||
-              (expandedSet.has(owner) && expansionState !== "collapse")
-            }
+            isExpanded={(() => categoryIsExpanded(owner))()}
             onExpandedChange={onExpandedChange}
           />
         ))}
