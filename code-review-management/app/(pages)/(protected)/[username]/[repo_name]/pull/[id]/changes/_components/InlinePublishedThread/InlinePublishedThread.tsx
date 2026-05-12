@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useDraftRepliesContext } from "../../_contexts/DraftRepliesContext";
 import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
+import { usePermissionChecks } from "../../../_hooks/usePermissionChecks";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
 import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
@@ -31,6 +32,7 @@ export default function InlinePublishedThread({
   viewType: ThreadViewType;
 }) {
   const { mode } = useChangesViewMode();
+  const { hasCommentPermission } = usePermissionChecks();
   const { draftReplies, setDraftReplies } = useDraftRepliesContext();
   const draftReplyKey = getDraftReplyKey(thread.path, thread.id);
   const isDraftingReply = draftReplyKey in draftReplies;
@@ -65,18 +67,19 @@ export default function InlinePublishedThread({
             defaultContent={comment.body}
           />
         ))}
-        {viewType === "inline" && ( // Reply option currently supported only for inline threads.
-          <>
-            {isDraftingReply ? (
-              <InlineDraftReplyEntry
-                reply={draftReplies[draftReplyKey]}
-                handleCancel={handleCancelReply}
-              />
-            ) : (
-              <InlineDraftReplyTrigger thread={thread} />
-            )}
-          </>
-        )}
+        {hasCommentPermission &&
+          viewType === "inline" && ( // Reply option currently supported only for inline threads.
+            <>
+              {isDraftingReply ? (
+                <InlineDraftReplyEntry
+                  reply={draftReplies[draftReplyKey]}
+                  handleCancel={handleCancelReply}
+                />
+              ) : (
+                <InlineDraftReplyTrigger thread={thread} />
+              )}
+            </>
+          )}
       </div>
     </div>
   );

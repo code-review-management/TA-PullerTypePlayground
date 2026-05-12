@@ -20,6 +20,7 @@ import {
 
 import { DraftThreads, DraftThreadsByLine } from "../../_hooks/useDraftThreads";
 import { useHighlight } from "../../_hooks/useHighlight";
+import { usePermissionChecks } from "../../../_hooks/usePermissionChecks";
 import { PublishedThreadsByScope } from "../../_hooks/usePublishedThreads";
 import { useScrollToId } from "../../_hooks/useScrollToId";
 import { createDraftThread } from "../../_utils/comment-utils";
@@ -69,12 +70,16 @@ export default memo(function FileDiffView({
 }) {
   const { type: diffType, oldPath, newPath, hunks } = diff;
   const activePath = getActivePath(diffType, oldPath, newPath);
+
+  const { hasCommentPermission } = usePermissionChecks();
+  const isCommentingDisabled = isCommitView || !hasCommentPermission;
+
   const { activeHighlight, highlightEvents, clearHighlight } = useHighlight(
     oldPath,
     activePath,
     fileMeta?.status ?? "",
     setDraftThreads,
-    isCommitView,
+    isCommentingDisabled,
   );
 
   const [isExpanded, setIsExpanded] = useState(isExpandedDefault);
@@ -123,7 +128,7 @@ export default memo(function FileDiffView({
       side={side}
       renderDefault={renderDefault}
       activeHighlight={activeHighlight}
-      isHighlightDisabled={isCommitView}
+      isHighlightDisabled={isCommentingDisabled}
     />
   );
 
@@ -145,7 +150,7 @@ export default memo(function FileDiffView({
           newPath={newPath}
           isExpanded={isExpanded}
           setIsExpanded={setIsExpanded}
-          isCommitView={isCommitView}
+          isCommentingDisabled={isCommentingDisabled}
           createFileDraftThread={() => {
             createDraftThread(setDraftThreads, activePath, {
               oldPath,
