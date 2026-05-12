@@ -6,11 +6,7 @@ import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "../../../[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "../../../[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid({
-  pulls,
-}: {
-  pulls: PullRequest[];
-}) {
+export default function DashboardGrid({ pulls }: { pulls: PullRequest[] }) {
   return (
     <table className={styles.dashboardGrid}>
       <thead>
@@ -58,7 +54,9 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
         </Link>
-        <span className={styles.rowTitleBottom}>{pull.head?.repo.name}</span>
+        <span
+          className={styles.rowTitleBottom}
+        >{`${pull.repository_owner}/${pull.repository_name}`}</span>
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />
