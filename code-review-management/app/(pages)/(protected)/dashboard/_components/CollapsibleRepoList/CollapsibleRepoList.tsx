@@ -14,6 +14,7 @@ import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
  * @param selectedRepos Set of full names of selected repos. Determines if items in list should be checked
  * @param isExpanded State of whether this list is expandedOwners
  * @param onExpandedChange Callback triggered when the checklist is expanded/collapsed
+ * @param collapseDisabled Whether the collapse functionality of this repo list is disabled (meaning at least 1 of its repo(s) is selected)
  */
 export default function CollapsibleRepoList({
   owner,
