@@ -4,7 +4,8 @@ import { TimelineEventV2 } from "@/types/github.types.wrapper";
 import { useCallback } from "react";
 
 /**
- * Fetches the timeline for a GitHub pull request.
+ * Fetches timeline events for a GitHub pull request.
+ * Supports pagination.
  *
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
