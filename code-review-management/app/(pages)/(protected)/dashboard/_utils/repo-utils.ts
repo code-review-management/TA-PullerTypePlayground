@@ -1,5 +1,11 @@
 import { Repo } from "@/types/github.types";
 
+/**
+ * Split the full name of a repo into its owner and name.
+ * 
+ * @param repoName String representing full name of a repo
+ * @returns Object with owner and name as attributes.
+ */
 export function splitRepoName(repoName: string): {
   owner: string;
   name: string;
@@ -29,6 +35,13 @@ export function sortReposByOrg(repos: Repo[]) {
   return mappedRepos;
 }
 
+/**
+ * Given a list of repo names (full names), return a list of the orgs (owners)
+ * that have repos included in the list.
+ * 
+ * @param repoNames List of full names of repos
+ * @returns List of unique org names (owners)
+ */
 export function getOrgSetFromRepoNameList(repoNames: string[]): Set<string> {
   const orgSet = new Set<string>();
   repoNames.forEach((repoName) => {

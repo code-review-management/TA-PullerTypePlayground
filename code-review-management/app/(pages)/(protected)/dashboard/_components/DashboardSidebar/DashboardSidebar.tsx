@@ -43,11 +43,14 @@ export default function DashboardSidebar({
   const expandedSet = new Set(
     Array.isArray(expandedOwners) ? expandedOwners : [],
   );
+
+  // Set of orgs (owners) that have repos that are currently selected
   const orgSet = useMemo(
     () => getOrgSetFromRepoNameList(selectedRepos),
     [selectedRepos],
   );
 
+  // Update selectedRepos when a checkbox in a list is clicked
   const onCheckboxChange = (name: string, isChecked: boolean) => {
     if (isChecked && !repoSet.has(name)) {
       const newSelectedRepos = [...selectedRepos];
@@ -58,6 +61,12 @@ export default function DashboardSidebar({
     }
   };
 
+  /**
+   * Update expandedOwners and/or expansionState when a category is expanded/collapsed.
+   *
+   * @param owner Owner this category represents
+   * @param isCollapsed Boolean representing whether we are trying to expand/collapse the category
+   */
   const onExpandedChange = (owner: string, isCollapsed: boolean) => {
     if (expansionState === "expand") {
       const allOwners = Array.from(mappedRepoList.keys());
@@ -79,6 +88,13 @@ export default function DashboardSidebar({
     }
   };
 
+  /**
+   * Change expansion state based on which expansion state gets selected.
+   * If we're trying to toggle the same state again, reset to the "other" state.
+   * Otherwise, set the state to the selected state.
+   *
+   * @param state ExpansionState (expand, collapse, other) that got selected.
+   */
   const toggleExpansionState = (state: ExpansionState) => {
     if (expansionState === state) {
       setExpansionState("other");
@@ -87,6 +103,14 @@ export default function DashboardSidebar({
     }
   };
 
+  /**
+   * Calculate whether a category should be displayed as expanded
+   * based on whether it's in the set of expanded categories
+   * and whether we're in expand or collapse mdoe currently.
+   *
+   * @param owner Owner this category represents
+   * @returns `true` if the category should displayed as be expanded, `false` otherwise
+   */
   const categoryIsExpanded = (owner: string) => {
     return (
       expansionState === "expand" ||
