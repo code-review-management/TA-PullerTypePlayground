@@ -7,5 +7,11 @@ import { buildAssigneeList } from "../../_utils/userlist-utils";
  */
 export default function Assignees({ assignees }: { assignees: User[] }) {
   const listedAssignees = buildAssigneeList(assignees);
-  return <UserLister listType={"assignees"} userList={listedAssignees} />;
+  return (
+    <UserLister
+      listType={"assignees"}
+      userList={listedAssignees}
+      editable={false}
+    />
+  );
 }
