@@ -8,10 +8,10 @@ import { useState } from "react";
 import DashboardSearchBar from "./_components/DashboardSearch/DashboardSearchBar";
 import DashboardSidebar from "./_components/DashboardSidebar/DashboardSidebar";
 import { processPulls } from "./_utils/pulls-utils";
-import { useLocalStorage } from "usehooks-ts";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 import TabFilterRow from "./_components/TabFilterRow/TabFilterRow";
 import { getFilterObj, DashboardTabFilter } from "@/lib/filter-utils";
+import { useSelectedRepos } from "./_hooks/useSelectedRepos";
 
 // Dashboard page at /dashboard
 export default function Dashboard() {
@@ -34,10 +34,7 @@ export default function Dashboard() {
 
   const [searchString, setSearchString] = useState("");
   const [appliedSearchString, setAppliedSearchString] = useState("");
-  const [selectedRepos, setSelectedRepos] = useLocalStorage<string[]>(
-    "selectedRepos",
-    [],
-  );
+  const { selectedRepos, setSelectedRepos} = useSelectedRepos();
   const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
 
   const pulls = data?.pages.flatMap((page) => page.data) ?? [];
