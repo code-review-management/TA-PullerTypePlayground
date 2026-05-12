@@ -76,7 +76,7 @@ export default function CollapsibleRepoList({
           </div>
         ))}
       </form>
-      <IconTooltip id="collapse-disabled-tooltip" />
+      <IconTooltip id="collapse-disabled-tooltip" positionStrategy="fixed" />
     </div>
   );
 }
