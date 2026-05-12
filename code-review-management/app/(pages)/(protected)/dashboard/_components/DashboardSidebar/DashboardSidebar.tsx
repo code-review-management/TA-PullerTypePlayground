@@ -52,7 +52,15 @@ export default function DashboardSidebar({
   };
 
   const onExpandedChange = (owner: string, isCollapsed: boolean) => {
-    if (isCollapsed && !expandedSet.has(owner)) {
+    if (expansionState === "expand") {
+      const allOwners = Array.from(mappedRepoList.keys());
+      setExpandedOwners(allOwners.filter((item) => item !== owner));
+      setExpansionState("other");
+    } else if (expansionState === "collapse") {
+      const newCollapsedOwners = [owner];
+      setExpandedOwners(newCollapsedOwners);
+      setExpansionState("other");
+    } else if (isCollapsed && !expandedSet.has(owner)) {
       const newCollapsedOwners = [...expandedOwners];
       newCollapsedOwners.push(owner);
       setExpandedOwners(newCollapsedOwners);
