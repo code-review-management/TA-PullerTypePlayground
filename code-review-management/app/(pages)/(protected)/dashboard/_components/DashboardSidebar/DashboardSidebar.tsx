@@ -50,7 +50,12 @@ export default function DashboardSidebar({
     [selectedRepos],
   );
 
-  // Update selectedRepos when a checkbox in a list is clicked
+  /**
+   * Update selectedRepos appropriately when a checkbox in a list is clicked
+   *
+   * @param name Full name of the repo getting selected/deselected
+   * @param isChecked Whether this repo's checkbox is currently selected
+   */
   const onCheckboxChange = (name: string, isChecked: boolean) => {
     if (isChecked && !repoSet.has(name)) {
       const newSelectedRepos = [...selectedRepos];
