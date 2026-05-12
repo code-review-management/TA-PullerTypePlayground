@@ -29,6 +29,7 @@ export function usePublishedThreadsByDiff(
       publishedThreadsByDiff[activePath] = {
         lineThreads: publishedThreadsByLine,
         fileThreads: publishedThreads.get(activePath)?.fileThreads ?? [],
+        outdatedThreads: publishedThreads.get(activePath)?.outdatedThreads ?? [],
       };
     });
 
