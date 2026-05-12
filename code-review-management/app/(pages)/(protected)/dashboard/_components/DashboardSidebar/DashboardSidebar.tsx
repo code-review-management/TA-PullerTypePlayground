@@ -179,6 +179,7 @@ export default function DashboardSidebar({
       <div className={styles.sideBorder} />
       <IconTooltip id="expand-all" positionStrategy="fixed" />
       <IconTooltip id="collapse-all" positionStrategy="fixed" />
+      <IconTooltip id="collapse-disabled-tooltip" positionStrategy="fixed" />
     </div>
   );
 }

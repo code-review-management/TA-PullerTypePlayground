@@ -4,7 +4,6 @@ import Image from "next/image";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
 import ChevronDownDisabledIcon from "@/public/icons/chevron_down_disabled.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
-import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 
 /**
  * Collapsible checklist used for a section of list of repos in the repo filters section on the dashboard.
@@ -76,7 +75,6 @@ export default function CollapsibleRepoList({
           </div>
         ))}
       </form>
-      <IconTooltip id="collapse-disabled-tooltip" positionStrategy="fixed" />
     </div>
   );
 }
