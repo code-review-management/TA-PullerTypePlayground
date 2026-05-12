@@ -120,7 +120,7 @@ export default function DashboardSidebar({
               className={`${styles.actionButton} ${expansionState === "collapse" && styles.actionButtonActive}`}
               onClick={() => toggleExpansionState("collapse")}
               data-tooltip-id="collapse-all"
-              data-tooltip-content="Collapse all without selected repos"
+              data-tooltip-content="Collapse all"
               data-tooltip-delay-show={100}
               data-tooltip-place="bottom"
             >
