@@ -2,7 +2,9 @@ import Checkbox from "@/app/(pages)/_components/Checkbox/Checkbox";
 import styles from "./CollapsibleRepoList.module.css";
 import Image from "next/image";
 import ChevronDownIcon from "@/public/icons/chevron_down.svg";
+import ChevronDownDisabledIcon from "@/public/icons/chevron_down_disabled.svg";
 import ChevronRightIcon from "@/public/icons/chevron_right.svg";
+import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 
 /**
  * Collapsible checklist used for a section of list of repos in the repo filters section on the dashboard.
@@ -20,6 +22,7 @@ export default function CollapsibleRepoList({
   selectedRepos,
   isExpanded,
   onExpandedChange,
+  collapseDisabled,
 }: {
   owner: string;
   mappedRepoList: Map<string, string[]>;
@@ -27,19 +30,33 @@ export default function CollapsibleRepoList({
   selectedRepos: Set<string>;
   isExpanded: boolean;
   onExpandedChange: (owner: string, isCollapsed: boolean) => void;
+  collapseDisabled: boolean;
 }) {
+  const expandedIcon = collapseDisabled
+    ? ChevronDownDisabledIcon
+    : ChevronDownIcon;
+
   return (
     <div className={styles.repoListSection} key={owner}>
       <div
         className={styles.sectionHeader}
         onClick={() => onExpandedChange(owner, !isExpanded)}
+        {...(collapseDisabled && {
+          "data-tooltip-id": "collapse-disabled-tooltip",
+          "data-tooltip-content": "Collapse disabled when repo(s) selected",
+          "data-tooltip-delay-show": 300,
+        })}
       >
         <Image
-          src={isExpanded ? ChevronDownIcon : ChevronRightIcon}
+          src={isExpanded ? expandedIcon : ChevronRightIcon}
           alt={`Chevron icon pointing ${isExpanded ? "down" : "right"}`}
           className={styles.chevron}
         />
-        <h5 className={styles.ownerName}>{owner}</h5>
+        <h5
+          className={`${styles.ownerName} ${collapseDisabled && styles.ownerNameDisabled}`}
+        >
+          {owner}
+        </h5>
       </div>
       <form
         className={`${styles.repoList} ${isExpanded && styles.repoListExpanded}`}
@@ -58,6 +75,7 @@ export default function CollapsibleRepoList({
           </div>
         ))}
       </form>
+      <IconTooltip id="collapse-disabled-tooltip" />
     </div>
   );
 }

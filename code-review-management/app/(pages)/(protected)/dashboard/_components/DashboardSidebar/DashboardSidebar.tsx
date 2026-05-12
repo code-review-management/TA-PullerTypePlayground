@@ -72,8 +72,10 @@ export default function DashboardSidebar({
       const newCollapsedOwners = [...expandedOwners];
       newCollapsedOwners.push(owner);
       setExpandedOwners(newCollapsedOwners);
-    } else if (!isCollapsed && expandedSet.has(owner)) {
-      setExpandedOwners(expandedOwners.filter((item) => item !== owner));
+    } else if (!isCollapsed && !orgSet.has(owner)) {
+      if (expandedSet.has(owner)) {
+        setExpandedOwners(expandedOwners.filter((item) => item !== owner));
+      }
     }
   };
 
@@ -140,6 +142,7 @@ export default function DashboardSidebar({
             selectedRepos={repoSet}
             isExpanded={(() => categoryIsExpanded(owner))()}
             onExpandedChange={onExpandedChange}
+            collapseDisabled={orgSet.has(owner)}
           />
         ))}
         {(isPending || (hasNextPage && isFetching)) && <LoadingSpinner />}
