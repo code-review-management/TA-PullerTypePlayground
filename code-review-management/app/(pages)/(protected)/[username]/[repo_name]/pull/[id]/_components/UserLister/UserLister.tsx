@@ -3,6 +3,7 @@ import styles from "./UserLister.module.css";
 import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import Subheader from "../Subheader/Subheader";
 import { getListedUserIcon, listedUser } from "../../_utils/userlist-utils";
+import { usePermissionChecks } from "../../_hooks/usePermissionChecks";
 
 export type UserListType = "reviewers" | "assignees";
 
@@ -68,21 +69,24 @@ export default function UserLister({
   listType: UserListType;
   userList: listedUser[];
 }) {
+  const { hasWritePermission } = usePermissionChecks();
   const headerDisplay = `${listType[0].toUpperCase()}${listType.slice(1)}`;
 
   return (
     <div className={styles.userLister}>
       <div className={styles.headerRow}>
         <Subheader>{headerDisplay}</Subheader>
-        <div className={styles.iconWrapper}>
-          <Image
-            className={styles.plusIcon}
-            src="/icons/plus.svg"
-            alt="Plus icon"
-            height={12}
-            width={12}
-          />
-        </div>
+        {hasWritePermission && (
+          <div className={styles.iconWrapper}>
+            <Image
+              className={styles.plusIcon}
+              src="/icons/plus.svg"
+              alt="Plus icon"
+              height={12}
+              width={12}
+            />
+          </div>
+        )}
       </div>
       <div className={styles.listedUsers}>
         {userList.map((listedUser) => (

@@ -15,7 +15,7 @@ export default function FileDiffHeader({
   newPath,
   isExpanded,
   setIsExpanded,
-  isCommitView,
+  isCommentingDisabled,
   createFileDraftThread,
 }: {
   fileMeta?: FileDiff;
@@ -24,7 +24,7 @@ export default function FileDiffHeader({
   newPath: string;
   isExpanded: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
-  isCommitView: boolean;
+  isCommentingDisabled: boolean;
   createFileDraftThread: () => void;
 }) {
   const diffId = `${oldPath}-${newPath}`;
@@ -62,7 +62,7 @@ export default function FileDiffHeader({
           </div>
         )}
       </div>
-      {!isCommitView && (
+      {!isCommentingDisabled && (
         <button
           className={styles.comment}
           onClick={createFileDraftThread}
