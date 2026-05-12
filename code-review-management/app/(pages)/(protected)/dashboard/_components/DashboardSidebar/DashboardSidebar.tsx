@@ -4,7 +4,6 @@ import CollapsibleRepoList from "../CollapsibleRepoList/CollapsibleRepoList";
 import {
   getOrgSetFromRepoNameList,
   sortReposByOrg,
-  splitRepoName,
 } from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
