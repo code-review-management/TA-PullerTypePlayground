@@ -118,9 +118,9 @@ export default function DashboardSidebar({
    */
   const categoryIsExpanded = (owner: string) => {
     return (
+      orgSet.has(owner) ||
       expansionState === "expand" ||
-      (expandedSet.has(owner) &&
-        !(expansionState === "collapse" && !orgSet.has(owner)))
+      (expansionState === "other" && expandedSet.has(owner))
     );
   };
 
