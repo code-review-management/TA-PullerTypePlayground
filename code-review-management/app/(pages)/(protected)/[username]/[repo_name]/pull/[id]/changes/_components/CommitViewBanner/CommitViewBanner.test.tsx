@@ -6,6 +6,7 @@ import CommitViewBanner from "./CommitViewBanner";
 const mockSetSelectedSha = jest.fn();
 const mockRouterPush = jest.fn();
 const mockUseChangesViewMode = jest.fn();
+const mockUsePermissionChecks = jest.fn();
 
 jest.mock("next/navigation", () => ({
   useParams: () => ({
@@ -28,6 +29,10 @@ jest.mock("../../_hooks/useChangesViewMode", () => ({
   useChangesViewMode: () => mockUseChangesViewMode(),
 }));
 
+jest.mock("../../../_hooks/usePermissionChecks", () => ({
+  usePermissionChecks: () => mockUsePermissionChecks(),
+}));
+
 describe("CommitViewBanner", () => {
   const mockSha = "ab102f9301df14";
 
@@ -35,6 +40,9 @@ describe("CommitViewBanner", () => {
     jest.resetAllMocks();
     mockUseChangesViewMode.mockReturnValue({
       mode: "single-commit",
+    });
+    mockUsePermissionChecks.mockReturnValue({
+      hasCommentPermission: true,
     });
   });
 
