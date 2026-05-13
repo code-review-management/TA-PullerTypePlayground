@@ -4,6 +4,8 @@ export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
     id: 1,
     path: "filename.ts",
+    original_start_line: 1,
+    original_line: 5,
     start_line: 1,
     line: 5,
     start_side: "LEFT",
