@@ -53,7 +53,9 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
           <h4 className={styles.titleTitle}>{pull.title}</h4>
           <span className={styles.titleNumber}>#{pull.number}</span>
         </Link>
-        <span className={styles.rowTitleBottom}>{pull.head?.repo.name}</span>
+        <span
+          className={styles.rowTitleBottom}
+        >{`${pull.repository_owner}/${pull.repository_name}`}</span>
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />
