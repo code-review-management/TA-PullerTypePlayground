@@ -131,12 +131,11 @@ function StaleStatusChip({
 }: {
   status: "line-outdated" | "file-detached";
 }) {
-  const colorClass =
-    status === "line-outdated" ? styles.outdated : styles.detached;
-
+  const isLineOutdated = status === "line-outdated";
+  const colorClass = isLineOutdated ? styles.outdated : styles.detached;
   return (
     <div className={`${styles.chip} ${colorClass}`}>
-      {status === "line-outdated" ? "Line outdated" : "File detached"}
+      {isLineOutdated ? "Line outdated" : "File detached"}
     </div>
   );
 }
