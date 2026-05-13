@@ -64,7 +64,9 @@ export default function InlinePublishedThread({
       <InlineThreadHeader
         title={getThreadTitle(thread, viewType)}
         {...(isAnchorEnabled && { anchorHref: `#${anchorHref}` })}
-        {...(isOutdated && { actions: <OutdatedChip /> })}
+        {...(isOutdated && {
+          actions: <OutdatedChip isUnmatched={isUnmatched} />,
+        })}
       />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
@@ -123,8 +125,14 @@ function InlineDraftReplyEntry({
   );
 }
 
-function OutdatedChip() {
-  return <div className={styles.outdated}>Outdated</div>;
+function OutdatedChip({ isUnmatched }: { isUnmatched?: boolean }) {
+  return (
+    <div
+      className={`${styles.chip} ${isUnmatched ? styles.unmatched : styles.outdated}`}
+    >
+      {isUnmatched ? "File detached" : "Line outdated"}
+    </div>
+  );
 }
 
 function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
