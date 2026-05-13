@@ -21,16 +21,12 @@ type ThreadViewType = "inline" | "panel";
  * Displays a published thread that is anchored to specific lines in a file diff.
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
- * @param viewType: Where the published thread is rendered.
- * @param activePath: The file the published thread is commented on
- */
+ * @param viewType: Where the published thread is rendered. */
 export default function InlinePublishedThread({
   thread,
   viewType,
-  activePath,
 }: {
   thread: PublishedThreadItem;
-  activePath: string;
   viewType: ThreadViewType;
 }) {
   const { mode } = useChangesViewMode();
@@ -65,11 +61,10 @@ export default function InlinePublishedThread({
             created={comment.created_at}
             defaultEditable={false}
             defaultContent={comment.body}
-            activePath={activePath}
+            activePath={comment.path}
             startLine={startLine}
           />
-        ))}
-        {viewType === "inline" && ( // Reply option currently supported only for inline threads.
+        ))}        {viewType === "inline" && ( // Reply option currently supported only for inline threads.
           <>
             {isDraftingReply ? (
               <InlineDraftReplyEntry
