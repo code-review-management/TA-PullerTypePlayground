@@ -174,6 +174,10 @@ export function sortPublishedThreads(
   flatFileTree: FileDiff[],
 ) {
   threads.sort((a, b) => {
+    // Move outdated comments to the bottom.
+    if (a.line !== null && b.line === null) return -1;
+    if (a.line === null && b.line !== null) return 1;
+
     // Match a thread to its corresponding file in the flat file tree.
     const indexA = findThreadInFlatFileTree(a, flatFileTree);
     const indexB = findThreadInFlatFileTree(b, flatFileTree);
