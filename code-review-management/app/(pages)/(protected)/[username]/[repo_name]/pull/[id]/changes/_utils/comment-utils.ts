@@ -16,6 +16,7 @@ import {
   PublishedThreadsByLine,
 } from "../_hooks/usePublishedThreads";
 import { FileDiff } from "@/types/github.types";
+import { ThreadStatus } from "../_components/InlinePublishedThread/InlinePublishedThread";
 
 /**
  * Deletes the given draft thread from the state.
@@ -173,14 +174,14 @@ export function sortPublishedThreads(
   threads: PublishedThreadItem[],
   flatFileTree: FileDiff[],
   threadIndexMap: Map<PublishedThreadItem, number>,
-  outdatedThreads: Set<PublishedThreadItem>,
+  statuses: Map<PublishedThreadItem, ThreadStatus>,
 ) {
   threads.sort((a, b) => {
-    // Move outdated comments to the bottom.
-    const isOutdatedA = outdatedThreads.has(a);
-    const isOutdatedB = outdatedThreads.has(b);
-    if (!isOutdatedA && isOutdatedB) return -1;
-    if (isOutdatedA && !isOutdatedB) return 1;
+    // Move outdated/detached comments to the bottom.
+    const isStaleA = statuses.get(a) !== "current";
+    const isStaleB = statuses.get(b) !== "current";
+    if (!isStaleA && isStaleB) return -1;
+    if (isStaleA && !isStaleB) return 1;
 
     // Match a thread to its corresponding file in the flat file tree.
     const indexA = threadIndexMap.get(a) ?? -1;
@@ -262,16 +263,20 @@ export function buildThreadIndexMap(
   return threadIndexMap;
 }
 
-export function getOutdatedThreads(
+export function getThreadStatuses(
   threads: PublishedThreadItem[],
   threadIndexMap: Map<PublishedThreadItem, number>,
-) {
-  const outdated = new Set<PublishedThreadItem>();
+): Map<PublishedThreadItem, ThreadStatus> {
+  const statuses = new Map<PublishedThreadItem, ThreadStatus>();
   threads.forEach((thread) => {
     const index = threadIndexMap.get(thread) ?? -1;
-    if (index === -1 || thread.line === null) {
-      outdated.add(thread);
+    if (index === -1) {
+      statuses.set(thread, "file-detached");
+    } else if (thread.line === null) {
+      statuses.set(thread, "line-outdated");
+    } else {
+      statuses.set(thread, "current");
     }
   });
-  return outdated;
+  return statuses;
 }

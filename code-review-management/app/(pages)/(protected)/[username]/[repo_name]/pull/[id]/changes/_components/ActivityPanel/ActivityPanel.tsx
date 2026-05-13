@@ -6,7 +6,7 @@ import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import {
   buildThreadIndexMap,
-  getOutdatedThreads,
+  getThreadStatuses,
   sortPublishedThreads,
 } from "../../_utils/comment-utils";
 import Image from "next/image";
@@ -95,13 +95,8 @@ function CommentsTab({
   });
 
   const threadIndexMap = buildThreadIndexMap(allThreads, flatFileTree);
-  const outdatedThreads = getOutdatedThreads(allThreads, threadIndexMap);
-  sortPublishedThreads(
-    allThreads,
-    flatFileTree,
-    threadIndexMap,
-    outdatedThreads,
-  );
+  const statuses = getThreadStatuses(allThreads, threadIndexMap);
+  sortPublishedThreads(allThreads, flatFileTree, threadIndexMap, statuses);
 
   return (
     <>
@@ -130,8 +125,7 @@ function CommentsTab({
               <InlinePublishedThread
                 thread={thread}
                 viewType="panel"
-                isOutdated={outdatedThreads.has(thread)}
-                isUnmatched={threadIndexMap.get(thread) === -1}
+                status={statuses.get(thread)}
               />
             </div>
           ))}
