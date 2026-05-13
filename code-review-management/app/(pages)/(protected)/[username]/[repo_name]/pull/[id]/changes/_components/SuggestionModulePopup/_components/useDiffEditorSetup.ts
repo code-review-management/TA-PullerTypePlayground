@@ -77,6 +77,16 @@ export function useDiffEditorSetup(
   }, [beforeCode, originalCode, modifiedCode, afterCode]);
 
   const handleEditorMount: DiffOnMount = (editorInstance, monaco) => {
+    const compilerOptions = {
+      jsx: monaco.languages.typescript.JsxEmit.React,
+      jsxFactory: 'React.createElement',
+      reactNamespace: 'React',
+      allowNonTsExtensions: true
+    };
+
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions);
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions(compilerOptions);
+
     // This section is how we theme and language set, as well as handle carriage returns
     monaco.editor.defineTheme("vs-light-plus", vsCodeLightPlus);
     monaco.editor.setTheme("vs-light-plus");

@@ -86,6 +86,7 @@ export function SuggestionDiffEditor(props: SuggestionDiffEditorProps) {
           ignoreTrimWhitespace: false,
           scrollBeyondLastLine: false,
           renderOverviewRuler: false,
+          renderValidationDecorations: 'off',
         }}
       />
     </div>

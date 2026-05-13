@@ -147,7 +147,6 @@ export default memo(function FileDiffView({
           {hasFileLevelThreads && !isCommitView && (
             <ThreadList
               publishedThreads={publishedThreads.fileThreads}
-              activePath={activePath}
               draftThread={draftThreadsByLine?.["file-level"]}
             />
           )}

@@ -58,7 +58,6 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const { username, repo_name, id } = useParams<PullParams>();
   const [activeTab, setActiveTab] = useState<'replace' | 'insert'>('insert');
   const [moduleExpanded, setModuleExpanded] = useState(false);
-  const [outdated, setOutdated] = useState(false);
 
   const deletionNodes = useMemo<ASTNode[]>(() => {
     try {
@@ -88,11 +87,13 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const adjustedStartLine = startLine + relativeStartLine - 1;
   const endLine: number = adjustedStartLine + deletionContent.split('\n').length;
 
-  useEffect(() => {
+  const outdated = useMemo(() => {
     if (isSuccess && fileContent) {
-      setOutdated(IsSuggestionOutdated(fileContent, suggestion.deletionContent, adjustedStartLine,));
+      return IsSuggestionOutdated(fileContent, deletionContent, adjustedStartLine);
     }
-  }, [isSuccess, fileContent]);
+    return false;
+  }, [isSuccess, fileContent, deletionContent, adjustedStartLine]);
+
   return (
     <>
       {moduleExpanded && (
@@ -135,7 +136,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
           <div className={styles.headerTitle}>
             Suggested Change {(!suggestion.isCommited && !outdated) && "(AI can make mistakes)"}
           </div>
-          
+
           {suggestion.isCommited && (
             <div className={styles.commitedContainer}>
               Commited
