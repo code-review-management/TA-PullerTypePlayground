@@ -21,7 +21,7 @@ export default function InlineThreadHeader({
 }) {
   const threadHeader = (
     <div className={styles.header}>
-      {title}
+      <span className={styles.title}>{title}</span>
       {actions}
     </div>
   );

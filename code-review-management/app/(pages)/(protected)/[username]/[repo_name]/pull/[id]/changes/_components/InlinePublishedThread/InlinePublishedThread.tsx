@@ -41,6 +41,8 @@ export default function InlinePublishedThread({
     deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
   };
 
+  const isOutdated = thread.line === null;
+  const isAnchorEnabled = viewType === "panel" && !isOutdated && mode === "pr";
   const anchorHref =
     thread.subject_type === "file"
       ? `file-thread-${thread.id}`
@@ -53,8 +55,8 @@ export default function InlinePublishedThread({
     >
       <InlineThreadHeader
         title={getThreadTitle(thread, viewType)}
-        {...(viewType === "panel" &&
-          mode === "pr" && { anchorHref: `#${anchorHref}` })}
+        {...(isAnchorEnabled && { anchorHref: `#${anchorHref}` })}
+        {...(isOutdated && { actions: <OutdatedChip /> })}
       />
       <div className={styles.comments}>
         {thread.comments.map((comment) => (
@@ -111,6 +113,10 @@ function InlineDraftReplyEntry({
       }
     />
   );
+}
+
+function OutdatedChip() {
+  return <div className={styles.outdated}>Outdated</div>;
 }
 
 function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
