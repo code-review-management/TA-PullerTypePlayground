@@ -15,7 +15,7 @@ type RouteContext = {
   params: Promise<{
     owner: string;
     repo: string;
-    pull_number: number;
+    pull_number: string;
   }>;
 };
 
@@ -55,7 +55,7 @@ export async function POST(req: Request, context: RouteContext) {
     const pullRequestResponse = await octokit.rest.pulls.get({
       owner,
       repo,
-      pull_number,
+      pull_number: Number(pull_number),
     });
 
     const pullRequest = PullRequestSchema.parse(pullRequestResponse.data);

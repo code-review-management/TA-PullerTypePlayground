@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
- * @returns: TanStack query result containing the merge result.
+ * @returns: TanStack query updating the suggestion comment.
  */
 export function useUpdateGeminiSuggestionMutation(
   owner: string,

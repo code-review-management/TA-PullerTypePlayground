@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
  * @param owner: Owner of the repository.
  * @param repo: Name of the repository.
  * @param pullNumber: Pull request number.
- * @returns: TanStack query result containing the merge result.
+ * @returns: TanStack query result committing suggestion block.
  */
 export function useCommitGeminiSuggestionMutation(
   owner: string,
@@ -29,7 +29,10 @@ export function useCommitGeminiSuggestionMutation(
       await queryClient.invalidateQueries({
         queryKey: ["review-comments", owner, repo, pullNumber],
       });
-      toast.success("Suggestion successfully commited!");
+      queryClient.invalidateQueries({
+        queryKey: ["timeline", owner, repo, pullNumber],
+      });
+      toast.success("Suggestion successfully committed!");
     },
     onError: () => {
       toast.error("Failed to commit suggestion.");

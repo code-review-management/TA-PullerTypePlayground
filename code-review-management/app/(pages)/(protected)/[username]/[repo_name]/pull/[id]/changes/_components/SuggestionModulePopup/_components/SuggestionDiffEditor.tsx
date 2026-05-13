@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
 import styles from "./SuggestionDiffEditor.module.css";
+import monacoStyles from "./MonacoEditor.module.css"
 import { useDiffEditorSetup } from "./useDiffEditorSetup";
 
 export interface SuggestionDiffEditorProps {
@@ -67,7 +68,7 @@ export function SuggestionDiffEditor(props: SuggestionDiffEditorProps) {
   }
 
   return (
-    <div className={styles.diffContainer}>
+    <div className={monacoStyles.editorContainer}>
       <DiffEditor
         height="100%"
         original={editorOriginal}
