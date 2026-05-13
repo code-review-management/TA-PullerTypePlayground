@@ -11,10 +11,7 @@ jest.mock("next-auth/jwt", () => ({
 
 // Mock octokit
 jest.mock("octokit", () => ({
-  // NOTE: This is a factory mock that replaces the entire module (which is
-  // probably why it resolves the initial errors), but I also don't know how to
-  // keep the original class type of RequestError :(
-  RequestError: jest.fn(), // Added this to avoid undefined error but might need fixing.
+  RequestError: jest.fn(), // Added this to avoid undefined error
   Octokit: jest.fn(), // Mocked in the beforeEach()
 }));
 
@@ -41,6 +38,7 @@ describe("GET /api/v1/repos", () => {
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
+
     // Create a mock request
     mockRequest = new Request("http://localhost:3000/api/v1/repos");
     jest
@@ -57,7 +55,7 @@ describe("GET /api/v1/repos", () => {
       expect(response.status).toBe(401);
       expect(getToken).toHaveBeenCalledWith({
         req: mockRequest,
-        secret: undefined, // Need to mock process.env
+        secret: undefined,
         cookieName: "authjs.session-token",
       });
     });
@@ -194,28 +192,6 @@ describe("GET /api/v1/repos", () => {
       jest.mocked(getToken).mockResolvedValue(mockToken);
     });
 
-    // it("should handle Octokit RequestError with status", async () => {
-    //   const mockError = Object.assign(new Error("Forbidden"), {
-    //     name: "HttpError",
-    //     status: 403,
-    //     request: {
-    //       method: "GET",
-    //       url: "",
-    //       headers: {},
-    //     },
-    //   });
-
-    //   mockOctokitInstance.rest.repos.listForAuthenticatedUser.mockRejectedValue(
-    //     mockError,
-    //   );
-
-    //   const response = await GET(mockRequest);
-
-    //   expect(response.status).toBe(403);
-    //   const text = await response.text();
-    //   expect(text).toBe("Forbidden");
-    // });
-
     it("should return 500 for parsing errors", async () => {
       const mockRepos = [
         {
@@ -245,6 +221,8 @@ describe("GET /api/v1/repos", () => {
       const response = await GET(mockRequest);
 
       expect(response.status).toBe(500);
+      const text = await response.text();
+      expect(text).toBe("Server error");
     });
   });
 });
