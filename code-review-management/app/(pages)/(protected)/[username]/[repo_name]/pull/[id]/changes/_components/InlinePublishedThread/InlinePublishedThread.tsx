@@ -27,9 +27,11 @@ type ThreadViewType = "inline" | "panel";
 export default function InlinePublishedThread({
   thread,
   viewType,
+  isOutdated,
 }: {
   thread: PublishedThreadItem;
   viewType: ThreadViewType;
+  isOutdated?: boolean;
 }) {
   const { mode } = useChangesViewMode();
   const { hasCommentPermission } = usePermissionChecks();
@@ -41,7 +43,6 @@ export default function InlinePublishedThread({
     deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
   };
 
-  const isOutdated = thread.line === null;
   const isAnchorEnabled = viewType === "panel" && !isOutdated && mode === "pr";
   const anchorHref =
     thread.subject_type === "file"

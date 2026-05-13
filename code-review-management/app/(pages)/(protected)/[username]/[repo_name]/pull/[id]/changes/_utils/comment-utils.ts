@@ -172,15 +172,19 @@ export function getBasename(path: string) {
 export function sortPublishedThreads(
   threads: PublishedThreadItem[],
   flatFileTree: FileDiff[],
+  threadIndexMap: Map<PublishedThreadItem, number>,
+  outdatedThreads: Set<PublishedThreadItem>,
 ) {
   threads.sort((a, b) => {
     // Move outdated comments to the bottom.
-    if (a.line !== null && b.line === null) return -1;
-    if (a.line === null && b.line !== null) return 1;
+    const isOutdatedA = outdatedThreads.has(a);
+    const isOutdatedB = outdatedThreads.has(b);
+    if (!isOutdatedA && isOutdatedB) return -1;
+    if (isOutdatedA && !isOutdatedB) return 1;
 
     // Match a thread to its corresponding file in the flat file tree.
-    const indexA = findThreadInFlatFileTree(a, flatFileTree);
-    const indexB = findThreadInFlatFileTree(b, flatFileTree);
+    const indexA = threadIndexMap.get(a) ?? -1;
+    const indexB = threadIndexMap.get(b) ?? -1;
 
     if (indexA === -1 || indexB === -1) {
       // Put matched files before unmatched files.
@@ -245,4 +249,29 @@ function findThreadInFlatFileTree(
       node.status === "renamed" && node.previous_filename === thread.path;
     return matchActivePath || matchPreviousPath;
   });
+}
+
+export function buildThreadIndexMap(
+  threads: PublishedThreadItem[],
+  flatFileTree: FileDiff[],
+) {
+  const threadIndexMap = new Map<PublishedThreadItem, number>();
+  threads.forEach((thread) => {
+    threadIndexMap.set(thread, findThreadInFlatFileTree(thread, flatFileTree));
+  });
+  return threadIndexMap;
+}
+
+export function getOutdatedThreads(
+  threads: PublishedThreadItem[],
+  threadIndexMap: Map<PublishedThreadItem, number>,
+) {
+  const outdated = new Set<PublishedThreadItem>();
+  threads.forEach((thread) => {
+    const index = threadIndexMap.get(thread) ?? -1;
+    if (index === -1 || thread.line === null) {
+      outdated.add(thread);
+    }
+  });
+  return outdated;
 }

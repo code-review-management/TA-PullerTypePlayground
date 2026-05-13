@@ -4,7 +4,11 @@ import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
 import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
-import { sortPublishedThreads } from "../../_utils/comment-utils";
+import {
+  buildThreadIndexMap,
+  getOutdatedThreads,
+  sortPublishedThreads,
+} from "../../_utils/comment-utils";
 import Image from "next/image";
 import AlertBanner from "@components/AlertBanner/AlertBanner";
 import CancelButton from "@components/CancelButton/CancelButton";
@@ -89,7 +93,15 @@ function CommentsTab({
     );
     return [...byGroup.fileThreads, ...byGroup.outdatedThreads, ...lineThreads];
   });
-  sortPublishedThreads(allThreads, flatFileTree);
+
+  const threadIndexMap = buildThreadIndexMap(allThreads, flatFileTree);
+  const outdatedThreads = getOutdatedThreads(allThreads, threadIndexMap);
+  sortPublishedThreads(
+    allThreads,
+    flatFileTree,
+    threadIndexMap,
+    outdatedThreads,
+  );
 
   return (
     <>
@@ -115,7 +127,11 @@ function CommentsTab({
           )}
           {allThreads.map((thread) => (
             <div key={`${thread.path}-${thread.id}`} className={styles.thread}>
-              <InlinePublishedThread thread={thread} viewType="panel" />
+              <InlinePublishedThread
+                thread={thread}
+                viewType="panel"
+                isOutdated={outdatedThreads.has(thread)}
+              />
             </div>
           ))}
         </>
