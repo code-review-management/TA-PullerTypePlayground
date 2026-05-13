@@ -29,8 +29,8 @@ const queryClient = new QueryClient({
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <ProgressProvider
-      height="1px"
-      color="var(--text-accent)"
+      height="2.5px"
+      color="var(--loading-bar-color)"
       options={{ showSpinner: false }}
     >
       <SessionProvider>
