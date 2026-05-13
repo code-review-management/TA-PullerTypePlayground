@@ -131,6 +131,7 @@ function CommentsTab({
                 thread={thread}
                 viewType="panel"
                 isOutdated={outdatedThreads.has(thread)}
+                isUnmatched={threadIndexMap.get(thread) === -1}
               />
             </div>
           ))}

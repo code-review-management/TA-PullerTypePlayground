@@ -28,10 +28,12 @@ export default function InlinePublishedThread({
   thread,
   viewType,
   isOutdated,
+  isUnmatched,
 }: {
   thread: PublishedThreadItem;
   viewType: ThreadViewType;
   isOutdated?: boolean;
+  isUnmatched?: boolean;
 }) {
   const { mode } = useChangesViewMode();
   const { hasCommentPermission } = usePermissionChecks();
@@ -43,11 +45,16 @@ export default function InlinePublishedThread({
     deleteDraftReply(draftReplies[draftReplyKey], setDraftReplies);
   };
 
-  const isAnchorEnabled = viewType === "panel" && !isOutdated && mode === "pr";
-  const anchorHref =
+  const isAnchorEnabled = viewType === "panel" && !isUnmatched && mode === "pr";
+
+  let anchorHref =
     thread.subject_type === "file"
       ? `file-thread-${thread.id}`
       : `inline-thread-${thread.id}`;
+
+  if (isOutdated && !isUnmatched) {
+    anchorHref = `file-${thread.path}`;
+  }
 
   return (
     <div
