@@ -43,6 +43,8 @@ export interface PublishedThreadsBySide {
 export interface PublishedThreadItem {
   id: number;
   path: string;
+  original_start_line: number | null;
+  original_line: number | null;
   start_line: number | null;
   line: number | null;
   start_side: "LEFT" | "RIGHT" | null;
@@ -133,6 +135,8 @@ function groupThreadsByFile(comments: Comment[]) {
         path: comment.path,
         start_side: comment.start_side,
         side: comment.side,
+        original_start_line: comment.original_start_line,
+        original_line: comment.original_line,
         start_line: comment.start_line,
         line: comment.line,
         subject_type: comment.subject_type,

@@ -126,21 +126,21 @@ function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
     return viewType === "inline" ? "Thread on file-level" : basename;
   }
 
-  // Placeholder in case the ending line and side are undefined.
-  if (!thread.line && !thread.side) {
+  // Placeholder in case the ending line or side are undefined.
+  if ((!thread.line && !thread.original_line) || !thread.side) {
     return viewType === "inline" ? "Thread on file changes" : basename;
   }
 
   const formatSide = (side: string) => (side === "RIGHT" ? "R" : "L");
-  const endRange = `${formatSide(thread.side!)}${thread.line}`;
+  const endRange = `${formatSide(thread.side)}${thread.line ?? thread.original_line}`;
 
   // Starting line and side are undefined when it is not a multi-line comment.
   if (
     thread.start_side &&
-    thread.start_line &&
+    (thread.start_line || thread.original_start_line) &&
     thread.start_line !== thread.line
   ) {
-    const startRange = `${formatSide(thread.start_side)}${thread.start_line}`;
+    const startRange = `${formatSide(thread.start_side)}${thread.start_line ?? thread.original_start_line}`;
     return viewType === "inline"
       ? `Thread on lines ${startRange} to ${endRange}`
       : `${basename}: ${startRange} to ${endRange}`;
