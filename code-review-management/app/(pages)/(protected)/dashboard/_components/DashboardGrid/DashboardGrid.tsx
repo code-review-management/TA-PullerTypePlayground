@@ -6,11 +6,7 @@ import StatusIcon from "../StatusIcon/StatusIcon";
 import { getPullState } from "../../../[username]/[repo_name]/pull/[id]/_utils/pull-utils";
 import { formatRelativeDate } from "../../../[username]/[repo_name]/pull/[id]/_utils/date-utils";
 
-export default function DashboardGrid({
-  pulls,
-}: {
-  pulls: PullRequest[];
-}) {
+export default function DashboardGrid({ pulls }: { pulls: PullRequest[] }) {
   return (
     <table className={styles.dashboardGrid}>
       <thead>
@@ -18,7 +14,6 @@ export default function DashboardGrid({
           <th className={styles.iconWidth} />
           <th className={styles.titleWidth}>Title</th>
           <th className={styles.reviewerAssigneeWidth}>Assignees</th>
-          <th className={styles.reviewerAssigneeWidth}>Reviewers</th>
           <th className={styles.statusWidth}>Status</th>
           <th className={styles.updatedWidth}>Updated</th>
         </tr>
@@ -62,9 +57,6 @@ function DashboardGridRow({ pull }: { pull: PullRequest }) {
       </td>
       <td className={styles.reviewerAssigneeWidth}>
         <UserIconList users={pull.assignees ?? []} />
-      </td>
-      <td className={styles.reviewerAssigneeWidth}>
-        <UserIconList users={pull.requested_reviewers ?? []} />
       </td>
       <td className={`${styles.rowStatus} ${styles.statusWidth}`}>
         <StatusIcon state={pullState} />
