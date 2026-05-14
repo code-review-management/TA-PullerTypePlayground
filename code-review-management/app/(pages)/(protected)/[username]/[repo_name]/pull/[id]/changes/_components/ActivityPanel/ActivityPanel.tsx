@@ -135,7 +135,7 @@ function CommentsTab({
       <IconTooltip
         id="panel-path-tooltip"
         positionStrategy="fixed"
-        maxWidth={"200px"}
+        maxWidth={"225px"}
       />
     </>
   );
