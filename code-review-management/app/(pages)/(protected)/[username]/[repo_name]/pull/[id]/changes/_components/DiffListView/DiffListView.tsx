@@ -11,10 +11,7 @@ import {
   fixParsedDiffPaths,
   buildFileDiffMap,
 } from "../../_utils/diff-utils";
-import {
-  buildPathTreeIndexMap,
-  orderParsedDiffs,
-} from "../../_utils/filetree-utils";
+import { orderParsedDiffs } from "../../_utils/filetree-utils";
 import AlertBanner from "@components/AlertBanner/AlertBanner";
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
@@ -43,15 +40,12 @@ export default function DiffListView({
   const { diffs, isMappingError } = useMemo(() => {
     if (!diffString) return { diffs: [], isMappingError: false };
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
-    const pathTreeIndexMap = buildPathTreeIndexMap(flatFileTree);
-
     fixParsedDiffPaths(diffString, parsedDiffs);
-    orderParsedDiffs(parsedDiffs, pathTreeIndexMap);
+    orderParsedDiffs(parsedDiffs, flatFileTree);
 
     const { diffs, isMappingError } = buildFileDiffMap(
       parsedDiffs,
       flatFileTree,
-      pathTreeIndexMap,
     );
     return { diffs, isMappingError };
   }, [diffString, flatFileTree]);

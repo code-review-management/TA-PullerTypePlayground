@@ -124,10 +124,8 @@ export function flattenFileTree(fileTree: FileTreeNode[]) {
  * @param diffs: Diffs parsed by react-diff-view.
  * @param flatFileTree: Flattened file tree that defines the ordering.
  */
-export function orderParsedDiffs(
-  diffs: FileData[],
-  pathTreeIndexMap: Map<string, number>,
-) {
+export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
+  const pathTreeIndexMap = buildPathTreeIndexMap(flatFileTree);
   diffs.sort((a, b) => {
     const pathA = getActivePath(a.type, a.oldPath, a.newPath);
     const pathB = getActivePath(b.type, b.oldPath, b.newPath);
