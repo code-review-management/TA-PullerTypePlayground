@@ -6,7 +6,7 @@ import { FileDiff } from "@/types/github.types";
 import { PullParams } from "@/types/routing.types";
 import {
   buildThreadIndexMap,
-  getThreadStatuses,
+  buildThreadStatusMap,
   sortPublishedThreads,
 } from "../../_utils/comment-utils";
 import Image from "next/image";
@@ -96,8 +96,13 @@ function CommentsTab({
   });
 
   const threadIndexMap = buildThreadIndexMap(allThreads, flatFileTree);
-  const statuses = getThreadStatuses(allThreads, threadIndexMap);
-  sortPublishedThreads(allThreads, flatFileTree, threadIndexMap, statuses);
+  const threadStatusMap = buildThreadStatusMap(allThreads, threadIndexMap);
+  sortPublishedThreads(
+    allThreads,
+    flatFileTree,
+    threadIndexMap,
+    threadStatusMap,
+  );
 
   return (
     <>
@@ -126,7 +131,7 @@ function CommentsTab({
               <InlinePublishedThread
                 thread={thread}
                 viewType="panel"
-                status={statuses.get(thread)}
+                status={threadStatusMap.get(thread)}
               />
             </div>
           ))}

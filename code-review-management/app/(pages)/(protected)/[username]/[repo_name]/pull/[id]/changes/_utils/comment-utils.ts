@@ -171,18 +171,18 @@ export function getBasename(path: string) {
  * @param flatFileTree: Flattened file tree that helps define the ordering.
  * @param threadIndexMap: Map from thread objects to the index of their
  *                        corresponding file-diff in `flatFileTree`.
- * @param statuses: Map from thread objects to their statuses.
+ * @param threadStatusMap: Map from thread objects to their statuses.
  */
 export function sortPublishedThreads(
   threads: PublishedThreadItem[],
   flatFileTree: FileDiff[],
   threadIndexMap: Map<PublishedThreadItem, number>,
-  statuses: Map<PublishedThreadItem, ThreadStatus>,
+  threadStatusMap: Map<PublishedThreadItem, ThreadStatus>,
 ) {
   threads.sort((a, b) => {
     // Move outdated/detached comments to the bottom.
-    const isStaleA = statuses.get(a) !== "current";
-    const isStaleB = statuses.get(b) !== "current";
+    const isStaleA = threadStatusMap.get(a) !== "current";
+    const isStaleB = threadStatusMap.get(b) !== "current";
     if (!isStaleA && isStaleB) return -1;
     if (isStaleA && !isStaleB) return 1;
 
@@ -282,20 +282,22 @@ export function buildThreadIndexMap(
  *                        corresponding file-diff in `flatFileTree`.
  * @returns: A map from thread objects to their statuses.
  */
-export function getThreadStatuses(
+export function buildThreadStatusMap(
   threads: PublishedThreadItem[],
   threadIndexMap: Map<PublishedThreadItem, number>,
 ): Map<PublishedThreadItem, ThreadStatus> {
-  const statuses = new Map<PublishedThreadItem, ThreadStatus>();
+  const threadStatusMap = new Map<PublishedThreadItem, ThreadStatus>();
+
   threads.forEach((thread) => {
     const index = threadIndexMap.get(thread) ?? -1;
     if (index === -1) {
-      statuses.set(thread, "file-detached");
+      threadStatusMap.set(thread, "file-detached");
     } else if (thread.line === null) {
-      statuses.set(thread, "line-outdated");
+      threadStatusMap.set(thread, "line-outdated");
     } else {
-      statuses.set(thread, "current");
+      threadStatusMap.set(thread, "current");
     }
   });
-  return statuses;
+
+  return threadStatusMap;
 }
