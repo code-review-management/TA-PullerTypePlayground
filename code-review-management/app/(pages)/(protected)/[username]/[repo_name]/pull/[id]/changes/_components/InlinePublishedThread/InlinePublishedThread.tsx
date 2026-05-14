@@ -64,7 +64,7 @@ export default function InlinePublishedThread({
     >
       <InlineThreadHeader
         title={getThreadTitle(thread, viewType)}
-        {...(viewType === "panel" && { path: thread.path })}
+        {...(viewType === "panel" && { tooltip: thread.path })}
         {...(isAnchorEnabled && { anchorHref: `#${anchorHref}` })}
         {...(isStale && {
           actions: <StaleStatusChip status={status} />,
