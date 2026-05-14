@@ -24,6 +24,8 @@ type ThreadViewType = "inline" | "panel";
  *
  * @param thread: `PublishedThreadItem` object containing data about the published thread.
  * @param viewType: Where the published thread is rendered.
+ * @param status: Status of the thread. Used for displaying stale chips from the
+ *                side-panel.
  */
 export default function InlinePublishedThread({
   thread,

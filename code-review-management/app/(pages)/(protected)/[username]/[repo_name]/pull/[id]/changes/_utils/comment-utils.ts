@@ -169,6 +169,9 @@ export function getBasename(path: string) {
  *
  * @param threads: Array of published threads.
  * @param flatFileTree: Flattened file tree that helps define the ordering.
+ * @param threadIndexMap: Map from thread objects to the index of their
+ *                        corresponding file-diff in `flatFileTree`.
+ * @param statuses: Map from thread objects to their statuses.
  */
 export function sortPublishedThreads(
   threads: PublishedThreadItem[],
@@ -252,6 +255,14 @@ function findThreadInFlatFileTree(
   });
 }
 
+/**
+ * Builds out a map from thread objects to the index of their corresponding
+ * file-diff in `flatFileTree`.
+ *
+ * @param threads: List of published thread items.
+ * @param flatFileTree: Flattened file tree array.
+ * @returns: A map from thread objects to their file-diff indices.
+ */
 export function buildThreadIndexMap(
   threads: PublishedThreadItem[],
   flatFileTree: FileDiff[],
@@ -263,6 +274,14 @@ export function buildThreadIndexMap(
   return threadIndexMap;
 }
 
+/**
+ * Builds out a map from thread objects to their statuses.
+ *
+ * @param threads: List of published thread items.
+ * @param threadIndexMap: Map from thread objects to the index of their
+ *                        corresponding file-diff in `flatFileTree`.
+ * @returns: A map from thread objects to their statuses.
+ */
 export function getThreadStatuses(
   threads: PublishedThreadItem[],
   threadIndexMap: Map<PublishedThreadItem, number>,
