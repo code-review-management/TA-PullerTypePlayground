@@ -13,6 +13,7 @@
     /* Semantic colors */
     --color-success: #3ca133;
     --color-failure: #e30202;
+    --color-failure-light: #ffeaea;
     --color-disabled: #919191;
 
     --color-warning: #f8bc07;
