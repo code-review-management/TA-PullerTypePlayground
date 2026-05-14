@@ -133,3 +133,25 @@ function isDiffAtLeast100KB(hunks: HunkData[]) {
 function isDiffOver500Lines(hunks: HunkData[]) {
   return hunks.reduce((sum, hunk) => sum + hunk.changes.length, 0) > 500;
 }
+
+export function buildFileDiffMap(
+  parsedDiffs: FileData[],
+  flatFileTree: FileDiff[],
+  pathTreeIndexMap: Map<string, number>,
+) {
+  let unmatched = false;
+
+  const diffs = parsedDiffs.map((diff) => {
+    const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
+    const idx = pathTreeIndexMap.get(activePath);
+
+    if (idx === undefined) unmatched = true;
+    const fileMeta = idx !== undefined ? flatFileTree[idx] : undefined;
+    return { diff, fileMeta };
+  });
+
+  return {
+    diffs,
+    isMappingError: unmatched || parsedDiffs.length !== flatFileTree.length,
+  };
+}

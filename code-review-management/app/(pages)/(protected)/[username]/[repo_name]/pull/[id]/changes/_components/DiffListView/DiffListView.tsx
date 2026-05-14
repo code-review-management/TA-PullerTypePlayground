@@ -6,8 +6,15 @@ import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { usePublishedThreadsByDiff } from "../../_hooks/usePublishedThreadsByDiff";
 import { FileDiff, PullRequest } from "@/types/github.types";
 import { PublishedThreads } from "../../_hooks/usePublishedThreads";
-import { getActivePath, fixParsedDiffPaths } from "../../_utils/diff-utils";
-import { orderParsedDiffs } from "../../_utils/filetree-utils";
+import {
+  getActivePath,
+  fixParsedDiffPaths,
+  buildFileDiffMap,
+} from "../../_utils/diff-utils";
+import {
+  buildPathTreeIndexMap,
+  orderParsedDiffs,
+} from "../../_utils/filetree-utils";
 import AlertBanner from "@components/AlertBanner/AlertBanner";
 import ErrorMessage from "@components/ErrorMessage/ErrorMessage";
 import FileDiffView from "../FileDiffView/FileDiffView";
@@ -33,18 +40,20 @@ export default function DiffListView({
   const { mode } = useChangesViewMode();
   const { diffString, isPending, isError, error } = useActiveDiffs(pull);
 
-  const diffs = useMemo(() => {
-    if (!diffString) return []; // Fallback to handle type errors, but won't render during loading/error state.
+  const { diffs, isMappingError } = useMemo(() => {
+    if (!diffString) return { diffs: [], isMappingError: false };
     const parsedDiffs = parseDiff(diffString, { nearbySequences: "zip" });
+    const pathTreeIndexMap = buildPathTreeIndexMap(flatFileTree);
 
     fixParsedDiffPaths(diffString, parsedDiffs);
-    orderParsedDiffs(parsedDiffs, flatFileTree);
+    orderParsedDiffs(parsedDiffs, pathTreeIndexMap);
 
-    // Ordered `parsedDiffs` array has 1-1 matching with ordered `flatFileTree` array.
-    return parsedDiffs.map((diff, index) => ({
-      diff,
-      fileMeta: flatFileTree.at(index),
-    }));
+    const { diffs, isMappingError } = buildFileDiffMap(
+      parsedDiffs,
+      flatFileTree,
+      pathTreeIndexMap,
+    );
+    return { diffs, isMappingError };
   }, [diffString, flatFileTree]);
 
   const publishedThreadsByDiff = usePublishedThreadsByDiff(
@@ -75,6 +84,7 @@ export default function DiffListView({
 
   return (
     <div className={`${styles.diffListView} ${sha ? styles.extraPadding : ""}`}>
+      {isMappingError && <MappingErrorBanner />}
       {diffs.length > MAX_EXPANDED_DIFFS_ON_LOAD && <OptimizationBanner />}
       {diffs.map(({ diff, fileMeta }, idx) => {
         const activePath = getActivePath(diff.type, diff.oldPath, diff.newPath);
@@ -106,6 +116,10 @@ export default function DiffListView({
       })}
     </div>
   );
+}
+
+function MappingErrorBanner() {
+  return <AlertBanner variant="error">Temporary error message</AlertBanner>;
 }
 
 function OptimizationBanner() {

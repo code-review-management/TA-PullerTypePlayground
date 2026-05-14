@@ -124,13 +124,19 @@ export function flattenFileTree(fileTree: FileTreeNode[]) {
  * @param diffs: Diffs parsed by react-diff-view.
  * @param flatFileTree: Flattened file tree that defines the ordering.
  */
-export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
+export function orderParsedDiffs(
+  diffs: FileData[],
+  pathTreeIndexMap: Map<string, number>,
+) {
   diffs.sort((a, b) => {
     const pathA = getActivePath(a.type, a.oldPath, a.newPath);
     const pathB = getActivePath(b.type, b.oldPath, b.newPath);
 
-    const indexA = flatFileTree.findIndex((node) => node.filename === pathA);
-    const indexB = flatFileTree.findIndex((node) => node.filename === pathB);
+    const indexA = pathTreeIndexMap.get(pathA) ?? -1;
+    const indexB = pathTreeIndexMap.get(pathB) ?? -1;
+
+    if (indexA !== -1 && indexB === -1) return -1;
+    if (indexA === -1 && indexB === 1) return 1;
 
     // If `a` appears before `b` in `flatFileTree`, return a negative value to
     // indicate that `a` is less than `b`.
@@ -171,4 +177,8 @@ export function filterFileTreeBySearch(
   });
 
   return filters;
+}
+
+export function buildPathTreeIndexMap(flatFileTree: FileDiff[]) {
+  return new Map(flatFileTree.map((node, idx) => [node.filename, idx]));
 }
