@@ -143,8 +143,13 @@ function StaleStatusChip({
 
 function getThreadTitle(thread: PublishedThreadItem, viewType: ThreadViewType) {
   const basename = getBasename(thread.path);
-  const line = thread.line ?? thread.original_line;
-  const startLine = thread.start_line ?? thread.original_start_line;
+
+  let line = thread.line;
+  let startLine = thread.start_line;
+  if (!line) {
+    line = thread.original_line;
+    startLine = thread.original_start_line;
+  }
 
   if (thread.subject_type === "file") {
     return viewType === "inline" ? "Thread on file-level" : basename;
