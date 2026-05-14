@@ -133,7 +133,7 @@ function CommentsTab({
         </>
       )}
       <IconTooltip
-        id="panel-path-tooltip"
+        id="thread-header-tooltip"
         positionStrategy="fixed"
         maxWidth={"225px"}
       />
