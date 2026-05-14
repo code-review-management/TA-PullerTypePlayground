@@ -5,6 +5,7 @@ import { DraftReplyItem, getDraftReplyKey } from "../../_hooks/useDraftReplies";
 import { usePermissionChecks } from "../../../_hooks/usePermissionChecks";
 import { PublishedThreadItem } from "../../_hooks/usePublishedThreads";
 import { deleteDraftReply, getBasename } from "../../_utils/comment-utils";
+import { createFileDiffId } from "../../_utils/diff-utils";
 import { useMutationInFlight } from "@/lib/api/hooks/useMutationInFlight";
 import { getCreateReviewCommentMutationKey } from "@/lib/api/mutations/useCreateReviewCommentMutation";
 import CancelButton from "@components/CancelButton/CancelButton";
@@ -54,10 +55,7 @@ export default function InlinePublishedThread({
     thread.subject_type === "file"
       ? `file-thread-${thread.id}`
       : `inline-thread-${thread.id}`;
-
-  if (status === "line-outdated") {
-    anchorHref = `file-${thread.path}`;
-  }
+  if (status === "line-outdated") anchorHref = createFileDiffId(thread.path);
 
   return (
     <div
