@@ -12,16 +12,28 @@ import styles from "./InlineThreadHeader.module.css";
  */
 export default function InlineThreadHeader({
   title,
+  tooltip,
   actions,
   anchorHref,
 }: {
   title: string;
+  tooltip?: string;
   actions?: ReactNode;
   anchorHref?: string;
 }) {
   const threadHeader = (
     <div className={styles.header}>
-      <span className={styles.title}>{title}</span>
+      <span
+        className={styles.title}
+        {...(tooltip && {
+          "data-tooltip-place": "top-start",
+          "data-tooltip-id": "panel-path-tooltip",
+          "data-tooltip-content": tooltip,
+          "data-tooltip-delay-show": 100,
+        })}
+      >
+        {title}
+      </span>
       {actions}
     </div>
   );

@@ -13,6 +13,7 @@ import Image from "next/image";
 import AlertBanner from "@components/AlertBanner/AlertBanner";
 import CancelButton from "@components/CancelButton/CancelButton";
 import CommentDiscussionIcon from "@/public/icons/comment_discussion.svg";
+import IconTooltip from "@components/IconTooltip/IconTooltip";
 import InlinePublishedThread from "../InlinePublishedThread/InlinePublishedThread";
 import TimelineDisplay from "../../../_components/TimelineDisplay/TimelineDisplay";
 import styles from "./ActivityPanel.module.css";
@@ -131,6 +132,11 @@ function CommentsTab({
           ))}
         </>
       )}
+      <IconTooltip
+        id="panel-path-tooltip"
+        positionStrategy="fixed"
+        maxWidth={"200px"}
+      />
     </>
   );
 }
