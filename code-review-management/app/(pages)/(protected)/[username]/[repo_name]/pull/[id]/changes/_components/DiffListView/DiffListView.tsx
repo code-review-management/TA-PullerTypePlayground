@@ -110,11 +110,11 @@ export default function DiffListView({
 function DiffListViewSkeleton() {
   const SKELETON_FLEX_GROWS = [3, 2, 4, 2];
   return (
-    <div className={styles.skeletonContainer}>
+    <div className={styles.skeletonWrapper}>
       {SKELETON_FLEX_GROWS.map((grow, idx) => (
         <div
-          key={idx}
-          className={styles.skeletonFile}
+          key={idx} // Use index since array is static.
+          className={styles.skeletonItem}
           style={{ flexGrow: grow }}
         />
       ))}
