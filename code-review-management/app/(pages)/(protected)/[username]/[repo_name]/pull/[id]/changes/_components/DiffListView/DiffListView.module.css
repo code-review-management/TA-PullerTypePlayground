@@ -10,3 +10,17 @@
 .extraPadding {
     padding-bottom: calc(var(--spacer-48) * 2);
 }
+
+.skeletonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-16);
+    padding: var(--spacer-10) 0;
+    width: 100%;
+}
+
+.skeletonFile {
+    background: var(--background-secondary-light);
+    border-radius: var(--border-radius);
+    animation: var(--animation-shimmer);
+}
