@@ -1,0 +1,10 @@
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.pageMargin {
+    margin-top: var(--spacer-24);
+}
