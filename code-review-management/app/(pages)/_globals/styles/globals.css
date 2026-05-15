@@ -19,11 +19,6 @@
   font-family: var(--font-roboto)
 }
 
-h4 {
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: light;

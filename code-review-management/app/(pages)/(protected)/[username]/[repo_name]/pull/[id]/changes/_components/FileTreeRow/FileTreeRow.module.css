@@ -1,0 +1,38 @@
+.row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    padding: var(--spacer-8) 0;
+}
+
+.row:hover {
+    cursor: pointer;
+    background-color: var(--background-secondary-light);
+}
+
+.collapsed {
+    display: none;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-8);
+    min-width: 0;
+}
+
+.filename {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anchor {
+    text-decoration: none;
+    color: inherit;
+}
+
+.hidden {
+    display: none;
+}
