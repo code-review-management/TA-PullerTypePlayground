@@ -52,8 +52,7 @@ export default function DiffListView({
     diffs,
   );
 
-  // TODO: Replace with proper loading UI.
-  if (isPending) return <div>Loading diffs...</div>;
+  if (isPending) return <DiffListViewSkeleton />;
   if (isError) {
     return (
       <ErrorMessage error={error} resource="diff" externalHref={externalHref} />
@@ -104,6 +103,21 @@ export default function DiffListView({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+function DiffListViewSkeleton() {
+  const SKELETON_FLEX_GROWS = [3, 2, 4, 2];
+  return (
+    <div className={styles.skeletonWrapper}>
+      {SKELETON_FLEX_GROWS.map((grow, idx) => (
+        <div
+          key={idx} // Use index since array is static.
+          className={styles.skeletonItem}
+          style={{ flexGrow: grow }}
+        />
+      ))}
     </div>
   );
 }
