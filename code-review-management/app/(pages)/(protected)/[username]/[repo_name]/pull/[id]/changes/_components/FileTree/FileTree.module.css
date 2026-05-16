@@ -27,3 +27,9 @@
     max-height: calc(100vh - var(--page-header-height) - var(--file-tree-search-bar-height));
     overflow: auto;
 }
+
+@media screen and (max-width: 800px) {
+    .container {
+        width: 0;
+    }
+}
