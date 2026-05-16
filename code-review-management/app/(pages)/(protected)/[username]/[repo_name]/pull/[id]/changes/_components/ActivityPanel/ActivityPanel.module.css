@@ -8,7 +8,8 @@
 
     position: sticky;
     top: 0;
-    /* TODO: Make activity panel resizable. */
+    z-index: 110;
+
     width: 350px;
     border-left: var(--border-normal-width) solid var(--border-gray);
 
