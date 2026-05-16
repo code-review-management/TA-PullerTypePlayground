@@ -1,5 +1,5 @@
 .headerWithPanel {
-    padding-right: var(--spacer-16);
+    padding-right: var(--spacer-16) !important;
 }
 
 .pullTitle {
@@ -44,4 +44,11 @@
     align-items: center;
     gap: var(--spacer-12);
     min-width: 0;
+}
+
+@media screen and (max-width: 800px) {
+    .branchDisplay,
+    .stateChip {
+        display: none;
+    }
 }
