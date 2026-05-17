@@ -26,7 +26,7 @@ describe("LoadDiffPrompt", () => {
     const user = userEvent.setup();
     render(<LoadDiffPrompt {...defaultProps} />);
     await user.click(screen.getByRole("button", { name: "Load diff" }));
-    expect(mockSetIsDiffLoaded).toHaveBeenCalled();
+    expect(mockSetIsDiffLoaded).toHaveBeenCalledTimes(1);
   });
 
   it("passes true to setIsDIffLoaded on button click", async () => {
@@ -41,19 +41,17 @@ describe("LoadDiffPrompt", () => {
     expect(screen.queryByTestId("description")).not.toBeInTheDocument();
   });
 
-  it("render the correct description if reason is 'removed'", () => {
+  it("renders the correct description if reason is 'removed'", () => {
     render(<LoadDiffPrompt {...defaultProps} reason={"removed"} />);
     expect(screen.getByTestId("description")).toHaveTextContent(
       "This file was removed.",
     );
   });
 
-  it.each(["size-limit", "line-limit"])(
+  it.each<LoadDiffReason>(["size-limit", "line-limit"])(
     "renders the correct description if reason is '%s'",
     (reason) => {
-      render(
-        <LoadDiffPrompt {...defaultProps} reason={reason as LoadDiffReason} />,
-      );
+      render(<LoadDiffPrompt {...defaultProps} reason={reason} />);
       expect(screen.getByTestId("description")).toHaveTextContent(
         "Large diffs are not rendered by default.",
       );
