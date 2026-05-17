@@ -4,6 +4,7 @@ import { PullRequest } from "@/types/github.types";
 import { getExamplePull1 } from "@/mocks/tests/pulls";
 import { render, screen } from "@testing-library/react";
 import PRChangesHeader from "./PRChangesHeader";
+import userEvent from "@testing-library/user-event";
 
 jest.mock("next/navigation", () => ({
   useParams: () => ({
@@ -105,77 +106,181 @@ describe("PRChangesHeader", () => {
     jest.clearAllMocks();
   });
 
-  describe("PageHeader", () => {
-    describe("renders left children", () => {
-      it("renders the state chip", () => {
+  describe("renders left children", () => {
+    it("renders the state chip", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      const container = screen.getByTestId("page-header-left-children");
+      const element = screen.getByTestId("state-chip");
+      expect(container).toContainElement(element);
+    });
+
+    it("passes the pull state value to the state chip", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      expect(screen.getByTestId("state-chip")).toHaveAttribute(
+        "data-state",
+        "draft",
+      );
+    });
+
+    it("renders the pull title heading", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      const container = screen.getByTestId("page-header-left-children");
+      const element = screen.getByRole("heading", { level: 1 });
+      expect(container).toContainElement(element);
+    });
+
+    it("uses the correct text for the pull title heading", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+        "1fjads02kd@^nb9 #123",
+      );
+    });
+
+    it("renders the branch display", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      const container = screen.getByTestId("page-header-left-children");
+      const element = screen.getByTestId("branch-display");
+      expect(container).toContainElement(element);
+    });
+
+    it("passes the head ref to the branch display", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      expect(screen.getByTestId("branch-display")).toHaveAttribute(
+        "data-head-ref",
+        "example-head-ref",
+      );
+    });
+
+    it("passes the base ref to the branch display", () => {
+      render(<PRChangesHeader {...defaultProps} />);
+      expect(screen.getByTestId("branch-display")).toHaveAttribute(
+        "data-base-ref",
+        "example-base-ref",
+      );
+    });
+
+    it("passes empty string to branch display if head ref is undefined", () => {
+      const mockPull: PullRequest = { ...getExamplePull1(), head: undefined };
+      render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
+      expect(screen.getByTestId("branch-display")).toHaveAttribute(
+        "data-head-ref",
+        "",
+      );
+    });
+
+    it("passes empty string to branch display if base ref is undefined", () => {
+      const mockPull: PullRequest = { ...getExamplePull1(), base: undefined };
+      render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
+      expect(screen.getByTestId("branch-display")).toHaveAttribute(
+        "data-base-ref",
+        "",
+      );
+    });
+  });
+
+  describe("renders right children", () => {
+    describe("PRHeaderActions", () => {
+      it("renders component", () => {
         render(<PRChangesHeader {...defaultProps} />);
-        const container = screen.getByTestId("page-header-left-children");
-        const element = screen.getByTestId("state-chip");
+        const container = screen.getByTestId("page-header-right-children");
+        const element = screen.getByTestId("pr-header-actions");
         expect(container).toContainElement(element);
       });
 
-      it("passes the pull state value to the state chip", () => {
+      it("passes correct view href", () => {
         render(<PRChangesHeader {...defaultProps} />);
-        expect(screen.getByTestId("state-chip")).toHaveAttribute(
-          "data-state",
-          "draft",
+        expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
+          "data-view-href",
+          "/owner/repo/pull/1",
         );
       });
 
-      it("renders the pull title heading", () => {
+      it("passes correct view label", () => {
         render(<PRChangesHeader {...defaultProps} />);
-        const container = screen.getByTestId("page-header-left-children");
-        const element = screen.getByRole("heading", { level: 1 });
+        expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
+          "data-view-label",
+          "View pull request",
+        );
+      });
+
+      it("passes correct pull request", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
+          "data-pull-id",
+          "0",
+        );
+      });
+
+      it("passes correct boolean to show commit picker", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
+          "data-show-commit-picker",
+          "true",
+        );
+      });
+    });
+
+    describe("commit picker header button", () => {
+      it("renders header button component", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        const container = screen.getByTestId("page-header-right-children");
+        const element = screen.getByTestId("header-button");
         expect(container).toContainElement(element);
       });
 
-      it("uses the correct text for the pull title heading", () => {
+      it("renders commit activity icon", () => {
         render(<PRChangesHeader {...defaultProps} />);
-        expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-          "1fjads02kd@^nb9 #123",
-        );
-      });
-
-      it("renders the branch display", () => {
-        render(<PRChangesHeader {...defaultProps} />);
-        const container = screen.getByTestId("page-header-left-children");
-        const element = screen.getByTestId("branch-display");
+        const container = screen.getByTestId("header-button");
+        const element = screen.getByAltText("Comment activity");
         expect(container).toContainElement(element);
       });
 
-      it("passes the head ref to the branch display", () => {
+      it("applies the activityButtonEnabled class if activity panel is open", () => {
+        render(<PRChangesHeader {...defaultProps} isActivityPanelOpen />);
+        const element = screen.getByTestId("header-button");
+        expect(element.parentElement).toHaveClass("activityButtonEnabled");
+      });
+
+      it("does not apply the activityButtonEnabled classs if activity panel is closed", () => {
+        render(
+          <PRChangesHeader {...defaultProps} isActivityPanelOpen={false} />,
+        );
+        const element = screen.getByTestId("header-button");
+        expect(element.parentElement).not.toHaveClass("activityButtonEnabled");
+      });
+
+      it("applies the secondary button variant", () => {
         render(<PRChangesHeader {...defaultProps} />);
-        expect(screen.getByTestId("branch-display")).toHaveAttribute(
-          "data-head-ref",
-          "example-head-ref",
+        expect(screen.getByTestId("header-button")).toHaveAttribute(
+          "data-variant",
+          "secondary",
         );
       });
 
-      it("passes the base ref to the branch display", () => {
+      it("toggles the activity panel on click", async () => {
+        const user = userEvent.setup();
         render(<PRChangesHeader {...defaultProps} />);
-        expect(screen.getByTestId("branch-display")).toHaveAttribute(
-          "data-base-ref",
-          "example-base-ref",
-        );
+        await user.click(screen.getByTestId("header-button"));
+        expect(mockToggleActivityPanel).toHaveBeenCalled();
       });
+    });
+  });
 
-      it("passes empty string to branch display if head ref is undefined", () => {
-        const mockPull: PullRequest = { ...getExamplePull1(), head: undefined };
-        render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
-        expect(screen.getByTestId("branch-display")).toHaveAttribute(
-          "data-head-ref",
-          "",
-        );
-      });
+  describe("passes the correct styling to PageHeader", () => {
+    it("applies the headerWithPanel class if activity panel is open", () => {
+      render(<PRChangesHeader {...defaultProps} isActivityPanelOpen />);
+      expect(screen.getByTestId("page-header")).toHaveAttribute(
+        "data-classname",
+        "headerWithPanel",
+      );
+    });
 
-      it("passes empty string to branch display if base ref is undefined", () => {
-        const mockPull: PullRequest = { ...getExamplePull1(), base: undefined };
-        render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
-        expect(screen.getByTestId("branch-display")).toHaveAttribute(
-          "data-base-ref",
-          "",
-        );
-      });
+    it("does not apply the headerWithPanel class if activity panel is closed", () => {
+      render(<PRChangesHeader {...defaultProps} isActivityPanelOpen={false} />);
+      expect(screen.getByTestId("page-header")).toHaveAttribute(
+        "data-classname",
+        "",
+      );
     });
   });
 });
