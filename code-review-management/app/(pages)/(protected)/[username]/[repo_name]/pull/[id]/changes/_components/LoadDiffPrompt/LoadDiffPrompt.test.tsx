@@ -22,14 +22,14 @@ describe("LoadDiffPrompt", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls setIsDIffLoaded on button click", async () => {
+  it("calls setIsDiffLoaded on button click", async () => {
     const user = userEvent.setup();
     render(<LoadDiffPrompt {...defaultProps} />);
     await user.click(screen.getByRole("button", { name: "Load diff" }));
     expect(mockSetIsDiffLoaded).toHaveBeenCalledTimes(1);
   });
 
-  it("passes true to setIsDIffLoaded on button click", async () => {
+  it("passes true to setIsDiffLoaded on button click", async () => {
     const user = userEvent.setup();
     render(<LoadDiffPrompt {...defaultProps} />);
     await user.click(screen.getByRole("button", { name: "Load diff" }));
