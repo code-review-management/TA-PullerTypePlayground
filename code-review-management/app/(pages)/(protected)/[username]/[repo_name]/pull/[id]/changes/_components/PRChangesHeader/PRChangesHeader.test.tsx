@@ -121,6 +121,61 @@ describe("PRChangesHeader", () => {
           "draft",
         );
       });
+
+      it("renders the pull title heading", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        const container = screen.getByTestId("page-header-left-children");
+        const element = screen.getByRole("heading", { level: 1 });
+        expect(container).toContainElement(element);
+      });
+
+      it("uses the correct text for the pull title heading", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+          "1fjads02kd@^nb9 #123",
+        );
+      });
+
+      it("renders the branch display", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        const container = screen.getByTestId("page-header-left-children");
+        const element = screen.getByTestId("branch-display");
+        expect(container).toContainElement(element);
+      });
+
+      it("passes the head ref to the branch display", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByTestId("branch-display")).toHaveAttribute(
+          "data-head-ref",
+          "example-head-ref",
+        );
+      });
+
+      it("passes the base ref to the branch display", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByTestId("branch-display")).toHaveAttribute(
+          "data-base-ref",
+          "example-base-ref",
+        );
+      });
+
+      it("passes empty string to branch display if head ref is undefined", () => {
+        const mockPull: PullRequest = { ...getExamplePull1(), head: undefined };
+        render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
+        expect(screen.getByTestId("branch-display")).toHaveAttribute(
+          "data-head-ref",
+          "",
+        );
+      });
+
+      it("passes empty string to branch display if base ref is undefined", () => {
+        const mockPull: PullRequest = { ...getExamplePull1(), base: undefined };
+        render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
+        expect(screen.getByTestId("branch-display")).toHaveAttribute(
+          "data-base-ref",
+          "",
+        );
+      });
     });
   });
 });
