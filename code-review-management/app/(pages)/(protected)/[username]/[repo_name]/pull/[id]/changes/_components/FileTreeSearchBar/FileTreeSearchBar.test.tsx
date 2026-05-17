@@ -15,12 +15,14 @@ describe("FileTreeSearchBar", () => {
     jest.clearAllMocks();
   });
 
-  it("has correct placeholder text", () => {
-    render(<FileTreeSearchBar {...defaultProps} />);
-    expect(screen.getByRole("textbox")).toHaveAttribute(
-      "placeholder",
-      "Search files",
-    );
+  describe("placeholder", () => {
+    it("renders correct text", () => {
+      render(<FileTreeSearchBar {...defaultProps} />);
+      expect(screen.getByRole("textbox")).toHaveAttribute(
+        "placeholder",
+        "Search files",
+      );
+    });
   });
 
   describe("search magnifier icon", () => {
@@ -29,7 +31,7 @@ describe("FileTreeSearchBar", () => {
       expect(screen.getByAltText("Search")).toBeInTheDocument();
     });
 
-    it("focuses on text input when clicked", async () => {
+    it("focuses text input when clicked", async () => {
       const user = userEvent.setup();
       render(<FileTreeSearchBar {...defaultProps} />);
       await user.click(screen.getByAltText("Search"));
@@ -56,58 +58,60 @@ describe("FileTreeSearchBar", () => {
     });
   });
 
-  describe("text input focus", () => {
-    it("does not have focus by default", () => {
-      render(<FileTreeSearchBar {...defaultProps} />);
-      expect(screen.getByRole("textbox")).not.toHaveFocus();
+  describe("text input", () => {
+    describe("focus", () => {
+      it("does not have focus by default", () => {
+        render(<FileTreeSearchBar {...defaultProps} />);
+        expect(screen.getByRole("textbox")).not.toHaveFocus();
+      });
+
+      it("has focus when clicked", async () => {
+        const user = userEvent.setup();
+        render(<FileTreeSearchBar {...defaultProps} />);
+        await user.click(screen.getByRole("textbox"));
+        expect(screen.getByRole("textbox")).toHaveFocus();
+      });
     });
 
-    it("has focus when text input is clicked", async () => {
-      const user = userEvent.setup();
-      render(<FileTreeSearchBar {...defaultProps} />);
-      await user.click(screen.getByRole("textbox"));
-      expect(screen.getByRole("textbox")).toHaveFocus();
-    });
-  });
+    describe("value", () => {
+      it("displays an empty search string", () => {
+        render(<FileTreeSearchBar {...defaultProps} searchString="" />);
+        expect(screen.getByRole("textbox")).toHaveValue("");
+      });
 
-  describe("text input value", () => {
-    it("displays an empty search string", () => {
-      render(<FileTreeSearchBar {...defaultProps} searchString="" />);
-      expect(screen.getByRole("textbox")).toHaveValue("");
-    });
+      it("displays a non-empty search string", () => {
+        render(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
+        expect(screen.getByRole("textbox")).toHaveValue("abc");
+      });
 
-    it("displays a non-empty search string", () => {
-      render(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
-      expect(screen.getByRole("textbox")).toHaveValue("abc");
-    });
+      it("updates when the search string changes", () => {
+        // Docs: https://stackoverflow.com/a/73692764
+        const { getByRole, rerender } = render(
+          <FileTreeSearchBar {...defaultProps} searchString="" />,
+        );
 
-    it("updates when the search string changes", async () => {
-      // Docs: https://stackoverflow.com/a/73692764
-      const { getByRole, rerender } = render(
-        <FileTreeSearchBar {...defaultProps} searchString="" />,
-      );
+        const input = getByRole("textbox");
+        expect(input).toHaveValue("");
 
-      const input = getByRole("textbox");
-      expect(input).toHaveValue("");
-
-      rerender(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
-      expect(input).toHaveValue("abc");
-    });
-  });
-
-  describe("setSearchString called on change", () => {
-    it("calls setSearchString with typed characters", async () => {
-      const user = userEvent.setup();
-      render(<FileTreeSearchBar {...defaultProps} searchString="ab" />);
-      await user.type(screen.getByRole("textbox"), "c");
-      expect(mockSetSearchString).toHaveBeenCalledWith("abc");
+        rerender(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
+        expect(input).toHaveValue("abc");
+      });
     });
 
-    it("calls setSearchString when cleared", async () => {
-      const user = userEvent.setup();
-      render(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
-      await user.clear(screen.getByRole("textbox"));
-      expect(mockSetSearchString).toHaveBeenCalledWith("");
+    describe("on change", () => {
+      it("calls setSearchString with typed characters", async () => {
+        const user = userEvent.setup();
+        render(<FileTreeSearchBar {...defaultProps} searchString="ab" />);
+        await user.type(screen.getByRole("textbox"), "c");
+        expect(mockSetSearchString).toHaveBeenCalledWith("abc");
+      });
+
+      it("calls setSearchString when cleared", async () => {
+        const user = userEvent.setup();
+        render(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
+        await user.clear(screen.getByRole("textbox"));
+        expect(mockSetSearchString).toHaveBeenCalledWith("");
+      });
     });
   });
 });
