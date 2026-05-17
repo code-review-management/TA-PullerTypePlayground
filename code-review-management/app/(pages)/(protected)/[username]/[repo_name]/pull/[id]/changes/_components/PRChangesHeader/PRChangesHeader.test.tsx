@@ -159,7 +159,7 @@ describe("PRChangesHeader", () => {
       );
     });
 
-    it("passes empty string to branch display if head ref is undefined", () => {
+    it("falls back to empty string when head ref is undefined", () => {
       const mockPull: PullRequest = { ...getExamplePull1(), head: undefined };
       render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
@@ -168,7 +168,7 @@ describe("PRChangesHeader", () => {
       );
     });
 
-    it("passes empty string to branch display if base ref is undefined", () => {
+    it("falls back to empty string when base ref is undefined", () => {
       const mockPull: PullRequest = { ...getExamplePull1(), base: undefined };
       render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
@@ -241,7 +241,7 @@ describe("PRChangesHeader", () => {
         expect(element.parentElement).toHaveClass("activityButtonEnabled");
       });
 
-      it("does not apply the activityButtonEnabled classs if activity panel is closed", () => {
+      it("does not apply the activityButtonEnabled class if activity panel is closed", () => {
         render(
           <PRChangesHeader {...defaultProps} isActivityPanelOpen={false} />,
         );
@@ -249,7 +249,7 @@ describe("PRChangesHeader", () => {
         expect(element.parentElement).not.toHaveClass("activityButtonEnabled");
       });
 
-      it("applies the secondary button variant", () => {
+      it("uses the secondary button variant", () => {
         render(<PRChangesHeader {...defaultProps} />);
         expect(screen.getByTestId("header-button")).toHaveAttribute(
           "data-variant",
