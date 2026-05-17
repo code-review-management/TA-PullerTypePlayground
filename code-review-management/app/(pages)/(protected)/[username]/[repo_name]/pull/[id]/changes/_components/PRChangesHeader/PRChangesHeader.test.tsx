@@ -1,0 +1,126 @@
+import "@testing-library/jest-dom";
+import { ComponentProps, ReactNode } from "react";
+import { PullRequest } from "@/types/github.types";
+import { getExamplePull1 } from "@/mocks/tests/pulls";
+import { render, screen } from "@testing-library/react";
+import PRChangesHeader from "./PRChangesHeader";
+
+jest.mock("next/navigation", () => ({
+  useParams: () => ({
+    username: "owner",
+    repo_name: "repo",
+    id: "1",
+  }),
+}));
+
+jest.mock("../../../_utils/pull-utils", () => ({
+  getPullState: () => "draft",
+}));
+
+jest.mock("../../../_components/BranchDisplay/BranchDisplay", () => ({
+  __esModule: true,
+  default: ({ headRef, baseRef }: { headRef: string; baseRef: string }) => (
+    <div
+      data-testid="branch-display"
+      data-head-ref={headRef}
+      data-base-ref={baseRef}
+    />
+  ),
+}));
+
+jest.mock("@components/HeaderButton/HeaderButton", () => ({
+  __esModule: true,
+  default: ({
+    variant,
+    onClick,
+    children,
+  }: {
+    variant: string;
+    onClick: () => void;
+    children: ReactNode;
+  }) => (
+    <div data-testid="header-button" data-variant={variant} onClick={onClick}>
+      {children}
+    </div>
+  ),
+}));
+
+jest.mock("@components/PageHeader/PageHeader", () => ({
+  __esModule: true,
+  default: ({
+    leftChildren,
+    rightChildren,
+    className,
+  }: {
+    leftChildren: ReactNode;
+    rightChildren: ReactNode;
+    className: string;
+  }) => (
+    <div data-testid="page-header" data-classname={className}>
+      <div data-testid="page-header-left-children">{leftChildren}</div>
+      <div data-testid="page-header-right-children">{rightChildren}</div>
+    </div>
+  ),
+}));
+
+jest.mock("../../../_components/PRHeaderActions/PRHeaderActions", () => ({
+  __esModule: true,
+  default: ({
+    viewHref,
+    viewLabel,
+    pull,
+    showCommitPicker,
+  }: {
+    viewHref: string;
+    viewLabel: string;
+    pull: PullRequest;
+    showCommitPicker: boolean;
+  }) => (
+    <div
+      data-testid="pr-header-actions"
+      data-view-href={viewHref}
+      data-view-label={viewLabel}
+      data-pull-id={pull.id}
+      data-show-commit-picker={showCommitPicker}
+    />
+  ),
+}));
+
+jest.mock("../../../_components/StateChip/StateChip", () => ({
+  __esModule: true,
+  default: ({ state }: { state: string }) => (
+    <div data-testid="state-chip" data-state={state} />
+  ),
+}));
+
+describe("PRChangesHeader", () => {
+  const mockToggleActivityPanel = jest.fn();
+  const defaultProps: ComponentProps<typeof PRChangesHeader> = {
+    pull: getExamplePull1(),
+    isActivityPanelOpen: false,
+    toggleActivityPanel: mockToggleActivityPanel,
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("PageHeader", () => {
+    describe("renders left children", () => {
+      it("renders the state chip", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        const container = screen.getByTestId("page-header-left-children");
+        const element = screen.getByTestId("state-chip");
+        expect(container).toContainElement(element);
+      });
+
+      it("passes the pull state value to the state chip", () => {
+        render(<PRChangesHeader {...defaultProps} />);
+        expect(screen.getByTestId("state-chip")).toHaveAttribute(
+          "data-state",
+          "draft",
+        );
+      });
+    });
+  });
+});
