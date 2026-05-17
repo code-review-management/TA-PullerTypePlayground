@@ -95,9 +95,10 @@ jest.mock("../../../_components/StateChip/StateChip", () => ({
 }));
 
 describe("PRChangesHeader", () => {
+  const examplePull1 = getExamplePull1();
   const mockToggleActivityPanel = jest.fn();
   const defaultProps: ComponentProps<typeof PRChangesHeader> = {
-    pull: getExamplePull1(),
+    pull: examplePull1,
     isActivityPanelOpen: false,
     toggleActivityPanel: mockToggleActivityPanel,
   };
@@ -132,7 +133,7 @@ describe("PRChangesHeader", () => {
     it("uses the correct text for the pull title heading", () => {
       render(<PRChangesHeader {...defaultProps} />);
       expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-        "1fjads02kd@^nb9 #123",
+        `${examplePull1.title} #${examplePull1.number}`,
       );
     });
 
@@ -147,7 +148,7 @@ describe("PRChangesHeader", () => {
       render(<PRChangesHeader {...defaultProps} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
         "data-head-ref",
-        "example-head-ref",
+        examplePull1.head?.ref,
       );
     });
 
@@ -155,7 +156,7 @@ describe("PRChangesHeader", () => {
       render(<PRChangesHeader {...defaultProps} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
         "data-base-ref",
-        "example-base-ref",
+        examplePull1.base?.ref,
       );
     });
 
@@ -207,7 +208,7 @@ describe("PRChangesHeader", () => {
         render(<PRChangesHeader {...defaultProps} />);
         expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
           "data-pull-id",
-          "1",
+          examplePull1.id.toString(),
         );
       });
 
