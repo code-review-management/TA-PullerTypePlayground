@@ -161,7 +161,7 @@ describe("PRChangesHeader", () => {
     });
 
     it("falls back to empty string when head ref is undefined", () => {
-      const mockPull: PullRequest = { ...getExamplePull1(), head: undefined };
+      const mockPull: PullRequest = { ...examplePull1, head: undefined };
       render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
         "data-head-ref",
@@ -170,7 +170,7 @@ describe("PRChangesHeader", () => {
     });
 
     it("falls back to empty string when base ref is undefined", () => {
-      const mockPull: PullRequest = { ...getExamplePull1(), base: undefined };
+      const mockPull: PullRequest = { ...examplePull1, base: undefined };
       render(<PRChangesHeader {...defaultProps} pull={mockPull} />);
       expect(screen.getByTestId("branch-display")).toHaveAttribute(
         "data-base-ref",
@@ -262,7 +262,7 @@ describe("PRChangesHeader", () => {
         const user = userEvent.setup();
         render(<PRChangesHeader {...defaultProps} />);
         await user.click(screen.getByTestId("header-button"));
-        expect(mockToggleActivityPanel).toHaveBeenCalled();
+        expect(mockToggleActivityPanel).toHaveBeenCalledTimes(1);
       });
     });
   });
