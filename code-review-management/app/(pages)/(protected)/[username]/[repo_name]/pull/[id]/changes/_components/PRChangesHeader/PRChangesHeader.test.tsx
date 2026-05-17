@@ -3,8 +3,8 @@ import { ComponentProps, ReactNode } from "react";
 import { PullRequest } from "@/types/github.types";
 import { getExamplePull1 } from "@/mocks/tests/pulls";
 import { render, screen } from "@testing-library/react";
-import PRChangesHeader from "./PRChangesHeader";
 import userEvent from "@testing-library/user-event";
+import PRChangesHeader from "./PRChangesHeader";
 
 jest.mock("next/navigation", () => ({
   useParams: () => ({
@@ -180,7 +180,7 @@ describe("PRChangesHeader", () => {
 
   describe("renders right children", () => {
     describe("PRHeaderActions", () => {
-      it("renders component", () => {
+      it("renders header actions component", () => {
         render(<PRChangesHeader {...defaultProps} />);
         const container = screen.getByTestId("page-header-right-children");
         const element = screen.getByTestId("pr-header-actions");
@@ -207,7 +207,7 @@ describe("PRChangesHeader", () => {
         render(<PRChangesHeader {...defaultProps} />);
         expect(screen.getByTestId("pr-header-actions")).toHaveAttribute(
           "data-pull-id",
-          "0",
+          "1",
         );
       });
 

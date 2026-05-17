@@ -31,7 +31,7 @@ export function getDefaultPull(): PullRequest {
 export function getExamplePull1(): PullRequest {
   return {
     url: "",
-    id: 0,
+    id: 1,
     html_url: "",
     number: 123,
     state: "open",
