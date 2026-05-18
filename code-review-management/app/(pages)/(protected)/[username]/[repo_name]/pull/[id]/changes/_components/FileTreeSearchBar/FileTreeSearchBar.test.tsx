@@ -31,7 +31,7 @@ describe("FileTreeSearchBar", () => {
       expect(screen.getByAltText("Search")).toBeInTheDocument();
     });
 
-    it("focuses text input when clicked", async () => {
+    it("focuses on text input when clicked", async () => {
       const user = userEvent.setup();
       render(<FileTreeSearchBar {...defaultProps} />);
       await user.click(screen.getByAltText("Search"));
@@ -50,7 +50,7 @@ describe("FileTreeSearchBar", () => {
       expect(screen.getByAltText("Cancel search")).toBeInTheDocument();
     });
 
-    it("clears the search when clicked", async () => {
+    it("clears the search string when clicked", async () => {
       const user = userEvent.setup();
       render(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
       await user.click(screen.getByAltText("Cancel search"));
@@ -85,16 +85,12 @@ describe("FileTreeSearchBar", () => {
       });
 
       it("updates when the search string changes", () => {
-        // Docs: https://stackoverflow.com/a/73692764
-        const { getByRole, rerender } = render(
+        const { rerender } = render(
           <FileTreeSearchBar {...defaultProps} searchString="" />,
         );
-
-        const input = getByRole("textbox");
-        expect(input).toHaveValue("");
-
+        expect(screen.getByRole("textbox")).toHaveValue("");
         rerender(<FileTreeSearchBar {...defaultProps} searchString="abc" />);
-        expect(input).toHaveValue("abc");
+        expect(screen.getByRole("textbox")).toHaveValue("abc");
       });
     });
 
