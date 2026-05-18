@@ -1,5 +1,6 @@
 import {
   buildFileTree,
+  buildPathTreeIndexMap,
   FileTreeNode,
   flattenFileTree,
   orderParsedDiffs,
@@ -482,5 +483,41 @@ describe("orderParsedDiffs", () => {
       createDiff({ type: "delete", oldPath: "c.ts", newPath: "" }),
       createDiff({ type: "add", oldPath: "", newPath: "d.ts" }),
     ]);
+  });
+});
+
+describe("buildPathTreeIndexMap", () => {
+  it("returns an empty map for an empty tree", () => {
+    expect(buildPathTreeIndexMap([])).toEqual(new Map());
+  });
+
+  it("maps each filename to its index in the tree", () => {
+    const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
+    const result = buildPathTreeIndexMap(flatFileTree);
+    expect(result).toEqual(
+      new Map([
+        ["a.ts", 0],
+        ["b.ts", 1],
+        ["c.ts", 2],
+      ]),
+    );
+  });
+
+  it("treats filenames as case-sensitive", () => {
+    const flatFileTree = createFileMeta(["A.ts", "a.ts"]);
+    const result = buildPathTreeIndexMap(flatFileTree);
+    expect(result.get("A.ts")).toBe(0);
+    expect(result.get("a.ts")).toBe(1);
+  });
+
+  it("preserves full paths as keys", () => {
+    const flatFileTree = createFileMeta(["src/a.ts", "src/utils/a.ts"]);
+    const result = buildPathTreeIndexMap(flatFileTree);
+    expect(result).toEqual(
+      new Map([
+        ["src/a.ts", 0],
+        ["src/utils/a.ts", 1],
+      ]),
+    );
   });
 });
