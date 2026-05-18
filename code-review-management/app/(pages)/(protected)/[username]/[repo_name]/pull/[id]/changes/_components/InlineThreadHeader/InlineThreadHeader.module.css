@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacer-8);
+    padding: var(--spacer-10) var(--spacer-12);
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
+    font-weight: 450;
+}
+
+.title {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+.headerAnchor {
+    text-decoration: none;
+    color: inherit;
+}
+
+.headerAnchor:hover>.header {
+    background-color: var(--background-secondary-light);
+}

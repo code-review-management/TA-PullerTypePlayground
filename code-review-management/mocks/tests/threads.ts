@@ -1,5 +1,5 @@
-import { DraftItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
-import { PublishedThreadItem } from "@/app/(pages)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
+import { DraftItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
+import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
 
 export function getExampleThreadDraftItem1(): DraftItem {
   return {
@@ -21,6 +21,8 @@ export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
     id: 1,
     path: "filename.ts",
+    original_start_line: 1,
+    original_line: 5,
     start_line: 1,
     line: 5,
     start_side: "LEFT",

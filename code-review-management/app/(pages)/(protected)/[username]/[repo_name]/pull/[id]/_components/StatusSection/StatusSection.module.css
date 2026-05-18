@@ -1,0 +1,12 @@
+.statusSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.statusList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacer-8);
+  row-gap: var(--spacer-8);
+}

@@ -1,3 +1,5 @@
+import { StatusError } from "../errors/statusError";
+
 /**
  * Makes a POST request to the given route with the provided JSON body. Throws
  * an error if the response is not ok (response status outside the range
@@ -19,7 +21,10 @@ export async function poster(route: string, body: string) {
   });
 
   if (!response.ok) {
-    throw new Error("Network POST response was unsuccessful.");
+    throw new StatusError(
+      response.status,
+      "Network POST response was unsuccessful.",
+    );
   }
 
   return response.json();

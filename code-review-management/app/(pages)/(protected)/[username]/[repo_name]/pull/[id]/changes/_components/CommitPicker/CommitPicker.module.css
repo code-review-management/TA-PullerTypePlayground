@@ -1,0 +1,124 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    max-height: 450px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
+    padding-bottom: var(--spacer-10);
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-4);
+    font-weight: 600;
+}
+
+.count {
+    border-radius: var(--spacer-12);
+    padding: var(--spacer-2) var(--spacer-6);
+    background-color: var(--background-secondary-light);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.list {
+    overflow-y: auto;
+}
+
+.option {
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacer-8);
+    padding: var(--spacer-8);
+}
+
+.option:not(:last-child) {
+    border-bottom: var(--border-normal-width) solid var(--border-gray);
+}
+
+.option.checked {
+    background-color: var(--color-interactive-transparent);
+}
+
+.option.checked .radio {
+    accent-color: var(--color-interactive);
+}
+
+.radio {
+    cursor: pointer;
+    margin-top: var(--spacer-1);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacer-4);
+    overflow: hidden;
+}
+
+.message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacer-8);
+    font-size: 0.6875rem;
+    color: var(--text-secondary);
+}
+
+.sha {
+    border-radius: var(--spacer-2);
+    padding: 0 var(--spacer-4);
+    background-color: var(--background-secondary-light);
+    font-family: var(--font-roboto-mono);
+}
+
+.submit {
+    display: flex;
+    border-top: var(--border-normal-width) solid var(--border-gray);
+    padding-top: var(--spacer-12);
+}
+
+.submit button {
+    margin-left: auto;
+}
+
+.viewModeToggle {
+    display: flex;
+    border: var(--border-normal-width) solid var(--border-gray);
+    border-radius: var(--spacer-6);
+    overflow: hidden;
+}
+
+.viewModeButton {
+    border: none;
+    padding: var(--spacer-6) var(--spacer-10);
+    background: inherit;
+    font-size: 0.75rem;
+    font-weight: 450;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.viewModeButton:first-child {
+    border-right: var(--border-normal-width) solid var(--border-gray);
+}
+
+.activeViewMode {
+    background: var(--color-interactive-light);
+    color: var(--color-interactive);
+    font-weight: 500;
+}
