@@ -15,16 +15,6 @@ describe("FileTreeSearchBar", () => {
     jest.clearAllMocks();
   });
 
-  describe("placeholder", () => {
-    it("renders correct text", () => {
-      render(<FileTreeSearchBar {...defaultProps} />);
-      expect(screen.getByRole("textbox")).toHaveAttribute(
-        "placeholder",
-        "Search files",
-      );
-    });
-  });
-
   describe("search magnifier icon", () => {
     it("renders in the document", () => {
       render(<FileTreeSearchBar {...defaultProps} />);
@@ -59,6 +49,14 @@ describe("FileTreeSearchBar", () => {
   });
 
   describe("text input", () => {
+    it("renders correct placeholder text", () => {
+      render(<FileTreeSearchBar {...defaultProps} />);
+      expect(screen.getByRole("textbox")).toHaveAttribute(
+        "placeholder",
+        "Search files",
+      );
+    });
+
     describe("focus", () => {
       it("does not have focus by default", () => {
         render(<FileTreeSearchBar {...defaultProps} />);
