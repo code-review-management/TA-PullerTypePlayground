@@ -40,7 +40,7 @@ describe("Gutter", () => {
   });
 
   describe("highlighted styling class", () => {
-    it("is applied when highlight is enabled and line is within highlight range", () => {
+    it("applied when highlight is enabled and line is within highlight range", () => {
       mockIsWithinHighlightRange.mockReturnValue(true);
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled={false} />,
@@ -50,7 +50,7 @@ describe("Gutter", () => {
       );
     });
 
-    it("is not applied when highlight is enabled but line is outside highlight range", () => {
+    it("unapplied when highlight is enabled but line is outside highlight range", () => {
       mockIsWithinHighlightRange.mockReturnValue(false);
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled={false} />,
@@ -60,7 +60,7 @@ describe("Gutter", () => {
       );
     });
 
-    it("is not applied when line is within highlight range but highlight is disabled", () => {
+    it("unapplied when line is within highlight range but highlight is disabled", () => {
       mockIsWithinHighlightRange.mockReturnValue(true);
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled />,
@@ -70,7 +70,7 @@ describe("Gutter", () => {
       );
     });
 
-    it("is not applied when highlight is disabled and line is outside highlight range", () => {
+    it("unapplied when highlight is disabled and line is outside highlight range", () => {
       mockIsWithinHighlightRange.mockReturnValue(false);
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled />,
@@ -82,7 +82,7 @@ describe("Gutter", () => {
   });
 
   describe("highlight-disabled styling class", () => {
-    it("is applied when highlight is disabled", () => {
+    it("applied when highlight is disabled", () => {
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled />,
       );
@@ -91,7 +91,7 @@ describe("Gutter", () => {
       );
     });
 
-    it("is not applied when highlight is enabled", () => {
+    it("unapplied when highlight is enabled", () => {
       const { container } = render(
         <Gutter {...defaultProps} isHighlightDisabled={false} />,
       );
