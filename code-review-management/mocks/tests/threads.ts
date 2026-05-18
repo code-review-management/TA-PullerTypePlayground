@@ -1,4 +1,8 @@
+import { DraftThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/useDraftThreads";
 import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
+
+type FileDraftThreadItem = Extract<DraftThreadItem, { subjectType: "file" }>;
+type LineDraftThreadItem = Extract<DraftThreadItem, { subjectType: "line" }>;
 
 export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
@@ -12,5 +16,31 @@ export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
     side: "LEFT",
     subject_type: "line",
     comments: [],
+  };
+}
+
+export function getExampleFileDraftThreadItem1(): FileDraftThreadItem {
+  return {
+    oldPath: "old.ts",
+    activePath: "active.ts",
+    fileStatus: "modified",
+    body: "content",
+    subjectType: "file",
+  };
+}
+
+export function getExampleLineDraftThreadItem1(
+  overrides?: Partial<LineDraftThreadItem>,
+): LineDraftThreadItem {
+  return {
+    oldPath: "old.ts",
+    activePath: "active.ts",
+    fileStatus: "modified",
+    body: "content",
+    subjectType: "line",
+    start: 1,
+    end: 5,
+    side: "new",
+    ...overrides,
   };
 }
