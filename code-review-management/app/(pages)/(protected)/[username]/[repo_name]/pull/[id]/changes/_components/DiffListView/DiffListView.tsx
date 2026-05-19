@@ -141,7 +141,7 @@ function MappingErrorBanner() {
       Not all files in this pull request could be matched with data from GitHub.
       Affected files may not display header stats or inline comments.
       Commenting, navigating from the file tree, and jumping to comments from
-      the side panel may also not work as expected.
+      the side panel may not work as expected.
     </AlertBanner>
   );
 }
