@@ -223,8 +223,7 @@ describe("buildFileDiffMap", () => {
       createDiff({ newPath: "c.ts", type: "modify" }),
     ];
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [
         { diff: parsedDiffs[0], fileMeta: flatFileTree[0] },
         { diff: parsedDiffs[1], fileMeta: flatFileTree[1] },
@@ -240,8 +239,7 @@ describe("buildFileDiffMap", () => {
       createDiff({ newPath: "b.ts", type: "modify" }),
     ];
     const flatFileTree = createFileMeta(["b.ts", "a.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [
         { diff: parsedDiffs[0], fileMeta: flatFileTree[1] },
         { diff: parsedDiffs[1], fileMeta: flatFileTree[0] },
@@ -253,8 +251,7 @@ describe("buildFileDiffMap", () => {
   it("flags mapping error when lengths differ", () => {
     const parsedDiffs = [createDiff({ newPath: "a.ts", type: "modify" })];
     const flatFileTree = createFileMeta(["a.ts", "b.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [{ diff: parsedDiffs[0], fileMeta: flatFileTree[0] }],
       isMappingError: true,
     });
@@ -266,8 +263,7 @@ describe("buildFileDiffMap", () => {
       createDiff({ newPath: "missing.ts", type: "modify" }),
     ];
     const flatFileTree = createFileMeta(["a.ts", "b.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [
         { diff: parsedDiffs[0], fileMeta: flatFileTree[0] },
         { diff: parsedDiffs[1], fileMeta: undefined },
@@ -281,8 +277,7 @@ describe("buildFileDiffMap", () => {
       createDiff({ oldPath: "a.ts", newPath: "", type: "delete" }),
     ];
     const flatFileTree = createFileMeta(["a.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [{ diff: parsedDiffs[0], fileMeta: flatFileTree[0] }],
       isMappingError: false,
     });
@@ -293,8 +288,7 @@ describe("buildFileDiffMap", () => {
       createDiff({ oldPath: "", newPath: "renamed.ts", type: "rename" }),
     ];
     const flatFileTree = createFileMeta(["renamed.ts"]);
-    const result = buildFileDiffMap(parsedDiffs, flatFileTree);
-    expect(result).toEqual({
+    expect(buildFileDiffMap(parsedDiffs, flatFileTree)).toEqual({
       diffs: [{ diff: parsedDiffs[0], fileMeta: flatFileTree[0] }],
       isMappingError: false,
     });
