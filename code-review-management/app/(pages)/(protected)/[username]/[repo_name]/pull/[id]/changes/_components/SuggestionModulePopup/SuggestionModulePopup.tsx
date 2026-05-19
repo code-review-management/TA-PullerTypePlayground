@@ -6,6 +6,7 @@ import { useUpdateGeminiSuggestionMutation } from "@/lib/api/mutations/useUpdate
 import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { useCommitGeminiSuggestionMutation } from "@/lib/api/mutations/useCommitGeminiSuggestionMutation";
+import { usePermissionChecks } from "../../../_hooks/usePermissionChecks";
 
 export interface SuggestionPopupProp {
   commentID: number;
@@ -164,30 +165,25 @@ export function SuggestionModuleContent({
     <div className={styles.moduleContainer}>
       <div className={styles.popupHeader}>
         <div className={styles.popupLabel} title={filename}>
-      {justFilename}
-    </div>
-        <div className={styles.buttonContainer}>
-          <button
-            className={
-              updateChanges
-                ? styles.updateButtonValid
-                : styles.updateButtonInvalid
-            }
-            onClick={onUpdateClicked}
-          >
-            {isUpdatePending ? "Updating..." : "Update"}
-          </button>
-          <button className={styles.commitButton} onClick={onCommitClicked}>
-            {isCommitPending ? "Committing..." : "Commit"}
-          </button>
-          <button
-            className={styles.closeButton}
-            onClick={onXClicked}
-            aria-label="Close popup"
-          >
-            ✕
-          </button>
+          {justFilename}
         </div>
+        {usePermissionChecks().hasWritePermission && (
+          <>
+            <button
+              className={
+                updateChanges
+                  ? styles.updateButtonValid
+                  : styles.updateButtonInvalid
+              }
+              onClick={onUpdateClicked}
+            >
+              {isUpdatePending ? "Updating..." : "Update"}
+            </button>
+            <button className={styles.commitButton} onClick={onCommitClicked}>
+              {isCommitPending ? "Committing..." : "Commit"}
+            </button>
+          </>
+        )}
       </div>
 
       <div className={styles.editorContainer}>

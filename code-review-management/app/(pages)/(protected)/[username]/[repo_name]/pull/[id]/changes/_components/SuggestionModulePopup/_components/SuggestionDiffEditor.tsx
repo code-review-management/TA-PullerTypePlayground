@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
-import styles from "./SuggestionDiffEditor.module.css";
 import monacoStyles from "./MonacoEditor.module.css"
 import { useDiffEditorSetup } from "./useDiffEditorSetup";
 
