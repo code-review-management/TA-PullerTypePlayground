@@ -134,7 +134,7 @@ export function orderParsedDiffs(diffs: FileData[], flatFileTree: FileDiff[]) {
     const indexB = pathTreeIndexMap.get(pathB) ?? -1;
 
     if (indexA !== -1 && indexB === -1) return -1;
-    if (indexA === -1 && indexB === 1) return 1;
+    if (indexA === -1 && indexB !== -1) return 1;
 
     // If `a` appears before `b` in `flatFileTree`, return a negative value to
     // indicate that `a` is less than `b`.
