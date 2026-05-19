@@ -135,5 +135,11 @@ function OptimizationBanner() {
 }
 
 function MappingErrorBanner() {
-  return <AlertBanner variant="error">Temporary error message</AlertBanner>;
+  return (
+    <AlertBanner variant="error">
+      Not all files in this pull request could be matched with data from GitHub.
+      Affected files may not display header stats and comments. Interactions
+      like commenting and navigating to affected files may not work as expected.
+    </AlertBanner>
+  );
 }
