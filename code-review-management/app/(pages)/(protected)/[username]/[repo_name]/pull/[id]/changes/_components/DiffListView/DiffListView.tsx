@@ -110,6 +110,7 @@ export default function DiffListView({
     </div>
   );
 }
+
 function DiffListViewSkeleton() {
   const SKELETON_FLEX_GROWS = [3, 2, 4, 2];
   return (
