@@ -7,24 +7,6 @@
     box-shadow: var(--box-shadow-soft);
 }
 
-.deletion {
-    font-size: var(--font-size-diff-code);
-    margin: 0; 
-    padding: '12px'; 
-    overflowX: 'auto';
-    color: var(--text-secondary);
-    background-color: red;
-}
-
-.replacement {
-    font-size: var(--font-size-diff-code);
-    margin: 0; 
-    padding: '12px'; 
-    overflowX: 'auto';
-    color: var(--text-secondary);
-    background-color: green;
-}
-
 .formalHeader {
   display: flex;
   align-items: center;
@@ -35,7 +17,7 @@
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
   font-size: var(--font-size-label);
-  flex-wrap: wrap; /* Allows items to wrap nicely on extremely tiny screens */
+  flex-wrap: wrap;
 }
 
 .headerTitle {
@@ -52,9 +34,7 @@
   margin-left: auto; 
 }
 
-/* The Segmented Control Toggle */
 .toggleGroup {
-  /* Removed complex auto margins */
   margin: 0;
   display: flex;
   background-color: #ebecf0;
@@ -92,7 +72,6 @@
   border: 1px solid var(--border-gray);
   background-color: var(--background-light);
   padding: var(--spacer-4) var(--spacer-8);
-  /* Removed margins, handled by parent gap */
   margin: 0;
   white-space: nowrap;
 }

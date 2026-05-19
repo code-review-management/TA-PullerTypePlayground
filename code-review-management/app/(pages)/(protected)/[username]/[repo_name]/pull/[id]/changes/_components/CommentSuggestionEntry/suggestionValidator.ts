@@ -10,7 +10,7 @@ export function IsSuggestionOutdated(
   const cleanedDeletionContent = deletionContent.replace(/\r/g, "");
 
   const fileLines = cleanedFileContent.split("\n");
-  const fileLineLength = cleanedFileContent.length;
+  const fileLineLength = fileLines.length;
   const deletionLines = cleanedDeletionContent.split("\n");
 
   for (let i = 0; i < deletionLines.length; i++) {

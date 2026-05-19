@@ -107,7 +107,6 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
                 <div className={styles.notificationText}>Failed to load: {error?.message}</div>
               )}
 
-              {/* If NOT loading, NOT an error, and we have content, render the good state */}
               {!isLoading && !isError && fileContent && (
                 <SuggestionModuleContent
                   commentID={commentID}
@@ -131,7 +130,6 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
 
       <div className={styles.container}>
 
-        {/* 2. The Formal Header with Toggle Buttons */}
         <div className={styles.formalHeader}>
           <div className={styles.headerTitle}>
             Suggested Change {(!suggestion.isCommited && !outdated) && "(AI can make mistakes)"}
@@ -175,15 +173,14 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
           </div>
         </div>
 
-        {/* 3. Conditionally render based on the active tab */}
         {activeTab === 'replace' ? (
-          <pre className={`${styles.codeText} ${styles.deletionText}`}>
+          <pre>
             <code>
               {deletionNodes.map((node, i) => renderASTNode(node, i))}
             </code>
           </pre>
         ) : (
-          <pre className={`${styles.codeText} ${styles.additionText}`}>
+          <pre>
             <code>
               {additionNodes.map((node, i) => renderASTNode(node, i))}
             </code>

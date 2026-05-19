@@ -32,14 +32,12 @@ export function extractSuggestions(comment: string): SuggestiveComment {
       if (deletedMatch){
         extractedSuggestion.deletionContent = deletedMatch[1].replace(/^- /gm, "");
       } else {
-        console.log("tag tampered!");
         return extractedSuggestion;
       }
 
       if (insertedMatch) {
         extractedSuggestion.additionContent = insertedMatch[1].replace(/^\+ /gm, "");
       } else {
-        console.log("tag tampered!");
         return extractedSuggestion;
       }
 

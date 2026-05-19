@@ -36,6 +36,7 @@ export function SuggestionModuleContent({
   const { mutate: commitMutation, isPending: isCommitPending } =
     useCommitGeminiSuggestionMutation(username, repo_name, id);
 
+  const justFilename: string = filename.split('/').pop() || filename;
   const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") !== -1;
   const joinToken: string = hasCarriageReturn ? "\r\n" : "\n";
 
@@ -162,7 +163,9 @@ export function SuggestionModuleContent({
   return (
     <div className={styles.moduleContainer}>
       <div className={styles.popupHeader}>
-        <div className={styles.popupLabel}>{"Suggestion on " + filename}</div>
+        <div className={styles.popupLabel} title={filename}>
+      {justFilename}
+    </div>
         <div className={styles.buttonContainer}>
           <button
             className={
