@@ -8,16 +8,15 @@
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
     box-shadow: var(--box-shadow-soft);
     font-size: var(--font-size-label);
+    color: var(--text-secondary);
 }
 
 .warning {
     border-color: var(--color-warning);
     background-color: var(--color-warning-light);
-    color: var(--text-secondary);
 }
 
 .error {
     border-color: var(--color-failure);
     background-color: var(--color-failure-light);
-    color: var(--text-primary);
 }
