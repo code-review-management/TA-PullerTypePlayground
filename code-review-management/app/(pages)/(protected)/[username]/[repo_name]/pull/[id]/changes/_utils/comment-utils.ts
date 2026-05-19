@@ -121,8 +121,7 @@ export function getPublishedThreadsByLine(
     publishedThreads.get(oldPath)?.lineThreads ?? new Map();
   const merged: PublishedThreadsByLine = new Map();
 
-  if (fileStatus !== "renamed" || oldPath === activePath)
-    return activePathThreads;
+  if (fileStatus !== "renamed") return activePathThreads;
 
   // Copy over entries of `activePathThreads` to `merged`.
   for (const [line, thread] of activePathThreads) {
