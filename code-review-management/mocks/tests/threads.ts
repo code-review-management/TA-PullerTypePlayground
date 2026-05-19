@@ -29,9 +29,7 @@ export function getExampleFileDraftThreadItem1(): FileDraftThreadItem {
   };
 }
 
-export function getExampleLineDraftThreadItem1(
-  overrides?: Partial<LineDraftThreadItem>,
-): LineDraftThreadItem {
+export function getExampleLineDraftThreadItem1(): LineDraftThreadItem {
   return {
     oldPath: "old.ts",
     activePath: "active.ts",
@@ -41,6 +39,5 @@ export function getExampleLineDraftThreadItem1(
     start: 1,
     end: 5,
     side: "new",
-    ...overrides,
   };
 }
