@@ -493,8 +493,7 @@ describe("buildPathTreeIndexMap", () => {
 
   it("maps each filename to its index in the tree", () => {
     const flatFileTree = createFileMeta(["a.ts", "b.ts", "c.ts"]);
-    const result = buildPathTreeIndexMap(flatFileTree);
-    expect(result).toEqual(
+    expect(buildPathTreeIndexMap(flatFileTree)).toEqual(
       new Map([
         ["a.ts", 0],
         ["b.ts", 1],
@@ -505,15 +504,17 @@ describe("buildPathTreeIndexMap", () => {
 
   it("treats filenames as case-sensitive", () => {
     const flatFileTree = createFileMeta(["A.ts", "a.ts"]);
-    const result = buildPathTreeIndexMap(flatFileTree);
-    expect(result.get("A.ts")).toBe(0);
-    expect(result.get("a.ts")).toBe(1);
+    expect(buildPathTreeIndexMap(flatFileTree)).toEqual(
+      new Map([
+        ["A.ts", 0],
+        ["a.ts", 1],
+      ]),
+    );
   });
 
   it("preserves full paths as keys", () => {
     const flatFileTree = createFileMeta(["src/a.ts", "src/utils/a.ts"]);
-    const result = buildPathTreeIndexMap(flatFileTree);
-    expect(result).toEqual(
+    expect(buildPathTreeIndexMap(flatFileTree)).toEqual(
       new Map([
         ["src/a.ts", 0],
         ["src/utils/a.ts", 1],
