@@ -29,7 +29,7 @@ export function useUpdateGeminiSuggestionMutation(
       queryClient.invalidateQueries({
         queryKey: ["review-comments", owner, repo, pullNumber],
       });
-      toast.success("Suggestion successfully updated!.");
+      toast.success("Suggestion successfully updated!");
     },
     onError: () => {
       toast.error("Failed to update suggestion.");

@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { poster } from "../utils/poster";
-import { SuggestionCommentUpdateRequest, SuggestionCommitRequest } from "@/types/request.types";
+import { SuggestionCommitRequest } from "@/types/request.types";
 import toast from "react-hot-toast";
 
 /**
