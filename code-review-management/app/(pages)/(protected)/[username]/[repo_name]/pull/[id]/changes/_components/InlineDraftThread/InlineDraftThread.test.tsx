@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import {
   getExampleFileDraftThreadItem1,
   getExampleLineDraftThreadItem1,
+  getLineDraftThreadItemVariants,
 } from "@/mocks/tests/threads";
 import { getDefaultAuthenticatedSession } from "@/mocks/tests/session";
 import userEvent from "@testing-library/user-event";
@@ -132,12 +133,19 @@ describe("InlineDraftThread", () => {
   });
 
   describe("InlineThreadHeader", () => {
-    it("renders", () => {
+    it("renders in the document", () => {
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-thread-header")).toBeInTheDocument();
     });
 
     describe("title", () => {
+      const {
+        SINGLE_LINE_NEW_SIDE,
+        SINGLE_LINE_OLD_SIDE,
+        MULTI_LINE_NEW_SIDE,
+        MULTI_LINE_OLD_SIDE,
+      } = getLineDraftThreadItemVariants();
+
       it("shows 'Draft on file-level' for file-level drafts", () => {
         render(<InlineDraftThread draft={mockFileDraftThread} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
@@ -147,58 +155,34 @@ describe("InlineDraftThread", () => {
       });
 
       it("shows the line range with an R prefix for multi-line drafts on the new side", () => {
-        const mockDraft = {
-          ...mockLineDraftThread,
-          start: 1,
-          end: 5,
-          side: "new" as const,
-        };
-        render(<InlineDraftThread draft={mockDraft} />);
+        render(<InlineDraftThread draft={MULTI_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
-          `Draft on lines R${mockDraft.start} to R${mockDraft.end}`,
+          `Draft on lines R${MULTI_LINE_NEW_SIDE.start} to R${MULTI_LINE_NEW_SIDE.end}`,
         );
       });
 
       it("shows the line range with an L prefix for multi-line drafts on the old side", () => {
-        const mockDraft = {
-          ...mockLineDraftThread,
-          start: 1,
-          end: 5,
-          side: "old" as const,
-        };
-        render(<InlineDraftThread draft={mockDraft} />);
+        render(<InlineDraftThread draft={MULTI_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
-          `Draft on lines L${mockDraft.start} to L${mockDraft.end}`,
+          `Draft on lines L${MULTI_LINE_OLD_SIDE.start} to L${MULTI_LINE_OLD_SIDE.end}`,
         );
       });
 
       it("shows the line number with an R prefix for single-line drafts on the new side", () => {
-        const mockDraft = {
-          ...mockLineDraftThread,
-          start: 1,
-          end: 1,
-          side: "new" as const,
-        };
-        render(<InlineDraftThread draft={mockDraft} />);
+        render(<InlineDraftThread draft={SINGLE_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
-          `Draft on line R${mockDraft.end}`,
+          `Draft on line R${SINGLE_LINE_NEW_SIDE.end}`,
         );
       });
 
       it("shows the line number with an L prefix for single-line drafts on the old side", () => {
-        const mockDraft = {
-          ...mockLineDraftThread,
-          start: 1,
-          end: 1,
-          side: "old" as const,
-        };
-        render(<InlineDraftThread draft={mockDraft} />);
+        render(<InlineDraftThread draft={SINGLE_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
-          `Draft on line L${mockDraft.end}`,
+          `Draft on line L${SINGLE_LINE_OLD_SIDE.end}`,
         );
       });
     });
@@ -266,12 +250,12 @@ describe("InlineDraftThread", () => {
   });
 
   describe("InlineCommentEntry", () => {
-    it("renders", () => {
+    it("renders in the document", () => {
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-comment-entry")).toBeInTheDocument();
     });
 
-    it("passes the session image as the avatar", () => {
+    it("uses the session image as the avatar", () => {
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-comment-entry")).toHaveAttribute(
         "data-avatar",
@@ -279,7 +263,7 @@ describe("InlineDraftThread", () => {
       );
     });
 
-    it("passes a fallback avatar when the session image is missing", () => {
+    it("uses fallback image as the avatar if session image is missing", () => {
       mockUseSession.mockReturnValue({ data: null });
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-comment-entry")).toHaveAttribute(
@@ -288,7 +272,7 @@ describe("InlineDraftThread", () => {
       );
     });
 
-    it("passes the github login as the username", () => {
+    it("uses the github login as the username", () => {
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-comment-entry")).toHaveAttribute(
         "data-username",
@@ -296,7 +280,7 @@ describe("InlineDraftThread", () => {
       );
     });
 
-    it("passes an empty string for the username when github login is missing", () => {
+    it("uses empty string as the username when github login is missing", () => {
       mockUseSession.mockReturnValue({ data: null });
       render(<InlineDraftThread draft={mockLineDraftThread} />);
       expect(screen.getByTestId("inline-comment-entry")).toHaveAttribute(

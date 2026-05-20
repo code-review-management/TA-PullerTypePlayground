@@ -41,3 +41,13 @@ export function getExampleLineDraftThreadItem1(): LineDraftThreadItem {
     side: "new",
   };
 }
+
+export function getLineDraftThreadItemVariants() {
+  const base = getExampleLineDraftThreadItem1();
+  return {
+    SINGLE_LINE_NEW_SIDE: { ...base, start: 5, end: 5, side: "new" },
+    SINGLE_LINE_OLD_SIDE: { ...base, start: 5, end: 5, side: "old" },
+    MULTI_LINE_NEW_SIDE: { ...base, start: 1, end: 5, side: "new" },
+    MULTI_LINE_OLD_SIDE: { ...base, start: 1, end: 5, side: "old" },
+  } satisfies Record<string, LineDraftThreadItem>;
+}
