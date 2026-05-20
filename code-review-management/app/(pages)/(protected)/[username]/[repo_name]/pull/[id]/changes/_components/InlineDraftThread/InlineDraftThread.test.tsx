@@ -105,6 +105,12 @@ describe("InlineDraftThread", () => {
   const mockSession = getDefaultAuthenticatedSession();
   const mockFileDraftThread = getExampleFileDraftThreadItem1();
   const mockLineDraftThread = getExampleLineDraftThreadItem1();
+  const {
+    SINGLE_LINE_NEW_SIDE,
+    SINGLE_LINE_OLD_SIDE,
+    MULTI_LINE_NEW_SIDE,
+    MULTI_LINE_OLD_SIDE,
+  } = getLineDraftThreadItemVariants();
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -139,13 +145,6 @@ describe("InlineDraftThread", () => {
     });
 
     describe("title", () => {
-      const {
-        SINGLE_LINE_NEW_SIDE,
-        SINGLE_LINE_OLD_SIDE,
-        MULTI_LINE_NEW_SIDE,
-        MULTI_LINE_OLD_SIDE,
-      } = getLineDraftThreadItemVariants();
-
       it("shows 'Draft on file-level' for file-level drafts", () => {
         render(<InlineDraftThread draft={mockFileDraftThread} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
@@ -154,7 +153,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line range with an 'R' prefix for multi-line drafts on the new side", () => {
+      it("shows line range with an 'R' prefix for multi-line drafts on the new side", () => {
         render(<InlineDraftThread draft={MULTI_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -162,7 +161,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line range with an 'L' prefix for multi-line drafts on the old side", () => {
+      it("shows line range with an 'L' prefix for multi-line drafts on the old side", () => {
         render(<InlineDraftThread draft={MULTI_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -170,7 +169,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line number with an 'R' prefix for single-line drafts on the new side", () => {
+      it("shows line number with an 'R' prefix for single-line drafts on the new side", () => {
         render(<InlineDraftThread draft={SINGLE_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -178,7 +177,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line number with an 'L' prefix for single-line drafts on the old side", () => {
+      it("shows line number with an 'L' prefix for single-line drafts on the old side", () => {
         render(<InlineDraftThread draft={SINGLE_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -191,10 +190,8 @@ describe("InlineDraftThread", () => {
       it("renders when no submission is in flight", () => {
         mockUseMutationInFlight.mockReturnValue(false);
         render(<InlineDraftThread draft={mockLineDraftThread} />);
-
         const container = screen.getByTestId("inline-thread-header");
         const element = screen.getByTestId("cancel-button");
-
         expect(container).toContainElement(element);
       });
 
@@ -223,7 +220,7 @@ describe("InlineDraftThread", () => {
         expect(mockDeleteDraftThread).toHaveBeenCalledTimes(1);
       });
 
-      it("clears the highlight at the draft's range when clicked for line-level drafts", async () => {
+      it("clears the highlight when clicked for line-level drafts", async () => {
         const user = userEvent.setup();
         mockUseMutationInFlight.mockReturnValue(false);
 
