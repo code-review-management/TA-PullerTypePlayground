@@ -31,8 +31,8 @@ const buildActiveHighlightRef = (overrides: Partial<ActiveHighlight> = {}) => ({
 });
 
 describe("isWithinHighlightRange", () => {
-  describe("when active highlight has null fields", () => {
-    it("returns false when start is null", () => {
+  describe("returns false when a required active highlight field is null", () => {
+    it("when start is null", () => {
       expect(
         isWithinHighlightRange(10, "new", {
           isHighlighting: false,
@@ -43,7 +43,7 @@ describe("isWithinHighlightRange", () => {
       ).toBe(false);
     });
 
-    it("returns false when end is null", () => {
+    it("when end is null", () => {
       expect(
         isWithinHighlightRange(5, "new", {
           isHighlighting: false,
@@ -54,7 +54,7 @@ describe("isWithinHighlightRange", () => {
       ).toBe(false);
     });
 
-    it("returns false when side is null", () => {
+    it("when side is null", () => {
       expect(
         isWithinHighlightRange(7, "new", {
           isHighlighting: false,
@@ -66,8 +66,8 @@ describe("isWithinHighlightRange", () => {
     });
   });
 
-  describe("when the side does not match the active highlight's side", () => {
-    it("returns false when querying 'old' but highlight is on 'new'", () => {
+  describe("returns false when the side does not match the active highlight's side", () => {
+    it("when querying 'old' but highlight is on 'new'", () => {
       expect(
         isWithinHighlightRange(7, "old", {
           isHighlighting: false,
@@ -78,7 +78,7 @@ describe("isWithinHighlightRange", () => {
       ).toBe(false);
     });
 
-    it("returns false when querying 'new' but highlight is on 'old'", () => {
+    it("when querying 'new' but highlight is on 'old'", () => {
       expect(
         isWithinHighlightRange(7, "new", {
           isHighlighting: false,
@@ -90,41 +90,43 @@ describe("isWithinHighlightRange", () => {
     });
   });
 
-  describe("when the line is outside the active highlight range", () => {
-    const activeHighlight = {
-      isHighlighting: false,
-      start: 5,
-      end: 10,
-      side: "new" as const,
-    };
+  describe("when the highlight is dragged downwards (start < end)", () => {
+    describe("returns true when the line is inside the active highlight range", () => {
+      const activeHighlight = {
+        isHighlighting: false,
+        start: 5,
+        end: 10,
+        side: "new" as const,
+      };
 
-    it("returns false when the line is below the range", () => {
-      expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
+      it("at the start boundary", () => {
+        expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
+      });
+
+      it("at the end boundary", () => {
+        expect(isWithinHighlightRange(10, "new", activeHighlight)).toBe(true);
+      });
+
+      it("in the middle of the range", () => {
+        expect(isWithinHighlightRange(7, "new", activeHighlight)).toBe(true);
+      });
     });
 
-    it("returns false when the line is above the range", () => {
-      expect(isWithinHighlightRange(11, "new", activeHighlight)).toBe(false);
-    });
-  });
+    describe("returns false when the line is outside the active highlight range", () => {
+      const activeHighlight = {
+        isHighlighting: false,
+        start: 5,
+        end: 10,
+        side: "new" as const,
+      };
 
-  describe("when the line is inside the active highlight range", () => {
-    const activeHighlight = {
-      isHighlighting: false,
-      start: 5,
-      end: 10,
-      side: "new" as const,
-    };
+      it("before the start boundary", () => {
+        expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
+      });
 
-    it("returns true when the line is at the start boundary", () => {
-      expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
-    });
-
-    it("returns true when the line is at the end boundary", () => {
-      expect(isWithinHighlightRange(10, "new", activeHighlight)).toBe(true);
-    });
-
-    it("returns true when the line is in the middle of the range", () => {
-      expect(isWithinHighlightRange(7, "new", activeHighlight)).toBe(true);
+      it("after the end boundary", () => {
+        expect(isWithinHighlightRange(11, "new", activeHighlight)).toBe(false);
+      });
     });
   });
 
@@ -136,24 +138,28 @@ describe("isWithinHighlightRange", () => {
       side: "new" as const,
     };
 
-    it("returns true when the line is at the lower bound (end)", () => {
-      expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
+    describe("returns true when the line is inside the active highlight range", () => {
+      it("at the start boundary", () => {
+        expect(isWithinHighlightRange(10, "new", activeHighlight)).toBe(true);
+      });
+
+      it("at the end boundary", () => {
+        expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
+      });
+
+      it("in the middle of the range", () => {
+        expect(isWithinHighlightRange(7, "new", activeHighlight)).toBe(true);
+      });
     });
 
-    it("returns true when the line is at the upper bound (start)", () => {
-      expect(isWithinHighlightRange(10, "new", activeHighlight)).toBe(true);
-    });
+    describe("returns false when the line is outside the active highlight range", () => {
+      it("before the end boundary", () => {
+        expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
+      });
 
-    it("returns true when the line is between end and start", () => {
-      expect(isWithinHighlightRange(7, "new", activeHighlight)).toBe(true);
-    });
-
-    it("returns false when the line is below the range", () => {
-      expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
-    });
-
-    it("returns false when the line is above the range", () => {
-      expect(isWithinHighlightRange(11, "new", activeHighlight)).toBe(false);
+      it("after the start boundary", () => {
+        expect(isWithinHighlightRange(11, "new", activeHighlight)).toBe(false);
+      });
     });
   });
 
@@ -165,19 +171,22 @@ describe("isWithinHighlightRange", () => {
       side: "new" as const,
     };
 
-    it("returns true for the single highlighted line", () => {
+    it("returns true for the highlighted line", () => {
       expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
     });
 
-    it("returns false when the line is below the range", () => {
-      expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
-    });
+    describe("returns false when the line is outside the active highlight range", () => {
+      it("before the start boundary", () => {
+        expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
+      });
 
-    it("returns false when the line is above the range", () => {
-      expect(isWithinHighlightRange(6, "new", activeHighlight)).toBe(false);
+      it("after the end boundary", () => {
+        expect(isWithinHighlightRange(6, "new", activeHighlight)).toBe(false);
+      });
     });
   });
 });
+
 describe("highlightOnMouseDown", () => {
   describe("starts a highlight session at the clicked line", () => {
     it.each([
@@ -207,9 +216,7 @@ describe("highlightOnMouseDown", () => {
       ],
     ])("for %s", (_, change, side, expectedLine) => {
       const setActiveHighlightSync = jest.fn();
-
       highlightOnMouseDown(change, side, setActiveHighlightSync);
-
       expect(setActiveHighlightSync).toHaveBeenCalledWith({
         isHighlighting: true,
         start: expectedLine,
@@ -292,7 +299,11 @@ describe("highlightOnMouseEnter", () => {
       ],
     ])("for %s", (_, change, side, expectedEnd) => {
       const setActiveHighlightSync = jest.fn();
-      const activeHighlightRef = buildActiveHighlightRef({ side });
+      const activeHighlightRef = buildActiveHighlightRef({
+        start: 3,
+        end: 3,
+        side,
+      });
 
       highlightOnMouseEnter(
         change,
@@ -300,7 +311,6 @@ describe("highlightOnMouseEnter", () => {
         activeHighlightRef,
         setActiveHighlightSync,
       );
-
       expect(setActiveHighlightSync).toHaveBeenCalledWith({
         isHighlighting: true,
         start: 3,
@@ -321,7 +331,11 @@ describe("highlightOnMouseUp", () => {
   it("ends the highlight session by setting isHighlighting to false", () => {
     const setActiveHighlightSync = jest.fn();
     const setDraftThreads = jest.fn();
-    const activeHighlightRef = buildActiveHighlightRef();
+    const activeHighlightRef = buildActiveHighlightRef({
+      start: 3,
+      end: 3,
+      side: "new",
+    });
 
     highlightOnMouseUp(
       "old.ts",
@@ -331,7 +345,6 @@ describe("highlightOnMouseUp", () => {
       setActiveHighlightSync,
       setDraftThreads,
     );
-
     expect(setActiveHighlightSync).toHaveBeenCalledWith({
       isHighlighting: false,
       start: 3,
@@ -358,7 +371,6 @@ describe("highlightOnMouseUp", () => {
         setActiveHighlightSync,
         setDraftThreads,
       );
-
       expect(mockCreateDraftThread).not.toHaveBeenCalled();
     });
   });
@@ -383,7 +395,6 @@ describe("highlightOnMouseUp", () => {
         setActiveHighlightSync,
         setDraftThreads,
       );
-
       expect(mockCreateDraftThread).toHaveBeenCalledWith(
         setDraftThreads,
         "active.ts",
