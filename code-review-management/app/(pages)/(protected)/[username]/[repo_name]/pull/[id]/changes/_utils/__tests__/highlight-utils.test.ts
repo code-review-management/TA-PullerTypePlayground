@@ -1,14 +1,17 @@
-import { isWithinHighlightRange } from "../highlight-utils";
+import {
+  getDefaultDeleteChangeData,
+  getDefaultInsertChangeData,
+  getDefaultNormalChangeData,
+} from "@/mocks/tests/diffs";
+import {
+  highlightOnMouseDown,
+  isWithinHighlightRange,
+} from "../highlight-utils";
 
 const mockCreateDraftThread = jest.fn();
-const mockGetLineNumber = jest.fn();
 
 jest.mock("../comment-utils", () => ({
   createDraftThread: () => mockCreateDraftThread(),
-}));
-
-jest.mock("../diff-utils", () => ({
-  getLineNumber: () => mockGetLineNumber(),
 }));
 
 describe("isWithinHighlightRange", () => {
@@ -163,6 +166,62 @@ describe("isWithinHighlightRange", () => {
 
     it("returns false when the line is above the range", () => {
       expect(isWithinHighlightRange(6, "new", activeHighlight)).toBe(false);
+    });
+  });
+});
+
+describe("highlightOnMouseDown", () => {
+  const mockInsertChange = getDefaultInsertChangeData();
+  const mockDeleteChange = getDefaultDeleteChangeData();
+  const mockNormalChange = getDefaultNormalChangeData();
+
+  describe("starts a highlight session at the clicked line", () => {
+    it("for inserted changes", () => {
+      const setActiveHighlightSync = jest.fn();
+      highlightOnMouseDown(mockInsertChange, "new", setActiveHighlightSync);
+      expect(setActiveHighlightSync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          isHighlighting: true,
+          start: mockInsertChange.lineNumber,
+          end: mockInsertChange.lineNumber,
+          side: "new",
+        }),
+      );
+    });
+
+    it("for deleted changes", () => {
+      const setActiveHighlightSync = jest.fn();
+      highlightOnMouseDown(mockDeleteChange, "old", setActiveHighlightSync);
+      expect(setActiveHighlightSync).toHaveBeenCalledWith(
+        expect.objectContaining({
+          isHighlighting: true,
+          start: mockInsertChange.lineNumber,
+          end: mockInsertChange.lineNumber,
+          side: "old",
+        }),
+      );
+    });
+
+    it("for normal changes on the new side", () => {
+      const setActiveHighlightSync = jest.fn();
+      highlightOnMouseDown(mockNormalChange, "new", setActiveHighlightSync);
+      expect(setActiveHighlightSync).toHaveBeenCalledWith({
+        isHighlighting: true,
+        start: mockNormalChange.newLineNumber,
+        end: mockNormalChange.newLineNumber,
+        side: "new",
+      });
+    });
+
+    it("or normal changes on the old side", () => {
+      const setActiveHighlightSync = jest.fn();
+      highlightOnMouseDown(mockNormalChange, "old", setActiveHighlightSync);
+      expect(setActiveHighlightSync).toHaveBeenCalledWith({
+        isHighlighting: true,
+        start: mockNormalChange.oldLineNumber,
+        end: mockNormalChange.oldLineNumber,
+        side: "old",
+      });
     });
   });
 });
