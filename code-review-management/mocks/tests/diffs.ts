@@ -6,7 +6,7 @@ type DeleteChange = Extract<ChangeData, { type: "delete" }>;
 type NormalChange = Extract<ChangeData, { type: "normal" }>;
 
 export function getDefaultInsertChangeData(
-  overrides?: Partial<InsertChange>,
+  overrides: Partial<InsertChange> = {},
 ): InsertChange {
   return {
     type: "insert",
@@ -18,7 +18,7 @@ export function getDefaultInsertChangeData(
 }
 
 export function getDefaultDeleteChangeData(
-  overrides?: Partial<DeleteChange>,
+  overrides: Partial<DeleteChange> = {},
 ): DeleteChange {
   return {
     type: "delete",
@@ -30,7 +30,7 @@ export function getDefaultDeleteChangeData(
 }
 
 export function getDefaultNormalChangeData(
-  overrides?: Partial<NormalChange>,
+  overrides: Partial<NormalChange> = {},
 ): NormalChange {
   return {
     type: "normal",

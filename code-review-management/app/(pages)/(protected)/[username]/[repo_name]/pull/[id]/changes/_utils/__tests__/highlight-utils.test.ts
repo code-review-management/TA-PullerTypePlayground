@@ -4,6 +4,7 @@ import {
   getDefaultNormalChangeData,
 } from "@/mocks/tests/diffs";
 import {
+  clearHighlightIfMatch,
   highlightOnMouseDown,
   highlightOnMouseEnter,
   highlightOnMouseUp,
@@ -228,7 +229,7 @@ describe("highlightOnMouseDown", () => {
 });
 
 describe("highlightOnMouseEnter", () => {
-  describe("does not update the highlight", () => {
+  describe("does not update the active highlight", () => {
     it("when isHighlighting is false", () => {
       const setActiveHighlightSync = jest.fn();
       const activeHighlightRef = buildActiveHighlightRef({
@@ -244,7 +245,7 @@ describe("highlightOnMouseEnter", () => {
       expect(setActiveHighlightSync).not.toHaveBeenCalled();
     });
 
-    it("when the entered side (old) does not match the highlight's side (new)", () => {
+    it("when the entered side (old) does not match the active highlight's side (new)", () => {
       const setActiveHighlightSync = jest.fn();
       const activeHighlightRef = buildActiveHighlightRef({ side: "new" });
 
@@ -257,7 +258,7 @@ describe("highlightOnMouseEnter", () => {
       expect(setActiveHighlightSync).not.toHaveBeenCalled();
     });
 
-    it("when the entered side (new) does not match the highlight's side (old)", () => {
+    it("when the entered side (new) does not match the active highlight's side (old)", () => {
       const setActiveHighlightSync = jest.fn();
       const activeHighlightRef = buildActiveHighlightRef({ side: "old" });
 
@@ -271,7 +272,7 @@ describe("highlightOnMouseEnter", () => {
     });
   });
 
-  describe("extends the highlight's end to the entered line", () => {
+  describe("extends the active highlight's end to the entered line", () => {
     it.each([
       [
         "inserted changes",
@@ -358,7 +359,7 @@ describe("highlightOnMouseUp", () => {
       ["start", { start: null }],
       ["end", { end: null }],
       ["side", { side: null }],
-    ])("when %s is null", (_, overrides) => {
+    ])("when the active highlight's %s is null", (_, overrides) => {
       const setActiveHighlightSync = jest.fn();
       const setDraftThreads = jest.fn();
       const activeHighlightRef = buildActiveHighlightRef(overrides);
@@ -409,6 +410,100 @@ describe("highlightOnMouseUp", () => {
           side: "new",
         },
       );
+    });
+  });
+});
+
+describe("clearHighlightIfMatch", () => {
+  describe("does not clear the highlight", () => {
+    it.each([
+      ["start", { start: null }],
+      ["end", { end: null }],
+    ])("when the active highlight's %s is null", (_, overrides) => {
+      const setActiveHighlightSync = jest.fn();
+      const activeHighlightRef = buildActiveHighlightRef(overrides);
+
+      clearHighlightIfMatch(
+        1,
+        5,
+        "new",
+        activeHighlightRef,
+        setActiveHighlightSync,
+      );
+      expect(setActiveHighlightSync).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ["start", 2, 5, "new" as const],
+      ["end", 1, 6, "new" as const],
+      ["side", 1, 5, "old" as const],
+    ])(
+      "when the %s does not match the active highlight",
+      (_, start, end, side) => {
+        const setActiveHighlightSync = jest.fn();
+        const activeHighlightRef = buildActiveHighlightRef({
+          start: 1,
+          end: 5,
+          side: "new",
+        });
+
+        clearHighlightIfMatch(
+          start,
+          end,
+          side,
+          activeHighlightRef,
+          setActiveHighlightSync,
+        );
+        expect(setActiveHighlightSync).not.toHaveBeenCalled();
+      },
+    );
+  });
+
+  describe("clears the highlight when the side and range match", () => {
+    it("for a highlight dragged downwards (start < end)", () => {
+      const setActiveHighlightSync = jest.fn();
+      const activeHighlightRef = buildActiveHighlightRef({
+        start: 1,
+        end: 5,
+        side: "new",
+      });
+
+      clearHighlightIfMatch(
+        1,
+        5,
+        "new",
+        activeHighlightRef,
+        setActiveHighlightSync,
+      );
+      expect(setActiveHighlightSync).toHaveBeenCalledWith({
+        isHighlighting: false,
+        start: null,
+        end: null,
+        side: null,
+      });
+    });
+
+    it("for a highlight dragged upwards (end < start)", () => {
+      const setActiveHighlightSync = jest.fn();
+      const activeHighlightRef = buildActiveHighlightRef({
+        start: 5,
+        end: 1,
+        side: "new",
+      });
+
+      clearHighlightIfMatch(
+        1,
+        5,
+        "new",
+        activeHighlightRef,
+        setActiveHighlightSync,
+      );
+      expect(setActiveHighlightSync).toHaveBeenCalledWith({
+        isHighlighting: false,
+        start: null,
+        end: null,
+        side: null,
+      });
     });
   });
 });
