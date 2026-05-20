@@ -154,7 +154,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line range with an R prefix for multi-line drafts on the new side", () => {
+      it("shows the line range with an 'R' prefix for multi-line drafts on the new side", () => {
         render(<InlineDraftThread draft={MULTI_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -162,7 +162,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line range with an L prefix for multi-line drafts on the old side", () => {
+      it("shows the line range with an 'L' prefix for multi-line drafts on the old side", () => {
         render(<InlineDraftThread draft={MULTI_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -170,7 +170,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line number with an R prefix for single-line drafts on the new side", () => {
+      it("shows the line number with an 'R' prefix for single-line drafts on the new side", () => {
         render(<InlineDraftThread draft={SINGLE_LINE_NEW_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
@@ -178,7 +178,7 @@ describe("InlineDraftThread", () => {
         );
       });
 
-      it("shows the line number with an L prefix for single-line drafts on the old side", () => {
+      it("shows the line number with an 'L' prefix for single-line drafts on the old side", () => {
         render(<InlineDraftThread draft={SINGLE_LINE_OLD_SIDE} />);
         expect(screen.getByTestId("inline-thread-header")).toHaveAttribute(
           "data-title",
