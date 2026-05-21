@@ -1,7 +1,6 @@
 .comment {
     display: flex;
     gap: var(--spacer-12);
-    container-type: inline-size;
 }
 
 .content {
@@ -23,7 +22,9 @@
 .metadata {
     display: flex;
     align-items: center;
-    gap: var(--spacer-8);
+    flex-wrap: wrap;
+    column-gap: var(--spacer-8);
+    row-gap: var(--spacer-4);
 }
 
 .username {
@@ -33,13 +34,4 @@
 .date {
     font-size: 0.75rem;
     color: var(--text-tertiary);
-}
-
-@container (max-width: 300px) {
-    .metadata {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacer-4);
-    }
 }
