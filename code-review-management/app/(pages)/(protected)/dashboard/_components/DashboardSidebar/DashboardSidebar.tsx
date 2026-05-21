@@ -130,8 +130,6 @@ export default function DashboardSidebar({
     );
   };
 
-  console.log(expansionState);
-
   return (
     <div className={styles.dashboardSidebar}>
       <div className={styles.sidebarContent}>
