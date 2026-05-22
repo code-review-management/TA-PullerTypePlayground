@@ -64,9 +64,11 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
         ) : (
           <>
             <div className={styles.header}>
-              <div className={styles.title}>
+              <div className={styles.title} data-testid="commit-title">
                 Commits{" "}
-                <span className={styles.count}>{commits?.length ?? ""}</span>
+                <span className={styles.count} data-testid="commit-count">
+                  {commits?.length ?? ""}
+                </span>
               </div>
               <ViewModeToggle
                 isCumulative={isCumulative}
@@ -74,7 +76,7 @@ export default function CommitPicker({ pull }: { pull: PullRequest }) {
                 isDisabled={selectedSha === null}
               />
             </div>
-            <div className={styles.list}>
+            <div className={styles.list} data-testid="commit-list">
               <CommitOption
                 value={null}
                 checked={selectedSha === null}
