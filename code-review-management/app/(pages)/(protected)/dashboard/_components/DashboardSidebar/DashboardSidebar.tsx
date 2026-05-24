@@ -42,7 +42,7 @@ export default function DashboardSidebar({
   );
 
   // Docs: https://usehooks-ts.com/react-hook/use-is-mounted
-  const isMounted = useIsMounted()(); // Use to check if expansionState will have been loaded
+  const isMounted = useIsMounted(); // Use to check if expansionState will have been loaded
 
   const mappedRepoList = sortReposByOrg(data || []);
   const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
@@ -135,7 +135,7 @@ export default function DashboardSidebar({
       <div className={styles.sidebarContent}>
         <div className={styles.sidebarHeader}>
           <h4 className={styles.sidebarHeaderText}>REPOSITORIES</h4>
-          {isMounted && (
+          {isMounted() && (
             <div className={styles.reposActions}>
               <button
                 className={`${styles.actionButton} ${expansionState === "expand" ? styles.actionButtonActive : ""}`}
