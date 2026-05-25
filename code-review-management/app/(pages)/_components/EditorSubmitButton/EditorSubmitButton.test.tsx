@@ -22,13 +22,14 @@ describe("EditorSubmitButton", () => {
     jest.clearAllMocks();
   });
 
-  it("renders loading spinner instead of button if submit is pending", () => {
+  it("renders loading spinner instead of arrow-up button if submit is pending", () => {
     render(<EditorSubmitButton {...defaultProps} isSubmitPending />);
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(screen.queryByAltText("Arrow up")).not.toBeInTheDocument();
   });
 
-  it("renders arrow up button instead of loading spinner if submit is not pending", () => {
+  it("renders arrow-up button instead of loading spinner if submit is not pending", () => {
     render(<EditorSubmitButton {...defaultProps} isSubmitPending={false} />);
     expect(screen.getByRole("button")).toBeInTheDocument();
     expect(screen.getByAltText("Arrow up")).toBeInTheDocument();
