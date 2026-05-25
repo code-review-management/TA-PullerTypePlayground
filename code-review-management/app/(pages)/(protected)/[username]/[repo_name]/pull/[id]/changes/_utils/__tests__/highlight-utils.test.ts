@@ -92,14 +92,14 @@ describe("isWithinHighlightRange", () => {
   });
 
   describe("when the highlight is dragged downwards (start < end)", () => {
-    describe("returns true when the line is inside the active highlight range", () => {
-      const activeHighlight = {
-        isHighlighting: false,
-        start: 5,
-        end: 10,
-        side: "new" as const,
-      };
+    const activeHighlight = {
+      isHighlighting: false,
+      start: 5,
+      end: 10,
+      side: "new" as const,
+    };
 
+    describe("returns true when the line is inside the active highlight range", () => {
       it("at the start boundary", () => {
         expect(isWithinHighlightRange(5, "new", activeHighlight)).toBe(true);
       });
@@ -114,13 +114,6 @@ describe("isWithinHighlightRange", () => {
     });
 
     describe("returns false when the line is outside the active highlight range", () => {
-      const activeHighlight = {
-        isHighlighting: false,
-        start: 5,
-        end: 10,
-        side: "new" as const,
-      };
-
       it("before the start boundary", () => {
         expect(isWithinHighlightRange(4, "new", activeHighlight)).toBe(false);
       });
@@ -301,8 +294,9 @@ describe("highlightOnMouseEnter", () => {
     ])("for %s", (_, change, side, expectedEnd) => {
       const setActiveHighlightSync = jest.fn();
       const activeHighlightRef = buildActiveHighlightRef({
-        start: 3,
-        end: 3,
+        isHighlighting: true,
+        start: 2,
+        end: 2,
         side,
       });
 
@@ -314,7 +308,7 @@ describe("highlightOnMouseEnter", () => {
       );
       expect(setActiveHighlightSync).toHaveBeenCalledWith({
         isHighlighting: true,
-        start: 3,
+        start: 2,
         end: expectedEnd,
         side,
       });
@@ -333,7 +327,7 @@ describe("highlightOnMouseUp", () => {
     const setActiveHighlightSync = jest.fn();
     const setDraftThreads = jest.fn();
     const activeHighlightRef = buildActiveHighlightRef({
-      start: 3,
+      start: 2,
       end: 3,
       side: "new",
     });
@@ -348,7 +342,7 @@ describe("highlightOnMouseUp", () => {
     );
     expect(setActiveHighlightSync).toHaveBeenCalledWith({
       isHighlighting: false,
-      start: 3,
+      start: 2,
       end: 3,
       side: "new",
     });
