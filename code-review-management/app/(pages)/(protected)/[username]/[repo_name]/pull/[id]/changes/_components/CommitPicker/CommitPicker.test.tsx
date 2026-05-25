@@ -218,7 +218,7 @@ describe("CommitPicker", () => {
           data: undefined,
         });
         render(<CommitPicker pull={mockPull} />);
-        expect(screen.getByTestId("commit-count")).toHaveTextContent("");
+        expect(screen.getByTestId("commit-count")).toBeEmptyDOMElement();
       });
     });
 
@@ -371,6 +371,13 @@ describe("CommitPicker", () => {
       });
 
       describe("when no commit is selected", () => {
+        beforeEach(() => {
+          mockUseCommitPickerContext.mockReturnValue({
+            ...defaultCommitPickerContext,
+            selectedSha: null,
+          });
+        });
+
         it("is checked", () => {
           render(<CommitPicker pull={mockPull} />);
           expect(
@@ -520,6 +527,13 @@ describe("CommitPicker", () => {
 
     describe("navigation on submit", () => {
       describe("when no commit is selected", () => {
+        beforeEach(() => {
+          mockUseCommitPickerContext.mockReturnValue({
+            ...defaultCommitPickerContext,
+            selectedSha: null,
+          });
+        });
+
         it("navigates to the changes page", async () => {
           const user = userEvent.setup();
           render(<CommitPicker pull={mockPull} />);
