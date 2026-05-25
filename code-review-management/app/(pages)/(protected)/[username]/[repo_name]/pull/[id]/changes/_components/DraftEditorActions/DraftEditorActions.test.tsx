@@ -77,7 +77,8 @@ describe("DraftEditorActions", () => {
         screen.getByRole("button", { name: "Arrow up" }),
       ).not.toHaveAttribute("disabled");
     });
-    it("is disabled when draft is blank!", () => {      mockUseMarkdownEditorContext.mockReturnValue({
+    it("is disabled when draft is blank", () => {
+      mockUseMarkdownEditorContext.mockReturnValue({
         editorContent: "",
       });
       render(<DraftEditorActions draft={mockDraft} />);
