@@ -4,20 +4,15 @@ import { getExampleThreadDraftItem1 } from "@/mocks/tests/threads";
 import userEvent from "@testing-library/user-event";
 import DraftEditorActions from "./DraftEditorActions";
 
+const mockUseSubmitDraftItem = jest.fn();
+const mockUseMarkdownEditorContext = jest.fn();
+
 jest.mock("next/navigation", () => ({
   useParams: () => ({
     username: "owner",
     repo_name: "repo",
     id: "1",
   }),
-}));
-
-const mockUseSubmitDraftItem = jest.fn();
-const mockUseMarkdownEditorContext = jest.fn();
-
-jest.mock("@components/LoadingSpinner/LoadingSpinner", () => ({
-  __esModule: true,
-  default: () => <div data-testid="loading-spinner" />,
 }));
 
 jest.mock("../../_hooks/useSubmitDraftItem", () => ({
@@ -28,17 +23,41 @@ jest.mock("@components/MarkdownEditor/MarkdownEditorContext", () => ({
   useMarkdownEditorContext: () => mockUseMarkdownEditorContext(),
 }));
 
+jest.mock(
+  "@/app/(pages)/_components/EditorSubmitButton/EditorSubmitButton",
+  () => ({
+    __esModule: true,
+    default: ({
+      isSubmitPending,
+      isDisabled,
+      handleSubmit,
+    }: {
+      isSubmitPending: boolean;
+      isDisabled: boolean;
+      handleSubmit: () => void;
+    }) => (
+      <div
+        data-testid="editor-submit-button"
+        data-submit-pending={isSubmitPending}
+        data-disabled={isDisabled}
+        onClick={handleSubmit}
+      />
+    ),
+  }),
+);
+
 describe("DraftEditorActions", () => {
   const mockDraft = getExampleThreadDraftItem1();
+  const mockHandleSubmit = jest.fn();
 
   const defaultUseSubmitDraftItem = {
     isSubmitPending: false,
     isPullPending: false,
-    handleSubmit: jest.fn(),
+    handleSubmit: mockHandleSubmit,
   };
 
   const defaultUseMarkdownEditorContext = {
-    editorContent: "example-editor-content",
+    editorContent: "test-editor-content",
   };
 
   beforeEach(() => {
@@ -49,60 +68,89 @@ describe("DraftEditorActions", () => {
     );
   });
 
-  describe("loading spinner", () => {
-    it("renders loading spinner if submit is pending", () => {
-      mockUseSubmitDraftItem.mockReturnValue({
-        ...defaultUseSubmitDraftItem,
-        isSubmitPending: true,
+  describe("EditorSubmitButton", () => {
+    it("renders in the document", () => {
+      render(<DraftEditorActions draft={mockDraft} />);
+      expect(screen.getByTestId("editor-submit-button")).toBeInTheDocument();
+    });
+
+    describe("isSubmitPending prop", () => {
+      it("passes true when submit is pending", () => {
+        mockUseSubmitDraftItem.mockReturnValue({
+          ...defaultUseSubmitDraftItem,
+          isSubmitPending: true,
+        });
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-submit-pending",
+          "true",
+        );
       });
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
-    });
 
-    it("does not render loading spinner if submit is not pending", () => {
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(screen.queryByTestId("loading-spinner")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("publish button", () => {
-    it("renders the publish button", () => {
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(screen.getByAltText("Arrow up")).toBeInTheDocument();
-    });
-
-    it("is enabled when neither draft is blank nor pull is pending", () => {
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(
-        screen.getByRole("button", { name: "Arrow up" }),
-      ).not.toHaveAttribute("disabled");
-    });
-    it("is disabled when draft is blank", () => {
-      mockUseMarkdownEditorContext.mockReturnValue({
-        editorContent: "",
+      it("passes false when submit is not pending", () => {
+        mockUseSubmitDraftItem.mockReturnValue({
+          ...defaultUseSubmitDraftItem,
+          isSubmitPending: false,
+        });
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-submit-pending",
+          "false",
+        );
       });
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(screen.getByRole("button", { name: "Arrow up" })).toHaveAttribute(
-        "disabled",
-      );
     });
 
-    it("is disabled when pull is pending", () => {
-      mockUseSubmitDraftItem.mockReturnValue({
-        ...defaultUseSubmitDraftItem,
-        isPullPending: true,
+    describe("isDisabled prop", () => {
+      it("is enabled when neither draft is blank nor pull is pending", () => {
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-disabled",
+          "false",
+        );
       });
-      render(<DraftEditorActions draft={mockDraft} />);
-      expect(screen.getByRole("button", { name: "Arrow up" })).toHaveAttribute(
-        "disabled",
-      );
+
+      it("is disabled when draft is blank", () => {
+        mockUseMarkdownEditorContext.mockReturnValue({
+          editorContent: "",
+        });
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-disabled",
+          "true",
+        );
+      });
+
+      it("is disabled when draft contains only whitespace", () => {
+        mockUseMarkdownEditorContext.mockReturnValue({
+          editorContent: "   \n \t ",
+        });
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-disabled",
+          "true",
+        );
+      });
+
+      it("is disabled when pull is pending", () => {
+        mockUseSubmitDraftItem.mockReturnValue({
+          ...defaultUseSubmitDraftItem,
+          isPullPending: true,
+        });
+        render(<DraftEditorActions draft={mockDraft} />);
+        expect(screen.getByTestId("editor-submit-button")).toHaveAttribute(
+          "data-disabled",
+          "true",
+        );
+      });
     });
 
-    it("calls handleSubmit on click", async () => {
-      const user = userEvent.setup();
-      render(<DraftEditorActions draft={mockDraft} />);
-      await user.click(screen.getByRole("button", { name: "Arrow up" }));
-      expect(defaultUseSubmitDraftItem.handleSubmit).toHaveBeenCalledTimes(1);
+    describe("handleSubmit prop", () => {
+      it("calls submit handler on click", async () => {
+        const user = userEvent.setup();
+        render(<DraftEditorActions draft={mockDraft} />);
+        await user.click(screen.getByTestId("editor-submit-button"));
+        expect(mockHandleSubmit).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

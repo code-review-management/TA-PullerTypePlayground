@@ -4,22 +4,7 @@ import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_
 
 type FileDraftThreadItem = Extract<DraftThreadItem, { subjectType: "file" }>;
 type LineDraftThreadItem = Extract<DraftThreadItem, { subjectType: "line" }>;
-
-export function getExampleThreadDraftItem1(): DraftItem {
-  return {
-    type: "thread",
-    payload: {
-      oldPath: "old-path.ts",
-      activePath: "active-path.ts",
-      fileStatus: "modified",
-      body: "example-body",
-      subjectType: "line",
-      start: 1,
-      end: 5,
-      side: "old",
-    },
-  };
-}
+type ThreadDraftItem = Extract<DraftItem, { type: "thread" }>;
 
 export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
@@ -56,6 +41,13 @@ export function getExampleLineDraftThreadItem1(): LineDraftThreadItem {
     start: 1,
     end: 5,
     side: "new",
+  };
+}
+
+export function getExampleThreadDraftItem1(): ThreadDraftItem {
+  return {
+    type: "thread",
+    payload: getExampleLineDraftThreadItem1(),
   };
 }
 
