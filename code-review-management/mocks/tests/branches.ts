@@ -6,7 +6,7 @@ export function getDefaultBranch(): Branch {
   return {
     label: "",
     ref: "",
-    sha: "test-branch-sha",
+    sha: "",
     user: getDefaultUser(),
     repo: getDefaultRepo(),
   };
