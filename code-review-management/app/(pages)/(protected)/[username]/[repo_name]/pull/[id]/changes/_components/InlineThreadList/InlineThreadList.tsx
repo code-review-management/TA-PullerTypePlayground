@@ -85,7 +85,6 @@ export function ThreadList({
   return (
     <div className={styles.list}>
       {publishedThreads.map((publishedThread) => {
-        console.log("published thread!");
         return (
           <InlinePublishedThread
             key={publishedThread.id}

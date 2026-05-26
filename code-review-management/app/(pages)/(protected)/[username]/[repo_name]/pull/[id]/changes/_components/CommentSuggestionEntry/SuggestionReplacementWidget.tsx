@@ -1,7 +1,7 @@
-import React, { ReactNode, useMemo, Fragment, useState, useEffect } from 'react';
+import { ReactNode, useMemo, Fragment, useState } from 'react';
 import refractor from 'refractor';
 import { SuggestiveComment } from "./suggestionParser";
-import { IsSuggestionOutdated } from './suggestionValidator';
+import { isSuggestionOutdated } from './suggestionValidator';
 import { SuggestionModuleContent } from '../SuggestionModulePopup/SuggestionModulePopup';
 import styles from "./SuggestionReplacementWidget.module.css"
 import { getLanguage } from '../../_utils/diff-utils';
@@ -62,7 +62,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const deletionNodes = useMemo<ASTNode[]>(() => {
     try {
       return refractor.highlight(suggestion.deletionContent, language) as ASTNode[];
-    } catch (e) {
+    } catch {
       return [{ type: 'text', value: suggestion.deletionContent }];
     }
   }, [suggestion.deletionContent, language]);
@@ -70,7 +70,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
   const additionNodes = useMemo<ASTNode[]>(() => {
     try {
       return refractor.highlight(suggestion.additionContent, language) as ASTNode[];
-    } catch (e) {
+    } catch {
       return [{ type: 'text', value: suggestion.additionContent }];
     }
   }, [suggestion.additionContent, language]);
@@ -89,7 +89,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
 
   const outdated = useMemo(() => {
     if (isSuccess && fileContent) {
-      return IsSuggestionOutdated(fileContent, deletionContent, adjustedStartLine);
+      return isSuggestionOutdated(fileContent, deletionContent, adjustedStartLine);
     }
     return false;
   }, [isSuccess, fileContent, deletionContent, adjustedStartLine]);
@@ -137,7 +137,7 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
 
           {suggestion.isCommited && (
             <div className={styles.commitedContainer}>
-              Commited
+              Committed
             </div>
           )}
 
@@ -173,19 +173,21 @@ export function SuggestionReplacementWidget({ suggestion, activePath, startLine,
           </div>
         </div>
 
-        {activeTab === 'replace' ? (
-          <pre>
-            <code>
-              {deletionNodes.map((node, i) => renderASTNode(node, i))}
-            </code>
-          </pre>
-        ) : (
-          <pre>
-            <code>
-              {additionNodes.map((node, i) => renderASTNode(node, i))}
-            </code>
-          </pre>
-        )}
+        <div className={styles.codeContainer}>
+          {activeTab === 'replace' ? (
+            <pre>
+              <code>
+                {deletionNodes.map((node, i) => renderASTNode(node, i))}
+              </code>
+            </pre>
+          ) : (
+            <pre>
+              <code>
+                {additionNodes.map((node, i) => renderASTNode(node, i))}
+              </code>
+            </pre>
+          )}
+        </div>
       </div>
     </>
   );

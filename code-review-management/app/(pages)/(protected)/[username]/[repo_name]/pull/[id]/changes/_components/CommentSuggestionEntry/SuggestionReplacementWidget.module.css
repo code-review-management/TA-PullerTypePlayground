@@ -1,10 +1,10 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacer-12);
-    margin: var(--spacer-12) 0;
-    overflow: hidden;
-    box-shadow: var(--box-shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-12);
+  margin: var(--spacer-12) 0;
+  overflow: hidden;
+  box-shadow: var(--box-shadow-soft);
 }
 
 .formalHeader {
@@ -27,11 +27,11 @@
   white-space: nowrap;
 }
 
-.buttonContainer{
+.buttonContainer {
   display: flex;
   align-items: center;
   gap: var(--spacer-12);
-  margin-left: auto; 
+  margin-left: auto;
 }
 
 .toggleGroup {
@@ -99,8 +99,8 @@
   border: 1px solid #444;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  
-  overflow: hidden; 
+
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -110,7 +110,7 @@
 }
 
 .commitedContainer {
-  margin: 0; 
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,4 +133,9 @@
   padding: 2px var(--spacer-8);
   font-size: var(--font-size-label);
   white-space: nowrap;
+}
+
+.codeContainer {
+  overflow-x: auto;
+  max-width: 100%;
 }

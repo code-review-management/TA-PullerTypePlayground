@@ -1,4 +1,4 @@
-export function IsSuggestionOutdated(
+export function isSuggestionOutdated(
   fileContent: string,
   deletionContent: string,
   adjustedStartLine: number,
