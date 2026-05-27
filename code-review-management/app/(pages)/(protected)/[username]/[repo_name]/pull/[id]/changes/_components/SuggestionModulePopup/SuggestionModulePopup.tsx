@@ -7,6 +7,8 @@ import { useParams } from "next/navigation";
 import { PullParams } from "@/types/routing.types";
 import { useCommitGeminiSuggestionMutation } from "@/lib/api/mutations/useCommitGeminiSuggestionMutation";
 import { usePermissionChecks } from "../../../_hooks/usePermissionChecks";
+import { usePullQuery } from "@/lib/api/queries/usePullQuery";
+import { getPullState } from "../../../_utils/pull-utils";
 
 export interface SuggestionPopupProp {
   commentID: number;
@@ -36,6 +38,7 @@ export function SuggestionModuleContent({
     useUpdateGeminiSuggestionMutation(username, repo_name, id);
   const { mutate: commitMutation, isPending: isCommitPending } =
     useCommitGeminiSuggestionMutation(username, repo_name, id);
+  const { data: pull, isLoading: isLoading } = usePullQuery(username, repo_name, id);
 
   const justFilename: string = filename.split('/').pop() || filename;
   const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") !== -1;
@@ -56,6 +59,15 @@ export function SuggestionModuleContent({
   const [originalCode, setOriginalCode] = useState(deletionContent);
   const [modifiedCode, setModifiedCode] = useState(additionContent);
 
+  const permissionChecks = usePermissionChecks();
+
+  // We make it return early while getting the pull state so nothing can render if need be
+  if (isLoading || !pull) {
+    return <div>Loading...</div>
+  }
+  
+  const state = getPullState(pull);
+  const isOpen: boolean = (state !== "merged") && (state !== "closed");
   /**
    *  This is the function we send to components to report back to this component
    *  if a change was made. It updates the code regions (bound changes also effect code)
@@ -167,7 +179,7 @@ export function SuggestionModuleContent({
         <div className={styles.popupLabel} title={filename}>
           {justFilename}
         </div>
-        {usePermissionChecks().hasWritePermission && (
+        {permissionChecks.hasWritePermission && isOpen && (
           <>
             <button
               className={
