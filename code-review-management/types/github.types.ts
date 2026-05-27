@@ -379,9 +379,7 @@ export const TimelineEventSchema = z
     StateChangeEventSchema, // event: closed, merged, reopened
   ])
   .nullable();
-
-import { z } from "zod";
-
+  
 export const FileContentSchema = z.object({
   type: z.literal("file"),
   encoding: z.string(),
