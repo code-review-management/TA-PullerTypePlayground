@@ -41,9 +41,8 @@ export function SuggestionModuleContent({
   const { data: pull, isLoading: isLoading } = usePullQuery(username, repo_name, id);
 
   const justFilename: string = filename.split('/').pop() || filename;
-  const hasCarriageReturn: boolean = fullFileCode.indexOf("\r") !== -1;
+  const hasCarriageReturn: boolean = fullFileCode.indexOf('\r') !== -1;
   const joinToken: string = hasCarriageReturn ? "\r\n" : "\n";
-
   const [updateChanges, setUpdateChanges] = useState(false);
   const [beforeCode, setBeforeCode] = useState(() => {
     const lines = fullFileCode.split(/\r?\n/);
@@ -56,8 +55,15 @@ export function SuggestionModuleContent({
     return lines.slice(replaceEndLine).join(joinToken);
   });
 
-  const [originalCode, setOriginalCode] = useState(deletionContent);
-  const [modifiedCode, setModifiedCode] = useState(additionContent);
+  const cleanedOriginalCode = hasCarriageReturn
+    ? deletionContent.replace(/\r?\n/g, "\r\n")
+    : deletionContent.replace(/\r/g, "");
+
+  const cleanedModifiedCode = hasCarriageReturn ?
+    additionContent.replace(/\r?\n/g, "\r\n")
+    : additionContent.replace(/\r/g, "");
+  const [originalCode, setOriginalCode] = useState(cleanedOriginalCode);
+  const [modifiedCode, setModifiedCode] = useState(cleanedModifiedCode);
 
   const permissionChecks = usePermissionChecks();
 
@@ -101,7 +107,7 @@ export function SuggestionModuleContent({
   const onUpdateClicked = () => {
     if (!updateChanges) return;
 
-    const beforeCodeLength: number = beforeCode.split("\n").length;
+    const beforeCodeLength: number = (beforeCode) ? beforeCode.split("\n").length : 0;
     const relativeLineLocation: number = beforeCodeLength + 1 - threadLine;
 
     const cleanedOriginalCode = hasCarriageReturn

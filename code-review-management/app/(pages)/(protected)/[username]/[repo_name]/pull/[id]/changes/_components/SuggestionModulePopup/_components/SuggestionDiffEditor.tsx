@@ -39,6 +39,7 @@ export function SuggestionDiffEditor(props: SuggestionDiffEditorProps) {
   const buildFullCode = (before: string, middle: string, after: string) => {
     const joinToken: string = hasCarriageReturn ? "\r\n" : "\n";
     const parts = [];
+
     if (before) parts.push(before);
     parts.push(middle !== undefined && middle !== null ? middle : "");
     if (after) parts.push(after);
