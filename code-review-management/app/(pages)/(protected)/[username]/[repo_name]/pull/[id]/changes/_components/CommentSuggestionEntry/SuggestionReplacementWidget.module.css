@@ -18,6 +18,7 @@
   border-top-right-radius: var(--border-radius);
   font-size: var(--font-size-label);
   flex-wrap: wrap;
+  overflow-x: auto;
 }
 
 .headerTitle {

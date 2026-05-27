@@ -32,7 +32,7 @@ export function useCommitGeminiSuggestionMutation(
       queryClient.invalidateQueries({
         queryKey: ["timeline", owner, repo, pullNumber],
       });
-      
+
       toast.success("Suggestion successfully committed, refresh to see changes!", { duration: 10000 });
     },
     onError: () => {

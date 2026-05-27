@@ -18,7 +18,7 @@ export function isSuggestionOutdated(
     if (fileIndex >= fileLineLength) return true;
 
     if (deletionLines[i] !== fileLines[fileIndex]) {
-        return true;
+      return true;
     }
   }
 

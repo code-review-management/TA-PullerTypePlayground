@@ -77,17 +77,17 @@ export async function POST(req: Request, context: RouteContext) {
       return new Response("No SHA at PR head", { status: 400 });
     }
 
-    octokit.rest.repos.createOrUpdateFileContents({
+    await octokit.rest.repos.createOrUpdateFileContents({
       owner,
       repo,
       path: filename,
-      message: "Commiting suggestion",
+      message: "Committing suggestion",
       content: encodedContent,
       sha: fileSha,
       branch: branchName,
     })
 
-    await updateGeminiComment(octokit, owner, repo, suggestionData, true)
+    await updateGeminiComment(octokit, owner, repo, suggestionData, true);
 
     return new Response(JSON.stringify({ message: "Success" }), {
       status: 200,

@@ -65,7 +65,7 @@ export function SuggestionModuleContent({
   if (isLoading || !pull) {
     return <div>Loading...</div>
   }
-  
+
   const state = getPullState(pull);
   const isOpen: boolean = (state !== "merged") && (state !== "closed");
   /**
