@@ -14,7 +14,9 @@ import {
   createClosedEvent,
   createCommentedEvent,
   createCommittedEvent,
+  createReviewEventWithComments,
   createReviewRequestedEvent,
+  createReviewWithEmptyCreatedAtComment,
   createReviewedEvent,
 } from "@/mocks/tests/timeline-events";
 
@@ -356,40 +358,7 @@ describe("TimelineDisplay", () => {
   });
 
   it("renders reviews with inline review comments", () => {
-    const reviewed = {
-      ...createReviewedEvent({
-        id: 15,
-        user: reviewer,
-        state: "COMMENTED",
-      }),
-      comments: [
-        {
-          pull_request_review_id: 1,
-          id: 101,
-          diff_hunk: "",
-          path: "file.ts",
-          commit_id: "abc",
-          original_commit_id: "abc",
-          user: reviewer,
-          body: "Inline review comment",
-          created_at: "2026-01-04T00:00:00Z",
-          updated_at: "2026-01-04T00:00:00Z",
-          reactions: {
-            total_count: 0,
-            "+1": 0,
-            "-1": 0,
-            laugh: 0,
-            hooray: 0,
-            confused: 0,
-            heart: 0,
-            rocket: 0,
-            eyes: 0,
-          },
-          side: "RIGHT",
-          author_association: "CONTRIBUTOR",
-        } as unknown as ReviewComment,
-      ],
-    } as unknown as TimelineEvent;
+    const reviewed = createReviewEventWithComments(reviewer);
     mockProcessedTimeline({
       beforeCloseTimeline: [
         {
@@ -1032,46 +1001,7 @@ describe("TimelineEventDisplay", () => {
   it("renders inline review comments with empty createdAt fallback", () => {
     render(
       <TimelineReview
-        event={
-          {
-            displayType: "other",
-            eventType: "commented_review",
-            eventObj: {
-              ...createReviewedEvent({
-                id: 42,
-                user: reviewer,
-                state: "COMMENTED",
-              }),
-              comments: [
-                {
-                  pull_request_review_id: 1,
-                  id: 103,
-                  diff_hunk: "",
-                  path: "file.ts",
-                  commit_id: "abc",
-                  original_commit_id: "abc",
-                  user: reviewer,
-                  body: "No timestamp",
-                  updated_at: "2026-01-10T00:00:00Z",
-                  reactions: {
-                    total_count: 0,
-                    "+1": 0,
-                    "-1": 0,
-                    laugh: 0,
-                    hooray: 0,
-                    confused: 0,
-                    heart: 0,
-                    rocket: 0,
-                    eyes: 0,
-                  },
-                  side: "RIGHT",
-                  author_association: "CONTRIBUTOR",
-                } as unknown as ReviewComment,
-              ],
-            } as unknown as TimelineEvent,
-            eventKey: "reviewed-42",
-          } as processedTimelineEvent
-        }
+        event={createReviewWithEmptyCreatedAtComment(reviewer)}
       />,
     );
 

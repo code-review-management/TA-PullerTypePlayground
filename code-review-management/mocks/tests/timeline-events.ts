@@ -1,4 +1,14 @@
-import { TimelineEvent, User } from "@/types/github.types";
+import {
+  AssignIssueEvent,
+  CommentEvent,
+  CommittedEvent,
+  ReviewedEvent,
+  ReviewRequestEvent,
+  TimelineEvent,
+  User,
+} from "@/types/github.types";
+import { getExampleInlineCommentWithUser } from "./comments";
+import { processedTimelineEvent } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/_utils/timeline-utils";
 
 export function createReviewRequestedEvent({
   id,
@@ -10,7 +20,7 @@ export function createReviewRequestedEvent({
   actor: User;
   reviewRequester: User;
   requestedReviewer: User;
-}): TimelineEvent {
+}): ReviewRequestEvent {
   return {
     id,
     url: "",
@@ -30,7 +40,7 @@ export function createAssignedEvent({
   id: number;
   actor: User;
   assignee: User;
-}): TimelineEvent {
+}): AssignIssueEvent {
   return {
     id,
     url: "",
@@ -49,7 +59,7 @@ export function createReviewedEvent({
   id: number;
   user: User;
   state: string;
-}): TimelineEvent {
+}): ReviewedEvent {
   return {
     id,
     event: "reviewed",
@@ -68,7 +78,7 @@ export function createCommittedEvent({
 }: {
   sha: string;
   authorName: string;
-}): TimelineEvent {
+}): CommittedEvent {
   return {
     event: "committed",
     sha,
@@ -114,7 +124,7 @@ export function createCommentedEvent({
   actor: User;
   body: string;
   createdAt: string;
-}): TimelineEvent {
+}): CommentEvent {
   return {
     id,
     url: "",
@@ -136,5 +146,40 @@ export function createCommentedEvent({
       rocket: 0,
       eyes: 0,
     },
+  };
+}
+
+export function createReviewEventWithComments(reviewer: User): TimelineEvent {
+  return {
+    ...createReviewedEvent({
+      id: 15,
+      user: reviewer,
+      state: "COMMENTED",
+    }),
+    comments: [getExampleInlineCommentWithUser(reviewer)],
+  };
+}
+
+export function createReviewWithEmptyCreatedAtComment(
+  reviewer: User,
+): processedTimelineEvent {
+  return {
+    iconName: "",
+    message: "",
+    actor1: reviewer.login,
+    actor2: null,
+    displayType: "other",
+    eventType: "commented_review",
+    eventObj: {
+      ...createReviewedEvent({
+        id: 42,
+        user: reviewer,
+        state: "COMMENTED",
+      }),
+      comments: [
+        { ...getExampleInlineCommentWithUser(reviewer), created_at: undefined },
+      ],
+    } as unknown as TimelineEvent,
+    eventKey: "reviewed-42",
   };
 }
