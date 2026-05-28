@@ -266,7 +266,9 @@ describe("getTimelineEvent", () => {
       eventKey: "assigned-3",
     });
 
-    expect(getTimelineEvent(createClosedEvent({ id: 4, actor }), 0)).toMatchObject({
+    expect(
+      getTimelineEvent(createClosedEvent({ id: 4, actor }), 0),
+    ).toMatchObject({
       eventType: "closed",
       displayType: "other",
       iconName: "",
@@ -341,7 +343,8 @@ describe("processTimeline", () => {
       null,
     ];
 
-    const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(timeline);
+    const { beforeCloseTimeline, afterCloseTimeline } =
+      processTimeline(timeline);
     expect(afterCloseTimeline).toEqual([]);
     expect(beforeCloseTimeline).toHaveLength(5);
 
@@ -417,7 +420,8 @@ describe("processTimeline", () => {
       }),
     ];
 
-    const { beforeCloseTimeline, afterCloseTimeline } = processTimeline(timeline);
+    const { beforeCloseTimeline, afterCloseTimeline } =
+      processTimeline(timeline);
 
     expect(afterCloseTimeline.map((event) => event.eventKey)).toEqual([
       "reviewed-23",
