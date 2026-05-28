@@ -103,3 +103,38 @@ export function createClosedEvent({
     state_reason: null,
   };
 }
+
+export function createCommentedEvent({
+  id,
+  actor,
+  body,
+  createdAt,
+}: {
+  id: number;
+  actor: User;
+  body: string;
+  createdAt: string;
+}): TimelineEvent {
+  return {
+    id,
+    url: "",
+    actor,
+    event: "commented",
+    created_at: createdAt,
+    updated_at: createdAt,
+    body,
+    user: actor,
+    author_association: "CONTRIBUTOR",
+    reactions: {
+      total_count: 0,
+      "+1": 0,
+      "-1": 0,
+      laugh: 0,
+      hooray: 0,
+      confused: 0,
+      heart: 0,
+      rocket: 0,
+      eyes: 0,
+    },
+  };
+}
