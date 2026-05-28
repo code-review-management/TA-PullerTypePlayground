@@ -2,6 +2,7 @@ import {
   AssignIssueEvent,
   CommentEvent,
   CommittedEvent,
+  ReviewComment,
   ReviewedEvent,
   ReviewRequestEvent,
   TimelineEvent,
@@ -149,15 +150,24 @@ export function createCommentedEvent({
   };
 }
 
-export function createReviewEventWithComments(reviewer: User): TimelineEvent {
+export function createReviewEventWithComments(
+  reviewer: User,
+  comments: ReviewComment[],
+): TimelineEvent {
   return {
     ...createReviewedEvent({
       id: 15,
       user: reviewer,
       state: "COMMENTED",
     }),
-    comments: [getExampleInlineCommentWithUser(reviewer)],
+    comments: comments,
   };
+}
+
+export function createExampleReviewEventWithComments1(reviewer: User) {
+  return createReviewEventWithComments(reviewer, [
+    getExampleInlineCommentWithUser(reviewer),
+  ]);
 }
 
 export function createReviewWithEmptyCreatedAtComment(

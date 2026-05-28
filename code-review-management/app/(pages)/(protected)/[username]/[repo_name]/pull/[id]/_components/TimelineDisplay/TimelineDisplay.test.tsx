@@ -14,7 +14,7 @@ import {
   createClosedEvent,
   createCommentedEvent,
   createCommittedEvent,
-  createReviewEventWithComments,
+  createExampleReviewEventWithComments1,
   createReviewRequestedEvent,
   createReviewWithEmptyCreatedAtComment,
   createReviewedEvent,
@@ -358,7 +358,7 @@ describe("TimelineDisplay", () => {
   });
 
   it("renders reviews with inline review comments", () => {
-    const reviewed = createReviewEventWithComments(reviewer);
+    const reviewed = createExampleReviewEventWithComments1(reviewer);
     mockProcessedTimeline({
       beforeCloseTimeline: [
         {
