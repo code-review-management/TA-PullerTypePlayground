@@ -1,14 +1,15 @@
 /*
-/api/v1/{owner}/{repo}/pulls/{pull_number}/suggest
+/api/v1/{owner}/{repo}/pulls/{pull_number}/suggest/update
 
 *NOT TO BE POLLED*
 */
 
 import { getCookieName } from "@/app/api/_utils/cookie-utils";
-import { generateSuggestion } from "@/lib/api/gemini/geminiOrchestrator";
-import { ThreadSuggestionRequestSchema } from "@/types/request.types";
+import { updateGeminiComment } from "@/lib/api/gemini/geminiCommentor";
+import { SuggestionCommentUpdateRequestSchema } from "@/types/request.types";
 import { getToken } from "next-auth/jwt";
 import { Octokit, RequestError } from "octokit";
+import { treeifyError } from "zod";
 
 type RouteContext = {
   params: Promise<{
@@ -35,13 +36,11 @@ export async function POST(req: Request, context: RouteContext) {
   }
 
   const { owner, repo, pull_number } = await context.params;
-  const castedPullNumber: number = Number(pull_number);
-
   const reqBody = await req.json();
-  const reqArgs = ThreadSuggestionRequestSchema.safeParse(reqBody);
+  const reqArgs = SuggestionCommentUpdateRequestSchema.safeParse(reqBody);
 
   // Validate required parameters
-  if (!owner || !repo || !castedPullNumber) {
+  if (!owner || !repo || !pull_number) {
     return Response.json(
       { error: "Missing required parameters" },
       { status: 400 },
@@ -50,22 +49,31 @@ export async function POST(req: Request, context: RouteContext) {
 
   // Validate request parameters
   if (!reqArgs.success) {
-    const error = JSON.parse(reqArgs.error.message);
-    console.log(error);
-    return Response.json({ error: error[0]["message"] }, { status: 400 });
+    return Response.json(
+      {
+        error: "Invalid query parameters",
+        details: treeifyError(reqArgs.error),
+      },
+      { status: 400 },
+    );
   }
 
+  const suggestionUpdateData = reqArgs.data;
+
+  const octokit = new Octokit({ auth: token.accessToken });
+
   try {
-    const octokit = new Octokit({ auth: token.accessToken });
-    await generateSuggestion(
+    const response = await updateGeminiComment(
       octokit,
-      reqArgs.data,
       owner,
       repo,
-      castedPullNumber,
+      suggestionUpdateData,
     );
+    if (response === null) {
+      throw new Error("Error occured in update function, it returned null");
+    }
 
-    return new Response(JSON.stringify({ message: "Success" }), {
+    return new Response(JSON.stringify(response, null, 2), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
