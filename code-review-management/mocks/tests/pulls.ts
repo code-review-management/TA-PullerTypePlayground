@@ -48,14 +48,14 @@ export function getExamplePull1(): PullRequest {
     head: {
       label: "",
       ref: "example-head-ref",
-      sha: "",
+      sha: "example-head-sha",
       user: getExampleUser1(),
       repo: getExampleRepo1(),
     },
     base: {
       label: "",
       ref: "example-base-ref",
-      sha: "",
+      sha: "example-base-sha",
       user: getExampleUser1(),
       repo: getExampleRepo1(),
     },
