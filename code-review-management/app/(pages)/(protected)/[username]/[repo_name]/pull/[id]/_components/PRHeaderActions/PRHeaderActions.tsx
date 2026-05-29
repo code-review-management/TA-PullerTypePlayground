@@ -11,7 +11,7 @@ import MergePopover from "../MergePopover/MergePopover";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
 import { useParams } from "next/navigation";
 
-type PRHeaderPopovers = "review" | "merge" | "commit" | "resolve";
+type PRHeaderPopovers = "review" | "merge" | "commit";
 
 /**
  * Shared action buttons for the PR overview and PR changes page-headers. The
@@ -51,7 +51,7 @@ export default function PRHeaderActions({
     hasWritePermission && !pull.merged && pull.state === "open";
 
   const showResolveButton =
-    hasWritePermission && pull.mergeable_state === "dirty" && pull.head && pull.base;
+    hasWritePermission && pull.state === "open" && pull.mergeable_state === "dirty" && pull.head && pull.base;
   const resolutionHRef = showResolveButton ? `/${username}/${repo_name}/pull/${id}/conflict-resolution?target_branch=${pull.base?.ref}&feature_branch=${pull.head?.ref}` : "";
 
   const isMergeDisabled = !canMerge(pull);
