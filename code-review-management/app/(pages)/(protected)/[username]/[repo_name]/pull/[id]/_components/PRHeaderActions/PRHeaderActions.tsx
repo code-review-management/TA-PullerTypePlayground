@@ -9,8 +9,9 @@ import CommitPicker from "../../changes/_components/CommitPicker/CommitPicker";
 import HeaderButton from "@components/HeaderButton/HeaderButton";
 import MergePopover from "../MergePopover/MergePopover";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
+import { resolve } from "path";
 
-type PRHeaderPopovers = "review" | "merge" | "commit";
+type PRHeaderPopovers = "review" | "merge" | "commit" | "resolve";
 
 /**
  * Shared action buttons for the PR overview and PR changes page-headers. The
@@ -32,7 +33,9 @@ export default function PRHeaderActions({
   pull: PullRequest;
   showCommitPicker?: boolean;
 }) {
-  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(null);
+  const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(
+    null,
+  );
   const { hasCommentPermission, hasWritePermission } = usePermissionChecks();
 
   const togglePopover = (popover: PRHeaderPopovers) => {
@@ -43,7 +46,10 @@ export default function PRHeaderActions({
   const toggleCommit = () => togglePopover("commit");
 
   const showReviewButton = hasCommentPermission;
-  const showMergeButton = hasWritePermission && !pull.merged && pull.state === "open";
+  const showMergeButton =
+    hasWritePermission && !pull.merged && pull.state === "open";
+  const showResolveButton =
+    hasWritePermission && pull.mergeable_state === "dirty" && pull.head && pull.base;
   const isMergeDisabled = !canMerge(pull);
 
   return (
@@ -65,7 +71,9 @@ export default function PRHeaderActions({
           buttonLabel="Add review"
           buttonVariant="secondary"
           isPopoverOpen={activePopover === "review"}
-          popoverContent={<AddReviewPopover pull={pull} togglePopover={toggleReview} />}
+          popoverContent={
+            <AddReviewPopover pull={pull} togglePopover={toggleReview} />
+          }
           onToggle={toggleReview}
         />
       )}
@@ -73,12 +81,12 @@ export default function PRHeaderActions({
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
-          popoverContent={<MergePopover pull={pull} togglePopover={toggleMerge} />}
+          popoverContent={
+            <MergePopover pull={pull} togglePopover={toggleMerge} />
+          }
           onToggle={toggleMerge}
-          // TODO: Also disable if the user does not have appropriate write permissions.
           isDisabled={isMergeDisabled}
           {...(isMergeDisabled && {
-            // TODO: Replace with more descriptive message.
             tooltip: "Pull request cannot be merged",
           })}
         />
