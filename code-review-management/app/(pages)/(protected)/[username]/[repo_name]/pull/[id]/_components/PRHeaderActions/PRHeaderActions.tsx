@@ -9,7 +9,7 @@ import CommitPicker from "../../changes/_components/CommitPicker/CommitPicker";
 import HeaderButton from "@components/HeaderButton/HeaderButton";
 import MergePopover from "../MergePopover/MergePopover";
 import PRHeaderPopoverButton from "../PRHeaderPopoverButton/PRHeaderPopoverButton";
-import { resolve } from "path";
+import { useParams } from "next/navigation";
 
 type PRHeaderPopovers = "review" | "merge" | "commit" | "resolve";
 
@@ -36,6 +36,7 @@ export default function PRHeaderActions({
   const [activePopover, setActivePopover] = useState<PRHeaderPopovers | null>(
     null,
   );
+  const { username, repo_name, id } = useParams();
   const { hasCommentPermission, hasWritePermission } = usePermissionChecks();
 
   const togglePopover = (popover: PRHeaderPopovers) => {
@@ -48,8 +49,11 @@ export default function PRHeaderActions({
   const showReviewButton = hasCommentPermission;
   const showMergeButton =
     hasWritePermission && !pull.merged && pull.state === "open";
+
   const showResolveButton =
     hasWritePermission && pull.mergeable_state === "dirty" && pull.head && pull.base;
+  const resolutionHRef = showResolveButton ? `/${username}/${repo_name}/pull/${id}/conflict-resolution?target_branch=${pull.base?.ref}&feature_branch=${pull.head?.ref}` : "";
+
   const isMergeDisabled = !canMerge(pull);
 
   return (
@@ -77,7 +81,7 @@ export default function PRHeaderActions({
           onToggle={toggleReview}
         />
       )}
-      {showMergeButton && (
+      {showMergeButton && !showResolveButton && (
         <PRHeaderPopoverButton
           buttonLabel="Merge"
           isPopoverOpen={activePopover === "merge"}
@@ -91,6 +95,12 @@ export default function PRHeaderActions({
           })}
         />
       )}
+      {showResolveButton && (
+        <HeaderButton href={resolutionHRef} variant="tertiary">
+          {"Resolve"}
+        </HeaderButton>
+      )
+      }
     </>
   );
 }
