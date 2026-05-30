@@ -13,10 +13,7 @@
 
 .line {
     padding: 4px;
-    height: 21px;
-    line-height: 1;
-    white-space: pre-wrap;
-    font-family: monospace;
+    margin: 2px;
     display: flex;
     align-items: center;
     justify-content: space-between;

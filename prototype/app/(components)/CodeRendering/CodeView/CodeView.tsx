@@ -13,17 +13,9 @@ export default function CodeView({
         <div className={styles.codeView}>
             <pre className={styles.codeBlock}>
                 <code>
-                    {lines.map((line, idx) => (
-                        <span
-                            key={idx}
-                            className={`${styles.line} ${
-                                line.isAdded ? styles.lineAdded : ""
-                            } ${
-                                line.isRemoved ? styles.lineRemoved : ""
-                            }`}
-                        >
+                    {lines.map((line) => (
+                        <span>
                             {line.value}
-                            {"\n"}
                         </span>
                     ))}
                 </code>
