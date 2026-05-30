@@ -32,7 +32,7 @@ export default function ReactDiffView() {
   return (
     <Stack spacing={2}>
       <Button
-        size="small"
+        size="large"
         variant="contained"
         onClick={() => {
           setViewType((prevViewType) =>
