@@ -18,12 +18,6 @@ export const MockComments: MockCommentThread = {
   end_line: 10,
   comments: [
     {
-      id: 122,
-      username: "octocat",
-      date: "Feb 9, 2026",
-      content: "Why is the line needed?",
-    },
-    {
       id: 123,
       username: "octodog",
       date: "Feb 10, 2026",

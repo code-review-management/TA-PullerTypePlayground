@@ -32,8 +32,6 @@ export default function ReactDiffView() {
   return (
     <Stack spacing={2}>
       <Button
-        size="small"
-        variant="contained"
         onClick={() => {
           setViewType((prevViewType) =>
             prevViewType === "split" ? "unified" : "split",
