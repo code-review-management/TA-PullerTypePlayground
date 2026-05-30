@@ -40,7 +40,7 @@ export default function ReactDiffView() {
           );
         }}
         sx={{
-          alignSelf: "flex-end",
+          alignSelf: "center",
         }}
       >
         Toggle View

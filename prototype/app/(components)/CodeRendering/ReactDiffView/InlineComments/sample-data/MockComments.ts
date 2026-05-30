@@ -24,7 +24,7 @@ export const MockComments: MockCommentThread = {
       content: "Why is the line necessary?",
     },
     {
-      id: 123,
+      id: 124,
       username: "octodog",
       date: "Feb 10, 2026",
       content: "LGTM!",
