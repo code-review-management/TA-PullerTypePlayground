@@ -6,6 +6,7 @@ export type Repo = z.infer<typeof RepoSchema>;
 export type Issue = z.infer<typeof IssueSchema>;
 export type Branch = z.infer<typeof BranchSchema>;
 export type PullRequest = z.infer<typeof PullRequestSchema>;
+export type Commit = z.infer<typeof CommitSchema>;
 export type FileDiff = z.infer<typeof FileDiffSchema>;
 export type Reaction = z.infer<typeof ReactionSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
@@ -38,11 +39,7 @@ const authorAssociation = [
   "OWNER",
 ] as const;
 const repoVisibility = ["public", "private", "internal"] as const;
-const reviewState = [
-  "APPROVED",
-  "CHANGES_REQUESTED",
-  "COMMENTED",
-] as const;
+const reviewState = ["APPROVED", "CHANGES_REQUESTED", "COMMENTED"] as const;
 
 export const UserSchema = z.object({
   login: z.string(),
@@ -210,6 +207,25 @@ export const ReviewSchema = z.object({
   state: z.enum(reviewState),
   submitted_at: z.string().optional(),
   author_association: z.enum(authorAssociation),
+});
+
+export const CommitSchema = z.object({
+  url: z.string(),
+  sha: z.string(),
+  commit: z.object({
+    message: z.string(),
+    author: UserIdentitySchema,
+    committer: UserIdentitySchema,
+  }),
+  author: UserSchema.nullable(),
+  committer: UserSchema.nullable(),
+  stats: z
+    .object({
+      additions: z.number(),
+      deletions: z.number(),
+      total: z.number(),
+    })
+    .optional(),
 });
 
 export const CommitCommentSchema = z.object({
