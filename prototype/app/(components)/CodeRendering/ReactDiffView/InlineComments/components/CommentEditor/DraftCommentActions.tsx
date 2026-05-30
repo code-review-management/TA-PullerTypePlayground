@@ -39,7 +39,7 @@ export default function DraftCommentActions({
         sx={{
           p: 0,
           bgcolor: "primary.main",
-          color: "primary.contrastText",
+          color: "gray",
         }}
         onClick={handlePublishDraft}
       >
