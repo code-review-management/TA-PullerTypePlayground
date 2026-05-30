@@ -17,9 +17,9 @@ export default function CodeView({
                         <span
                             key={idx}
                             className={`${styles.line} ${
-                                line.isAdded ? styles.lineAdded : ""
+                                line.isAdded ? styles.lineInserted : styles.fallback
                             } ${
-                                line.isRemoved ? styles.lineRemoved : ""
+                                line.isRemoved ? styles.lineDeleted : styles.fallback
                             }`}
                         >
                             {line.value}
