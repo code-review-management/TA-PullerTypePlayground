@@ -34,6 +34,9 @@ export default function FormattingToolbar({
           height: "20px",
         },
         ".MuiSvgIcon-root": {
+          width: "1rem",
+        },
+        ".MuiSvgIcon-root": {
           fontSize: "1rem",
         },
         alignSelf: "flex-end",
