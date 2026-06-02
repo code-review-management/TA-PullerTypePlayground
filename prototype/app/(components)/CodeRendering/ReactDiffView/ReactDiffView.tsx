@@ -32,15 +32,14 @@ export default function ReactDiffView() {
   return (
     <Stack spacing={2}>
       <Button
-        size="small"
-        variant="contained"
+        size="medium"
         onClick={() => {
           setViewType((prevViewType) =>
             prevViewType === "split" ? "unified" : "split",
           );
         }}
         sx={{
-          alignSelf: "flex-end",
+          alignSelf: "flex-start",
         }}
       >
         Toggle View

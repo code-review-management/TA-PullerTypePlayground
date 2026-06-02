@@ -1,4 +1,5 @@
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useRouter } from "@bprogress/next/app";
 import { PullParams } from "@/types/routing.types";
 import { useChangesViewMode } from "../../_hooks/useChangesViewMode";
 import { useCommitPickerContext } from "../../../_contexts/CommitPickerContext";

@@ -11,11 +11,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import PRViewComment from "../PRViewComment/PRViewComment";
-import UserIcon from "@/app/(pages)/_components/UserIcon/UserIcon";
 import { useTimelineQuery } from "@/lib/api/queries/useTimelineQuery";
 import { PullParams } from "@/types/routing.types";
 import { ReviewComment } from "@/types/github.types";
 import { useOverflows } from "../../changes/_hooks/useOverflows";
+import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
 
 /**
  * Renders the timeline of events.
@@ -29,7 +29,9 @@ export default function TimelineDisplay({
   repoName: string;
   id: string;
 }) {
-  const { data, isPending, isError } = useTimelineQuery(username, repoName, id);
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending, isError } =
+    useTimelineQuery(username, repoName, id);
+  useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
   // TODO: Replace with proper loading/error UI.
   if (isPending) return <div>Loading timeline...</div>;
@@ -74,7 +76,11 @@ export default function TimelineDisplay({
  * TODO: Use branch name and get commit SHA correctly for merge and delete events
  * @param event Object representing the event from the timeline.
  */
-function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
+export function TimelineEventDisplay({
+  event,
+}: {
+  event: processedTimelineEvent;
+}) {
   if (event.displayType === "hidden") {
     console.log(`"${event.eventType}" hidden`); // TODO: REMOVE THIS DEBUG PRINT
     return;
@@ -84,9 +90,6 @@ function TimelineEventDisplay({ event }: { event: processedTimelineEvent }) {
       return event.eventObj ? <TimelineCommit event={event} /> : <div />;
     } else if (event.eventType === "closed") {
       return <Divider />;
-      {
-        /** TODO: make custom divider */
-      }
     } else if (event.eventType === "commented") {
       if (!event.eventObj) return;
       return (
@@ -199,7 +202,7 @@ function ExpandableCommitText({
  *
  * @param event: Object representing the event that is the commit.
  */
-function TimelineCommit({ event }: { event: processedTimelineEvent }) {
+export function TimelineCommit({ event }: { event: processedTimelineEvent }) {
   if (!event.eventObj) {
     return;
   }
@@ -210,14 +213,11 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
 
   return (
     <TimelineEventSmall eventType={event.eventType} iconName={event.iconName}>
-      <div className={styles.timelineCommit}>
-        <ExpandableCommitText
-          full_sha={full_sha}
-          abbr_sha={abbr_sha}
-          message={message}
-        />
-        <UserIcon avatarUrl="/mock/octocat.png" username="octocat" size={18} />
-      </div>
+      <ExpandableCommitText
+        full_sha={full_sha}
+        abbr_sha={abbr_sha}
+        message={message}
+      />
     </TimelineEventSmall>
   );
 }
@@ -228,7 +228,7 @@ function TimelineCommit({ event }: { event: processedTimelineEvent }) {
  *      and review without comment (body).
  * @param event: Object representing the event that is the review.
  */
-function TimelineReview({ event }: { event: processedTimelineEvent }) {
+export function TimelineReview({ event }: { event: processedTimelineEvent }) {
   if (!event.eventObj) {
     return;
   }

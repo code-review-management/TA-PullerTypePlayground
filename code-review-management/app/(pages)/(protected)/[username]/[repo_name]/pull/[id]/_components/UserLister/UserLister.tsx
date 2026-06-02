@@ -65,9 +65,11 @@ function UserListerRow({ listedUser }: { listedUser: listedUser }) {
 export default function UserLister({
   listType,
   userList,
+  editable,
 }: {
   listType: UserListType;
   userList: listedUser[];
+  editable: boolean;
 }) {
   const { hasWritePermission } = usePermissionChecks();
   const headerDisplay = `${listType[0].toUpperCase()}${listType.slice(1)}`;
@@ -76,7 +78,7 @@ export default function UserLister({
     <div className={styles.userLister}>
       <div className={styles.headerRow}>
         <Subheader>{headerDisplay}</Subheader>
-        {hasWritePermission && (
+        {hasWritePermission && editable && (
           <div className={styles.iconWrapper}>
             <Image
               className={styles.plusIcon}
