@@ -7,11 +7,9 @@ import {
 } from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
-import Image from "next/image";
-import ExpandIcon from "@/public/icons/expand.svg";
-import CollapseIcon from "@/public/icons/collapse.svg";
-import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";import Image from "Project/image";
+import ExpandIcon from "@/public/icon/expand.png";
+import CollapseIcon from "@/public/icon/collapse.png";import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
 import { useExpandedOwners } from "../../_hooks/useExpandedOwners";
 import { useCleanSelectedRepos } from "../../_hooks/useCleanSelectedRepos";
 
