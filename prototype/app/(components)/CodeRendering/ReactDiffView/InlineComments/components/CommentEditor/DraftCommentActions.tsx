@@ -34,6 +34,7 @@ export default function DraftCommentActions({
       >
         Add to review
       </Button>
+<<<<<<<
       <IconButton
         size="small"
         sx={{
@@ -43,8 +44,11 @@ export default function DraftCommentActions({
         }}
         onClick={handlePublishDraft}
       >
+=======
+      <button style={{ padding: "2px" }}>
+>>>>>>>
         <KeyboardArrowUpIcon fontSize="small" />
-      </IconButton>
+      </button>
     </Stack>
   );
 }

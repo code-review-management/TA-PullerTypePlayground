@@ -20,19 +20,17 @@ export default function CommentEditor({
   handlePublishDraft: () => void;
 }) {
   const STYLE_UNFOCUSED_BORDER_COLOR = "rgb(214, 214, 214)";
-  const STYLE_FOCUSED_OUTLINE_COLOR = "rgb(57, 135, 214)";
+  const STYLE_FOCUSED_COLOR = "rgb(57, 135, 214)";
 
   return (
     <Stack
       sx={{
         ...(isEditEnabled && {
-          borderWidth: 0.5,
-          borderRadius: 0.5,
           "&:not(:focus-within)": {
             borderColor: STYLE_UNFOCUSED_BORDER_COLOR,
           },
           "&:focus-within": {
-            outline: `1.5px solid black`,
+            outline: `5.5px solid ${STYLE_FOCUSED_COLOR}`,
             borderColor: "transparent",
           },
         }),
