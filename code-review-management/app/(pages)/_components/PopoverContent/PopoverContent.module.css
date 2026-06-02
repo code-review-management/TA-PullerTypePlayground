@@ -1,7 +1,0 @@
-.popoverContent {
-    padding: var(--spacer-16);
-    border: var(--border-normal-width) solid var(--border-gray-secondary);
-    border-radius: 8px;
-    background-color: var(--background-light);
-    box-shadow: var(--box-shadow-popover);
-}
