@@ -7,12 +7,11 @@ import {
 } from "../../_utils/repo-utils";
 import { useReposQuery } from "@/lib/api/queries/useReposQuery";
 import { useAutoFetchAllPages } from "@/lib/api/hooks/useAutoFetchAllPages";
-import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";
-import { useIsMounted, useLocalStorage } from "usehooks-ts";
-import Image from "next/image";
-import ExpandIcon from "@/public/icons/expand.svg";
-import CollapseIcon from "@/public/icons/collapse.svg";
-import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
+import LoadingSpinner from "@components/LoadingSpinner/LoadingSpinner";import Image from "Project/image";
+import ExpandIcon from "@/public/icon/expand.png";
+import CollapseIcon from "@/public/icon/collapse.png";import IconTooltip from "@/app/(pages)/_components/IconTooltip/IconTooltip";
+import { useExpandedOwners } from "../../_hooks/useExpandedOwners";
+import { useCleanSelectedRepos } from "../../_hooks/useCleanSelectedRepos";
 
 type ExpansionState = "expand" | "collapse" | "other";
 
@@ -32,23 +31,19 @@ export default function DashboardSidebar({
     useReposQuery();
   useAutoFetchAllPages(hasNextPage, isFetching, fetchNextPage);
 
-  const [expandedOwners, setExpandedOwners] = useLocalStorage<string[]>(
-    "expandedOwners",
-    [],
-  );
-  const [expansionState, setExpansionState] = useLocalStorage<ExpansionState>(
-    "expansionState",
-    "other",
-  );
 
   // Docs: https://usehooks-ts.com/react-hook/use-is-mounted
   const isMounted = useIsMounted(); // Use to check if expansionState will have been loaded
 
   const mappedRepoList = sortReposByOrg(data || []);
+  const fullRepoNames = data?.flatMap((repo) => repo.full_name) || [];
+  
   const repoSet = new Set(Array.isArray(selectedRepos) ? selectedRepos : []);
   const expandedSet = new Set(
     Array.isArray(expandedOwners) ? expandedOwners : [],
   );
+
+  useCleanSelectedRepos(fullRepoNames);
 
   // Set of orgs (owners) that have repos that are currently selected
   const orgSet = useMemo(
