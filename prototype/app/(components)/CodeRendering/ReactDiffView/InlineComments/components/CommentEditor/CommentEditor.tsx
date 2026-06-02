@@ -26,13 +26,11 @@ export default function CommentEditor({
     <Stack
       sx={{
         ...(isEditEnabled && {
-          borderWidth: 3,
-          borderRadius: 3,
           "&:not(:focus-within)": {
             borderColor: STYLE_UNFOCUSED_BORDER_COLOR,
           },
           "&:focus-within": {
-            outline: `1.5px solid ${STYLE_FOCUSED_COLOR}`,
+            outline: `5.5px solid ${STYLE_FOCUSED_COLOR}`,
             borderColor: "transparent",
           },
         }),

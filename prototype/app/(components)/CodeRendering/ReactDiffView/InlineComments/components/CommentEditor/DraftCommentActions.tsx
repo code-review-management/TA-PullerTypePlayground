@@ -34,7 +34,19 @@ export default function DraftCommentActions({
       >
         Add to review
       </Button>
+<<<<<<<
+      <IconButton
+        size="small"
+        sx={{
+          p: 0,
+          bgcolor: "primary.main",
+          color: "gray",
+        }}
+        onClick={handlePublishDraft}
+      >
+=======
       <button style={{ padding: "2px" }}>
+>>>>>>>
         <KeyboardArrowUpIcon fontSize="small" />
       </button>
     </Stack>
