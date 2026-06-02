@@ -13,7 +13,6 @@
 
 .line {
     padding: 4px;
-    margin: 2px;
     display: flex;
     align-items: center;
     justify-content: space-between;

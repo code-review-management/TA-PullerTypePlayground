@@ -13,8 +13,20 @@ export default function CodeView({
         <div className={styles.codeView}>
             <pre className={styles.codeBlock}>
                 <code>
+<<<<<<<
+                    {lines.map((line, idx) => (
+                        <span
+                            key={idx}
+                            className={`${styles.line} ${
+                                line.isAdded ? styles.lineInserted : styles.fallback
+                            } ${
+                                line.isRemoved ? styles.lineDeleted : styles.fallback
+                            }`}
+                        >
+=======
                     {lines.map((line) => (
                         <span>
+>>>>>>>
                             {line.value}
                         </span>
                     ))}
