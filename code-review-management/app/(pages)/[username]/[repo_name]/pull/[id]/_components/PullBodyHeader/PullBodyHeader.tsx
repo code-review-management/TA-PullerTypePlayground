@@ -59,7 +59,7 @@ export default function PullBodyHeader({
           <p className={styles.commits}>{pullData.commits} commits</p>
           <p className={styles.files}>{pullData.changed_files} files</p>
           <p className={styles.additions}>+{pullData.additions}</p>
-          <p className={styles.deletions}>+{pullData.deletions}</p>
+          <p className={styles.deletions}>-{pullData.deletions}</p>
         </div>
       </div>
     </div>
