@@ -1,8 +1,22 @@
 import { DraftThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/useDraftThreads";
 import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
 
-type FileDraftThreadItem = Extract<DraftThreadItem, { subjectType: "file" }>;
-type LineDraftThreadItem = Extract<DraftThreadItem, { subjectType: "line" }>;
+export function getExampleThreadDraftItem1(): DraftItem {
+  return {
+    type: "thread",
+    payload: {
+      oldPath: "old-path.ts",
+      activePath: "active-path.ts",
+      fileStatus: "modified",
+      body: "example-body",
+      subjectType: "line",
+      start: 1,
+      end: 5,
+      side: "old",
+      stuff
+    },
+  };
+}
 
 export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
   return {
