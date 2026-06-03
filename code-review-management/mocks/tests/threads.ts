@@ -1,4 +1,4 @@
-import { DraftItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_components/DraftEditorActions/DraftEditorActions";
+import { DraftThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/useDraftThreads";
 import { PublishedThreadItem } from "@/app/(pages)/(protected)/[username]/[repo_name]/pull/[id]/changes/_hooks/usePublishedThreads";
 
 export function getExampleThreadDraftItem1(): DraftItem {
@@ -13,6 +13,7 @@ export function getExampleThreadDraftItem1(): DraftItem {
       start: 1,
       end: 5,
       side: "old",
+      stuff
     },
   };
 }
@@ -30,4 +31,37 @@ export function getExampleLinePublishedThreadItem1(): PublishedThreadItem {
     subject_type: "line",
     comments: [],
   };
+}
+
+export function getExampleFileDraftThreadItem1(): FileDraftThreadItem {
+  return {
+    oldPath: "old.ts",
+    activePath: "active.ts",
+    fileStatus: "modified",
+    body: "content",
+    subjectType: "file",
+  };
+}
+
+export function getExampleLineDraftThreadItem1(): LineDraftThreadItem {
+  return {
+    oldPath: "old.ts",
+    activePath: "active.ts",
+    fileStatus: "modified",
+    body: "content",
+    subjectType: "line",
+    start: 1,
+    end: 5,
+    side: "new",
+  };
+}
+
+export function getLineDraftThreadItemVariants() {
+  const base = getExampleLineDraftThreadItem1();
+  return {
+    SINGLE_LINE_NEW_SIDE: { ...base, start: 5, end: 5, side: "new" },
+    SINGLE_LINE_OLD_SIDE: { ...base, start: 5, end: 5, side: "old" },
+    MULTI_LINE_NEW_SIDE: { ...base, start: 1, end: 5, side: "new" },
+    MULTI_LINE_OLD_SIDE: { ...base, start: 1, end: 5, side: "old" },
+  } satisfies Record<string, LineDraftThreadItem>;
 }
